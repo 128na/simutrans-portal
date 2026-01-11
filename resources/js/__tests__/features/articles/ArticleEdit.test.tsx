@@ -62,9 +62,13 @@ describe("ArticleEdit", () => {
     title: "Test Article",
     status: "publish",
     post_type: "page",
-    contents: {},
+    contents: { sections: [], thumbnail: null },
     published_at: "2025-01-01 10:00:00",
     modified_at: "2025-01-02 12:00:00",
+    categories: [],
+    tags: [],
+    articles: [],
+    attachments: [],
   };
 
   beforeEach(() => {
@@ -85,7 +89,7 @@ describe("ArticleEdit", () => {
 
     // window.location.href のモック
     delete (window as { location?: unknown }).location;
-    window.location = { href: "" } as Location;
+    (window as { location: { href: string } }).location = { href: "" };
   });
 
   it("記事のpost_typeが存在しない場合は何も表示しない", () => {
@@ -131,7 +135,7 @@ describe("ArticleEdit", () => {
       return selector(mockState);
     });
 
-    mockedAxios.post.mockResolvedValue({
+    vi.spyOn(mockedAxios, "post").mockResolvedValue({
       data: { article_id: 1 },
     } as AxiosResponse);
 
@@ -150,7 +154,7 @@ describe("ArticleEdit", () => {
   });
 
   it("保存ボタンクリックで更新APIを呼ぶ（id あり）", async () => {
-    mockedAxios.post.mockResolvedValue({
+    vi.spyOn(mockedAxios, "post").mockResolvedValue({
       data: { article_id: 1 },
     } as AxiosResponse);
 
@@ -169,7 +173,7 @@ describe("ArticleEdit", () => {
   });
 
   it("保存成功後にリダイレクトする", async () => {
-    mockedAxios.post.mockResolvedValue({
+    vi.spyOn(mockedAxios, "post").mockResolvedValue({
       data: { article_id: 123 },
     } as AxiosResponse);
 
@@ -198,7 +202,7 @@ describe("ArticleEdit", () => {
       },
     };
 
-    mockedAxios.post.mockRejectedValue(validationError);
+    vi.spyOn(mockedAxios, "post").mockRejectedValue(validationError);
 
     render(<ArticleEdit />);
     const saveButton = screen.getByRole("button", { name: "保存" });
@@ -212,7 +216,7 @@ describe("ArticleEdit", () => {
 
   it("一般的なエラー発生時にエラーハンドラーが呼ばれる", async () => {
     const generalError = new Error("Network error");
-    mockedAxios.post.mockRejectedValue(generalError);
+    vi.spyOn(mockedAxios, "post").mockRejectedValue(generalError);
 
     render(<ArticleEdit />);
     const saveButton = screen.getByRole("button", { name: "保存" });

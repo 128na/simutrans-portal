@@ -43,7 +43,8 @@ vi.mock("@/features/articles/postType/AddonIntroduction", () => ({
 
 describe("ArticleForm", () => {
   const mockSetState = vi.fn();
-  const mockUseArticleEditor = useArticleEditor as any;
+  // @ts-expect-error - Mock for testing
+  const mockUseArticleEditor = useArticleEditor;
 
   const createMockArticle = (
     postType: ArticlePostType,
@@ -62,11 +63,10 @@ describe("ArticleForm", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockUseArticleEditor.setState = mockSetState;
   });
 
   it("記事がない場合は何も表示しない", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: null,
         shouldNotify: false,
@@ -81,7 +81,7 @@ describe("ArticleForm", () => {
   });
 
   it("post_typeがない場合は何も表示しない", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: { id: 1, title: "Test", post_type: null },
         shouldNotify: false,
@@ -96,7 +96,7 @@ describe("ArticleForm", () => {
   });
 
   it("post_typeがpageの場合、Pageコンポーネントを表示", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page"),
         shouldNotify: false,
@@ -112,7 +112,7 @@ describe("ArticleForm", () => {
   });
 
   it("post_typeがmarkdownの場合、Markdownコンポーネントを表示", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("markdown"),
         shouldNotify: false,
@@ -128,7 +128,7 @@ describe("ArticleForm", () => {
   });
 
   it("post_typeがaddon-postの場合、AddonPostコンポーネントを表示", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("addon-post"),
         shouldNotify: false,
@@ -143,7 +143,7 @@ describe("ArticleForm", () => {
   });
 
   it("post_typeがaddon-introductionの場合、AddonIntroductionコンポーネントを表示", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("addon-introduction"),
         shouldNotify: false,
@@ -160,7 +160,7 @@ describe("ArticleForm", () => {
   });
 
   it("CommonFormとStatusFormが常に表示される", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page"),
         shouldNotify: false,
@@ -177,7 +177,7 @@ describe("ArticleForm", () => {
 
   it("更新日時のチェックボックスが正しく機能する", async () => {
     const user = userEvent.setup();
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page"),
         shouldNotify: false,
@@ -199,7 +199,7 @@ describe("ArticleForm", () => {
 
   it("記事が公開状態の場合、SNS通知のチェックボックスが表示される", () => {
     const mockUpdateShouldNotify = vi.fn();
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page", "publish"),
         shouldNotify: false,
@@ -217,7 +217,7 @@ describe("ArticleForm", () => {
   });
 
   it("記事が下書き状態の場合、SNS通知のチェックボックスが表示されない", () => {
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page", "draft"),
         shouldNotify: false,
@@ -234,7 +234,7 @@ describe("ArticleForm", () => {
   it("SNS通知のチェックボックスをクリックすると状態が更新される", async () => {
     const user = userEvent.setup();
     const mockUpdateShouldNotify = vi.fn();
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page", "publish"),
         shouldNotify: false,
@@ -256,7 +256,7 @@ describe("ArticleForm", () => {
 
   it("更新日時を変えないときSNS通知もOFFになる", async () => {
     const user = userEvent.setup();
-    mockUseArticleEditor.mockImplementation((selector: any) => {
+    mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page", "publish"),
         shouldNotify: true,

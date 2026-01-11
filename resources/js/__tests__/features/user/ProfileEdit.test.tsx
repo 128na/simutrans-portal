@@ -4,7 +4,14 @@ import { ProfileEdit } from "@/features/user/ProfileEdit";
 
 // Mock child components to isolate ProfileEdit testing
 vi.mock("@/features/user/ProfileShow", () => ({
-  ProfileShow: ({ user, attachments, preview }: any) => (
+  ProfileShow: ({
+    user,
+    preview,
+  }: {
+    user: User.MypageEdit;
+    attachments: Attachment.MypageEdit[];
+    preview: boolean;
+  }) => (
     <div data-testid="profile-show">
       ProfileShow - {user.name} (preview: {preview ? "true" : "false"})
     </div>
@@ -12,7 +19,7 @@ vi.mock("@/features/user/ProfileShow", () => ({
 }));
 
 vi.mock("@/features/user/ProfileForm", () => ({
-  ProfileForm: ({ user }: any) => (
+  ProfileForm: ({ user }: { user: User.MypageEdit }) => (
     <div data-testid="profile-form">ProfileForm - {user.name}</div>
   ),
 }));
@@ -21,25 +28,37 @@ describe("ProfileEdit Component", () => {
   const mockUser: User.MypageEdit = {
     id: 1,
     name: "Test User",
-    description: "Test Description",
-    website: "https://example.com",
-    twitter: "https://twitter.com/testuser",
-    mastodon: "https://mastodon.social/@testuser",
-    imageUrl: "https://example.com/image.jpg",
+    email: "test@example.com",
+    nickname: "test_nickname",
+    profile: {} as Profile.Edit,
   };
 
   const mockAttachments: Attachment.MypageEdit[] = [
     {
       id: 1,
-      filename: "image1.jpg",
+      user_id: 1,
+      url: "/storage/attachments/1.jpg",
+      original_name: "image1.jpg",
+      type: "image",
       size: 102400,
-      path: "/storage/attachments/1.jpg",
+      created_at: "2024-01-01T00:00:00Z",
+      attachmentable_id: 1,
+      attachmentable_type: "Profile",
+      attachmentable: null,
+      thumbnail: "/storage/attachments/1.jpg",
     },
     {
       id: 2,
-      filename: "image2.png",
+      user_id: 1,
+      url: "/storage/attachments/2.png",
+      original_name: "image2.png",
+      type: "image",
       size: 51200,
-      path: "/storage/attachments/2.png",
+      created_at: "2024-01-01T00:00:00Z",
+      attachmentable_id: 1,
+      attachmentable_type: "Profile",
+      attachmentable: null,
+      thumbnail: "/storage/attachments/2.png",
     },
   ];
 
@@ -112,11 +131,9 @@ describe("ProfileEdit Component", () => {
     const customUser: User.MypageEdit = {
       id: 999,
       name: "Custom Name",
-      description: "Custom Desc",
-      website: "https://custom.com",
-      twitter: "https://twitter.com/custom",
-      mastodon: "https://mastodon.social/@custom",
-      imageUrl: "https://custom.com/profile.jpg",
+      email: "custom@example.com",
+      nickname: "custom_nick",
+      profile: {} as Profile.Edit,
     };
 
     render(
@@ -139,9 +156,16 @@ describe("ProfileEdit Component", () => {
     const customAttachments: Attachment.MypageEdit[] = [
       {
         id: 10,
-        filename: "profile.jpg",
+        user_id: 1,
+        url: "/storage/10.jpg",
+        original_name: "profile.jpg",
+        type: "image",
         size: 204800,
-        path: "/storage/10.jpg",
+        created_at: "2024-01-01T00:00:00Z",
+        attachmentable_id: 1,
+        attachmentable_type: "Profile",
+        attachmentable: null,
+        thumbnail: "/storage/10.jpg",
       },
     ];
 

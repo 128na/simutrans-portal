@@ -1,13 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import axios from "axios";
-import React from "react";
+import React, { type ReactElement } from "react";
 import type { MyListItemShow } from "@/types/models/MyList";
 
 // PublicMyListPage コンポーネントを直接テストするために、
 // マウント処理を含まないコンポーネント部分のみをインポート
 vi.mock("axios");
-const mockAxios = axios as ReturnType<typeof vi.mocked<typeof axios>>;
+const mockAxios = axios;
 
 describe("PublicMyListPage コンポーネント", () => {
   const mockSlug = "test-list-123";
@@ -18,7 +18,7 @@ describe("PublicMyListPage コンポーネント", () => {
     mylistSlug,
   }: {
     mylistSlug: string;
-  }): JSX.Element => {
+  }): ReactElement => {
     const [items, setItems] = React.useState<MyListItemShow[]>([]);
     const [isLoading, setIsLoading] = React.useState(true);
     const [error, setError] = React.useState<string | null>(null);
@@ -161,7 +161,7 @@ describe("PublicMyListPage コンポーネント", () => {
         id: 101,
         title: "テストアドオン2",
         published_at: "2025-01-02T12:00:00Z",
-        thumbnail: null,
+        thumbnail: "",
         url: "https://example.com/addon2",
         user: {
           name: "テストユーザー2",
@@ -176,7 +176,9 @@ describe("PublicMyListPage コンポーネント", () => {
   });
 
   it("初期状態でローディングを表示する", () => {
-    mockAxios.get = vi.fn(() => new Promise(() => {})); // 永遠に待つ
+    vi.spyOn(mockAxios, "get").mockImplementation(
+      () => new Promise(() => {}) as never
+    ); // 永遠に待つ
 
     render(<PublicMyListPage mylistSlug={mockSlug} />);
 

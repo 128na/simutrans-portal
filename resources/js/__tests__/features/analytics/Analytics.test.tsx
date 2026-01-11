@@ -1,11 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Analytics } from "@/features/analytics/Analytics";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
@@ -41,7 +35,7 @@ describe("Analytics Integration Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Reset Zustand store to initial state
-    useAnalyticsStore.setState((state) => ({
+    useAnalyticsStore.setState(() => ({
       start_date: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000), // 3 months ago
       end_date: new Date(),
       type: "daily",

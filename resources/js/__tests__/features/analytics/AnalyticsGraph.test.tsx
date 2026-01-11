@@ -11,12 +11,26 @@ vi.mock("axios");
 
 // Recharts のモック
 vi.mock("recharts", () => ({
-  LineChart: ({ children, data }: any) => (
+  LineChart: ({
+    children,
+    data,
+  }: {
+    children: React.ReactNode;
+    data: unknown;
+  }) => (
     <div data-testid="line-chart" data-chart-data={JSON.stringify(data)}>
       {children}
     </div>
   ),
-  Line: ({ dataKey, name, stroke }: any) => (
+  Line: ({
+    dataKey,
+    name,
+    stroke,
+  }: {
+    dataKey: string;
+    name: string;
+    stroke: string;
+  }) => (
     <div
       data-testid={`line-${dataKey}`}
       data-name={name}
@@ -32,12 +46,13 @@ vi.mock("recharts", () => ({
 
 describe("AnalyticsGraph", () => {
   const mockArticles: Analytics.Article[] = [
-    { id: 1, title: "Article 1" },
-    { id: 2, title: "Article 2" },
+    { id: 1, title: "Article 1" } as Analytics.Article,
+    { id: 2, title: "Article 2" } as Analytics.Article,
   ];
 
-  const mockUseAnalyticsStore = useAnalyticsStore as any;
-  const mockAxios = axios as any;
+  // @ts-expect-error - Mock for testing
+  const mockUseAnalyticsStore = useAnalyticsStore;
+  const mockAxios = axios;
 
   beforeEach(() => {
     vi.clearAllMocks();

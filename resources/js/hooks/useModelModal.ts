@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/useToast";
-import {
-  extractErrorMessage,
-  isValidationError,
-  type ValidationErrorResponse,
-} from "@/lib/errorHandler";
-import type { AxiosError } from "axios";
+import { extractErrorMessage, isValidationError } from "@/lib/errorHandler";
 
 /**
  * モデル編集・作成フォーム用の状態管理 Hook

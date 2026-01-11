@@ -152,7 +152,7 @@ export const MyListEditModal = ({
   onSuccess,
 }: MyListEditModalProps) => {
   const { showSuccess } = useToast();
-  const { isLoading, error, getError, handleSave } = useModelModal();
+  const { isLoading, error, handleSave } = useModelModal();
   const [title, setTitle] = useState(list?.title || "");
   const [note, setNote] = useState(list?.note || "");
   const [isPublic, setIsPublic] = useState(list?.is_public || false);

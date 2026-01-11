@@ -12,7 +12,15 @@ vi.mock("@/features/attachments/AttachmentTable", () => ({
     types,
     onSelectAttachment,
     onChangeAttachments,
-  }: any) => (
+  }: {
+    attachments: Attachment.MypageEdit[];
+    selected: number | null;
+    attachmentableId: number | null;
+    attachmentableType: string | null;
+    types: string[];
+    onSelectAttachment: (attachment: Attachment.MypageEdit) => void;
+    onChangeAttachments: (attachments: Attachment.MypageEdit[]) => void;
+  }) => (
     <div data-testid="attachment-table">
       <div data-testid="attachments-count">{attachments.length}</div>
       <div data-testid="selected">{selected}</div>
@@ -33,6 +41,8 @@ describe("AttachmentEdit", () => {
   const mockAttachments: Attachment.MypageEdit[] = [
     {
       id: 1,
+      user_id: 1,
+      url: "/storage/test1.png",
       original_name: "test1.png",
       type: "image",
       size: 1024,
@@ -44,14 +54,16 @@ describe("AttachmentEdit", () => {
     },
     {
       id: 2,
+      user_id: 1,
+      url: "/storage/test2.pdf",
       original_name: "test2.pdf",
       type: "file",
       size: 2048,
       created_at: "2024-01-02T00:00:00Z",
-      attachmentable_id: null,
-      attachmentable_type: null,
+      attachmentable_id: 0,
+      attachmentable_type: "Article",
       attachmentable: null,
-      thumbnail: null,
+      thumbnail: "",
     },
   ];
 

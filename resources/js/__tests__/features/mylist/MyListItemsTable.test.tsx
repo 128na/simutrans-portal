@@ -7,7 +7,7 @@ import { ToastProvider } from "@/providers/ToastProvider";
 import type { MyListItemShow } from "@/types/models/MyList";
 
 vi.mock("axios");
-const mockAxios = axios as ReturnType<typeof vi.mocked<typeof axios>>;
+const mockAxios = axios;
 
 describe("MyListItemsTable コンポーネント", () => {
   const mockOnUpdate = vi.fn();

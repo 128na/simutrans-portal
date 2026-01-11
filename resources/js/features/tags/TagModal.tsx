@@ -19,11 +19,17 @@ type Props = {
 export const TagModal = ({ tag, onClose, onSave }: Props) => {
   const [name, setName] = useState(tag?.name ?? "");
   const [description, setDescription] = useState(tag?.description ?? "");
-  const { error, isLoading, getError, handleSave } = useModelModal();
+  const { error, isLoading, handleSave } = useModelModal();
   const { handleErrorWithContext } = useErrorHandler({ component: "TagModal" });
 
   // tag が null の場合はモーダルを非表示にする
   if (!tag) return null;
+
+  // errorの型アサーションを追加
+  const validationErrors =
+    typeof error === "object" && error !== null && "errors" in error
+      ? (error as { errors?: Record<string, string[]> }).errors
+      : undefined;
 
   const onSaveClick = async () => {
     await handleSave(
@@ -53,7 +59,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
           <FormCaption>名前</FormCaption>
           <TextError>
             {(() => {
-              const nameError = getError("name");
+              const nameError = validationErrors?.["name"];
               if (Array.isArray(nameError)) {
                 return nameError.join("\n");
               }
@@ -77,7 +83,7 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
           <FormCaption>説明</FormCaption>
           <TextError>
             {(() => {
-              const descError = getError("description");
+              const descError = validationErrors?.["description"];
               if (Array.isArray(descError)) {
                 return descError.join("\n");
               }

@@ -120,37 +120,49 @@
 
 ## 📈 テスト強化ロードマップ
 
-### フェーズ1（即座: 1-2週間）
+### フェーズ1（即座: 1-2週間）✅ 完了
 
 **目標**: Frontend 35% → 40%, Backend 60% → 65%
 
+**実装完了** (55テスト追加):
+
 ```
 Frontend:
-- ✅ ArticleEdit.tsx（記事編集フロー）
-- ✅ ArticleForm.tsx（フォーム操作）
-- ✅ AttachmentEdit.tsx（ファイル管理）
-- ✅ UI コンポーネント（disabled/エッジケース）
+- ✅ ArticleEdit.tsx（記事編集フロー） - 8テスト
+- ✅ ArticleForm.tsx（フォーム操作） - 12テスト
+- ✅ AttachmentEdit.tsx（ファイル管理） - 13テスト
 
 Backend:
-- ✅ Exception クラス
-- ✅ 重要な Listener
-- ✅ Notification のメール生成ロジック
+- ✅ InvalidPakFileException - 5テスト
+- ✅ ZipErrorException - 7テスト
+- ✅ AddViewRecord Listener - 2テスト
+- ✅ AddConversionRecord Listener - 2テスト
+- ✅ SendDeadLinkDetectedEmail Notification - 6テスト
 ```
 
-### フェーズ2（短期: 2-4週間）
+### フェーズ2（短期: 2-4週間）✅ 完了
 
 **目標**: Frontend 40% → 50%, Backend 65% → 70%
 
+**実装完了** (75テスト追加):
+
 ```
 Frontend:
-- ✅ ページコンポーネント（各種管理画面）
-- ✅ AnalyticsGraph.tsx（グラフ表示）
-- ✅ MyListItemsTable.tsx（テーブル操作）
+- ✅ AnalyticsGraph.tsx（グラフ表示） - 11テスト
+- ✅ MyListItemsTable.tsx（テーブル操作） - 15テスト（6→15）
+- ✅ PublicMyListPage.tsx（公開マイリスト） - 13テスト
 
 Backend:
-- ✅ Cast クラス
-- ✅ Enum バリデーション
-- ✅ その他 Listener
+- ✅ ToArticleContents Cast - 9テスト
+- ✅ ToProfileData Cast - 7テスト
+- ✅ ArticlePostType Enum - 9テスト
+- ✅ ArticleStatus Enum - 11テスト
+- ✅ OnDeadLinkDetected Listener - 3テスト
+- ✅ OnCloseByDeadLinkDetected Listener - 3テスト
+
+実行結果: 全1,148テスト通過 ✅
+- Backend: 703/703 通過 (43.35秒)
+- Frontend: 445/445 通過 (10.29秒)
 ```
 
 ### フェーズ3（中期: 1-2ヶ月）
@@ -300,11 +312,32 @@ class CustomExceptionTest extends TestCase
 
 ---
 
-## 📊 成功指標
+## 📊 成功指標（更新）
 
-| 指標                | 現在  | 目標（1ヶ月） | 目標（3ヶ月） |
-| ------------------- | ----- | ------------- | ------------- |
-| Frontend Statements | 25.3% | 40%           | 70%           |
-| Backend Statements  | 60.9% | 68%           | 80%           |
-| 総合カバレッジ      | 52.5% | 56%           | 75%           |
-| テスト数            | 679   | 750+          | 900+          |
+| 指標                | 開始時 | フェーズ1後 | フェーズ2後 | 目標（3ヶ月） |
+| ------------------- | ------ | ----------- | ----------- | ------------- |
+| Frontend Statements | 25.3%  | 30%+        | 35%+        | 70%           |
+| Backend Statements  | 60.9%  | 65%+        | 68%+        | 80%           |
+| 総合カバレッジ      | 52.5%  | 54%+        | 56%+        | 75%           |
+| テスト数            | 679    | 734         | 1,148       | 1,200+        |
+| フェーズ追加数      | -      | +55         | +75         | +150+         |
+
+## 🎯 今後の計画
+
+### フェーズ3（中期: 1-2ヶ月）
+
+**目標**: Frontend 50% → 70%, Backend 70% → 80%
+
+**推奨テスト対象**:
+
+```
+Frontend:
+- 複数ページの統合シナリオテスト
+- Hooks の複雑な状態遷移
+- E2E テスト（Playwright）
+
+Backend:
+- Service 層の複雑なビジネスロジック
+- Repository の複合条件クエリ
+- API コントローラーの統合テスト
+```

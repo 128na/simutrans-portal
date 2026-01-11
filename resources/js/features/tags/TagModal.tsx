@@ -1,11 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import { useAxiosErrorState } from "@/hooks/errorState";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
 import { Modal } from "@/components/ui/Modal";
-import { isValidationError } from "@/lib/errorHandler";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { useModelModal } from "@/hooks/useModelModal";
 import { FormCaption } from "@/components/ui/FormCaption";
 import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
@@ -20,27 +19,27 @@ type Props = {
 export const TagModal = ({ tag, onClose, onSave }: Props) => {
   const [name, setName] = useState(tag?.name ?? "");
   const [description, setDescription] = useState(tag?.description ?? "");
-  const { setError, getError } = useAxiosErrorState();
+  const { error, isLoading, getError, handleSave } = useModelModal();
   const { handleErrorWithContext } = useErrorHandler({ component: "TagModal" });
 
   // tag が null の場合はモーダルを非表示にする
   if (!tag) return null;
 
-  const handleSave = async () => {
-    try {
-      const res = tag.id
-        ? await axios.post(`/api/v2/tags/${tag.id}`, { description })
-        : await axios.post(`/api/v2/tags`, { name, description });
-      if ((res.status === 200 || res.status === 201) && onSave) {
-        onSave(res.data.data as Tag.MypageEdit);
+  const onSaveClick = async () => {
+    await handleSave(
+      () =>
+        tag.id
+          ? axios.post(`/api/v2/tags/${tag.id}`, { description })
+          : axios.post(`/api/v2/tags`, { name, description }),
+      {
+        onSuccess: (res) => {
+          onSave?.(res.data as Tag.MypageEdit);
+        },
+        onError: (err) => {
+          handleErrorWithContext(err, { action: "save" });
+        },
       }
-    } catch (error) {
-      if (isValidationError(error)) {
-        setError(error);
-      } else {
-        handleErrorWithContext(error, { action: "save" });
-      }
-    }
+    );
   };
 
   return (
@@ -52,7 +51,15 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
       <div className="grid gap-x-4 mb-4">
         <div>
           <FormCaption>名前</FormCaption>
-          <TextError>{getError("name")?.join("\n")}</TextError>
+          <TextError>
+            {(() => {
+              const nameError = getError("name");
+              if (Array.isArray(nameError)) {
+                return nameError.join("\n");
+              }
+              return nameError || undefined;
+            })()}
+          </TextError>
           <Input
             type="text"
             value={name}
@@ -68,7 +75,15 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
         </div>
         <div>
           <FormCaption>説明</FormCaption>
-          <TextError>{getError("description")?.join("\n")}</TextError>
+          <TextError>
+            {(() => {
+              const descError = getError("description");
+              if (Array.isArray(descError)) {
+                return descError.join("\n");
+              }
+              return descError || undefined;
+            })()}
+          </TextError>
           <Textarea
             rows={4}
             value={description}
@@ -80,8 +95,8 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
       </div>
 
       <div className="flex justify-end space-x-2">
-        <Button onClick={handleSave} size="lg">
-          保存
+        <Button onClick={onSaveClick} size="lg" disabled={isLoading}>
+          {isLoading ? "保存中..." : "保存"}
         </Button>
       </div>
     </Modal>

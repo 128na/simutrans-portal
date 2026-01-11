@@ -79,6 +79,6 @@ class TagRepository
      */
     public function update(Tag $tag, array $data): Tag
     {
-        return tap($tag, fn($t) => $t->update($data));
+        return tap($tag, fn ($t) => $t->update($data));
     }
 }

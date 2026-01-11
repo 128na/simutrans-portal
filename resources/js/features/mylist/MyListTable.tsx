@@ -10,6 +10,7 @@ import Link from "@/components/ui/Link";
 import { copyToClipboard } from "@/lib/copyText";
 import { useToast } from "@/hooks/useToast";
 import { useApiCall } from "@/hooks/useApiCall";
+import { useModelModal } from "@/hooks/useModelModal";
 import type { MyListShow } from "@/types/models";
 
 interface MyListTableProps {
@@ -150,26 +151,23 @@ export const MyListEditModal = ({
   onClose,
   onSuccess,
 }: MyListEditModalProps) => {
-  const { call, isLoading } = useApiCall();
+  const { showSuccess } = useToast();
+  const { isLoading, error, getError, handleSave } = useModelModal();
   const [title, setTitle] = useState(list?.title || "");
   const [note, setNote] = useState(list?.note || "");
   const [isPublic, setIsPublic] = useState(list?.is_public || false);
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title.trim()) {
-      setError("タイトルを入力してください");
       return;
     }
-
-    setError(null);
 
     const method = list ? "PATCH" : "POST";
     const url = list ? `/api/v1/mylist/${list.id}` : "/api/v1/mylist";
 
-    await call(
+    await handleSave(
       () =>
         axios({
           method,
@@ -184,7 +182,12 @@ export const MyListEditModal = ({
         successMessage: list
           ? "マイリストを更新しました"
           : "マイリストを作成しました",
-        onSuccess: () => onSuccess(),
+        onSuccess: () => {
+          showSuccess(
+            list ? "マイリストを更新しました" : "マイリストを作成しました"
+          );
+          onSuccess();
+        },
       }
     );
   };

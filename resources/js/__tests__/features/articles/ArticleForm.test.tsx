@@ -46,6 +46,12 @@ describe("ArticleForm", () => {
   // @ts-expect-error - Mock for testing
   const mockUseArticleEditor = useArticleEditor;
 
+  // Zustand の setState メソッドをモック
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockUseArticleEditor.setState = mockSetState;
+  });
+
   const createMockArticle = (
     postType: ArticlePostType,
     status: ArticleStatus = "draft"
@@ -59,10 +65,6 @@ describe("ArticleForm", () => {
     categories: [],
     articles: [],
     tags: [],
-  });
-
-  beforeEach(() => {
-    vi.clearAllMocks();
   });
 
   it("記事がない場合は何も表示しない", () => {

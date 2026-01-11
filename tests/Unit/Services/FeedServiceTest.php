@@ -10,7 +10,7 @@ use App\Services\FeedService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Mockery;
-use PHPUnit\Framework\TestCase;
+use Tests\Unit\TestCase;
 
 class FeedServiceTest extends TestCase
 {

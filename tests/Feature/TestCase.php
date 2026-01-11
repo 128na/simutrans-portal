@@ -16,12 +16,23 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Mockery;
 use Tests\CreatesApplication;
-use Tests\TestCase as TestsTestCase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Application;
 
-abstract class TestCase extends TestsTestCase
+abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
     use RefreshDatabase;
+    /**
+     * アプリケーション生成
+     */
+    public function createApplication()
+    {
+        $app = require Application::inferBasePath() . '/bootstrap/app.php';
+        $app->make(Kernel::class)->bootstrap();
+
+        return $app;
+    }
 
     #[\Override]
     protected function setUp(): void
@@ -55,7 +66,7 @@ abstract class TestCase extends TestsTestCase
     {
         return Attachment::factory()->create([
             'user_id' => $userId,
-            'path' => $uploadedFile->store('user/'.$userId, 'public'),
+            'path' => $uploadedFile->store('user/' . $userId, 'public'),
             'original_name' => $uploadedFile->getClientOriginalName(),
         ]);
     }

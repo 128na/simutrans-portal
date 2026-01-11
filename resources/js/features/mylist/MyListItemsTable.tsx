@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import { useToast } from "@/hooks/useToast";
 import { extractErrorMessage } from "@/lib/errorHandler";
 import type { MyListItemShow } from "@/types/models";
 
@@ -19,6 +20,7 @@ export const MyListItemsTable = ({
   listId,
   onUpdate,
 }: MyListItemsTableProps) => {
+  const { showSuccess } = useToast();
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
   const [editingNote, setEditingNote] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +48,7 @@ export const MyListItemsTable = ({
         note: editingNote.trim() || null,
       });
 
+      showSuccess("メモを保存しました");
       setEditingItemId(null);
       onUpdate();
     } catch (err) {
@@ -71,6 +74,7 @@ export const MyListItemsTable = ({
 
       await axios.delete(`/api/v1/mylist/${listId}/items/${itemId}`);
 
+      showSuccess("アイテムを削除しました");
       onUpdate();
     } catch (err) {
       setError(extractErrorMessage(err));
@@ -97,6 +101,7 @@ export const MyListItemsTable = ({
         ],
       });
 
+      showSuccess("並び替えを保存しました");
       onUpdate();
     } catch (err) {
       setError(extractErrorMessage(err));
@@ -123,6 +128,7 @@ export const MyListItemsTable = ({
         ],
       });
 
+      showSuccess("並び替えを保存しました");
       onUpdate();
     } catch (err) {
       setError(extractErrorMessage(err));

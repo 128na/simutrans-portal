@@ -1,6 +1,26 @@
 /**
  * 統一されたエラーハンドリングユーティリティ
  * フロントエンド全体で一貫性のあるエラー処理を提供する
+ *
+ * 【推奨利用方法】
+ * - コンポーネント内: useToastの showError() を直接使用
+ *   ```typescript
+ *   const { showError } = useToast();
+ *   try {
+ *     await api.call();
+ *   } catch (err) {
+ *     showError(extractErrorMessage(err));
+ *   }
+ *   ```
+ *
+ * - ユーティリティ関数内: handleError() を使用
+ *   ```typescript
+ *   try {
+ *     await someAsyncOperation();
+ *   } catch (error) {
+ *     handleError(error, { component: 'Service', action: 'fetch', silent: false });
+ *   }
+ *   ```
  */
 
 import type { AxiosError } from "axios";
@@ -145,15 +165,28 @@ export const isValidationError = (
 /**
  * 統一されたエラーハンドラー
  *
+ * 注意: このハンドラーはユーティリティ関数として機能します。
+ * コンポーネント内で使用する場合は、useToast() フックの showError() を
+ * 直接使用する方が推奨されます（UIの一貫性とアクセシビリティが向上）。
+ *
  * @param error - 発生したエラー
  * @param context - エラーコンテキスト（任意）
  *
  * @example
  * ```typescript
+ * // コンポーネント内での推奨用法
+ * const { showError } = useToast();
  * try {
  *   await someAsyncOperation();
  * } catch (error) {
- *   handleError(error, { component: 'ArticleEdit', action: 'save' });
+ *   showError(extractErrorMessage(error));
+ * }
+ *
+ * // ユーティリティ関数内
+ * try {
+ *   await someAsyncOperation();
+ * } catch (error) {
+ *   handleError(error, { component: 'Service', action: 'fetch' });
  * }
  * ```
  */
@@ -164,9 +197,9 @@ export const handleError = (error: unknown, context?: ErrorContext): void => {
   // ユーザーへの通知（サイレントモードでない場合）
   if (!context?.silent) {
     const message = extractErrorMessage(error);
-    // TODO: トースト通知コンポーネントを導入後、alertを置き換える
-    // 現時点ではブラウザ標準のalertを使用
-    // 参考: https://github.com/128na/simutrans-portal/issues/433
+    // コンポーネント内の useToast() showError() が推奨される。
+    // ここではユーティリティ関数からのエラーハンドリング対応
+    // 本番環境での改善: Sentry等の外部サービスへの送信
     window.alert(message);
   }
 };

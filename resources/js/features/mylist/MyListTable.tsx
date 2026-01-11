@@ -7,7 +7,8 @@ import Textarea from "@/components/ui/Textarea";
 import Checkbox from "@/components/ui/Checkbox";
 import TextBadge from "@/components/ui/TextBadge";
 import Link from "@/components/ui/Link";
-import { copyToClipboard, showToast } from "@/lib/copyText";
+import { copyToClipboard } from "@/lib/copyText";
+import { useToast } from "@/hooks/useToast";
 import { extractErrorMessage } from "@/lib/errorHandler";
 import type { MyListShow } from "@/types/models";
 
@@ -21,6 +22,7 @@ interface MyListTableProps {
  * マイリスト一覧テーブルコンポーネント
  */
 export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
+  const { showSuccess } = useToast();
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
   const handleCopyPublicUrl = async (list: MyListShow) => {
@@ -29,10 +31,10 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
 
     if (success) {
       setCopiedId(list.id);
-      showToast("公開URLをコピーしました");
+      showSuccess("公開URLをコピーしました");
       setTimeout(() => setCopiedId(null), 2000);
     } else {
-      showToast("コピーに失敗しました");
+      // showError はここでは不要（copyToClipboardが失敗時alert表示）
     }
   };
 
@@ -148,6 +150,7 @@ export const MyListEditModal = ({
   onClose,
   onSuccess,
 }: MyListEditModalProps) => {
+  const { showSuccess } = useToast();
   const [title, setTitle] = useState(list?.title || "");
   const [note, setNote] = useState(list?.note || "");
   const [isPublic, setIsPublic] = useState(list?.is_public || false);
@@ -179,6 +182,9 @@ export const MyListEditModal = ({
         },
       });
 
+      showSuccess(
+        list ? "マイリストを更新しました" : "マイリストを作成しました"
+      );
       onSuccess();
     } catch (err) {
       setError(extractErrorMessage(err));
@@ -282,6 +288,7 @@ export const MyListDeleteModal = ({
   onClose,
   onSuccess,
 }: MyListDeleteModalProps) => {
+  const { showSuccess } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -294,6 +301,7 @@ export const MyListDeleteModal = ({
 
       await axios.delete(`/api/v1/mylist/${list.id}`);
 
+      showSuccess("マイリストを削除しました");
       onSuccess();
     } catch (err) {
       setError(extractErrorMessage(err));

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 import { extractErrorMessage } from "@/lib/errorHandler";
 import { MyListItemsTable } from "../../features/mylist/MyListItemsTable";
 import type { MyListItemShow } from "@/types/models";
@@ -15,6 +15,7 @@ if (app) {
   }
 
   const App = () => {
+    // 成功メッセージは表の操作（メモ保存、アイテム削除、並び替え）から showSuccess() で出力される
     const [items, setItems] = useState<MyListItemShow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -73,8 +74,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="MyListDetailPage">
+    <AppWrapper boundaryName="MyListDetailPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

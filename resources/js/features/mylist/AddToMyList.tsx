@@ -5,6 +5,7 @@ import { Modal } from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
 import { extractErrorMessage } from "@/lib/errorHandler";
+import { useToast } from "@/hooks/useToast";
 import type { MyListShow, MyListCreateRequest } from "@/types/models";
 
 interface AddToMyListButtonProps {
@@ -74,6 +75,7 @@ const AddToMyListModal = ({
   onClose,
   onSuccess,
 }: AddToMyListModalProps) => {
+  const { showSuccess } = useToast();
   const [lists, setLists] = useState<MyListShow[]>([]);
   const [selectedListIds, setSelectedListIds] = useState<Set<number>>(
     new Set()
@@ -133,6 +135,7 @@ const AddToMyListModal = ({
         setLists([...lists, data.data]);
         setNewListTitle("");
         setError(null);
+        showSuccess("マイリストを作成しました");
       } else {
         throw new Error("リストの作成に失敗しました");
       }
@@ -167,6 +170,7 @@ const AddToMyListModal = ({
       });
 
       await Promise.all(promises);
+      showSuccess("マイリストに追加しました");
       onSuccess();
     } catch (err) {
       setError(extractErrorMessage(err));

@@ -2,7 +2,7 @@ import axios from "axios";
 import { createRoot } from "react-dom/client";
 import { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 import { extractErrorMessage } from "@/lib/errorHandler";
 import {
   MyListTable,
@@ -15,6 +15,7 @@ const app = document.getElementById("app-mylist-index");
 
 if (app) {
   const App = () => {
+    // 成功メッセージはモーダル内から showSuccess() で出力される
     const [lists, setLists] = useState<MyListShow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -61,6 +62,7 @@ if (app) {
       setDeletingList(null);
       setIsCreating(false);
       fetchLists();
+      // 成功メッセージはモーダル内から呼び出される
     };
 
     const handleCloseEdit = () => {
@@ -120,8 +122,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="MyListIndexPage">
+    <AppWrapper boundaryName="MyListIndexPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

@@ -75,7 +75,7 @@ if (app) {
     };
 
     return (
-      <div className="v2-page v2-page-lg">
+      <>
         <div className="mb-6">
           <Button onClick={handleCreate} variant="primary" size="lg">
             マイリストを作成
@@ -117,7 +117,7 @@ if (app) {
             onSuccess={handleSuccess}
           />
         )}
-      </div>
+      </>
     );
   };
 

@@ -121,6 +121,8 @@ const PublicMyListPage = ({ mylistSlug }: { mylistSlug: string }) => {
 };
 
 // Reactマウント
+import { AppWrapper } from "../../components/AppWrapper";
+
 const container = document.getElementById("app-public-mylist");
 if (container) {
   const mylistSlug = container.getAttribute("data-mylist-slug");
@@ -128,5 +130,9 @@ if (container) {
     throw new Error("MyList slug is not provided");
   }
   const root = ReactDOM.createRoot(container);
-  root.render(<PublicMyListPage mylistSlug={mylistSlug} />);
+  root.render(
+    <AppWrapper boundaryName="PublicMyListPage">
+      <PublicMyListPage mylistSlug={mylistSlug} />
+    </AppWrapper>
+  );
 }

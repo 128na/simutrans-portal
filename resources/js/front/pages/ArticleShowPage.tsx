@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { ArticleBase } from "../../features/articles/components/ArticleBase";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-article-show");
 
@@ -16,8 +16,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="ArticleShowPage">
+    <AppWrapper boundaryName="ArticleShowPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

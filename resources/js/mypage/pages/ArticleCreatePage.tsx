@@ -4,7 +4,7 @@ import { SelectPostType } from "../../features/articles/components/SelectPostTyp
 import { createArticle } from "../../features/articles/utils/articleUtil";
 import { useArticleEditor } from "../../hooks/useArticleEditor";
 import { ArticleEdit } from "../../features/articles/ArticleEdit";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const el = (id: string) => document.getElementById(id);
 const app = el("app-article-create");
@@ -49,8 +49,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="ArticleCreatePage">
+    <AppWrapper boundaryName="ArticleCreatePage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

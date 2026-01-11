@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { useState } from "react";
 import { TagEdit } from "../../features/tags/TagEdit";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-tag-edit");
 
@@ -15,8 +15,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="TagEditPage">
+    <AppWrapper boundaryName="TagEditPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

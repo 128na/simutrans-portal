@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { SelectableSearch } from "../../components/form/SelectableSearch";
 import { useState } from "react";
-import { ErrorBoundary } from "../../components/ErrorBoundary";
+import { AppWrapper } from "../../components/AppWrapper";
 
 const app = document.getElementById("app-search-users");
 
@@ -30,8 +30,8 @@ if (app) {
   };
 
   createRoot(app).render(
-    <ErrorBoundary name="UserSearchPage">
+    <AppWrapper boundaryName="UserSearchPage">
       <App />
-    </ErrorBoundary>
+    </AppWrapper>
   );
 }

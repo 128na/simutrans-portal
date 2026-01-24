@@ -38,7 +38,7 @@ const DefaultFallback = () => (
  * ```
  */
 export const ErrorBoundary = ({ children, fallback, name }: Props) => {
-  const handleOnError = (error: Error, info: ErrorInfo) => {
+  const handleOnError = (error: unknown, info: ErrorInfo) => {
     handleError(error, {
       component: name || "ErrorBoundary",
       action: info.componentStack?.slice(0, 500) || "render",

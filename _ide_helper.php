@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.47.0.
+ * Generated for Laravel 12.49.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -4598,7 +4598,7 @@ namespace Illuminate\Support\Facades {
          * Retrieve an item from the cache by key, refreshing it in the background if it is stale.
          *
          * @template TCacheValue
-         * @param string $key
+         * @param \BackedEnum|\UnitEnum|string $key
          * @param array{ 0: \DateTimeInterface|\DateInterval|int, 1: \DateTimeInterface|\DateInterval|int } $ttl
          * @param (callable(): TCacheValue) $callback
          * @param array{ seconds?: int, owner?: string }|null $lock
@@ -4616,7 +4616,7 @@ namespace Illuminate\Support\Facades {
          * Execute a callback while holding an atomic lock on a cache mutex to prevent overlapping calls.
          *
          * @template TReturn
-         * @param string $key
+         * @param \BackedEnum|\UnitEnum|string $key
          * @param callable():  TReturn  $callback
          * @param int $lockFor
          * @param int $waitFor
@@ -4803,7 +4803,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Determine if a cached value exists.
          *
-         * @param string $key
+         * @param \BackedEnum|\UnitEnum|string $key
          * @return bool
          * @static
          */
@@ -4843,7 +4843,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Remove an item from the cache.
          *
-         * @param string $key
+         * @param \BackedEnum|\UnitEnum|string $key
          * @return void
          * @static
          */
@@ -12533,6 +12533,20 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Assert if a job was pushed a number of times.
+         *
+         * @param string $job
+         * @param int $times
+         * @return void
+         * @static
+         */
+        public static function assertPushedTimes($job, $times = 1)
+        {
+            /** @var \Illuminate\Support\Testing\Fakes\QueueFake $instance */
+            $instance->assertPushedTimes($job, $times);
+        }
+
+        /**
          * Assert if a job was pushed based on a truth-test callback.
          *
          * @param string $queue
@@ -19052,7 +19066,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Flash a key / value pair to the session.
          *
-         * @param string $key
+         * @param \BackedEnum|\UnitEnum|string $key
          * @param mixed $value
          * @return void
          * @static
@@ -19066,7 +19080,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Flash a key / value pair to the session for immediate use.
          *
-         * @param string $key
+         * @param \BackedEnum|\UnitEnum|string $key
          * @param mixed $value
          * @return void
          * @static
@@ -26284,6 +26298,20 @@ namespace  {
         {
             /** @var \Illuminate\Database\Query\Builder $instance */
             return $instance->selectSub($query, $as);
+        }
+
+        /**
+         * Add a select expression to the query.
+         *
+         * @param \Illuminate\Contracts\Database\Query\Expression $expression
+         * @param string $as
+         * @return \Illuminate\Database\Eloquent\Builder<static>
+         * @static
+         */
+        public static function selectExpression($expression, $as)
+        {
+            /** @var \Illuminate\Database\Query\Builder $instance */
+            return $instance->selectExpression($expression, $as);
         }
 
         /**

@@ -1,25 +1,44 @@
 <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
 <header class="bg-white">
-    <nav aria-label="Global" class="mx-auto flex v2-page-lg items-center justify-between p-6 lg:px-8 border-b border-c-sub/10">
-        <div class="flex lg:flex-1">
-            <a href="/" class="-m-1.5 p-1.5">
-                <span class="sr-only">{{config('app.name')}}</span>
-                <img src="{{asset('v2/logo.svg')}}" alt="" class="h-8 w-auto" />
-            </a>
+    <nav aria-label="Global" class="mx-auto v2-page-lg p-6 lg:px-8 border-b border-c-sub/10">
+        <div class="flex items-center justify-between gap-x-4">
+            <div class="flex lg:flex-1">
+                <a href="/" class="-m-1.5 p-1.5">
+                    <span class="sr-only">{{config('app.name')}}</span>
+                    <img src="{{asset('v2/logo.svg')}}" alt="" class="h-8 w-auto" />
+                </a>
+            </div>
+            <div class="flex items-center gap-x-4">
+                <div class="flex lg:hidden">
+                    <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-c-sub">
+                        <span class="sr-only">Open main menu</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
+                            <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="hidden lg:flex lg:justify-end">
+                    @auth
+                        @php
+                            $avatarUrl = optional(auth()->user()?->profile?->avatar)?->thumbnail
+                                ?? \Illuminate\Support\Facades\Storage::disk('public')->url(\App\Constants\DefaultThumbnail::NO_AVATAR);
+                        @endphp
+                        <a href="{{ route('mypage.index') }}" class="v2-header-menu-item flex items-center gap-2">
+                            <img class="w-6 h-6 rounded-full bg-gray-50" src="{{ $avatarUrl }}" alt="" />
+                            <span>マイページ</span>
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="v2-header-menu-item">ログイン <span aria-hidden="true">&rarr;</span></a>
+                    @endauth
+                </div>
+            </div>
         </div>
-        <div class="flex lg:hidden">
-            <button type="button" command="show-modal" commandfor="mobile-menu" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-c-sub">
-                <span class="sr-only">Open main menu</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" data-slot="icon" aria-hidden="true" class="size-6">
-                    <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </button>
-        </div>
-        <el-popover-group class="hidden lg:flex lg:gap-x-4">
-            <a href="{{route('pak.128japan')}}" class="v2-header-menu-item">pak128.japan</a>
-            <a href="{{route('pak.128')}}" class="v2-header-menu-item">pak128</a>
-            <a href="{{route('pak.64')}}" class="v2-header-menu-item">pak64</a>
+        <div class="hidden lg:flex items-center justify-between pt-4">
+            <el-popover-group class="flex gap-x-4">
+            <a href="{{route('pak.128japan')}}" class="v2-header-menu-item">128.japan</a>
+            <a href="{{route('pak.128')}}" class="v2-header-menu-item">128</a>
+            <a href="{{route('pak.64')}}" class="v2-header-menu-item">64</a>
             <a href="{{route('users.index')}}" class="v2-header-menu-item">ユーザー</a>
             <a href="{{route('categories.index')}}" class="v2-header-menu-item">カテゴリ</a>
             <a href="{{route('tags.index')}}" class="v2-header-menu-item">タグ</a>
@@ -53,7 +72,7 @@
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
                                 <a href="{{route('search')}}" class="block font-semibold">
-                                    検索
+                                    詳細検索
                                     <span class="absolute inset-0"></span>
                                 </a>
                             </div>
@@ -87,20 +106,13 @@
                 </el-popover>
             </div>
 
-        </el-popover-group>
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            @auth
-                @php
-                    $avatarUrl = optional(auth()->user()?->profile?->avatar)?->thumbnail
-                        ?? \Illuminate\Support\Facades\Storage::disk('public')->url(\App\Constants\DefaultThumbnail::NO_AVATAR);
-                @endphp
-                <a href="{{ route('mypage.index') }}" class="v2-header-menu-item flex items-center gap-2">
-                    <img class="w-6 h-6 rounded-full bg-gray-50" src="{{ $avatarUrl }}" alt="" />
-                    <span>マイページ</span>
-                </a>
-            @else
-                <a href="{{ route('login') }}" class="v2-header-menu-item">ログイン <span aria-hidden="true">&rarr;</span></a>
-            @endauth
+            </el-popover-group>
+            <form method="GET" action="{{ route('search') }}" class="flex-1">
+                <div class="flex items-center justify-end gap-x-2">
+                    <input type="search" name="word" placeholder="キーワードを入力" class="flex-1 v2-input max-w-xs" />
+                    <button type="submit" class="v2-button v2-button-md v2-button-primary">検索</button>
+                </div>
+            </form>
         </div>
     </nav>
     <el-dialog>
@@ -122,15 +134,21 @@
                     <div class="mt-6 flow-root">
                         <div class="-my-6 divide-y divide-c-sub/10">
                             <div class="space-y-2 py-6">
-                                <a href="{{route('pak.128japan')}}" class="v2-header-menu-item-sp">pak128.japan</a>
-                                <a href="{{route('pak.128')}}" class="v2-header-menu-item-sp">pak128</a>
-                                <a href="{{route('pak.64')}}" class="v2-header-menu-item-sp">pak64</a>
+                                <form method="GET" action="{{ route('search') }}" class="mb-6">
+                                    <div class="flex items-center justify-end gap-x-2">
+                                        <input type="search" name="word" placeholder="キーワードを入力" class="flex-1 v2-input" />
+                                        <button type="submit" class="v2-button v2-button-md v2-button-primary">検索</button>
+                                    </div>
+                                </form>
+                                <a href="{{route('pak.128japan')}}" class="v2-header-menu-item-sp">128.japan</a>
+                                <a href="{{route('pak.128')}}" class="v2-header-menu-item-sp">128</a>
+                                <a href="{{route('pak.64')}}" class="v2-header-menu-item-sp">64</a>
                                 <a href="{{route('pak.others')}}" class="v2-header-menu-item-sp">他pak</a>
                                 <a href="{{route('users.index')}}" class="v2-header-menu-item-sp">ユーザー一覧</a>
                                 <a href="{{route('categories.index')}}" class="v2-header-menu-item-sp">カテゴリ一覧</a>
                                 <a href="{{route('tags.index')}}" class="v2-header-menu-item-sp">タグ一覧</a>
                                 <a href="{{route('pages')}}" class="v2-header-menu-item-sp">一般記事</a>
-                                <a href="{{route('search')}}" class="v2-header-menu-item-sp">検索</a>
+                                <a href="{{route('search')}}" class="v2-header-menu-item-sp">詳細検索</a>
                                 <a href="{{ route('social') }}" class="v2-header-menu-item-sp">SNS・通知ツール</a>
                                 <a href="{{config('app.support_site_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-c-sub/50">↗</span></a>
                                 <a href="{{config('app.privacy_policy_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">プライバシーポリシー<span class="text-sm text-c-sub/50">↗</span></a>

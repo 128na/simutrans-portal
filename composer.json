@@ -35,6 +35,7 @@
     "filp/whoops": "^2.18.4",
     "icanhazstring/composer-unused": "^0.9.6",
     "larastan/larastan": "^3.9.1",
+    "laravel/boost": "^2.1",
     "laravel/dusk": "^8.3.4",
     "laravel/pint": "^1.27.0",
     "mockery/mockery": "^1.6.12",

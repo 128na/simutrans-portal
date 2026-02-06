@@ -121,6 +121,30 @@ class UserRepository
     }
 
     /**
+     * 前方一致サジェスト用のユーザー一覧を取得
+     *
+     * @return Collection<int,User>
+     */
+    public function getForSuggest(string $prefix, int $limit = 20): Collection
+    {
+        return $this->model->query()
+            ->select(['users.id', 'users.nickname', 'users.name'])
+            ->whereExists(
+                fn ($q) => $q->selectRaw(1)
+                    ->from('articles as a')
+                    ->whereColumn('a.user_id', 'users.id')
+                    ->where('a.status', ArticleStatus::Publish)
+            )
+            ->where(function ($q) use ($prefix): void {
+                $q->where('users.nickname', 'like', $prefix.'%')
+                    ->orWhere('users.name', 'like', $prefix.'%');
+            })
+            ->orderBy('name', 'asc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * 投稿記事を持つユーザー一覧取得（記事件数つき）
      *
      * @return Collection<int,User>

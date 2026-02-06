@@ -10,6 +10,7 @@ use App\Mcp\Tools\GuestArticleSearchOptionsTool;
 use App\Mcp\Tools\GuestArticleSearchTool;
 use App\Mcp\Tools\GuestArticleShowTool;
 use App\Mcp\Tools\GuestLatestArticlesTool;
+use App\Mcp\Tools\GuestSearchSuggestTool;
 use App\Mcp\Tools\GuestTagCategoryAggregateTool;
 use App\Mcp\Tools\GuestUserArticlesTool;
 use App\Models\Article;
@@ -31,6 +32,8 @@ class GuestServerToolsTest extends TestCase
 
     private GuestLatestArticlesTool $latestTool;
 
+    private GuestSearchSuggestTool $suggestTool;
+
     private GuestTagCategoryAggregateTool $aggregateTool;
 
     private GuestUserArticlesTool $userArticlesTool;
@@ -46,6 +49,7 @@ class GuestServerToolsTest extends TestCase
         $this->searchTool = app(GuestArticleSearchTool::class);
         $this->showTool = app(GuestArticleShowTool::class);
         $this->latestTool = app(GuestLatestArticlesTool::class);
+        $this->suggestTool = app(GuestSearchSuggestTool::class);
         $this->aggregateTool = app(GuestTagCategoryAggregateTool::class);
         $this->userArticlesTool = app(GuestUserArticlesTool::class);
     }
@@ -148,7 +152,7 @@ class GuestServerToolsTest extends TestCase
 
         $this->assertArrayHasKey('data', $payload);
         $this->assertNotEmpty($payload['data']);
-        $ids = array_map(static fn(array $item): int => $item['id'], $payload['data']);
+        $ids = array_map(static fn (array $item): int => $item['id'], $payload['data']);
         $this->assertContains($article->id, $ids);
     }
 
@@ -164,15 +168,15 @@ class GuestServerToolsTest extends TestCase
         $tag = Tag::factory()->create(['name' => 'Aggregate Tag']);
         $article->tags()->attach($tag->id);
 
-        $pak = Category::factory()->create([
-            'type' => CategoryType::Pak,
-            'slug' => '128',
-            'order' => 1,
-        ]);
-        $addon = Category::factory()->create([
+        $pak = Category::where('type', CategoryType::Pak)
+            ->where('slug', '128')
+            ->firstOrFail();
+        $addon = Category::firstOrCreate([
             'type' => CategoryType::Addon,
             'slug' => 'building',
+        ], [
             'order' => 1,
+            'need_admin' => false,
         ]);
         $article->categories()->attach([$pak->id, $addon->id]);
 
@@ -183,7 +187,7 @@ class GuestServerToolsTest extends TestCase
         $this->assertNotEmpty($payload['tags']);
         $this->assertNotEmpty($payload['pak_addon_categories']);
 
-        $tagIds = array_map(static fn(array $item): int => $item['id'], $payload['tags']);
+        $tagIds = array_map(static fn (array $item): int => $item['id'], $payload['tags']);
         $this->assertContains($tag->id, $tagIds);
 
         $pakEntry = collect($payload['pak_addon_categories'])
@@ -216,8 +220,45 @@ class GuestServerToolsTest extends TestCase
         $this->assertArrayHasKey('data', $payload['articles']);
         $this->assertNotEmpty($payload['articles']['data']);
 
-        $ids = array_map(static fn(array $item): int => $item['id'], $payload['articles']['data']);
+        $ids = array_map(static fn (array $item): int => $item['id'], $payload['articles']['data']);
         $this->assertContains($article->id, $ids);
+    }
+
+    public function test_search_suggest_tool_returns_tag_suggestions(): void
+    {
+        Tag::factory()->create(['name' => 'AlphaTag']);
+        Tag::factory()->create(['name' => 'BetaTag']);
+
+        $payload = $this->decodeResponse($this->suggestTool->handle(new Request([
+            'type' => 'tag',
+            'keyword' => 'Al',
+            'limit' => 10,
+        ])));
+
+        $this->assertSame('tag', $payload['type']);
+        $this->assertNotEmpty($payload['items']);
+        $names = array_map(static fn (array $item): string => $item['name'], $payload['items']);
+        $this->assertContains('AlphaTag', $names);
+        $this->assertNotContains('BetaTag', $names);
+    }
+
+    public function test_search_suggest_tool_returns_user_suggestions(): void
+    {
+        $user = User::factory()->create(['nickname' => 'prefix-user', 'name' => 'Prefix User']);
+        Article::factory()->for($user)->addonPost()->publish()->create();
+        User::factory()->create(['nickname' => 'other-user', 'name' => 'Other User']);
+
+        $payload = $this->decodeResponse($this->suggestTool->handle(new Request([
+            'type' => 'user',
+            'keyword' => 'Pre',
+            'limit' => 10,
+        ])));
+
+        $this->assertSame('user', $payload['type']);
+        $this->assertNotEmpty($payload['items']);
+        $nicknames = array_map(static fn (array $item): string => $item['nickname'], $payload['items']);
+        $this->assertContains('prefix-user', $nicknames);
+        $this->assertNotContains('other-user', $nicknames);
     }
 
     /**

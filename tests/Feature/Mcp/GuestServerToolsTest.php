@@ -10,6 +10,7 @@ use App\Mcp\Tools\GuestArticleSearchOptionsTool;
 use App\Mcp\Tools\GuestArticleSearchTool;
 use App\Mcp\Tools\GuestArticleShowTool;
 use App\Mcp\Tools\GuestLatestArticlesTool;
+use App\Mcp\Tools\GuestTagCategoryAggregateTool;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -29,6 +30,8 @@ class GuestServerToolsTest extends TestCase
 
     private GuestLatestArticlesTool $latestTool;
 
+    private GuestTagCategoryAggregateTool $aggregateTool;
+
     #[\Override]
     protected function setUp(): void
     {
@@ -40,6 +43,7 @@ class GuestServerToolsTest extends TestCase
         $this->searchTool = app(GuestArticleSearchTool::class);
         $this->showTool = app(GuestArticleShowTool::class);
         $this->latestTool = app(GuestLatestArticlesTool::class);
+        $this->aggregateTool = app(GuestTagCategoryAggregateTool::class);
     }
 
     public function test_options_tool_returns_expected_shape(): void
@@ -142,6 +146,50 @@ class GuestServerToolsTest extends TestCase
         $this->assertNotEmpty($payload['data']);
         $ids = array_map(static fn (array $item): int => $item['id'], $payload['data']);
         $this->assertContains($article->id, $ids);
+    }
+
+    public function test_tag_category_aggregate_tool_returns_counts(): void
+    {
+        $user = User::factory()->create();
+        $article = Article::factory()
+            ->for($user)
+            ->addonPost()
+            ->publish()
+            ->create(['slug' => 'tag-category-aggregate']);
+
+        $tag = Tag::factory()->create(['name' => 'Aggregate Tag']);
+        $article->tags()->attach($tag->id);
+
+        $pak = Category::factory()->create([
+            'type' => CategoryType::Pak,
+            'slug' => '128',
+            'order' => 1,
+        ]);
+        $addon = Category::factory()->create([
+            'type' => CategoryType::Addon,
+            'slug' => 'building',
+            'order' => 1,
+        ]);
+        $article->categories()->attach([$pak->id, $addon->id]);
+
+        $payload = $this->decodeResponse($this->aggregateTool->handle(new Request));
+
+        $this->assertArrayHasKey('tags', $payload);
+        $this->assertArrayHasKey('pak_addon_categories', $payload);
+        $this->assertNotEmpty($payload['tags']);
+        $this->assertNotEmpty($payload['pak_addon_categories']);
+
+        $tagIds = array_map(static fn (array $item): int => $item['id'], $payload['tags']);
+        $this->assertContains($tag->id, $tagIds);
+
+        $pakEntry = collect($payload['pak_addon_categories'])
+            ->firstWhere('pak_slug', '128');
+        $this->assertNotNull($pakEntry);
+
+        $addonEntry = collect($pakEntry['addons'])
+            ->firstWhere('addon_slug', 'building');
+        $this->assertNotNull($addonEntry);
+        $this->assertSame(1, $addonEntry['article_count']);
     }
 
     /**

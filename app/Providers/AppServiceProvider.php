@@ -46,24 +46,26 @@ class AppServiceProvider extends ServiceProvider
     private function registerSlowQueryLogging(): void
     {
         DB::listen(function ($query): void {
-            if ($query->time > 1000) {
-                Log::channel('slowquery')->warning('over 1sec', [
-                    'sql' => $query->sql,
-                    'bindings' => $query->bindings,
-                    'time' => $query->time,
-                ]);
+            if (str_starts_with($query->sql, 'select')) {
+                if ($query->time > 1000) {
+                    Log::channel('slowquery')->warning('over 1sec', [
+                        'sql' => $query->sql,
+                        'bindings' => $query->bindings,
+                        'time' => $query->time,
+                    ]);
 
-                return;
-            }
+                    return;
+                }
 
-            if ($query->time > 100) {
-                Log::channel('slowquery')->info('over 100ms', [
-                    'sql' => $query->sql,
-                    'bindings' => $query->bindings,
-                    'time' => $query->time,
-                ]);
+                if ($query->time > 100) {
+                    Log::channel('slowquery')->info('over 100ms', [
+                        'sql' => $query->sql,
+                        'bindings' => $query->bindings,
+                        'time' => $query->time,
+                    ]);
 
-                return;
+                    return;
+                }
             }
         });
     }

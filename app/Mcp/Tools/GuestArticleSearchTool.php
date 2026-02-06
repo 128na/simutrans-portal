@@ -1,0 +1,143 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Mcp\Tools;
+
+use App\Enums\ArticlePostType;
+use App\Http\Resources\Frontend\ArticleList;
+use App\Repositories\ArticleRepository;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+
+#[IsReadOnly]
+class GuestArticleSearchTool extends Tool
+{
+    /**
+     * The tool's description.
+     */
+    protected string $description = <<<'MARKDOWN'
+        未ログインで利用できる記事検索ツールです。
+    MARKDOWN;
+
+    public function __construct(private ArticleRepository $articleRepository) {}
+
+    /**
+     * Handle the tool request.
+     */
+    public function handle(Request $request): Response
+    {
+        $validated = $request->validate([
+            'word' => ['nullable', 'string', 'max:200'],
+            'userIds' => ['nullable', 'array'],
+            'userIds.*' => ['integer'],
+            'categoryIds' => ['nullable', 'array'],
+            'categoryIds.*' => ['integer'],
+            'tagIds' => ['nullable', 'array'],
+            'tagIds.*' => ['integer'],
+            'postTypes' => ['nullable', 'array'],
+            'postTypes.*' => ['string', Rule::in($this->postTypeValues())],
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+        ]);
+
+        $limit = (int) ($validated['limit'] ?? 24);
+
+        $condition = Arr::only($validated, [
+            'word',
+            'userIds',
+            'categoryIds',
+            'tagIds',
+            'postTypes',
+        ]);
+        $condition = $this->normalizeCondition($condition);
+
+        $paginator = $this->articleRepository->search($condition, $limit);
+        $httpRequest = app(HttpRequest::class);
+        $payload = ArticleList::collection($paginator)
+            ->response($httpRequest)
+            ->getData(true);
+
+        return Response::json($payload);
+    }
+
+    /**
+     * Get the tool's input schema.
+     *
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
+     */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'word' => $schema->string()
+                ->description('検索キーワード。スペース区切りでAND検索。')
+                ->nullable(),
+            'userIds' => $schema->array()
+                ->items($schema->integer())
+                ->description('投稿ユーザーIDの配列（OR検索）。')
+                ->nullable(),
+            'categoryIds' => $schema->array()
+                ->items($schema->integer())
+                ->description('カテゴリIDの配列（AND検索）。')
+                ->nullable(),
+            'tagIds' => $schema->array()
+                ->items($schema->integer())
+                ->description('タグIDの配列（OR検索）。')
+                ->nullable(),
+            'postTypes' => $schema->array()
+                ->items($schema->string()->enum($this->postTypeValues()))
+                ->description('投稿形式の配列（OR検索）。')
+                ->nullable(),
+            'limit' => $schema->integer()
+                ->min(1)
+                ->max(100)
+                ->default(24)
+                ->description('1ページあたりの件数。'),
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $condition
+     * @return array<string, mixed>
+     */
+    private function normalizeCondition(array $condition): array
+    {
+        if (array_key_exists('word', $condition)) {
+            $word = trim((string) $condition['word']);
+            if ($word === '') {
+                unset($condition['word']);
+            } else {
+                $condition['word'] = $word;
+            }
+        }
+
+        foreach (['userIds', 'categoryIds', 'tagIds', 'postTypes'] as $key) {
+            if (! array_key_exists($key, $condition)) {
+                continue;
+            }
+
+            $value = $condition[$key];
+            if (! is_array($value) || $value === []) {
+                unset($condition[$key]);
+            }
+        }
+
+        return $condition;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function postTypeValues(): array
+    {
+        return array_map(
+            static fn(ArticlePostType $postType): string => $postType->value,
+            ArticlePostType::cases()
+        );
+    }
+}

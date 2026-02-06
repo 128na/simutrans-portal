@@ -152,7 +152,7 @@ class GuestServerToolsTest extends TestCase
 
         $this->assertArrayHasKey('data', $payload);
         $this->assertNotEmpty($payload['data']);
-        $ids = array_map(static fn (array $item): int => $item['id'], $payload['data']);
+        $ids = array_map(static fn(array $item): int => $item['id'], $payload['data']);
         $this->assertContains($article->id, $ids);
     }
 
@@ -187,7 +187,7 @@ class GuestServerToolsTest extends TestCase
         $this->assertNotEmpty($payload['tags']);
         $this->assertNotEmpty($payload['pak_addon_categories']);
 
-        $tagIds = array_map(static fn (array $item): int => $item['id'], $payload['tags']);
+        $tagIds = array_map(static fn(array $item): int => $item['id'], $payload['tags']);
         $this->assertContains($tag->id, $tagIds);
 
         $pakEntry = collect($payload['pak_addon_categories'])
@@ -220,7 +220,7 @@ class GuestServerToolsTest extends TestCase
         $this->assertArrayHasKey('data', $payload['articles']);
         $this->assertNotEmpty($payload['articles']['data']);
 
-        $ids = array_map(static fn (array $item): int => $item['id'], $payload['articles']['data']);
+        $ids = array_map(static fn(array $item): int => $item['id'], $payload['articles']['data']);
         $this->assertContains($article->id, $ids);
     }
 
@@ -237,7 +237,7 @@ class GuestServerToolsTest extends TestCase
 
         $this->assertSame('tag', $payload['type']);
         $this->assertNotEmpty($payload['items']);
-        $names = array_map(static fn (array $item): string => $item['name'], $payload['items']);
+        $names = array_map(static fn(array $item): string => $item['name'], $payload['items']);
         $this->assertContains('AlphaTag', $names);
         $this->assertNotContains('BetaTag', $names);
     }
@@ -256,7 +256,7 @@ class GuestServerToolsTest extends TestCase
 
         $this->assertSame('user', $payload['type']);
         $this->assertNotEmpty($payload['items']);
-        $nicknames = array_map(static fn (array $item): string => $item['nickname'], $payload['items']);
+        $nicknames = array_map(static fn(array $item): string => $item['nickname'], $payload['items']);
         $this->assertContains('prefix-user', $nicknames);
         $this->assertNotContains('other-user', $nicknames);
     }

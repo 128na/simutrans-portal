@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature\Mcp;
 
 use App\Enums\ArticlePostType;
+use App\Enums\CategoryType;
 use App\Mcp\Tools\GuestArticleSearchOptionsTool;
 use App\Mcp\Tools\GuestArticleSearchTool;
 use App\Mcp\Tools\GuestArticleShowTool;
+use App\Mcp\Tools\GuestLatestArticlesTool;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request as HttpRequest;
@@ -24,6 +27,8 @@ class GuestServerToolsTest extends TestCase
 
     private GuestArticleShowTool $showTool;
 
+    private GuestLatestArticlesTool $latestTool;
+
     #[\Override]
     protected function setUp(): void
     {
@@ -34,6 +39,7 @@ class GuestServerToolsTest extends TestCase
         $this->optionsTool = app(GuestArticleSearchOptionsTool::class);
         $this->searchTool = app(GuestArticleSearchTool::class);
         $this->showTool = app(GuestArticleShowTool::class);
+        $this->latestTool = app(GuestLatestArticlesTool::class);
     }
 
     public function test_options_tool_returns_expected_shape(): void
@@ -111,6 +117,31 @@ class GuestServerToolsTest extends TestCase
         $this->assertIsArray($payload['data']['user']);
         $this->assertArrayNotHasKey('email', $payload['data']['user']);
         $this->assertArrayNotHasKey('password', $payload['data']['user']);
+    }
+
+    public function test_latest_tool_returns_pak_articles(): void
+    {
+        $user = User::factory()->create();
+        $article = Article::factory()
+            ->for($user)
+            ->addonPost()
+            ->publish()
+            ->create(['slug' => 'latest-pack']);
+
+        $pak = Category::where('type', CategoryType::Pak)
+            ->where('slug', '128')
+            ->firstOrFail();
+        $article->categories()->save($pak);
+
+        $payload = $this->decodeResponse($this->latestTool->handle(new Request([
+            'pak' => '128',
+            'limit' => 10,
+        ])));
+
+        $this->assertArrayHasKey('data', $payload);
+        $this->assertNotEmpty($payload['data']);
+        $ids = array_map(static fn (array $item): int => $item['id'], $payload['data']);
+        $this->assertContains($article->id, $ids);
     }
 
     /**

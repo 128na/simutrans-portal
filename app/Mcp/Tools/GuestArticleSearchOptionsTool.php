@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Actions\FrontArticle\SearchAction;
 use App\Enums\ArticlePostType;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use App\Repositories\CategoryRepository;
-use App\Repositories\TagRepository;
-use App\Repositories\UserRepository;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -27,18 +25,16 @@ class GuestArticleSearchOptionsTool extends Tool
         未ログインで記事検索に使う選択肢（カテゴリ・タグ・ユーザー・投稿形式）を取得します。
     MARKDOWN;
 
-    public function __construct(
-        private CategoryRepository $categoryRepository,
-        private TagRepository $tagRepository,
-        private UserRepository $userRepository,
-    ) {}
+    public function __construct(private SearchAction $searchAction) {}
 
     /**
      * Handle the tool request.
      */
     public function handle(Request $request): Response
     {
-        $categories = $this->categoryRepository->getForSearch()
+        $options = $this->searchAction->options();
+
+        $categories = $options['categories']
             ->map(fn (Category $category): array => [
                 'id' => $category->id,
                 'type' => $category->type->value,
@@ -47,14 +43,14 @@ class GuestArticleSearchOptionsTool extends Tool
             ])
             ->values();
 
-        $tags = $this->tagRepository->getForSearch()
+        $tags = $options['tags']
             ->map(fn (Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ])
             ->values();
 
-        $users = $this->userRepository->getForSearch()
+        $users = $options['users']
             ->map(fn (User $user): array => [
                 'id' => $user->id,
                 'name' => $user->name,

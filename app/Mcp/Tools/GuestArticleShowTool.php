@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Actions\FrontArticle\ShowAction;
 use App\Http\Resources\Frontend\ArticleShow;
-use App\Repositories\ArticleRepository;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Http\Request as HttpRequest;
 use Laravel\Mcp\Request;
@@ -23,7 +23,7 @@ class GuestArticleShowTool extends Tool
         未ログインで公開記事の詳細を取得します。
     MARKDOWN;
 
-    public function __construct(private ArticleRepository $articleRepository) {}
+    public function __construct(private ShowAction $showAction) {}
 
     /**
      * Handle the tool request.
@@ -35,7 +35,7 @@ class GuestArticleShowTool extends Tool
             'articleSlug' => ['required', 'string', 'max:200'],
         ]);
 
-        $article = $this->articleRepository->first(
+        $article = ($this->showAction)(
             $validated['userIdOrNickname'],
             $validated['articleSlug']
         );

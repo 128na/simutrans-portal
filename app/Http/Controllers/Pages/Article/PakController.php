@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Pages\Article;
 
+use App\Actions\FrontArticle\LatestAction;
 use App\Http\Resources\Frontend\ArticleList;
-use App\Repositories\ArticleRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
@@ -13,7 +13,7 @@ use Illuminate\Routing\Controller;
 class PakController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
+        private readonly LatestAction $latestAction,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
@@ -21,7 +21,7 @@ class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => '128-japan',
-            'articles' => ArticleList::collection($this->articleRepository->paginateLatest('128-japan')),
+            'articles' => ArticleList::collection($this->latestAction->byPak('128-japan')),
             'meta' => $this->metaOgpService->frontPak('128-japan'),
         ]);
     }
@@ -30,7 +30,7 @@ class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => '128',
-            'articles' => ArticleList::collection($this->articleRepository->paginateLatest('128')),
+            'articles' => ArticleList::collection($this->latestAction->byPak('128')),
             'meta' => $this->metaOgpService->frontPak('128'),
         ]);
     }
@@ -39,7 +39,7 @@ class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => '64',
-            'articles' => ArticleList::collection($this->articleRepository->paginateLatest('64')),
+            'articles' => ArticleList::collection($this->latestAction->byPak('64')),
             'meta' => $this->metaOgpService->frontPak('64'),
         ]);
     }
@@ -48,7 +48,7 @@ class PakController extends Controller
     {
         return view('pages.pak.index', [
             'pak' => 'other-pak',
-            'articles' => ArticleList::collection($this->articleRepository->getLatestOther()),
+            'articles' => ArticleList::collection($this->latestAction->others()),
             'meta' => $this->metaOgpService->frontPak('others'),
         ]);
     }

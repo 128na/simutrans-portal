@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Actions\FrontArticle\SearchAction;
 use App\Enums\ArticlePostType;
 use App\Http\Resources\Frontend\ArticleList;
-use App\Repositories\ArticleRepository;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Arr;
@@ -26,7 +26,7 @@ class GuestArticleSearchTool extends Tool
         未ログインで利用できる記事検索ツールです。
     MARKDOWN;
 
-    public function __construct(private ArticleRepository $articleRepository) {}
+    public function __construct(private SearchAction $searchAction) {}
 
     /**
      * Handle the tool request.
@@ -55,9 +55,7 @@ class GuestArticleSearchTool extends Tool
             'tagIds',
             'postTypes',
         ]);
-        $condition = $this->normalizeCondition($condition);
-
-        $paginator = $this->articleRepository->search($condition, $limit);
+        $paginator = $this->searchAction->search($condition, $limit);
         $httpRequest = app(HttpRequest::class);
         $payload = ArticleList::collection($paginator)
             ->response($httpRequest)
@@ -102,41 +100,12 @@ class GuestArticleSearchTool extends Tool
     }
 
     /**
-     * @param  array<string, mixed>  $condition
-     * @return array<string, mixed>
-     */
-    private function normalizeCondition(array $condition): array
-    {
-        if (array_key_exists('word', $condition)) {
-            $word = trim((string) $condition['word']);
-            if ($word === '') {
-                unset($condition['word']);
-            } else {
-                $condition['word'] = $word;
-            }
-        }
-
-        foreach (['userIds', 'categoryIds', 'tagIds', 'postTypes'] as $key) {
-            if (! array_key_exists($key, $condition)) {
-                continue;
-            }
-
-            $value = $condition[$key];
-            if (! is_array($value) || $value === []) {
-                unset($condition[$key]);
-            }
-        }
-
-        return $condition;
-    }
-
-    /**
      * @return array<int, string>
      */
     private function postTypeValues(): array
     {
         return array_map(
-            static fn(ArticlePostType $postType): string => $postType->value,
+            static fn (ArticlePostType $postType): string => $postType->value,
             ArticlePostType::cases()
         );
     }

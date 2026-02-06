@@ -11,6 +11,7 @@ use App\Mcp\Tools\GuestArticleSearchTool;
 use App\Mcp\Tools\GuestArticleShowTool;
 use App\Mcp\Tools\GuestLatestArticlesTool;
 use App\Mcp\Tools\GuestTagCategoryAggregateTool;
+use App\Mcp\Tools\GuestUserArticlesTool;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
@@ -32,6 +33,8 @@ class GuestServerToolsTest extends TestCase
 
     private GuestTagCategoryAggregateTool $aggregateTool;
 
+    private GuestUserArticlesTool $userArticlesTool;
+
     #[\Override]
     protected function setUp(): void
     {
@@ -44,6 +47,7 @@ class GuestServerToolsTest extends TestCase
         $this->showTool = app(GuestArticleShowTool::class);
         $this->latestTool = app(GuestLatestArticlesTool::class);
         $this->aggregateTool = app(GuestTagCategoryAggregateTool::class);
+        $this->userArticlesTool = app(GuestUserArticlesTool::class);
     }
 
     public function test_options_tool_returns_expected_shape(): void
@@ -144,7 +148,7 @@ class GuestServerToolsTest extends TestCase
 
         $this->assertArrayHasKey('data', $payload);
         $this->assertNotEmpty($payload['data']);
-        $ids = array_map(static fn (array $item): int => $item['id'], $payload['data']);
+        $ids = array_map(static fn(array $item): int => $item['id'], $payload['data']);
         $this->assertContains($article->id, $ids);
     }
 
@@ -179,7 +183,7 @@ class GuestServerToolsTest extends TestCase
         $this->assertNotEmpty($payload['tags']);
         $this->assertNotEmpty($payload['pak_addon_categories']);
 
-        $tagIds = array_map(static fn (array $item): int => $item['id'], $payload['tags']);
+        $tagIds = array_map(static fn(array $item): int => $item['id'], $payload['tags']);
         $this->assertContains($tag->id, $tagIds);
 
         $pakEntry = collect($payload['pak_addon_categories'])
@@ -190,6 +194,30 @@ class GuestServerToolsTest extends TestCase
             ->firstWhere('addon_slug', 'building');
         $this->assertNotNull($addonEntry);
         $this->assertSame(1, $addonEntry['article_count']);
+    }
+
+    public function test_user_articles_tool_returns_user_articles(): void
+    {
+        $user = User::factory()->create(['nickname' => 'guest-user']);
+        $article = Article::factory()
+            ->for($user)
+            ->addonPost()
+            ->publish()
+            ->create(['slug' => 'user-articles']);
+
+        $payload = $this->decodeResponse($this->userArticlesTool->handle(new Request([
+            'userIdOrNickname' => 'guest-user',
+            'limit' => 10,
+        ])));
+
+        $this->assertArrayHasKey('user', $payload);
+        $this->assertArrayHasKey('articles', $payload);
+        $this->assertSame($user->id, $payload['user']['id']);
+        $this->assertArrayHasKey('data', $payload['articles']);
+        $this->assertNotEmpty($payload['articles']['data']);
+
+        $ids = array_map(static fn(array $item): int => $item['id'], $payload['articles']['data']);
+        $this->assertContains($article->id, $ids);
     }
 
     /**

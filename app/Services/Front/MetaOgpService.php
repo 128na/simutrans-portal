@@ -154,7 +154,7 @@ class MetaOgpService
     public function frontSocial(): array
     {
         return [
-            'title' => 'SNS・通知ツール'.' - '.Config::string('app.name'),
+            'title' => '各種ツール'.' - '.Config::string('app.name'),
             'description' => '記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。',
         ];
     }

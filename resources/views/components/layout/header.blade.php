@@ -80,7 +80,7 @@
                         <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
                             <div class="flex-auto">
                                 <a href="{{ route('social') }}" class="block font-semibold">
-                                    SNS・通知ツール
+                                    各種ツール
                                     <span class="absolute inset-0"></span>
                                 </a>
                             </div>
@@ -149,7 +149,7 @@
                                 <a href="{{route('tags.index')}}" class="v2-header-menu-item-sp">タグ一覧</a>
                                 <a href="{{route('pages')}}" class="v2-header-menu-item-sp">一般記事</a>
                                 <a href="{{route('search')}}" class="v2-header-menu-item-sp">詳細検索</a>
-                                <a href="{{ route('social') }}" class="v2-header-menu-item-sp">SNS・通知ツール</a>
+                                <a href="{{ route('social') }}" class="v2-header-menu-item-sp">各種ツール</a>
                                 <a href="{{config('app.support_site_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-c-sub/50">↗</span></a>
                                 <a href="{{config('app.privacy_policy_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">プライバシーポリシー<span class="text-sm text-c-sub/50">↗</span></a>
                             </div>

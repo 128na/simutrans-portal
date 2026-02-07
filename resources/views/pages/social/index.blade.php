@@ -5,7 +5,7 @@
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
-        <h2 class="v2-text-h1 mb-4">SNS・通知ツール</h2>
+        <h2 class="v2-text-h1 mb-4">各種ツール</h2>
         <p class="v2-page-text-sub">記事投稿や更新通知を受け取ることができるSNSアカウントやツールです。</p>
     </div>
     <div class="v2-page-content-area-lg">
@@ -72,6 +72,40 @@
                 RSSフィーダーやSlackなど各種ツールと連携させると新着情報が入手できます。
             </div>
         </div>
+
+        <div>
+            <h4 class="v2-text-h3 mb-4">API</h4>
+            <div class="text-c-sub">
+                投稿記事などの情報を取得するためのAPIを提供しています。（ユーザー登録不要）<br>
+                詳細はこちら @include('components.ui.link', ['url' => 'https://simutrans-intro.notion.site/API-2cbb6813417b4b2f80c27392b4d6b3d2', 'title' => 'APIドキュメント'])
+
+            </div>
+        </div>
+
+        <div>
+            <h4 class="v2-text-h3 mb-4">MCPサーバー</h4>
+            <div class="text-c-sub">
+                MCP対応ツール向けに投稿記事などの情報を取得するためのサーバーを提供しています。（ユーザー登録不要）<br>
+                @include('components.ui.link', ['url' => url('/mcp')]) をVSCodeやClaudeなどの各種ツールに登録して利用可能です。
+
+
+            <div class="markdown-body">
+                <pre><code>{
+	"servers": {
+		"SimutransAddonPortal": {
+			"url": "http://simutrans-portal.128-bit.net/mcp",
+			"type": "http"
+		}
+	}
+}</code></pre>
+                @include('components.ui.link', ['url' => 'https://code.visualstudio.com/docs/copilot/customization/mcp-servers'])
+
+                </code>
+                <pre><code>claude mcp add --transport http SimutransAddonPortal http://simutrans-portal.128-bit.net/mcp</code></pre>
+                @include('components.ui.link', ['url' => 'https://platform.claude.com/docs/ja/agents-and-tools/mcp-connector'])
+            </div>
+        </div>
+</div>
 
         <div>
             <h4 class="v2-text-h3 mb-4">その他開発情報など</h4>

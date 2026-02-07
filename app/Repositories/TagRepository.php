@@ -29,6 +29,21 @@ class TagRepository
     }
 
     /**
+     * 前方一致サジェスト用のタグ一覧を取得する
+     *
+     * @return Collection<int,Tag>
+     */
+    public function getForSuggest(string $prefix, int $limit = 20): Collection
+    {
+        return $this->model->query()
+            ->select(['tags.id', 'tags.name'])
+            ->where('name', 'like', $prefix.'%')
+            ->orderBy('name', 'asc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * 編集用のタグ一覧を取得する
      *
      * @return Collection<int,Tag>

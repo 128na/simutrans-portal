@@ -34,6 +34,18 @@ class CategoryRepository
     }
 
     /**
+     * @param array<int,string> $slugs
+     * @return Collection<int,Category>
+     */
+    public function getByExcludeTypeSlug(CategoryType $categoryType, array $slugs): Collection
+    {
+        return $this->model->query()
+            ->where('type', $categoryType->value)
+            ->whereNotIn('slug', $slugs)
+            ->get();
+    }
+
+    /**
      * @return SupportCollection<string,SupportCollection<int,\stdClass>>
      */
     public function getForPakAddonList(): SupportCollection

@@ -12,6 +12,9 @@
         <p class="v2-page-text-sub">
             @include('pages.pak.description', ['pak' => $pak])
         </p>
+        <div>
+            @include('components.ui.link', ['url' => route('search', ['categoryIds' => $categoryIds]), 'title' => 'さらに検索条件を追加する'])
+        </div>
     </div>
     <div id="app-article-list">読み込み中...</div>
     <div class="mt-10 v2-page-pagination-area">

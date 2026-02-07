@@ -33,52 +33,14 @@ class GetTopPageArticlesTest extends TestCase
             $this->createAnnounce($this->user);
         }
 
-        // pak128-japan記事を5件作成
-        for ($i = 0; $i < 5; $i++) {
-            $article = $this->createAddonIntroduction($this->user);
-            $category = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
-            $article->categories()->save($category);
-        }
-
-        // pak128記事を5件作成
-        for ($i = 0; $i < 5; $i++) {
-            $article = $this->createAddonIntroduction($this->user);
-            $category = Category::where('type', CategoryType::Pak)->where('slug', '128')->firstOrFail();
-            $article->categories()->save($category);
-        }
-
-        // pak64記事を5件作成
-        for ($i = 0; $i < 5; $i++) {
-            $article = $this->createAddonIntroduction($this->user);
-            $category = Category::where('type', CategoryType::Pak)->where('slug', '64')->firstOrFail();
-            $article->categories()->save($category);
-        }
-
-        // 一般記事を5件作成（announce以外）
-        for ($i = 0; $i < 5; $i++) {
-            $this->createPage($this->user);
-        }
-
         $result = $this->articleRepository->getTopPageArticles();
 
         $this->assertIsArray($result);
         $this->assertArrayHasKey('announces', $result);
-        $this->assertArrayHasKey('pak128Japan', $result);
-        $this->assertArrayHasKey('pak128', $result);
-        $this->assertArrayHasKey('pak64', $result);
-        $this->assertArrayHasKey('pages', $result);
 
         $this->assertInstanceOf(Collection::class, $result['announces']);
-        $this->assertInstanceOf(Collection::class, $result['pak128Japan']);
-        $this->assertInstanceOf(Collection::class, $result['pak128']);
-        $this->assertInstanceOf(Collection::class, $result['pak64']);
-        $this->assertInstanceOf(Collection::class, $result['pages']);
 
         $this->assertCount(3, $result['announces'], 'アナウンス記事が3件取得できること');
-        $this->assertCount(5, $result['pak128Japan'], 'pak128-japan記事が5件取得できること');
-        $this->assertCount(5, $result['pak128'], 'pak128記事が5件取得できること');
-        $this->assertCount(5, $result['pak64'], 'pak64記事が5件取得できること');
-        $this->assertCount(5, $result['pages'], '一般記事が5件取得できること');
     }
 
     public function testカスタム件数(): void
@@ -88,21 +50,10 @@ class GetTopPageArticlesTest extends TestCase
             $this->createAnnounce($this->user);
         }
 
-        // pak128-japan記事を10件作成
-        for ($i = 0; $i < 10; $i++) {
-            $article = $this->createAddonIntroduction($this->user);
-            $category = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
-            $article->categories()->save($category);
-        }
-
         // カスタム件数でテスト
-        $result = $this->articleRepository->getTopPageArticles(
-            announcesLimit: 2,
-            pak128JapanLimit: 3
-        );
+        $result = $this->articleRepository->getTopPageArticles(announcesLimit: 2);
 
         $this->assertCount(2, $result['announces'], 'アナウンス記事が指定した2件取得できること');
-        $this->assertCount(3, $result['pak128Japan'], 'pak128-japan記事が指定した3件取得できること');
     }
 
     public function test削除済みユーザーの記事は取得されない(): void
@@ -156,10 +107,6 @@ class GetTopPageArticlesTest extends TestCase
     {
         $this->createAnnounce($this->user);
 
-        $article = $this->createAddonIntroduction($this->user);
-        $category = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
-        $article->categories()->save($category);
-
         $result = $this->articleRepository->getTopPageArticles();
 
         $this->assertNotEmpty($result['announces']);
@@ -167,11 +114,5 @@ class GetTopPageArticlesTest extends TestCase
         $this->assertNotNull($firstAnnounce);
         /** @phpstan-ignore-next-line */
         $this->assertEquals('announces', $firstAnnounce->article_type);
-
-        $this->assertNotEmpty($result['pak128Japan']);
-        $firstPak128Japan = $result['pak128Japan']->first();
-        $this->assertNotNull($firstPak128Japan);
-        /** @phpstan-ignore-next-line */
-        $this->assertEquals('pak128Japan', $firstPak128Japan->article_type);
     }
 }

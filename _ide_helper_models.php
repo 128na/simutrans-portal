@@ -378,6 +378,8 @@ namespace App\Models{
  * @property string|null $invitation_code 紹介用コード
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
  * @property-read int|null $articles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Client> $clients
+ * @property-read int|null $clients_count
  * @property-read User|null $invited
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
  * @property-read int|null $invites_count
@@ -389,9 +391,13 @@ namespace App\Models{
  * @property-read int|null $my_attachments_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Client> $oauthApps
+ * @property-read int|null $oauth_apps_count
  * @property-read \App\Models\User\Profile|null $profile
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
  * @property-read int|null $redirects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\Token> $tokens
+ * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User admin()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()

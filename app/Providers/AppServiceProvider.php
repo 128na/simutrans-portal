@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
         Model::shouldBeStrict(! App::isProduction());
+        Passport::authorizationView(static fn (array $parameters) => response()->view('mcp.authorize', $parameters));
         $this->registerMarkdownBladeDirective();
         $this->registerSlowQueryLogging();
     }

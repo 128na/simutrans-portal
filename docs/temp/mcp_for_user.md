@@ -37,12 +37,13 @@
 - MCP用の認可/トークン発行エンドポイントを用意
 - MCPクライアント側からはアクセストークンをAuthorizationヘッダで送信
 - MCP側はトークン検証しユーザーを確定
+- MCP OAuthルートを利用し、認可画面は `mcp.authorize` を使う
 
 ### 3. ツール: 自身の記事一覧
 
 - Tool名案: user-my-articles-tool
-- 入力: limit, page (必要なら)
-- 出力: ArticleList 相当を再利用（公開/下書きを含める）
+- 入力: なし
+- 出力: マイページ記事一覧（公開/下書きを含める）
 
 ### 4. テスト
 
@@ -51,12 +52,27 @@
 
 ## 実装タスク
 
-1. 既存OAuth実装の確認（使用ライブラリ・ルート・スコープ）
-2. User向けMCPサーバー/ルート追加
-3. 認証フロー統合（Bearerトークンの検証）
-4. User向けツール（自身の記事一覧）の実装
-5. テスト追加
-6. セキュリティレビュー（漏洩フィールド確認）
+1. 既存OAuth実装の確認（使用ライブラリ・ルート・スコープ） ✅
+2. User向けMCPサーバー/ルート追加 ✅
+3. 認証フロー統合（Bearerトークンの検証） ✅
+4. User向けツール（自身の記事一覧）の実装 ✅
+5. テスト追加 ✅
+6. セキュリティレビュー（漏洩フィールド確認） ✅
+
+## 実装済み
+
+- Passport導入と設定（guard追加、UserにHasApiTokens、OAuthenticatable対応）
+- MCPログイン用エンドポイント `/mcp-auth` を追加（`auth:mcp` + Passport）
+- MCP OAuthルート `Mcp::oauthRoutes()` を追加
+- MCP OAuth認可ビュー `mcp.authorize` を公開して設定
+- ログイン用MCPサーバー `SimutransAddonPortalUserServer` を追加
+- ツール `UserMyArticlesTool` を追加（`mcp:use` スコープ必須）
+- ツールのテストを追加（認証必須/スコープ必須/漏洩フィールドなし）
+
+## 実行ログ
+
+- `npm run check` 実行済み（format/types/lint/phpstan/pint 全てOK）
+- `php artisan test --filter=UserServerToolsTest` 実行済み（OK）
 
 ## 確認したい点
 

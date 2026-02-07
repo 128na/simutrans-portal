@@ -43,8 +43,17 @@ return [
         ],
 
         'api' => [
-            // 'driver' => 'passport',
             'driver' => 'token',
+            'provider' => 'users',
+        ],
+
+        'mcp' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
+
+        'passport' => [
+            'driver' => 'passport',
             'provider' => 'users',
         ],
     ],

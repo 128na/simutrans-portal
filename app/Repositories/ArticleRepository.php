@@ -358,95 +358,23 @@ class ArticleRepository
     }
 
     /**
-     * トップページ用全記事を1クエリで取得（UNION ALL）
+     * トップページ用アナウンス記事のみを取得
      *
-     * @return array{announces: Collection<int,Article>, pak128Japan: Collection<int,Article>, pak128: Collection<int,Article>, pak64: Collection<int,Article>, pages: Collection<int,Article>}
+     * @return array{announces: Collection<int,Article>}
      */
-    public function getTopPageArticles(
-        int $announcesLimit = 3,
-        int $pak128JapanLimit = 5,
-        int $pak128Limit = 5,
-        int $pak64Limit = 5,
-        int $pagesLimit = 5
-    ): array {
-        // クエリ設定を配列で定義
-        $queries = [
-            [
-                'type' => 'announces',
-                'categoryType' => CategoryType::Page,
-                'categorySlug' => 'announce',
-                'categoryOperator' => '=',
-                'postTypes' => [ArticlePostType::Page, ArticlePostType::Markdown],
-                'limit' => $announcesLimit,
-            ],
-            [
-                'type' => 'pak128Japan',
-                'categoryType' => CategoryType::Pak,
-                'categorySlug' => '128-japan',
-                'categoryOperator' => '=',
-                'postTypes' => [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost],
-                'limit' => $pak128JapanLimit,
-            ],
-            [
-                'type' => 'pak128',
-                'categoryType' => CategoryType::Pak,
-                'categorySlug' => '128',
-                'categoryOperator' => '=',
-                'postTypes' => [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost],
-                'limit' => $pak128Limit,
-            ],
-            [
-                'type' => 'pak64',
-                'categoryType' => CategoryType::Pak,
-                'categorySlug' => '64',
-                'categoryOperator' => '=',
-                'postTypes' => [ArticlePostType::AddonIntroduction, ArticlePostType::AddonPost],
-                'limit' => $pak64Limit,
-            ],
-            [
-                'type' => 'pages',
-                'categoryType' => CategoryType::Page,
-                'categorySlug' => 'announce',
-                'categoryOperator' => '!=',
-                'postTypes' => [ArticlePostType::Page, ArticlePostType::Markdown],
-                'limit' => $pagesLimit,
-            ],
-        ];
-
-        // 最初のクエリを構築
-        $firstConfig = array_shift($queries);
-        $builder = $this->buildTopPageQuery(
-            $firstConfig['type'],
-            $firstConfig['categoryType'],
-            $firstConfig['categorySlug'],
-            $firstConfig['categoryOperator'],
-            $firstConfig['postTypes'],
-            $firstConfig['limit']
-        );
-
-        // 残りのクエリをUNION ALLで追加
-        foreach ($queries as $query) {
-            $builder->unionAll(
-                $this->buildTopPageQuery(
-                    $query['type'],
-                    $query['categoryType'],
-                    $query['categorySlug'],
-                    $query['categoryOperator'],
-                    $query['postTypes'],
-                    $query['limit']
-                )
-            );
-        }
-
-        // 実行して結果をグループ化
-        $results = $builder->get();
+    public function getTopPageArticles(int $announcesLimit = 3): array
+    {
+        $results = $this->buildTopPageQuery(
+            'announces',
+            CategoryType::Page,
+            'announce',
+            '=',
+            [ArticlePostType::Page, ArticlePostType::Markdown],
+            $announcesLimit
+        )->get();
 
         return [
             'announces' => $results->where('article_type', 'announces')->values(),
-            'pak128Japan' => $results->where('article_type', 'pak128Japan')->values(),
-            'pak128' => $results->where('article_type', 'pak128')->values(),
-            'pak64' => $results->where('article_type', 'pak64')->values(),
-            'pages' => $results->where('article_type', 'pages')->values(),
         ];
     }
 

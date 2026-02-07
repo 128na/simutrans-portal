@@ -17,81 +17,68 @@
         </svg>
     </div>
     <div class="v2-page-content-area-lg">
-        <div>
-            <h1 class="v2-text-h1 mb-6">{{ config('app.name') }}</h1>
-            <p class="text-xl/8 text-c-sub">
-                Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。<br />
-                投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。<br />
-            </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="space-y-8">
-                <h2 class="v2-text-h3">新着</h2>
-                <div>
-                    <h3 class="v2-text-h4 mb-4">Pak128Japan</h3>
-                    <div class="gap-2 flex flex-col mb-4">
-                        @foreach($pak128Japan as $article)
-                        @include('components.partials.one-liner', ['article' => $article])
-                        @endforeach
-                    </div>
-                    <p>
-                        <a href="{{ route('pak.128japan') }}" class="text-c-sub">一覧<span aria-hidden="true">→</span></a>
-                    </p>
-                </div>
-                <div>
-                    <h3 class="v2-text-h4 mb-4">Pak128</h3>
-                    <div class="gap-2 flex flex-col mb-4">
-                        @foreach($pak128 as $article)
-                        @include('components.partials.one-liner', ['article' => $article])
-                        @endforeach
-                    </div>
-                    <p>
-                        <a href="{{ route('pak.128') }}" class="text-c-sub">一覧<span aria-hidden="true">→</span></a>
-                    </p>
-                </div>
-                <div>
-                    <h3 class="v2-text-h4 mb-4">Pak64</h3>
-                    <div class="gap-2 flex flex-col mb-4">
-                        @foreach($pak64 as $article)
-                        @include('components.partials.one-liner', ['article' => $article])
-                        @endforeach
-                    </div>
-                    <p>
-                        <a href="{{ route('pak.64') }}" class="text-c-sub">一覧<span aria-hidden="true">→</span></a>
-                    </p>
-                </div>
-                <div>
-                    <h3 class="v2-text-h4 mb-4">一般記事</h3>
-                    <div class="gap-2 flex flex-col mb-4">
-                        @foreach($pages as $article)
-                        @include('components.partials.one-liner', ['article' => $article])
-                        @endforeach
-                    </div>
-                    <p>
-                        <a href="{{ route('pages') }}" class="text-c-sub">一覧<span aria-hidden="true">→</span></a>
-                    </p>
-                </div>
+        <div class="space-y-8">
+            <div>
+                <h1 class="v2-text-h1 mb-6">{{ config('app.name') }}</h1>
+                <p class="text-xl/8 text-c-sub">
+                    Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。<br />
+                    投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。<br />
+                </p>
             </div>
-            <div class="space-y-8">
-                <div>
-                    <h3 class="v2-text-h4 mb-4">お知らせ</h3>
+            <div class="grid gap-10 lg:grid-cols-2">
+                <div class="space-y-8">
+                    <div>
+                    <h3 class="v2-text-h4 mb-4">@include('components.ui.link', ['url' => route('latest'), 'title' => 'アドオン新着一覧'])</h3>
+                    <ul class="space-y-2">
+                        <li>pak別一覧</li>
+                        <li class="ml-4 space-x-4">
+                            @include('components.ui.link', ['url' => route('pak.128japan'), 'title' => 'pak128.Japan'])
+                            @include('components.ui.link', ['url' => route('pak.128'), 'title' => 'pak128'])
+                            @include('components.ui.link', ['url' => route('pak.64'), 'title' => 'pak64'])
+                            @include('components.ui.link', ['url' => route('pak.others'), 'title' => 'その他のpak'])
+                        </li>
+                        <li>ジャンル別一覧</li>
+                        <li class="ml-4 space-x-4">
+                            @include('components.ui.link', ['url' => route('users.index'), 'title' => 'ユーザー'])
+                            @include('components.ui.link', ['url' => route('categories.index'), 'title' => 'カテゴリ'])
+                            @include('components.ui.link', ['url' => route('tags.index'), 'title' => 'タグ'])
+                        </li>
+                        <li>その他</li>
+                        <ul class="ml-4 space-y-1">
+                            <li>@include('components.ui.link', ['url' => route('pages'), 'title' => '一般記事'])</li>
+                        </ul>
+                    </ul>
+                    </div>
+
+                    <div>
+                    <h3 class="v2-text-h4 mb-4">@include('components.ui.link', ['url' => route('announces'), 'title' => 'お知らせ一覧'])</h3>
                     <div class="gap-2 flex flex-col mb-4">
                         @foreach($announces as $article)
                         @include('components.partials.one-liner', ['article' => $article])
                         @endforeach
                     </div>
-                    <p>
-                        <a href="{{ route('announces') }}" class="text-c-sub">一覧<span aria-hidden="true">→</span></a>
-                    </p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="v2-text-h4 mb-4">アドオン関連サイト</h3>
-                    <div class="gap-2 flex flex-col">
-                        @include('components.ui.link', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
-                        @include('components.ui.link', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans 日本語化･解説'])
-                        @include('components.ui.link', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans 的な実験室'])
-                        @include('components.ui.link', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
-                        @include('components.ui.link', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="v2-text-h4 mb-4">その他のページ</h3>
+                        <div class="gap-2 grid">
+                            <div>@include('components.ui.link', ['url' => route('search'), 'title' => '詳細検索'])</div>
+                            <div>@include('components.ui.link', ['url' => route('social'), 'title' => '各種ツール'])</div>
+                            <div>@include('components.ui.link', ['url' => config('app.support_site_url'), 'title' => 'サイトの使い方'])</div>
+                            <div>@include('components.ui.link', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー'])</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="v2-text-h4 mb-4">関連サイトのリンク</h3>
+                        <div class="gap-2 grid">
+                            <div>@include('components.ui.link', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])</div>
+                            <div>@include('components.ui.link', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans 日本語化･解説'])</div>
+                            <div>@include('components.ui.link', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans 的な実験室'])</div>
+                            <div>@include('components.ui.link', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])</div>
+                            <div>@include('components.ui.link', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])</div>
+                        </div>
                     </div>
                 </div>
             </div>

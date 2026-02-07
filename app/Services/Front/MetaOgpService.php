@@ -33,6 +33,17 @@ class MetaOgpService
     /**
      * @return array{title:string,description:string}
      */
+    public function frontLatest(): array
+    {
+        return [
+            'title' => '新着アドオン'.' - '.Config::string('app.name'),
+            'description' => '新着アドオンの一覧です',
+        ];
+    }
+
+    /**
+     * @return array{title:string,description:string}
+     */
     public function frontPak(string $name): array
     {
         return [

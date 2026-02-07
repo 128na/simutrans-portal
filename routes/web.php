@@ -21,6 +21,7 @@ if (\Illuminate\Support\Facades\App::environment('local')) {
 Route::feeds();
 
 // 一覧系
+Route::get('/latest', [\App\Http\Controllers\Pages\Article\PakController::class, 'latest'])->name('latest');
 Route::get('/pak128-japan', [\App\Http\Controllers\Pages\Article\PakController::class, 'pak128jp'])->name('pak.128japan');
 Route::get('/pak128', [\App\Http\Controllers\Pages\Article\PakController::class, 'pak128'])->name('pak.128');
 Route::get('/pak64', [\App\Http\Controllers\Pages\Article\PakController::class, 'pak64'])->name('pak.64');

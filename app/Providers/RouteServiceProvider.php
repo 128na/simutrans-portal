@@ -29,6 +29,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/internal_api.php'));
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+            Route::middleware('web')
+                ->group(base_path('routes/ai.php'));
         });
         $this->registerRouteBindings();
     }

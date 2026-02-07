@@ -64,7 +64,7 @@
                         <h3 class="v2-text-h4 mb-4">その他のページ</h3>
                         <div class="gap-2 grid">
                             <div>@include('components.ui.link', ['url' => route('search'), 'title' => '詳細検索'])</div>
-                            <div>@include('components.ui.link', ['url' => route('social'), 'title' => '各種ツール'])</div>
+                            <div>@include('components.ui.link', ['url' => route('social'), 'title' => '各種ツール（SNS, RSS, API, MCP）'])</div>
                             <div>@include('components.ui.link', ['url' => config('app.support_site_url'), 'title' => 'サイトの使い方'])</div>
                             <div>@include('components.ui.link', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー'])</div>
                         </div>

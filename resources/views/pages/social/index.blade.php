@@ -93,14 +93,14 @@
                 <pre><code>{
 	"servers": {
 		"SimutransAddonPortal": {
-			"url": "http://simutrans-portal.128-bit.net/mcp",
+			"url": "{{url('/mcp')}}",
 			"type": "http"
 		}
 	}
 }</code></pre>
                 @include('components.ui.link', ['url' => 'https://code.visualstudio.com/docs/copilot/customization/mcp-servers'])
 
-                <pre><code>claude mcp add --transport http SimutransAddonPortal http://simutrans-portal.128-bit.net/mcp</code></pre>
+                <pre><code>claude mcp add --transport http SimutransAddonPortal {{url('/mcp')}}</code></pre>
                 @include('components.ui.link', ['url' => 'https://platform.claude.com/docs/ja/agents-and-tools/mcp-connector'])
             </div>
         </div>

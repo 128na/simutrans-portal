@@ -100,7 +100,6 @@
 }</code></pre>
                 @include('components.ui.link', ['url' => 'https://code.visualstudio.com/docs/copilot/customization/mcp-servers'])
 
-                </code>
                 <pre><code>claude mcp add --transport http SimutransAddonPortal http://simutrans-portal.128-bit.net/mcp</code></pre>
                 @include('components.ui.link', ['url' => 'https://platform.claude.com/docs/ja/agents-and-tools/mcp-connector'])
             </div>

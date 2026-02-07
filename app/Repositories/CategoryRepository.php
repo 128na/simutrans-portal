@@ -34,7 +34,7 @@ class CategoryRepository
     }
 
     /**
-     * @param array<int,string> $slugs
+     * @param  array<int,string>  $slugs
      * @return Collection<int,Category>
      */
     public function getByExcludeTypeSlug(CategoryType $categoryType, array $slugs): Collection

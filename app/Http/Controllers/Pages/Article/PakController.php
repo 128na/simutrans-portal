@@ -33,6 +33,7 @@ class PakController extends Controller
     public function pak128jp(): View
     {
         $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, '128-japan');
+
         return view('pages.pak.index', [
             'pak' => '128-japan',
             'categoryIds' => [$category->id],
@@ -44,6 +45,7 @@ class PakController extends Controller
     public function pak128(): View
     {
         $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, '128');
+
         return view('pages.pak.index', [
             'pak' => '128',
             'categoryIds' => [$category->id],
@@ -55,6 +57,7 @@ class PakController extends Controller
     public function pak64(): View
     {
         $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, '64');
+
         return view('pages.pak.index', [
             'pak' => '64',
             'categoryIds' => [$category->id],
@@ -66,6 +69,7 @@ class PakController extends Controller
     public function pakOthers(): View
     {
         $categories = $this->categoryRepository->getByExcludeTypeSlug(CategoryType::Pak, ['128-japan', '128', '64']);
+
         return view('pages.pak.index', [
             'pak' => 'other-pak',
             'categoryIds' => $categories->pluck('id')->toArray(),

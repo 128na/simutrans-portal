@@ -23,6 +23,12 @@ class GuestSearchSuggestTool extends Tool
      */
     protected string $description = <<<'MARKDOWN'
         未ログインで検索補助（タグ名/ユーザー名の前方一致サジェスト）を取得します。
+
+                ## レスポンス
+                - type: tag または user
+                - items: サジェスト一覧
+                    - type=tag: id, name
+                    - type=user: id, name, nickname
     MARKDOWN;
 
     public function __construct(private SearchSuggestAction $searchSuggestAction) {}
@@ -95,7 +101,7 @@ class GuestSearchSuggestTool extends Tool
     private function mapTags(Collection $items): array
     {
         return $items
-            ->map(fn (Tag $tag): array => [
+            ->map(fn(Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ])
@@ -110,7 +116,7 @@ class GuestSearchSuggestTool extends Tool
     private function mapUsers(Collection $items): array
     {
         return $items
-            ->map(fn (User $user): array => [
+            ->map(fn(User $user): array => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'nickname' => $user->nickname,

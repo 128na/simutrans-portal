@@ -24,6 +24,14 @@ class GuestArticleSearchTool extends Tool
      */
     protected string $description = <<<'MARKDOWN'
         未ログインで利用できる記事検索ツールです。
+
+                ## レスポンス
+                - data: 記事一覧
+                    - id, title, url, thumbnail, description
+                    - categories, tags, user
+                    - published_at, modified_at
+                - links: ページネーションリンク
+                - meta: ページネーション情報
     MARKDOWN;
 
     public function __construct(private SearchAction $searchAction) {}
@@ -105,7 +113,7 @@ class GuestArticleSearchTool extends Tool
     private function postTypeValues(): array
     {
         return array_map(
-            static fn (ArticlePostType $postType): string => $postType->value,
+            static fn(ArticlePostType $postType): string => $postType->value,
             ArticlePostType::cases()
         );
     }

@@ -23,6 +23,14 @@ class GuestUserArticlesTool extends Tool
      */
     protected string $description = <<<'MARKDOWN'
         未ログインでユーザー別の公開記事一覧を取得します。
+
+                ## レスポンス
+                - user: ユーザー情報 (id, name, nickname)
+                - articles: 記事一覧
+                    - data: id, title, url, thumbnail, description
+                    - categories, tags, user
+                    - published_at, modified_at
+                    - links, meta
     MARKDOWN;
 
     public function __construct(private UserArticlesAction $userArticlesAction) {}

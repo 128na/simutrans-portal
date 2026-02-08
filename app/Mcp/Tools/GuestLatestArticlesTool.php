@@ -22,6 +22,14 @@ class GuestLatestArticlesTool extends Tool
      */
     protected string $description = <<<'MARKDOWN'
         未ログインで新着記事一覧を取得します。PAK指定で絞り込みできます。
+
+                ## レスポンス
+                - data: 記事一覧
+                    - id, title, url, thumbnail, description
+                    - categories, tags, user
+                    - published_at, modified_at
+                - links: ページネーションリンク
+                - meta: ページネーション情報
     MARKDOWN;
 
     public function __construct(private LatestAction $latestAction) {}

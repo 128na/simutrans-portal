@@ -23,6 +23,12 @@ class GuestArticleSearchOptionsTool extends Tool
      */
     protected string $description = <<<'MARKDOWN'
         未ログインで記事検索に使う選択肢（カテゴリ・タグ・ユーザー・投稿形式）を取得します。
+
+        ## レスポンス
+        - categories: カテゴリ一覧 (id, type, slug, need_admin)
+        - tags: タグ一覧 (id, name)
+        - users: ユーザー一覧 (id, name, nickname)
+        - postTypes: 投稿形式一覧 (value, name)
     MARKDOWN;
 
     public function __construct(private SearchAction $searchAction) {}
@@ -35,7 +41,7 @@ class GuestArticleSearchOptionsTool extends Tool
         $options = $this->searchAction->options();
 
         $categories = $options['categories']
-            ->map(fn (Category $category): array => [
+            ->map(fn(Category $category): array => [
                 'id' => $category->id,
                 'type' => $category->type->value,
                 'slug' => $category->slug,
@@ -44,14 +50,14 @@ class GuestArticleSearchOptionsTool extends Tool
             ->values();
 
         $tags = $options['tags']
-            ->map(fn (Tag $tag): array => [
+            ->map(fn(Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ])
             ->values();
 
         $users = $options['users']
-            ->map(fn (User $user): array => [
+            ->map(fn(User $user): array => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'nickname' => $user->nickname,
@@ -59,7 +65,7 @@ class GuestArticleSearchOptionsTool extends Tool
             ->values();
 
         $postTypes = array_map(
-            static fn (ArticlePostType $postType): array => [
+            static fn(ArticlePostType $postType): array => [
                 'value' => $postType->value,
                 'name' => $postType->name,
             ],

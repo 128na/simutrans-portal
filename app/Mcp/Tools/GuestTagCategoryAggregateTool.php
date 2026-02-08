@@ -21,6 +21,12 @@ class GuestTagCategoryAggregateTool extends Tool
      */
     protected string $description = <<<'MARKDOWN'
         未ログインでタグとカテゴリ（PAK別アドオン）の件数付き一覧を取得します。
+
+                ## レスポンス
+                - tags: タグ一覧 (id, name, article_count)
+                - pak_addon_categories: PAK別アドオンカテゴリ集計
+                    - pak_slug: PAKスラグ
+                    - addons: addon_slug, article_count
     MARKDOWN;
 
     public function __construct(private TagCategoryAggregateAction $aggregateAction) {}
@@ -31,7 +37,7 @@ class GuestTagCategoryAggregateTool extends Tool
     public function handle(Request $request): Response
     {
         $tags = $this->aggregateAction->tags()
-            ->map(fn (Tag $tag): array => [
+            ->map(fn(Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
                 'article_count' => (int) $tag->articles_count,
@@ -39,10 +45,10 @@ class GuestTagCategoryAggregateTool extends Tool
             ->values();
 
         $pakAddonCategories = $this->aggregateAction->pakAddonCategories()
-            ->map(fn (SupportCollection $addons, string $pakSlug): array => [
+            ->map(fn(SupportCollection $addons, string $pakSlug): array => [
                 'pak_slug' => $pakSlug,
                 'addons' => $addons
-                    ->map(fn (\stdClass $addon): array => [
+                    ->map(fn(\stdClass $addon): array => [
                         'addon_slug' => $addon->addon_slug,
                         'article_count' => (int) $addon->article_count,
                     ])

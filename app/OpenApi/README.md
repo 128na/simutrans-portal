@@ -86,34 +86,33 @@ Authorization: Bearer {token}
 
 - `POST /v2/analytics` - アナリティクスデータの取得
 
-## アノテーションの追加
+## 属性の追加
 
-新しい API エンドポイントを追加する場合は、コントローラーメソッドに OpenAPI アノテーションを追加してください。
+新しい API エンドポイントを追加する場合は、コントローラーメソッドに OpenAPI 属性を追加してください。
 
 ### 例
 
 ```php
 use OpenApi\Attributes as OA;
 
-/**
- * @OA\Post(
- *     path="/api/v2/example",
- *     summary="例のエンドポイント",
- *     description="エンドポイントの説明",
- *     tags={"Example"},
- *     security={{"sanctum": {}}},
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             @OA\Property(property="field", type="string", example="value")
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="成功"
- *     )
- * )
- */
+#[OA\Post(
+  path: '/api/v2/example',
+  summary: '例のエンドポイント',
+  description: 'エンドポイントの説明',
+  tags: ['Example'],
+  security: [['sanctum' => []]],
+  requestBody: new OA\RequestBody(
+    required: true,
+    content: new OA\JsonContent(
+      properties: [
+        new OA\Property(property: 'field', type: 'string', example: 'value'),
+      ]
+    )
+  ),
+  responses: [
+    new OA\Response(response: 200, description: '成功'),
+  ]
+)]
 public function example(Request $request): JsonResponse
 {
     // ...
@@ -159,10 +158,10 @@ php artisan cache:clear
 php artisan l5-swagger:generate
 ```
 
-### アノテーションが認識されない
+### 属性が認識されない
 
 - 名前空間が正しいか確認してください：`use OpenApi\Attributes as OA;`
-- アノテーションの構文エラーがないか確認してください
+- 属性の構文エラーがないか確認してください
 - `config/l5-swagger.php` の `paths.annotations` にコントローラーディレクトリが含まれているか確認してください
 
 ## 参考資料

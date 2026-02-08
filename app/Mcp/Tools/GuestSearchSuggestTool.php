@@ -101,7 +101,7 @@ class GuestSearchSuggestTool extends Tool
     private function mapTags(Collection $items): array
     {
         return $items
-            ->map(fn(Tag $tag): array => [
+            ->map(fn (Tag $tag): array => [
                 'id' => $tag->id,
                 'name' => $tag->name,
             ])
@@ -116,7 +116,7 @@ class GuestSearchSuggestTool extends Tool
     private function mapUsers(Collection $items): array
     {
         return $items
-            ->map(fn(User $user): array => [
+            ->map(fn (User $user): array => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'nickname' => $user->nickname,

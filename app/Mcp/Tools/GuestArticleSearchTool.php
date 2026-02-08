@@ -113,7 +113,7 @@ class GuestArticleSearchTool extends Tool
     private function postTypeValues(): array
     {
         return array_map(
-            static fn(ArticlePostType $postType): string => $postType->value,
+            static fn (ArticlePostType $postType): string => $postType->value,
             ArticlePostType::cases()
         );
     }

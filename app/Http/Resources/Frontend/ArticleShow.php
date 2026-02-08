@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Frontend;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article as ModelsArticle;
 use App\Models\Attachment\FileInfo;
 use App\Models\User\Profile;
@@ -26,6 +27,8 @@ class ArticleShow extends JsonResource
             'title' => $this->resource->title,
             'slug' => $this->resource->slug,
             'post_type' => $this->resource->post_type,
+            'download_url' => $this->when($this->resource->post_type === ArticlePostType::AddonPost, route('articles.download', ['article' => $this->resource->id])),
+            'addon_page_url' => $this->when($this->resource->post_type === ArticlePostType::AddonIntroduction, $this->resource->contents->link ?? null),
             'contents' => $this->resource->contents,
             'user' => [
                 'id' => $this->resource->user->id,
@@ -65,7 +68,7 @@ class ArticleShow extends JsonResource
             'attachments' => $this->resource->attachments->map(fn ($attachment): array => [
                 'id' => $attachment->id,
                 'original_name' => $attachment->original_name,
-                'thumbnail' => $attachment->original,
+                'thumbnail' => $attachment->thumbnail,
                 'size' => $attachment->size,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, function () use ($attachment): array {
                     /** @var FileInfo $fileInfo */

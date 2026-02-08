@@ -36,64 +36,91 @@ class AnalyticsController extends Controller
 
     /**
      * アナリティクスデータを取得
-     *
-     * @OA\Post(
-     *     path="/api/v2/mypage/analytics/search",
-     *     summary="アナリティクスの取得",
-     *     description="記事のアナリティクスデータを取得します",
-     *     tags={"Analytics"},
-     *     security={{"sanctum": {}}},
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="ids", type="array", description="記事ID配列", @OA\Items(type="integer")),
-     *             @OA\Property(property="type", type="string", enum={"daily", "monthly", "yearly"}, example="daily", description="集計タイプ"),
-     *             @OA\Property(property="start_date", type="string", format="date", example="2024-01-01", description="開始日"),
-     *             @OA\Property(property="end_date", type="string", format="date", example="2024-12-31", description="終了日")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="取得成功",
-     *
-     *         @OA\JsonContent(
-     *             type="object",
-     *
-     *             @OA\Property(property="data", type="array", @OA\Items(
-     *                 @OA\Property(property="article_id", type="integer", example=1),
-     *                 @OA\Property(property="title", type="string", example="記事タイトル"),
-     *                 @OA\Property(property="views", type="integer", example=100),
-     *                 @OA\Property(property="downloads", type="integer", example=50)
-     *             ))
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="バリデーションエラー",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Validation error"),
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=403,
-     *         description="権限エラー",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Forbidden")
-     *         )
-     *     )
-     * )
      */
+    #[OA\Post(
+        path: '/api/v2/mypage/analytics/search',
+        summary: 'アナリティクスの取得',
+        description: '記事のアナリティクスデータを取得します',
+        tags: ['Analytics'],
+        security: [['sanctum' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'ids',
+                        type: 'array',
+                        description: '記事ID配列',
+                        items: new OA\Items(type: 'integer')
+                    ),
+                    new OA\Property(
+                        property: 'type',
+                        type: 'string',
+                        enum: ['daily', 'monthly', 'yearly'],
+                        example: 'daily',
+                        description: '集計タイプ'
+                    ),
+                    new OA\Property(
+                        property: 'start_date',
+                        type: 'string',
+                        format: 'date',
+                        example: '2024-01-01',
+                        description: '開始日'
+                    ),
+                    new OA\Property(
+                        property: 'end_date',
+                        type: 'string',
+                        format: 'date',
+                        example: '2024-12-31',
+                        description: '終了日'
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '取得成功',
+                content: new OA\JsonContent(
+                    type: 'object',
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                type: 'object',
+                                properties: [
+                                    new OA\Property(property: 'article_id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'title', type: 'string', example: '記事タイトル'),
+                                    new OA\Property(property: 'views', type: 'integer', example: 100),
+                                    new OA\Property(property: 'downloads', type: 'integer', example: 50),
+                                ]
+                            )
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'バリデーションエラー',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Validation error'),
+                        new OA\Property(property: 'errors', type: 'object'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: '権限エラー',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Forbidden'),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function show(SearchRequest $searchRequest, FindArticles $findArticles): AnonymousResourceCollection
     {
         $user = Auth::user();

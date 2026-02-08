@@ -37,53 +37,52 @@ class ProfileController extends Controller
 
     /**
      * プロフィールを更新
-     *
-     * @OA\Post(
-     *     path="/api/v2/profile",
-     *     summary="プロフィールの更新",
-     *     description="ユーザーのプロフィール情報を更新します",
-     *     tags={"Profile"},
-     *     security={{"sanctum": {}}},
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="nickname", type="string", example="新しいニックネーム", description="表示名"),
-     *             @OA\Property(
-     *                 property="profile",
-     *                 type="object",
-     *                 @OA\Property(property="data", type="string", example="プロフィール本文", description="プロフィール本文"),
-     *                 @OA\Property(property="attachments", type="array", description="添付ファイルID配列", @OA\Items(type="integer"))
-     *             )
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="更新成功",
-     *
-     *         @OA\JsonContent(
-     *             type="object"
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="バリデーションエラー",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=403,
-     *         description="権限エラー",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
-     *     )
-     * )
      */
+    #[OA\Post(
+        path: '/api/v2/profile',
+        summary: 'プロフィールの更新',
+        description: 'ユーザーのプロフィール情報を更新します',
+        tags: ['Profile'],
+        security: [['sanctum' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'nickname', type: 'string', example: '新しいニックネーム', description: '表示名'),
+                    new OA\Property(
+                        property: 'profile',
+                        type: 'object',
+                        properties: [
+                            new OA\Property(property: 'data', type: 'string', example: 'プロフィール本文', description: 'プロフィール本文'),
+                            new OA\Property(
+                                property: 'attachments',
+                                type: 'array',
+                                description: '添付ファイルID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '更新成功',
+                content: new OA\JsonContent(type: 'object')
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'バリデーションエラー',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 403,
+                description: '権限エラー',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+        ]
+    )]
     public function update(UpdateRequest $updateRequest, UpdateProfile $updateProfile): JsonResponse
     {
         $user = Auth::user();

@@ -53,71 +53,102 @@ class CreateController extends Controller
 
     /**
      * 新しい記事を作成
-     *
-     * @OA\Post(
-     *     path="/api/v2/articles",
-     *     summary="記事の作成",
-     *     description="新しい記事を作成します",
-     *     tags={"Articles"},
-     *     security={{"sanctum": {}}},
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *             required={"article"},
-     *
-     *             @OA\Property(
-     *                 property="article",
-     *                 type="object",
-     *                 required={"status", "title", "slug", "post_type", "contents"},
-     *                 @OA\Property(property="status", type="string", example="publish", description="ステータス", enum={"publish", "draft", "private"}),
-     *                 @OA\Property(property="title", type="string", example="新しいアドオン", description="タイトル"),
-     *                 @OA\Property(property="slug", type="string", example="new-addon", description="スラッグ"),
-     *                 @OA\Property(property="post_type", type="string", example="addon-post", description="投稿タイプ"),
-     *                 @OA\Property(property="published_at", type="string", format="date-time", example="2024-01-01T12:00", description="公開日時"),
-     *                 @OA\Property(property="contents", type="object", description="コンテンツデータ"),
-     *                 @OA\Property(property="categories", type="array", description="カテゴリID配列", @OA\Items(type="integer")),
-     *                 @OA\Property(property="tags", type="array", description="タグID配列", @OA\Items(type="integer")),
-     *                 @OA\Property(property="articles", type="array", description="関連記事ID配列", @OA\Items(type="integer")),
-     *                 @OA\Property(property="attachments", type="array", description="添付ファイルID配列", @OA\Items(type="integer"))
-     *             ),
-     *             @OA\Property(property="should_notify", type="boolean", example=true, description="通知するかどうか")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="作成成功",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="article_id", type="integer", example=1, description="作成された記事ID")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="バリデーションエラー",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Validation error"),
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=403,
-     *         description="権限エラー",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Forbidden")
-     *         )
-     *     )
-     * )
      */
+    #[OA\Post(
+        path: '/api/v2/articles',
+        summary: '記事の作成',
+        description: '新しい記事を作成します',
+        tags: ['Articles'],
+        security: [['sanctum' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['article'],
+                properties: [
+                    new OA\Property(
+                        property: 'article',
+                        type: 'object',
+                        required: ['status', 'title', 'slug', 'post_type', 'contents'],
+                        properties: [
+                            new OA\Property(
+                                property: 'status',
+                                type: 'string',
+                                example: 'publish',
+                                description: 'ステータス',
+                                enum: ['publish', 'draft', 'private']
+                            ),
+                            new OA\Property(property: 'title', type: 'string', example: '新しいアドオン', description: 'タイトル'),
+                            new OA\Property(property: 'slug', type: 'string', example: 'new-addon', description: 'スラッグ'),
+                            new OA\Property(property: 'post_type', type: 'string', example: 'addon-post', description: '投稿タイプ'),
+                            new OA\Property(
+                                property: 'published_at',
+                                type: 'string',
+                                format: 'date-time',
+                                example: '2024-01-01T12:00',
+                                description: '公開日時'
+                            ),
+                            new OA\Property(property: 'contents', type: 'object', description: 'コンテンツデータ'),
+                            new OA\Property(
+                                property: 'categories',
+                                type: 'array',
+                                description: 'カテゴリID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                            new OA\Property(
+                                property: 'tags',
+                                type: 'array',
+                                description: 'タグID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                            new OA\Property(
+                                property: 'articles',
+                                type: 'array',
+                                description: '関連記事ID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                            new OA\Property(
+                                property: 'attachments',
+                                type: 'array',
+                                description: '添付ファイルID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                        ]
+                    ),
+                    new OA\Property(property: 'should_notify', type: 'boolean', example: true, description: '通知するかどうか'),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '作成成功',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'article_id', type: 'integer', example: 1, description: '作成された記事ID'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'バリデーションエラー',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Validation error'),
+                        new OA\Property(property: 'errors', type: 'object'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: '権限エラー',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Forbidden'),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function store(StoreRequest $storeRequest, StoreArticle $storeArticle): JsonResponse
     {
         $user = Auth::user();

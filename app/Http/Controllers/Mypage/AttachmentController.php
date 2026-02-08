@@ -36,55 +36,48 @@ class AttachmentController extends Controller
 
     /**
      * 添付ファイルをアップロード
-     *
-     * @OA\Post(
-     *     path="/api/v2/attachments",
-     *     summary="添付ファイルのアップロード",
-     *     description="新しい添付ファイルをアップロードします",
-     *     tags={"Attachments"},
-     *     security={{"sanctum": {}}},
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *
-     *             @OA\Schema(
-     *                 required={"file"},
-     *
-     *                 @OA\Property(
-     *                     property="file",
-     *                     type="string",
-     *                     format="binary",
-     *                     description="アップロードするファイル"
-     *                 )
-     *             )
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="アップロード成功",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Attachment")
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="バリデーションエラー",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=403,
-     *         description="権限エラー",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
-     *     )
-     * )
      */
+    #[OA\Post(
+        path: '/api/v2/attachments',
+        summary: '添付ファイルのアップロード',
+        description: '新しい添付ファイルをアップロードします',
+        tags: ['Attachments'],
+        security: [['sanctum' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(
+                    required: ['file'],
+                    properties: [
+                        new OA\Property(
+                            property: 'file',
+                            type: 'string',
+                            format: 'binary',
+                            description: 'アップロードするファイル'
+                        ),
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'アップロード成功',
+                content: new OA\JsonContent(ref: '#/components/schemas/Attachment')
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'バリデーションエラー',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 403,
+                description: '権限エラー',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+        ]
+    )]
     public function store(StoreRequest $storeRequest, Store $store): AttachmentEdit
     {
         $user = Auth::user();
@@ -117,42 +110,39 @@ class AttachmentController extends Controller
 
     /**
      * 添付ファイルを削除
-     *
-     * @OA\Delete(
-     *     path="/api/v2/attachments/{attachment}",
-     *     summary="添付ファイルの削除",
-     *     description="指定された添付ファイルを削除します",
-     *     tags={"Attachments"},
-     *     security={{"sanctum": {}}},
-     *
-     *     @OA\Parameter(
-     *         name="attachment",
-     *         in="path",
-     *         required=true,
-     *         description="添付ファイルID",
-     *
-     *         @OA\Schema(type="integer")
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="削除成功"
-     *     ),
-     *     @OA\Response(
-     *         response=403,
-     *         description="権限エラー",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=404,
-     *         description="添付ファイルが見つかりません",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/Error")
-     *     )
-     * )
      */
+    #[OA\Delete(
+        path: '/api/v2/attachments/{attachment}',
+        summary: '添付ファイルの削除',
+        description: '指定された添付ファイルを削除します',
+        tags: ['Attachments'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'attachment',
+                in: 'path',
+                required: true,
+                description: '添付ファイルID',
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '削除成功'
+            ),
+            new OA\Response(
+                response: 403,
+                description: '権限エラー',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 404,
+                description: '添付ファイルが見つかりません',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+        ]
+    )]
     public function destroy(Attachment $attachment): \Illuminate\Http\Response
     {
         $user = Auth::user();

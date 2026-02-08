@@ -54,90 +54,120 @@ class EditController extends Controller
 
     /**
      * 記事を更新
-     *
-     * @OA\Post(
-     *     path="/api/v2/articles/{article}",
-     *     summary="記事の更新",
-     *     description="既存の記事を更新します",
-     *     tags={"Articles"},
-     *     security={{"sanctum": {}}},
-     *
-     *     @OA\Parameter(
-     *         name="article",
-     *         in="path",
-     *         required=true,
-     *         description="記事ID",
-     *
-     *         @OA\Schema(type="integer")
-     *     ),
-     *
-     *     @OA\RequestBody(
-     *         required=true,
-     *
-     *         @OA\JsonContent(
-     *             required={"article"},
-     *
-     *             @OA\Property(
-     *                 property="article",
-     *                 type="object",
-     *                 required={"status", "title", "slug", "post_type", "contents"},
-     *                 @OA\Property(property="status", type="string", example="publish", description="ステータス", enum={"publish", "draft", "private"}),
-     *                 @OA\Property(property="title", type="string", example="更新されたアドオン", description="タイトル"),
-     *                 @OA\Property(property="slug", type="string", example="updated-addon", description="スラッグ"),
-     *                 @OA\Property(property="post_type", type="string", example="addon-post", description="投稿タイプ"),
-     *                 @OA\Property(property="published_at", type="string", format="date-time", example="2024-01-01T12:00", description="公開日時"),
-     *                 @OA\Property(property="contents", type="object", description="コンテンツデータ"),
-     *                 @OA\Property(property="categories", type="array", description="カテゴリID配列", @OA\Items(type="integer")),
-     *                 @OA\Property(property="tags", type="array", description="タグID配列", @OA\Items(type="integer")),
-     *                 @OA\Property(property="articles", type="array", description="関連記事ID配列", @OA\Items(type="integer")),
-     *                 @OA\Property(property="attachments", type="array", description="添付ファイルID配列", @OA\Items(type="integer"))
-     *             ),
-     *             @OA\Property(property="should_notify", type="boolean", example=false, description="通知するかどうか")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="更新成功",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="article_id", type="integer", example=1, description="更新された記事ID")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=400,
-     *         description="バリデーションエラー",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Validation error"),
-     *             @OA\Property(property="errors", type="object")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=403,
-     *         description="権限エラー",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Forbidden")
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=404,
-     *         description="記事が見つからない",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Not found")
-     *         )
-     *     )
-     * )
      */
+    #[OA\Post(
+        path: '/api/v2/articles/{article}',
+        summary: '記事の更新',
+        description: '既存の記事を更新します',
+        tags: ['Articles'],
+        security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'article',
+                in: 'path',
+                required: true,
+                description: '記事ID',
+                schema: new OA\Schema(type: 'integer')
+            ),
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['article'],
+                properties: [
+                    new OA\Property(
+                        property: 'article',
+                        type: 'object',
+                        required: ['status', 'title', 'slug', 'post_type', 'contents'],
+                        properties: [
+                            new OA\Property(
+                                property: 'status',
+                                type: 'string',
+                                example: 'publish',
+                                description: 'ステータス',
+                                enum: ['publish', 'draft', 'private']
+                            ),
+                            new OA\Property(property: 'title', type: 'string', example: '更新されたアドオン', description: 'タイトル'),
+                            new OA\Property(property: 'slug', type: 'string', example: 'updated-addon', description: 'スラッグ'),
+                            new OA\Property(property: 'post_type', type: 'string', example: 'addon-post', description: '投稿タイプ'),
+                            new OA\Property(
+                                property: 'published_at',
+                                type: 'string',
+                                format: 'date-time',
+                                example: '2024-01-01T12:00',
+                                description: '公開日時'
+                            ),
+                            new OA\Property(property: 'contents', type: 'object', description: 'コンテンツデータ'),
+                            new OA\Property(
+                                property: 'categories',
+                                type: 'array',
+                                description: 'カテゴリID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                            new OA\Property(
+                                property: 'tags',
+                                type: 'array',
+                                description: 'タグID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                            new OA\Property(
+                                property: 'articles',
+                                type: 'array',
+                                description: '関連記事ID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                            new OA\Property(
+                                property: 'attachments',
+                                type: 'array',
+                                description: '添付ファイルID配列',
+                                items: new OA\Items(type: 'integer')
+                            ),
+                        ]
+                    ),
+                    new OA\Property(property: 'should_notify', type: 'boolean', example: false, description: '通知するかどうか'),
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '更新成功',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'article_id', type: 'integer', example: 1, description: '更新された記事ID'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'バリデーションエラー',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Validation error'),
+                        new OA\Property(property: 'errors', type: 'object'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 403,
+                description: '権限エラー',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Forbidden'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: '記事が見つからない',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Not found'),
+                    ]
+                )
+            ),
+        ]
+    )]
     public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle): JsonResponse
     {
         $user = Auth::user();

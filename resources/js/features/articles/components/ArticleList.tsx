@@ -48,7 +48,7 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
                 <div className="flex flex-wrap gap-2 sm:justify-end">
                   {article.download_url && (
                     <a
-                      className="v2-button v2-button-md v2-button-primary"
+                      className="v2-button v2-button-md v2-button-primary inline-block"
                       href={article.download_url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -59,7 +59,7 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
                   {article.addon_page_url && (
                     <a
                       href={article.addon_page_url}
-                      className="v2-button v2-button-md v2-button-primary"
+                      className="v2-button v2-button-md v2-button-primary inline-block"
                     >
                       掲載ページ
                     </a>

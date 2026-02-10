@@ -307,7 +307,25 @@ export const MyListItemsTable = ({
                     {new Date(item.created_at).toLocaleDateString("ja-JP")}
                   </td>
                   <td>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center flex-wrap gap-2">
+                      {item.article.download_url && (
+                        <a
+                          className="v2-button v2-button-md v2-button-primary inline-block"
+                          href={item.article.download_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          ダウンロード
+                        </a>
+                      )}
+                      {item.article.addon_page_url && (
+                        <a
+                          href={item.article.addon_page_url}
+                          className="v2-button v2-button-md v2-button-primary inline-block"
+                        >
+                          掲載ページ
+                        </a>
+                      )}
                       <Button
                         onClick={() => handleDelete(item.id)}
                         disabled={isLoading}

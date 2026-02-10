@@ -102,6 +102,30 @@ const PublicMyListPage = ({ mylistSlug }: { mylistSlug: string }) => {
                     {new Date(item.created_at).toLocaleDateString("ja-JP")}
                   </p>
 
+                  {/* リンク */}
+                  {item.article.download_url && (
+                    <p className="text-sm v2-text-sub mb-2">
+                      <a
+                        className="v2-button v2-button-md v2-button-primary inline-block"
+                        href={item.article.download_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        ダウンロード
+                      </a>
+                    </p>
+                  )}
+                  {item.article.addon_page_url && (
+                    <p className="text-sm v2-text-sub mb-2">
+                      <a
+                        href={item.article.addon_page_url}
+                        className="v2-button v2-button-md v2-button-primary inline-block"
+                      >
+                        掲載ページ
+                      </a>
+                    </p>
+                  )}
+
                   {/* メモ */}
                   {item.note && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2">

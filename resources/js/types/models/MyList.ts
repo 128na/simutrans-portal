@@ -51,6 +51,8 @@ export type MyListItemShow = {
     published_at?: string | null;
     thumbnail?: string;
     url?: string;
+    download_url?: string;
+    addon_page_url?: string;
     user?: {
       name: string;
       avatar: string;

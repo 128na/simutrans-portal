@@ -35,6 +35,8 @@ class SimutransAddonPortalGuestServer extends Server
         \App\Mcp\Tools\GuestArticleSearchTool::class,
         \App\Mcp\Tools\GuestArticleShowTool::class,
         \App\Mcp\Tools\GuestLatestArticlesTool::class,
+        \App\Mcp\Tools\GuestPublicMyListListTool::class,
+        \App\Mcp\Tools\GuestPublicMyListShowTool::class,
         \App\Mcp\Tools\GuestTagCategoryAggregateTool::class,
         \App\Mcp\Tools\GuestUserArticlesTool::class,
         \App\Mcp\Tools\GuestSearchSuggestTool::class,

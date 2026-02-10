@@ -32,6 +32,18 @@ class MyListService
     }
 
     /**
+     * 公開マイリスト一覧取得（ページネーション付き）
+     *
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyList>
+     */
+    public function getPublicLists(int $page = 1, int $perPage = 20, string $sort = 'updated_at:desc')
+    {
+        [$sortField, $sortDirection] = $this->parseSortParam($sort);
+
+        return $this->listRepository->paginatePublic($page, $perPage, $sortField, $sortDirection);
+    }
+
+    /**
      * リストを作成
      */
     public function createList(User $user, string $title, ?string $note = null, bool $isPublic = false): MyList

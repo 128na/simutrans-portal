@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Pages;
 
+use App\Actions\FrontMyList\PublicShowAction;
 use App\Http\Resources\Mypage\MyListItem as MyListItemResource;
 use App\Http\Resources\Mypage\MyListShow as MyListShowResource;
 use App\Services\MyListService;
@@ -13,7 +14,10 @@ use Illuminate\Routing\Controller;
 
 class PublicMyListController extends Controller
 {
-    public function __construct(private readonly MyListService $service) {}
+    public function __construct(
+        private readonly MyListService $service,
+        private readonly PublicShowAction $publicShowAction,
+    ) {}
 
     public function show(string $slug): View
     {
@@ -29,13 +33,13 @@ class PublicMyListController extends Controller
      */
     public function showPublic(string $slug): ResourceCollection
     {
-        $list = $this->service->getPublicListBySlug($slug);
-
         $page = (int) request()->query('page', 1);
         $perPage = (int) request()->query('per_page', 20);
         $sort = (string) request()->query('sort', 'position');
 
-        $items = $this->service->getPublicItemsForList($list, $page, $perPage, $sort);
+        $result = ($this->publicShowAction)($slug, $page, $perPage, $sort);
+        $list = $result['list'];
+        $items = $result['items'];
 
         return MyListItemResource::collection($items)
             ->additional([

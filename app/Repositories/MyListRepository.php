@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Enums\ArticleStatus;
 use App\Models\MyList;
 use App\Models\User;
 use App\Repositories\Concerns\HasCrud;
@@ -36,6 +37,31 @@ class MyListRepository
     }
 
     /**
+     * 公開マイリスト一覧取得（ページネーション付き）
+     *
+     * @return Paginator<int, MyList>
+     */
+    public function paginatePublic(int $page = 1, int $perPage = 20, string $sortField = 'updated_at', string $sortDirection = 'desc'): Paginator
+    {
+        $query = $this->model
+            ->where('is_public', true)
+            ->withCount([
+                'items as items_count' => function ($query): void {
+                    $query->whereHas('article', function ($articleQuery): void {
+                        $articleQuery->where('status', ArticleStatus::Publish)
+                            ->whereNull('deleted_at');
+                    });
+                },
+            ])
+            ->orderBy($sortField, $sortDirection);
+
+        /** @var Paginator<int, MyList> $result */
+        $result = $query->simplePaginate($perPage, ['*'], 'page', $page);
+
+        return $result;
+    }
+
+    /**
      * 公開リストを slug で取得（存在しない場合は例外）
      */
     public function findOrFailPublicBySlug(string $slug): MyList
@@ -43,6 +69,14 @@ class MyListRepository
         return $this->model
             ->where('is_public', true)
             ->where('slug', $slug)
+            ->withCount([
+                'items as items_count' => function ($query): void {
+                    $query->whereHas('article', function ($articleQuery): void {
+                        $articleQuery->where('status', ArticleStatus::Publish)
+                            ->whereNull('deleted_at');
+                    });
+                },
+            ])
             ->firstOrFail();
     }
 }

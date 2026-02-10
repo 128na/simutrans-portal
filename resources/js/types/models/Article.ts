@@ -40,6 +40,8 @@ export interface ArticleList {
   url: string;
   thumbnail: string;
   description: string;
+  download_url?: string;
+  addon_page_url?: string;
   user: import("./User").UserShow;
   categories: import("./Category").CategoryShow[];
   tags: import("./Tag").TagShow[];
@@ -56,6 +58,8 @@ export interface ArticleBase {
   title: string;
   slug: string;
   post_type: ArticlePostType;
+  download_url?: string;
+  addon_page_url?: string;
   user: import("./User").UserShow;
   categories: import("./Category").CategoryShow[];
   tags: import("./Tag").TagShow[];

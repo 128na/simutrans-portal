@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Frontend;
 
+use App\Enums\ArticlePostType;
 use App\Models\Article as ModelsArticle;
 use App\Models\Category;
 use App\Models\Tag;
@@ -29,6 +30,8 @@ class ArticleList extends JsonResource
                 'userIdOrNickname' => $this->resource->user->nickname ?? $this->resource->user_id,
                 'articleSlug' => $this->resource->slug,
             ]),
+            'download_url' => $this->when($this->resource->post_type === ArticlePostType::AddonPost, route('articles.download', ['article' => $this->resource->id])),
+            'addon_page_url' => $this->when($this->resource->post_type === ArticlePostType::AddonIntroduction, route('articles.conversion', ['article' => $this->resource->id])),
             'thumbnail' => $this->resource->thumbnail_url,
             'description' => $this->resource->contents->getDescription(),
             'categories' => $this->resource->categories->map(fn (Category $category): array => [

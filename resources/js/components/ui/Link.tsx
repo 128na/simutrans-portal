@@ -16,7 +16,7 @@ export default function Link({
   }
   return (
     <a className={twMerge("v2-link", className)} {...props}>
-      {children}
+      {children || props.href}
     </a>
   );
 }

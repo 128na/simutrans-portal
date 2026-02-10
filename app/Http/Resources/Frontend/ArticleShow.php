@@ -28,7 +28,7 @@ class ArticleShow extends JsonResource
             'slug' => $this->resource->slug,
             'post_type' => $this->resource->post_type,
             'download_url' => $this->when($this->resource->post_type === ArticlePostType::AddonPost, route('articles.download', ['article' => $this->resource->id])),
-            'addon_page_url' => $this->when($this->resource->post_type === ArticlePostType::AddonIntroduction, $this->resource->contents->link ?? null),
+            'addon_page_url' => $this->when($this->resource->post_type === ArticlePostType::AddonIntroduction, route('articles.conversion', ['article' => $this->resource->id])),
             'contents' => $this->resource->contents,
             'user' => [
                 'id' => $this->resource->user->id,

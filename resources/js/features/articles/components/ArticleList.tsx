@@ -43,11 +43,31 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
                 <Categories categories={article.categories} />
                 <Tags tags={article.tags} />
               </div>
-              <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <ProfileShow user={article.user} />
-                {isAuthenticated && article.id && (
-                  <AddToMyListButton articleId={article.id} />
-                )}
+                <div className="flex flex-wrap gap-2 sm:justify-end">
+                  {article.download_url && (
+                    <a
+                      className="v2-button v2-button-md v2-button-primary"
+                      href={article.download_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      ダウンロード
+                    </a>
+                  )}
+                  {article.addon_page_url && (
+                    <a
+                      href={article.addon_page_url}
+                      className="v2-button v2-button-md v2-button-primary"
+                    >
+                      掲載ページ
+                    </a>
+                  )}
+                  {isAuthenticated && article.id && (
+                    <AddToMyListButton articleId={article.id} />
+                  )}
+                </div>
               </div>
             </div>
           </div>

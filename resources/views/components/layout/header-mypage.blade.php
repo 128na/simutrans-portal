@@ -17,113 +17,6 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-4">
-            <a href="{{route('index')}}" class="v2-header-menu-item">トップ</a>
-            <a href="{{route('mypage.index')}}" class="v2-header-menu-item">マイページ</a>
-            <div class="relative">
-                <button popovertarget="desktop-menu-article" class="flex items-center gap-x-1 v2-header-menu-item cursor-pointer">
-                    記事
-                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-c-sub">
-                        <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
-                    </svg>
-                </button>
-
-                <el-popover id="desktop-menu-article" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                    <div class="p-4">
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.articles.index')}}" class="block font-semibold">
-                                    記事一覧
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.articles.create')}}" class="block font-semibold">
-                                    記事作成
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.mylists.index')}}" class="block font-semibold">
-                                    マイリスト
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.redirects')}}" class="block font-semibold">
-                                    記事のリダイレクト設定
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.attachments')}}" class="block font-semibold">
-                                    ファイル管理
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.analytics')}}" class="block font-semibold">
-                                    アナリティクス
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.tags')}}" class="block font-semibold">
-                                    タグの編集
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </el-popover>
-            </div>
-            <div class="relative">
-                <button popovertarget="desktop-menu-user" class="flex items-center gap-x-1 v2-header-menu-item cursor-pointer">
-                    ユーザー
-                    <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" class="size-5 flex-none text-c-sub">
-                        <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" fill-rule="evenodd" />
-                    </svg>
-                </button>
-
-                <el-popover id="desktop-menu-user" anchor="bottom" popover class="w-screen max-w-md overflow-hidden rounded-3xl shadow-lg outline-1 outline-c-main/5 transition transition-discrete [--anchor-gap:--spacing(3)] backdrop:bg-transparent open:block data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-                    <div class="p-4">
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.profile')}}" class="block font-semibold">
-                                    プロフィール
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.two-factor')}}" class="block font-semibold">
-                                    二要素認証
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.invite')}}" class="block font-semibold">
-                                    ユーザー招待
-                                </a>
-                            </div>
-                        </div>
-                        <div class="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
-                            <div class="flex-auto">
-                                <a href="{{route('mypage.login-histories')}}" class="block font-semibold">
-                                    ログイン履歴
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </el-popover>
-            </div>
-            <a href="{{config('app.support_site_url')}}" class="v2-header-menu-item" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-c-sub/50">↗</span></a>
-
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <form action="{{route('logout')}}" method="POST">
@@ -151,22 +44,7 @@
                     <div class="mt-6 flow-root">
                         <div class="-my-6 divide-y divide-c-sub/10">
                             <div class="space-y-2 py-6">
-                                <a href="{{route('index')}}" class="v2-header-menu-item-sp">トップ</a>
-                                <a href="{{route('mypage.index')}}" class="v2-header-menu-item-sp">マイページ</a>
-                                <a href="{{route('mypage.articles.index')}}" class="v2-header-menu-item-sp">記事一覧</a>
-                                <a href="{{route('mypage.articles.create')}}" class="v2-header-menu-item-sp">記事作成</a>
-                                <a href="{{route('mypage.mylists.index')}}" class="v2-header-menu-item-sp">マイリスト</a>
-                                <a href="{{route('mypage.redirects')}}" class="v2-header-menu-item-sp">記事のリダイレクト設定</a>
-                                <a href="{{route('mypage.attachments')}}" class="v2-header-menu-item-sp">ファイル管理</a>
-                                <a href="{{route('mypage.analytics')}}" class="v2-header-menu-item-sp">アナリティクス</a>
-                                <a href="{{route('mypage.tags')}}" class="v2-header-menu-item-sp">タグの編集</a>
-                            </div>
-                            <div class="space-y-2 py-6">
-                                <a href="{{route('mypage.profile')}}" class="v2-header-menu-item-sp">プロフィール</a>
-                                <a href="{{route('mypage.two-factor')}}" class="v2-header-menu-item-sp">二要素認証</a>
-                                <a href="{{route('mypage.invite')}}" class="v2-header-menu-item-sp">ユーザー招待</a>
-                                <a href="{{route('mypage.login-histories')}}" class="v2-header-menu-item-sp">ログイン履歴</a>
-                                <a href="{{config('app.support_site_url')}}" class="v2-header-menu-item-sp" target="_blank" rel="noopener">サイトの使い方<span class="text-sm text-c-sub/50">↗</span></a>
+                                @include('components.layout.sidebar-mypage')
                             </div>
                             <div class="py-6">
                                 <form action="{{route('logout')}}" method="POST">

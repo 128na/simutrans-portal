@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('max-w', 'v2-page-lg')
-@section('content')
+@section('page-content')
 <script src="https://www.google.com/recaptcha/enterprise.js?render={{ config('services.google_recaptcha.siteKey') }}">
 </script>
 

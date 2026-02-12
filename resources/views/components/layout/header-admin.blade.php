@@ -17,8 +17,6 @@
             </button>
         </div>
         <el-popover-group class="hidden lg:flex lg:gap-x-4">
-            <a href="{{route('index')}}" class="v2-header-menu-item">トップページ</a>
-            <a href="{{route('mypage.index')}}" class="v2-header-menu-item">マイページ</a>
         </el-popover-group>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
             <form action="{{route('logout')}}" method="POST">
@@ -46,8 +44,7 @@
                     <div class="mt-6 flow-root">
                         <div class="-my-6 divide-y divide-c-sub/10">
                             <div class="space-y-2 py-6">
-                                <a href="{{route('index')}}" class="v2-header-menu-item-sp">トップページ</a>
-                                <a href="{{route('mypage.index')}}" class="v2-header-menu-item-sp">マイページ</a>
+                                @include('components.layout.sidebar-admin')
                             </div>
                             <div class="py-6">
                                 <form action="{{route('logout')}}" method="POST">

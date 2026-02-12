@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('max-w', 'v2-page-lg')
-@section('content')
+@section('page-content')
 <div class="v2-page v2-page-lg">
     <div class="space-y-8">
         <h2 class="v2-text-h3">新着アドオン</h2>

@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('max-w', 'v2-page-lg')
-@section('content')
+@section('page-content')
 <script id="data-article" type="application/json">
     @json($article)
 

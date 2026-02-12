@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('max-w', 'v2-page-lg')
-@section('content')
+@section('page-content')
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <div class="v2-page v2-page-lg">
     <div class="mb-12">

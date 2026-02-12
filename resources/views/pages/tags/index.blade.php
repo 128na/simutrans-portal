@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('max-w', 'v2-page-lg')
-@section('content')
+@section('page-content')
 <div class="v2-page v2-page-lg">
     <div class="mb-12">
         <h2 class="v2-text-h1 mb-4">タグ一覧</h2>

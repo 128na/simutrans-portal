@@ -1,6 +1,6 @@
 @extends('layouts.front')
 
-@section('content')
+@section('page-content')
 <div class="v2-page v2-page-sm">
     <div class="mb-12">
         <h2 class="v2-text-h2">ログイン</h2>

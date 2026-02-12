@@ -1,7 +1,7 @@
 @extends('layouts.front')
 
 @section('max-w', 'v2-page-sm')
-@section('content')
+@section('page-content')
 <div class="v2-page v2-page-sm">
     <div class="mb-12">
         <h2 class="v2-text-h2 mb-2">ユーザー登録</h2>

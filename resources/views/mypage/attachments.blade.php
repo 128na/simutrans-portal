@@ -1,6 +1,6 @@
 @extends('layouts.mypage')
 @section('max-w', 'v2-page-lg')
-@section('content')
+@section('page-content')
 <div class="v2-page v2-page-lg">
     <script id="data-attachments" type="application/json">
         @json($attachments)

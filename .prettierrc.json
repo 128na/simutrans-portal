@@ -1,4 +1,13 @@
 {
+  "plugins": ["prettier-plugin-blade"],
+  "overrides": [
+    {
+      "files": ["*.blade.php"],
+      "options": {
+        "parser": "blade"
+      }
+    }
+  ],
   "trailingComma": "es5",
   "tabWidth": 2,
   "semi": true,

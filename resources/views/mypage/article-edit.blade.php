@@ -1,30 +1,25 @@
 @extends('layouts.mypage')
 @section('max-w', 'v2-page-lg')
 @section('page-content')
-<div class="v2-page v2-page-lg">
+  <div class="v2-page v2-page-lg">
     <script id="data-user" type="application/json">
-        @json($user)
-
+      @json($user)
     </script>
     <script id="data-article" type="application/json">
-        @json($article)
-
+      @json($article)
     </script>
     <script id="data-attachments" type="application/json">
-        @json($attachments)
-
+      @json($attachments)
     </script>
     <script id="data-categories" type="application/json">
-        @json($categories)
-
+      @json($categories)
     </script>
     <script id="data-tags" type="application/json">
-        @json($tags)
-
+      @json($tags)
     </script>
     <script id="data-relational-articles" type="application/json">
-        @json($relationalArticles)
-
+      @json($relationalArticles)
     </script>
     <div id="app-article-edit">読み込み中...</div>
-    @endsection
+  </div>
+@endsection

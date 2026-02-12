@@ -11,6 +11,7 @@ export const Page = () => {
 
   const categories = useArticleEditor((s) => s.categories);
   const relationalArticles = useArticleEditor((s) => s.relationalArticles);
+  const isAdmin = useArticleEditor((s) => s.user.role === "admin");
 
   return (
     <>
@@ -18,6 +19,7 @@ export const Page = () => {
       <SelectCategories
         categories={categories}
         selected={article.categories}
+        showAdmin={isAdmin}
         only={["page"]}
         onChange={(categoryIds) =>
           update((draft) => (draft.categories = categoryIds))

@@ -29,7 +29,7 @@
       @include('components.ui.link', ['url' => route('latest'), 'title' => '新着アドオン'])
     </li>
     <li>
-      pak別一覧
+      <p class="mb-1 font-bold">pak別一覧</p>
       <ul class="ml-3 space-y-2">
         <li>
           @include('components.ui.link', ['url' => route('pak.128japan'), 'title' => 'pak128.Japan'])
@@ -46,7 +46,7 @@
       </ul>
     </li>
     <li>
-      ジャンル別一覧
+      <p class="mb-1 font-bold">ジャンル別一覧</p>
       <ul class="ml-3 space-y-2">
         <li>
           @include('components.ui.link', ['url' => route('users.index'), 'title' => 'ユーザー'])
@@ -60,7 +60,7 @@
       </ul>
     </li>
     <li>
-      その他
+      <p class="mb-1 font-bold">その他</p>
       <ul class="ml-3 space-y-2">
         <li>
           @include('components.ui.link', ['url' => route('pages'), 'title' => '一般記事'])

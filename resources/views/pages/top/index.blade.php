@@ -48,12 +48,12 @@
         <div class="grid gap-10">
           <section class="space-y-8">
             <h3 class="v2-text-h4">
-              @include('components.ui.link', ['url' => route('latest'), 'title' => 'アドオン新着一覧'])
+              @include('components.ui.link', ['url' => route('latest'), 'title' => '新着アドオン'])
             </h3>
 
             <div>
               <h3 class="v2-text-h4 mb-4">
-                @include('components.ui.link', ['url' => route('announces'), 'title' => 'お知らせ一覧'])
+                @include('components.ui.link', ['url' => route('announces'), 'title' => 'お知らせ'])
               </h3>
               <div class="gap-2 flex flex-col">
                 @foreach ($announces as $article)

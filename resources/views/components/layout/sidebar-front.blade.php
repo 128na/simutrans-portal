@@ -72,6 +72,9 @@
           @include('components.ui.link', ['url' => route('search'), 'title' => '詳細検索'])
         </li>
         <li>
+          @include('components.ui.link', ['url' => route('public-mylist.index'), 'title' => '公開マイリスト一覧'])
+        </li>
+        <li>
           @include('components.ui.link', ['url' => route('social'), 'title' => '各種ツール（SNS, RSS, API, MCP）'])
         </li>
         <li>

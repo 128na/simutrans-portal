@@ -48,6 +48,7 @@ Route::get('/users/{userIdOrNickname}', [\App\Http\Controllers\Pages\UserControl
 Route::get('/users/{userIdOrNickname}/{articleSlug}', [\App\Http\Controllers\Pages\Article\ShowController::class, 'show'])->name('articles.show')->where('articleSlug', '.*');
 
 // 公開マイリスト
+Route::get('/mylist', [\App\Http\Controllers\Pages\PublicMyListController::class, 'index'])->name('public-mylist.index');
 Route::get('/mylist/{slug}', [\App\Http\Controllers\Pages\PublicMyListController::class, 'show'])->name('public-mylist.show');
 
 // 記事詳細・ダウンロード

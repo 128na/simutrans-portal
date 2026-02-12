@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Pages;
 
+use App\Actions\FrontMyList\PublicListAction;
 use App\Actions\FrontMyList\PublicShowAction;
 use App\Http\Resources\Mypage\MyListItem as MyListItemResource;
 use App\Http\Resources\Mypage\MyListShow as MyListShowResource;
@@ -16,8 +17,14 @@ class PublicMyListController extends Controller
 {
     public function __construct(
         private readonly MyListService $service,
+        private readonly PublicListAction $publicListAction,
         private readonly PublicShowAction $publicShowAction,
     ) {}
+
+    public function index(): View
+    {
+        return view('pages.mylist.index');
+    }
 
     public function show(string $slug): View
     {
@@ -26,6 +33,20 @@ class PublicMyListController extends Controller
         return view('pages.mylist.show', [
             'mylist' => $mylist,
         ]);
+    }
+
+    /**
+     * 公開リスト一覧を取得（認証不要）
+     */
+    public function listPublic(): ResourceCollection
+    {
+        $page = (int) request()->query('page', 1);
+        $perPage = (int) request()->query('per_page', 20);
+        $sort = (string) request()->query('sort', 'updated_at:desc');
+
+        $paginator = ($this->publicListAction)($page, $perPage, $sort);
+
+        return MyListShowResource::collection($paginator);
     }
 
     /**

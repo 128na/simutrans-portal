@@ -1,4 +1,4 @@
-@extends('layouts.front')
+@extends('layouts.auth')
 
 @section('page-content')
   <div class="v2-page v2-page-sm">

@@ -1,4 +1,4 @@
-@extends('layouts.front')
+@extends('layouts.auth')
 
 @section('max-w', 'v2-page-sm')
 @section('page-content')

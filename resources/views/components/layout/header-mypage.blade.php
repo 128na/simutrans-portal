@@ -3,7 +3,7 @@
 <header class="bg-white">
   <nav
     aria-label="Global"
-    class="mx-auto flex v2-page-lg items-center justify-between p-6 lg:px-8 border-b border-c-sub/10"
+    class="v2-header"
   >
     <div class="flex lg:flex-1">
       <a href="/" class="-m-1.5 p-1.5">
@@ -50,7 +50,7 @@
     <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
       <div tabindex="0" class="fixed inset-0 focus:outline-none">
         <el-dialog-panel
-          class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto p-6 sm:max-w-sm sm:ring-1 sm:ring-c-main/10 bg-white"
+          class="v2-mobile-menu"
         >
           <div class="flex items-center justify-between">
             <a href="#" class="-m-1.5 p-1.5">

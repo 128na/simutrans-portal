@@ -43,6 +43,12 @@
     @apply text-c-main hover:text-c-main/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
   }
 
+  .v2-header {
+    @apply mx-auto max-w-7xl px-6 py-3 border-b border-c-sub/10;
+  }
+  .v2-mobile-menu {
+    @apply fixed inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-4 sm:max-w-sm sm:ring-1 sm:ring-c-main/10 bg-white;
+  }
   /* ヘッダメニュー */
   .v2-header-link {
     @apply text-sm/6 font-semibold
@@ -57,7 +63,7 @@
 
   /* ページ */
   .v2-page {
-    @apply mx-auto p-6 lg:px-8;
+    @apply mx-auto p-6;
   }
   .v2-page-sm {
     @apply max-w-xl;

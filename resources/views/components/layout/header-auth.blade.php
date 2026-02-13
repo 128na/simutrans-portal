@@ -3,7 +3,7 @@
 <header class="bg-white">
   <nav
     aria-label="Global"
-    class="mx-auto v2-page-lg p-6 lg:px-8 border-b border-c-sub/10"
+    class="v2-header"
   >
     <div class="flex items-center justify-between gap-x-4">
       <div class="flex lg:flex-1">

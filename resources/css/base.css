@@ -31,6 +31,7 @@
 }
 @layer utilities {
   /* 外部リンク判定（共通） */
+  .v2-link-external,
   .v2-link:not([href^="https://simutrans-portal.128-bit.net"]):not(
       [href^="http://localhost:1080"]
     ):not([href^="#"]):not([href^="/"]) {
@@ -137,7 +138,7 @@
   }
   /* カラーバリアント：カード */
   .v2-card-main {
-    @apply border-c-main bg-c-main/2 text-c-main;
+    @apply border-c-main/50 bg-c-main/2 text-c-main;
   }
   .v2-card-sub {
     @apply border-c-sub/80 bg-c-sub/2 text-c-sub/80;

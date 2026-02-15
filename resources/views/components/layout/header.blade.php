@@ -1,10 +1,7 @@
 <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
 <header class="bg-white">
-  <nav
-    aria-label="Global"
-    class="v2-header"
-  >
+  <nav aria-label="Global" class="v2-header">
     <div class="flex items-center justify-between gap-x-4">
       <div class="flex lg:flex-1">
         <a href="/" class="-m-1.5 p-1.5">
@@ -70,9 +67,7 @@
   <el-dialog>
     <dialog id="mobile-menu" class="backdrop:bg-transparent lg:hidden">
       <div tabindex="0" class="fixed inset-0 focus:outline-none">
-        <el-dialog-panel
-          class="v2-mobile-menu"
-        >
+        <el-dialog-panel class="v2-mobile-menu">
           <div class="flex items-center justify-between">
             <a href="#" class="-m-1.5 p-1.5">
               <span class="sr-only">{{ config('app.name') }}</span>

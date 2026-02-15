@@ -2,6 +2,7 @@ import { Categories } from "./Categories";
 import { ProfileShow } from "../../user/ProfileShow";
 import { Tags } from "./Tags";
 import { AddToMyListButton } from "../../mylist/AddToMyList";
+import ConversionLink from "@/components/ui/ConversionLink";
 
 type Props = {
   articles: Article.List[];
@@ -39,6 +40,9 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
               <div className="text-sm v2-text-sub line-clamp-3 break-all">
                 {article.description}
               </div>
+              <div>
+                <ConversionLink article={article} />
+              </div>
               <div className="text-xs flex flex-wrap gap-2">
                 <Categories categories={article.categories} />
                 <Tags tags={article.tags} />
@@ -46,24 +50,6 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <ProfileShow user={article.user} />
                 <div className="flex flex-wrap gap-2 sm:justify-end">
-                  {article.download_url && (
-                    <a
-                      className="v2-button v2-button-md v2-button-primary inline-block"
-                      href={article.download_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      ダウンロード
-                    </a>
-                  )}
-                  {article.addon_page_url && (
-                    <a
-                      href={article.addon_page_url}
-                      className="v2-button v2-button-md v2-button-primary inline-block"
-                    >
-                      掲載ページ
-                    </a>
-                  )}
                   {isAuthenticated && article.id && (
                     <AddToMyListButton articleId={article.id} />
                   )}

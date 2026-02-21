@@ -30,3 +30,7 @@ mix-manifest.json
 # Vitest
 coverage/
 coverage-repos/
+
+**/caddy
+frankenphp
+frankenphp-worker.php

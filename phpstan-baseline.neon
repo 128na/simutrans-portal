@@ -117,5 +117,8 @@ parameters:
 		-
 			message: '#^Method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\Tag\>\:\:select\(\) invoked with 2 parameters, 0\-1 required\.$#'
 			identifier: arguments.count
+		-
+			message: '#^Relation ''user'' is not found in App\\Models\\Article model\.$#'
+			identifier: larastan.relationExistence
 			count: 1
-			path: app/Repositories/TagRepository.php
+			path: app/Http/Controllers/SitemapController.php

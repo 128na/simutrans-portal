@@ -30,7 +30,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder<static>|MyList query()
  * @method static Builder<static>|MyList whereBelongsToUser(\App\Models\User|int $user)
  * @method static Builder<static>|MyList wherePublic()
- * @method \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\MyListItem, self> items()
  *
  * @mixin \Eloquent
  * @mixin IdeHelperMyList

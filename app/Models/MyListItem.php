@@ -26,8 +26,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder<static>|MyListItem orderByPosition()
  * @method static Builder<static>|MyListItem query()
  * @method static Builder<static>|MyListItem whereListId(int $listId)
- * @method \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Article, self> article()
- * @method \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\MyList, self> list()
  *
  * @mixin \Eloquent
  * @mixin IdeHelperMyListItem

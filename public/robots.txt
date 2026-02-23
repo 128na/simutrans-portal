@@ -1,5 +1,5 @@
 User-agent: SentryUptimeBot
 Disallow: *
 
-User-agent: *
-Disallow: /search
+
+Sitemap: https://simutrans-portal.com/sitemap.xml

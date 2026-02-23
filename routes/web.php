@@ -114,6 +114,8 @@ Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): voi
     Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
 
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+
 Route::middleware([ExcludePaths::class])->group(function (): void {
     Route::fallback([RedirectController::class, 'index']);
 });

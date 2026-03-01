@@ -36,16 +36,16 @@ class SitemapControllerTest extends TestCase
         $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $xml);
 
         // 主要なURLが含まれているかチェック
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/users</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/tags</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/categories</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/users</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/tags</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/categories</loc>', $xml);
 
         // 動的URL
         $userIdentifier = $user->nickname ?? $user->id;
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/users/' . $userIdentifier . '</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/tags/' . urlencode($tag->name) . '</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/mylist/' . $myList->slug . '</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/users/' . $userIdentifier . '/' . $article->slug . '</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/users/'.$userIdentifier.'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/tags/'.urlencode($tag->name).'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/mylist/'.$myList->slug.'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/users/'.$userIdentifier.'/'.$article->slug.'</loc>', $xml);
     }
 
     public function test_sitemap_excludes_unwanted_items(): void
@@ -69,13 +69,13 @@ class SitemapControllerTest extends TestCase
         $baseUrl = config('app.url');
 
         // 含まれるべきでないものが含まれていないことをチェック
-        $this->assertStringNotContainsString('<loc>' . $baseUrl . '/users/' . ($userWithoutArticles->nickname ?? $userWithoutArticles->id) . '</loc>', $xml);
+        $this->assertStringNotContainsString('<loc>'.$baseUrl.'/users/'.($userWithoutArticles->nickname ?? $userWithoutArticles->id).'</loc>', $xml);
 
         // 含まれるべきものは含まれていることを確認（コントラスト）
         $userIdentifier = $userWithArticles->nickname ?? $userWithArticles->id;
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/users/' . $userIdentifier . '</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/users/' . $userIdentifier . '/' . $publishedArticle->slug . '</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/mylist/' . $publicMyList->slug . '</loc>', $xml);
-        $this->assertStringContainsString('<loc>' . $baseUrl . '/tags/' . urlencode($tagWithoutArticles->name) . '</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/users/'.$userIdentifier.'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/users/'.$userIdentifier.'/'.$publishedArticle->slug.'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/mylist/'.$publicMyList->slug.'</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/tags/'.urlencode($tagWithoutArticles->name).'</loc>', $xml);
     }
 }

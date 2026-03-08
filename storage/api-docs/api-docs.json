@@ -40,12 +40,12 @@
                                     "type": {
                                         "description": "集計タイプ",
                                         "type": "string",
+                                        "example": "daily",
                                         "enum": [
                                             "daily",
                                             "monthly",
                                             "yearly"
-                                        ],
-                                        "example": "daily"
+                                        ]
                                     },
                                     "start_date": {
                                         "description": "開始日",
@@ -174,12 +174,12 @@
                                             "status": {
                                                 "description": "ステータス",
                                                 "type": "string",
+                                                "example": "publish",
                                                 "enum": [
                                                     "publish",
                                                     "draft",
                                                     "private"
-                                                ],
-                                                "example": "publish"
+                                                ]
                                             },
                                             "title": {
                                                 "description": "タイトル",
@@ -349,12 +349,12 @@
                                             "status": {
                                                 "description": "ステータス",
                                                 "type": "string",
+                                                "example": "publish",
                                                 "enum": [
                                                     "publish",
                                                     "draft",
                                                     "private"
-                                                ],
-                                                "example": "publish"
+                                                ]
                                             },
                                             "title": {
                                                 "description": "タイトル",
@@ -885,12 +885,12 @@
                     "status": {
                         "description": "ステータス",
                         "type": "string",
+                        "example": "publish",
                         "enum": [
                             "publish",
                             "draft",
                             "private"
-                        ],
-                        "example": "publish"
+                        ]
                     },
                     "post_type": {
                         "description": "投稿タイプ",
@@ -1223,11 +1223,11 @@
                     "role": {
                         "description": "ロール",
                         "type": "string",
+                        "example": "user",
                         "enum": [
                             "user",
                             "admin"
-                        ],
-                        "example": "user"
+                        ]
                     },
                     "profile": {
                         "description": "プロフィール情報",

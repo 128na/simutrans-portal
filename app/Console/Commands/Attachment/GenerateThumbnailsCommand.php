@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands\Attachment;
 
+use App\Jobs\Attachments\JobGenerateThumbnail;
 use App\Models\Attachment;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -57,8 +59,8 @@ class GenerateThumbnailsCommand extends Command
         $attachments = $query->get();
 
         // 画像のみをフィルタリング（isImageアクセサを使用）
-        /** @var \Illuminate\Support\Collection<int, \App\Models\Attachment> $imageAttachments */
-        $imageAttachments = $attachments->filter(fn (\App\Models\Attachment $attachment) => $attachment->isImage);
+        /** @var Collection<int, Attachment> $imageAttachments */
+        $imageAttachments = $attachments->filter(fn (Attachment $attachment) => $attachment->isImage);
 
         if ($imageAttachments->isEmpty()) {
             $this->info('処理対象の画像がありません。');
@@ -83,7 +85,7 @@ class GenerateThumbnailsCommand extends Command
                     // 元のサイズを記録
                     $originalSize = $disk->exists($imageAttachment->path) ? $disk->size($imageAttachment->path) : 0;
 
-                    dispatch_sync(new \App\Jobs\Attachments\JobGenerateThumbnail($imageAttachment));
+                    dispatch_sync(new JobGenerateThumbnail($imageAttachment));
                     $dispatched++;
 
                     // サムネイルのサイズを記録
@@ -100,7 +102,7 @@ class GenerateThumbnailsCommand extends Command
                 }
             } else {
                 // キューに投入
-                dispatch(new \App\Jobs\Attachments\JobGenerateThumbnail($imageAttachment));
+                dispatch(new JobGenerateThumbnail($imageAttachment));
                 $dispatched++;
             }
 

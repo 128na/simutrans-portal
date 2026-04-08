@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Models\Tag;
 use App\Repositories\Concerns\HasCrud;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -82,7 +83,7 @@ class TagRepository
     }
 
     /**
-     * @param  array{name:string,description:string|null,created_by:int,last_modified_at:\Carbon\CarbonImmutable,last_modified_by:int}  $data
+     * @param  array{name:string,description:string|null,created_by:int,last_modified_at:CarbonImmutable,last_modified_by:int}  $data
      */
     public function store(array $data): Tag
     {
@@ -90,7 +91,7 @@ class TagRepository
     }
 
     /**
-     * @param  array{description:string|null,last_modified_at:\Carbon\CarbonImmutable,last_modified_by:int}  $data
+     * @param  array{description:string|null,last_modified_at:CarbonImmutable,last_modified_by:int}  $data
      */
     public function update(Tag $tag, array $data): Tag
     {

@@ -4,7 +4,18 @@ declare(strict_types=1);
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\GuestArticleSearchOptionsTool;
+use App\Mcp\Tools\GuestArticleSearchTool;
+use App\Mcp\Tools\GuestArticleShowTool;
+use App\Mcp\Tools\GuestLatestArticlesTool;
+use App\Mcp\Tools\GuestPublicMyListListTool;
+use App\Mcp\Tools\GuestPublicMyListShowTool;
+use App\Mcp\Tools\GuestSearchSuggestTool;
+use App\Mcp\Tools\GuestTagCategoryAggregateTool;
+use App\Mcp\Tools\GuestUserArticlesTool;
 use Laravel\Mcp\Server;
+use Laravel\Mcp\Server\Prompt;
+use Laravel\Mcp\Server\Tool;
 
 class SimutransAddonPortalGuestServer extends Server
 {
@@ -28,24 +39,24 @@ class SimutransAddonPortalGuestServer extends Server
     /**
      * The tools registered with this MCP server.
      *
-     * @var array<int, class-string<\Laravel\Mcp\Server\Tool>>
+     * @var array<int, class-string<Tool>>
      */
     protected array $tools = [
-        \App\Mcp\Tools\GuestArticleSearchOptionsTool::class,
-        \App\Mcp\Tools\GuestArticleSearchTool::class,
-        \App\Mcp\Tools\GuestArticleShowTool::class,
-        \App\Mcp\Tools\GuestLatestArticlesTool::class,
-        \App\Mcp\Tools\GuestPublicMyListListTool::class,
-        \App\Mcp\Tools\GuestPublicMyListShowTool::class,
-        \App\Mcp\Tools\GuestTagCategoryAggregateTool::class,
-        \App\Mcp\Tools\GuestUserArticlesTool::class,
-        \App\Mcp\Tools\GuestSearchSuggestTool::class,
+        GuestArticleSearchOptionsTool::class,
+        GuestArticleSearchTool::class,
+        GuestArticleShowTool::class,
+        GuestLatestArticlesTool::class,
+        GuestPublicMyListListTool::class,
+        GuestPublicMyListShowTool::class,
+        GuestTagCategoryAggregateTool::class,
+        GuestUserArticlesTool::class,
+        GuestSearchSuggestTool::class,
     ];
 
     /**
      * The resources registered with this MCP server.
      *
-     * @var array<int, class-string<\Laravel\Mcp\Server\Resource>>
+     * @var array<int, class-string<Server\Resource>>
      */
     protected array $resources = [
         //
@@ -54,7 +65,7 @@ class SimutransAddonPortalGuestServer extends Server
     /**
      * The prompts registered with this MCP server.
      *
-     * @var array<int, class-string<\Laravel\Mcp\Server\Prompt>>
+     * @var array<int, class-string<Prompt>>
      */
     protected array $prompts = [
         //

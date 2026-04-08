@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\FrontArticle;
 
+use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use App\Repositories\UserRepository;
@@ -17,7 +18,7 @@ class UserArticlesAction
     ) {}
 
     /**
-     * @return array{user: User, articles: LengthAwarePaginator<int, \App\Models\Article>}
+     * @return array{user: User, articles: LengthAwarePaginator<int, Article>}
      */
     public function __invoke(string $userIdOrNickname, int $limit = 24): array
     {

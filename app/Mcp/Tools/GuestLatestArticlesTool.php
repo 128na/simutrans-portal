@@ -8,6 +8,7 @@ use App\Actions\FrontArticle\LatestAction;
 use App\Http\Resources\Frontend\ArticleList;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -64,7 +65,7 @@ class GuestLatestArticlesTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, \Illuminate\JsonSchema\Types\Type>
+     * @return array<string, Type>
      */
     public function schema(JsonSchema $schema): array
     {

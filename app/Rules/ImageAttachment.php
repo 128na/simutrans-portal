@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Rules;
 
+use App\Models\Attachment;
 use App\Repositories\AttachmentRepository;
 use Closure;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Translation\PotentiallyTranslatedString;
 
 class ImageAttachment implements ValidationRule
 {
@@ -20,7 +23,7 @@ class ImageAttachment implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -32,7 +35,7 @@ class ImageAttachment implements ValidationRule
         }
 
         /**
-         * @var \App\Models\Attachment|null
+         * @var Attachment|null
          */
         $attachment = $this->attachmentRepository->find($value);
 
@@ -40,7 +43,7 @@ class ImageAttachment implements ValidationRule
             return;
         }
 
-        $tranlated_attribute = resolve(\Illuminate\Contracts\Translation\Translator::class)->get('validation.attributes')[$attribute] ?? $attribute;
+        $tranlated_attribute = resolve(Translator::class)->get('validation.attributes')[$attribute] ?? $attribute;
         $fail(__('validation.image', ['attribute' => $tranlated_attribute]));
     }
 }

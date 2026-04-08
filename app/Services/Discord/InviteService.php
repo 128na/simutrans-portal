@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Discord;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
@@ -11,7 +12,7 @@ class InviteService
 {
     public function create(): string
     {
-        /** @var \Illuminate\Http\Client\Response */
+        /** @var Response */
         $response = Http::withHeaders(['Authorization' => 'Bot '.Config::string('services.discord.token')])
             ->post(
                 'https://discord.com/api/v10/channels/'.Config::string('services.discord.channel').'/invites',

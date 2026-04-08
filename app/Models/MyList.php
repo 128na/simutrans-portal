@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Database\Factories\MyListFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,11 +20,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $note
  * @property bool $is_public
  * @property string|null $slug
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read Collection<int, \App\Models\MyListItem> $items
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Collection<int, MyListItem> $items
  * @property-read int|null $items_count
- * @property-read \App\Models\User $user
+ * @property-read User $user
  *
  * @method static \Database\Factories\MyListFactory factory($count = null, $state = [])
  * @method static Builder<static>|MyList newModelQuery()
@@ -36,7 +38,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class MyList extends Model
 {
-    /** @use HasFactory<\Database\Factories\MyListFactory> */
+    /** @use HasFactory<MyListFactory> */
     use HasFactory;
 
     protected $table = 'mylists';

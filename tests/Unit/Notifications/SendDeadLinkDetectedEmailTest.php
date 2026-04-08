@@ -7,6 +7,8 @@ namespace Tests\Unit\Notifications;
 use App\Models\Article;
 use App\Models\User;
 use App\Notifications\SendDeadLinkDetectedEmail;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Tests\Unit\TestCase;
 
 class SendDeadLinkDetectedEmailTest extends TestCase
@@ -39,7 +41,7 @@ class SendDeadLinkDetectedEmailTest extends TestCase
         $mailMessage = $notification->toMail($article);
 
         // Assert
-        $this->assertInstanceOf(\Illuminate\Notifications\Messages\MailMessage::class, $mailMessage);
+        $this->assertInstanceOf(MailMessage::class, $mailMessage);
         $this->assertEquals('「Test Article Title」のダウンロード先URLがリンク切れになっています', $mailMessage->subject);
     }
 
@@ -84,7 +86,7 @@ class SendDeadLinkDetectedEmailTest extends TestCase
         $notification = new SendDeadLinkDetectedEmail;
 
         // Assert
-        $this->assertInstanceOf(\Illuminate\Contracts\Queue\ShouldQueue::class, $notification);
+        $this->assertInstanceOf(ShouldQueue::class, $notification);
     }
 
     public function test_subject_includes_article_title(): void

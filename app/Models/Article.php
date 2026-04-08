@@ -13,9 +13,14 @@ use App\Models\Article\ArticleSearchIndex;
 use App\Models\Article\ConversionCount;
 use App\Models\Article\ViewCount;
 use App\Models\Contents\AddonPostContent;
+use App\Models\Contents\Content;
 use App\Traits\Slugable;
+use Carbon\CarbonImmutable;
+use Database\Factories\ArticleFactory;
 use Exception;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +33,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Feed\Feedable;
@@ -39,19 +46,19 @@ use Spatie\Feed\FeedItem;
  * @property string $title タイトル
  * @property string $slug スラッグ
  * @property ArticlePostType $post_type 投稿形式
- * @property \App\Models\Contents\Content $contents コンテンツ
+ * @property Content $contents コンテンツ
  * @property ArticleStatus $status 公開状態
  * @property bool $pr PR記事
- * @property \Carbon\CarbonImmutable|null $published_at 投稿日時
- * @property \Carbon\CarbonImmutable|null $modified_at 更新日時
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $published_at 投稿日時
+ * @property CarbonImmutable|null $modified_at 更新日時
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property-read Collection<int, Article> $articles
  * @property-read int|null $articles_count
- * @property-read Collection<int, \App\Models\Attachment> $attachments
+ * @property-read Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read Collection<int, \App\Models\Category> $categories
+ * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
  * @property-read mixed $category_paks
  * @property-read Collection<int, ConversionCount> $conversionCounts
@@ -64,18 +71,18 @@ use Spatie\Feed\FeedItem;
  * @property-read bool $is_inactive
  * @property-read bool $is_publish
  * @property-read bool $is_reservation
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection<int, Article> $relatedArticles
  * @property-read int|null $related_articles_count
  * @property-read ArticleSearchIndex|null $seachIndex
- * @property-read Collection<int, \App\Models\Tag> $tags
+ * @property-read Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  * @property-read mixed $thumbnail
  * @property-read mixed $thumbnail_url
  * @property-read ConversionCount|null $totalConversionCount
  * @property-read ViewCount|null $totalViewCount
- * @property-read \App\Models\User $user
+ * @property-read User $user
  * @property-read Collection<int, ViewCount> $viewCounts
  * @property-read int|null $view_counts_count
  *
@@ -105,7 +112,7 @@ use Spatie\Feed\FeedItem;
  */
 class Article extends Model implements Feedable
 {
-    /** @use HasFactory<\Database\Factories\ArticleFactory> */
+    /** @use HasFactory<ArticleFactory> */
     use HasFactory;
 
     use Notifiable;
@@ -264,7 +271,7 @@ class Article extends Model implements Feedable
     #[\Override]
     public function toFeedItem(): FeedItem
     {
-        /** @var \Carbon\CarbonImmutable|null $modifiedAt */
+        /** @var CarbonImmutable|null $modifiedAt */
         $modifiedAt = $this->modified_at;
 
         return FeedItem::create([
@@ -290,7 +297,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function withUserTrashed(Builder $builder): void
     {
         $builder->withoutGlobalScope('WithoutTrashedUser');
@@ -307,7 +314,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function latest(Builder $builder): void
     {
         $builder->latest('published_at');
@@ -316,7 +323,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function active(Builder $builder): void
     {
         $builder->where('status', ArticleStatus::Publish);
@@ -325,7 +332,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function addon(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::AddonPost, ArticlePostType::AddonIntroduction]);
@@ -334,7 +341,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function page(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown]);
@@ -345,7 +352,7 @@ class Article extends Model implements Feedable
      *
      * @implements Builder<Article>
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function pak(Builder $builder, string $slug): void
     {
         $builder->whereHas('categories', function ($query) use ($slug): void {
@@ -356,7 +363,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function announce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
@@ -368,7 +375,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function withoutAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
@@ -380,7 +387,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function category(Builder $builder, Category $category): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($category): void {
@@ -392,7 +399,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function pakAddonCategory(Builder $builder, Category $pak, Category $addon): void
     {
         $builder->join('article_category', function (JoinClause $joinClause) use ($pak): void {
@@ -408,7 +415,7 @@ class Article extends Model implements Feedable
     /**
      * @param  Builder<Article>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function tag(Builder $builder, Tag $tag): void
     {
         $builder->join('article_tag', function (JoinClause $joinClause) use ($tag): void {
@@ -418,41 +425,41 @@ class Article extends Model implements Feedable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function isAddonPost(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isAddonPost(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+        return Attribute::make(
             get: fn (): bool => ($this->attributes['post_type'] ?? null) === ArticlePostType::AddonPost->value
         );
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function isPublish(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isPublish(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+        return Attribute::make(
             get: fn (): bool => ($this->attributes['status'] ?? null) === ArticleStatus::Publish->value
         );
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function isReservation(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isReservation(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+        return Attribute::make(
             get: fn (): bool => ($this->attributes['status'] ?? null) === ArticleStatus::Reservation->value
         );
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function isInactive(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isInactive(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(
+        return Attribute::make(
             get: fn (): bool => in_array($this->attributes['status'] ?? null, [
                 ArticleStatus::Draft->value,
                 ArticleStatus::Private->value,
@@ -462,19 +469,19 @@ class Article extends Model implements Feedable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function hasThumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function hasThumbnail(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
+        return Attribute::make(get: fn (): bool => ! is_null($this->contents->thumbnail) && $this->thumbnail);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Attachment|null, never>
+     * @return Attribute<Attachment|null, never>
      */
-    protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function thumbnail(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             /** @var object{thumbnail?: int|null} $contents */
             $contents = $this->contents;
             $id = $contents->thumbnail ?? null;
@@ -484,29 +491,29 @@ class Article extends Model implements Feedable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     * @return Attribute<string, never>
      */
-    protected function thumbnailUrl(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function thumbnailUrl(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
+        return Attribute::make(get: fn () => ($this->has_thumbnail && $this->thumbnail) ? $this->thumbnail->thumbnail : $this->getPublicDisk()->url(DefaultThumbnail::NO_THUMBNAIL));
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function hasFile(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function hasFile(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->is_addon_post
+        return Attribute::make(get: fn (): bool => $this->is_addon_post
             && $this->contents instanceof AddonPostContent
             && ! is_null($this->contents->file) && $this->file);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Attachment|null, never>
+     * @return Attribute<Attachment|null, never>
      */
-    protected function file(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function file(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function () {
+        return Attribute::make(get: function () {
             if ($this->contents instanceof AddonPostContent) {
                 $id = $this->contents->file;
 
@@ -518,19 +525,19 @@ class Article extends Model implements Feedable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function hasFileInfo(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function hasFileInfo(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
+        return Attribute::make(get: fn (): bool => $this->hasFile && $this->file && $this->file->fileInfo);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<Collection<int, Category>, never>
+     * @return Attribute<Collection<int, Category>, never>
      */
-    protected function categoryPaks(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function categoryPaks(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
+        return Attribute::make(get: fn () => $this->categories->filter(fn ($category): bool => $category->type === CategoryType::Pak));
     }
 
     #[\Override]

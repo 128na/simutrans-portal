@@ -9,6 +9,7 @@ use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Http\Resources\Mypage\ArticleAnalytic;
 use App\Repositories\ArticleRepository;
 use App\Services\Front\MetaOgpService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class AnalyticsController extends Controller
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(): View
     {
         $user = Auth::user();
         if ($user === null) {

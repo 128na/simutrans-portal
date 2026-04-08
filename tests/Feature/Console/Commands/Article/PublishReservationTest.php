@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Commands\Article;
 
+use App\Console\Commands\Article\PublishReservation;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\TestCase;
@@ -35,8 +37,8 @@ class PublishReservationTest extends TestCase
         ]);
 
         // コマンドを直接実行してCarbonImmutableを注入
-        $command = new \App\Console\Commands\Article\PublishReservation(
-            app(\App\Repositories\ArticleRepository::class),
+        $command = new PublishReservation(
+            app(ArticleRepository::class),
             $now
         );
 
@@ -72,8 +74,8 @@ class PublishReservationTest extends TestCase
         ]);
 
         // コマンドを直接実行
-        $command = new \App\Console\Commands\Article\PublishReservation(
-            app(\App\Repositories\ArticleRepository::class),
+        $command = new PublishReservation(
+            app(ArticleRepository::class),
             $now
         );
 
@@ -98,8 +100,8 @@ class PublishReservationTest extends TestCase
         ]);
 
         // コマンドを直接実行
-        $command = new \App\Console\Commands\Article\PublishReservation(
-            app(\App\Repositories\ArticleRepository::class),
+        $command = new PublishReservation(
+            app(ArticleRepository::class),
             $now
         );
 

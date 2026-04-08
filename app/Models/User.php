@@ -9,14 +9,20 @@ use App\Models\User\LoginHistory;
 use App\Models\User\Profile;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
+use Carbon\CarbonImmutable;
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
@@ -26,32 +32,32 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string $name ユーザー名
  * @property string|null $nickname 表示名
  * @property string $email
- * @property \Carbon\CarbonImmutable|null $email_verified_at
+ * @property CarbonImmutable|null $email_verified_at
  * @property string $password
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
- * @property \Carbon\CarbonImmutable|null $two_factor_confirmed_at
+ * @property CarbonImmutable|null $two_factor_confirmed_at
  * @property string|null $remember_token
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property \Carbon\CarbonImmutable|null $deleted_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
  * @property int|null $invited_by 紹介ユーザーID
  * @property string|null $invitation_code 紹介用コード
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article> $articles
+ * @property-read Collection<int, Article> $articles
  * @property-read int|null $articles_count
  * @property-read User|null $invited
- * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $invites
+ * @property-read Collection<int, User> $invites
  * @property-read int|null $invites_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $lastModifiedBy
+ * @property-read Collection<int, Tag> $lastModifiedBy
  * @property-read int|null $last_modified_by_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, LoginHistory> $loginHistories
+ * @property-read Collection<int, LoginHistory> $loginHistories
  * @property-read int|null $login_histories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $myAttachments
+ * @property-read Collection<int, Attachment> $myAttachments
  * @property-read int|null $my_attachments_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Profile|null $profile
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
+ * @property-read Collection<int, Redirect> $redirects
  * @property-read int|null $redirects_count
  *
  * @method static Builder<static>|User admin()
@@ -68,7 +74,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     use Notifiable;
@@ -225,7 +231,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @param  Builder<User>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function admin(Builder $builder): void
     {
         $builder->where('role', UserRole::Admin);

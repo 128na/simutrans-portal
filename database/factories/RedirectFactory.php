@@ -8,7 +8,7 @@ use App\Models\Redirect;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Redirect>
+ * @extends Factory<Redirect>
  */
 class RedirectFactory extends Factory
 {

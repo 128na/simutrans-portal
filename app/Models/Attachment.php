@@ -6,6 +6,9 @@ namespace App\Models;
 
 use App\Constants\DefaultThumbnail;
 use App\Models\Attachment\FileInfo;
+use Carbon\CarbonImmutable;
+use Database\Factories\AttachmentFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,19 +25,19 @@ use Illuminate\Support\Facades\Storage;
  * @property string $original_name オリジナルファイル名
  * @property string $path 保存先パス
  * @property string|null $thumbnail_path
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property string|null $caption キャプション（画像向け）
  * @property int $order 表示順（画像向け）
  * @property int $size ファイルサイズ(byte)
- * @property-read \Illuminate\Database\Eloquent\Model|null $attachmentable
+ * @property-read Model|null $attachmentable
  * @property-read FileInfo|null $fileInfo
  * @property-read mixed $full_path
  * @property-read bool $is_image
  * @property-read mixed $original
  * @property-read mixed $thumbnail
  * @property-read string $type
- * @property-read \App\Models\User $user
+ * @property-read User $user
  *
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
@@ -46,7 +49,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Attachment extends Model
 {
-    /** @use HasFactory<\Database\Factories\AttachmentFactory> */
+    /** @use HasFactory<AttachmentFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -105,19 +108,19 @@ class Attachment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<bool, never>
+     * @return Attribute<bool, never>
      */
-    protected function isImage(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function isImage(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn (): bool => $this->type === 'image');
+        return Attribute::make(get: fn (): bool => $this->type === 'image');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     * @return Attribute<string, never>
      */
-    protected function type(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function type(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: function (): string {
+        return Attribute::make(get: function (): string {
             $mime = $this->getPublicDisk()->mimeType($this->path) ?: '';
             if (mb_stripos((string) $mime, 'image') !== false) {
                 return 'image';
@@ -136,11 +139,11 @@ class Attachment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     * @return Attribute<string, never>
      */
-    protected function thumbnail(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function thumbnail(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => match ($this->type) {
+        return Attribute::make(get: fn () => match ($this->type) {
             'image' => $this->thumbnail_path
                 ? $this->getPublicDisk()->url($this->thumbnail_path)
                 : $this->getPublicDisk()->url($this->path),
@@ -151,19 +154,19 @@ class Attachment extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     * @return Attribute<string, never>
      */
-    protected function original(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function original(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->url($this->path));
+        return Attribute::make(get: fn () => $this->getPublicDisk()->url($this->path));
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute<string, never>
+     * @return Attribute<string, never>
      */
-    protected function fullPath(): \Illuminate\Database\Eloquent\Casts\Attribute
+    protected function fullPath(): Attribute
     {
-        return \Illuminate\Database\Eloquent\Casts\Attribute::make(get: fn () => $this->getPublicDisk()->path($this->path));
+        return Attribute::make(get: fn () => $this->getPublicDisk()->path($this->path));
     }
 
     /*

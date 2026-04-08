@@ -6,6 +6,7 @@ namespace Tests\Feature\Integration\Article;
 
 use App\Actions\FrontArticle\ConversionAction;
 use App\Actions\FrontArticle\DownloadAction;
+use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\Attachment;
@@ -13,6 +14,7 @@ use App\Models\User;
 use App\Repositories\Article\ConversionCountRepository;
 use App\Repositories\Article\ViewCountRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\Feature\TestCase;
 
 /**
@@ -132,7 +134,7 @@ class ArticleViewAndConversionTest extends TestCase
         $article = Article::factory()->create([
             'user_id' => $author->id,
             'status' => ArticleStatus::Publish,
-            'post_type' => \App\Enums\ArticlePostType::AddonPost,
+            'post_type' => ArticlePostType::AddonPost,
             'contents' => [
                 'file' => null, // ファイルIDは後で設定
             ],
@@ -179,7 +181,7 @@ class ArticleViewAndConversionTest extends TestCase
         $article = Article::factory()->create([
             'user_id' => $user->id,
             'status' => ArticleStatus::Publish,
-            'post_type' => \App\Enums\ArticlePostType::AddonPost,
+            'post_type' => ArticlePostType::AddonPost,
             'contents' => [
                 'file' => null, // ファイルなし
             ],
@@ -189,7 +191,7 @@ class ArticleViewAndConversionTest extends TestCase
 
         $action = app(DownloadAction::class);
 
-        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+        $this->expectException(HttpException::class);
         $action($article, $user);
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Mypage;
 
 use App\Models\MyList as ModelsMyList;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MyListShow extends JsonResource
@@ -13,7 +14,7 @@ class MyListShow extends JsonResource
     public $resource;
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array<string, mixed>
      */
     #[\Override]

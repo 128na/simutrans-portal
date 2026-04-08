@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Resources\Mypage;
 
 use App\Models\Article as ModelsArticle;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleEdit extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array<mixed>
      */
     #[\Override]
@@ -18,11 +20,11 @@ class ArticleEdit extends JsonResource
     {
         assert($this->resource instanceof ModelsArticle);
 
-        /** @var \Carbon\CarbonImmutable|null $createdAt */
+        /** @var CarbonImmutable|null $createdAt */
         $createdAt = $this->resource->created_at;
-        /** @var \Carbon\CarbonImmutable|null $publishedAt */
+        /** @var CarbonImmutable|null $publishedAt */
         $publishedAt = $this->resource->published_at;
-        /** @var \Carbon\CarbonImmutable|null $modifiedAt */
+        /** @var CarbonImmutable|null $modifiedAt */
         $modifiedAt = $this->resource->modified_at;
 
         return [

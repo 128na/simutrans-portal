@@ -74,7 +74,7 @@ class ToBlueSkyTest extends TestCase
         });
 
         $notification = new SendArticleUpdated($article);
-        $action = app(ToBlueSky::class);
+        $action = app(ToBluesky::class);
 
         $action($article, $notification);
 

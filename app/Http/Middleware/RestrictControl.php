@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Models\ControllOption;
 use Closure;
+use Illuminate\Http\Request;
 
 class RestrictControl
 {
@@ -14,7 +15,7 @@ class RestrictControl
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next, ?string $type = null)

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Events\User\InviteCodeCreated;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +39,7 @@ class InviteController extends Controller
         }
 
         $user->update(['invitation_code' => Str::uuid()]);
-        event(new \App\Events\User\InviteCodeCreated($user));
+        event(new InviteCodeCreated($user));
 
         return to_route('mypage.invite')->with('status', '招待コードを発行しました');
     }
@@ -51,7 +52,7 @@ class InviteController extends Controller
         }
 
         $user->update(['invitation_code' => null]);
-        event(new \App\Events\User\InviteCodeCreated($user));
+        event(new InviteCodeCreated($user));
 
         return to_route('mypage.invite')->with('status', '招待コードを削除しました');
     }

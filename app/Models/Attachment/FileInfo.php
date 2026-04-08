@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models\Attachment;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $id
  * @property int $attachment_id
  * @property array<array-key, mixed> $data
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|FileInfo newQuery()

@@ -10,6 +10,7 @@ use Carbon\CarbonImmutable;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Translation\PotentiallyTranslatedString;
 
 class ReservationPublishedAt implements DataAwareRule, ValidationRule
 {
@@ -36,7 +37,7 @@ class ReservationPublishedAt implements DataAwareRule, ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void

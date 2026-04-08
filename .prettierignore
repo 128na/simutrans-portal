@@ -1,3 +1,6 @@
 # ディレクトリの除外
 storage/
 public/
+
+# Blade ファイルのフォーマットを無視
+resources/views/

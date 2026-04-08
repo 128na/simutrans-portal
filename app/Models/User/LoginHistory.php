@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models\User;
 
 use App\Models\User;
+use Carbon\CarbonImmutable;
+use Database\Factories\User\LoginHistoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $ip
  * @property string|null $ua
  * @property string|null $referer
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read User $user
  *
  * @method static \Database\Factories\User\LoginHistoryFactory factory($count = null, $state = [])
@@ -29,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LoginHistory extends Model
 {
-    /** @use HasFactory<\Database\Factories\User\LoginHistoryFactory> */
+    /** @use HasFactory<LoginHistoryFactory> */
     use HasFactory;
 
     protected $fillable = [

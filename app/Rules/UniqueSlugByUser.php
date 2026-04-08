@@ -10,6 +10,7 @@ use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Translation\PotentiallyTranslatedString;
 
 class UniqueSlugByUser implements DataAwareRule, ValidationRule
 {
@@ -32,7 +33,7 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -54,7 +55,7 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     private function passedForAdmin(mixed $value, Closure $fail): void
     {
@@ -72,7 +73,7 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     private function passedForUser(User $user, mixed $value, Closure $fail): void
     {

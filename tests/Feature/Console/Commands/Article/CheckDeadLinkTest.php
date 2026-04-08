@@ -6,6 +6,7 @@ namespace Tests\Feature\Console\Commands\Article;
 
 use App\Actions\DeadLink\Check;
 use App\Actions\DeadLink\OnDead;
+use App\Console\Commands\Article\CheckDeadLink;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
@@ -39,14 +40,14 @@ class CheckDeadLinkTest extends TestCase
 
     public function test_command_signature_is_correct(): void
     {
-        $command = $this->app->make(\App\Console\Commands\Article\CheckDeadLink::class);
+        $command = $this->app->make(CheckDeadLink::class);
 
         $this->assertEquals('check:deadlink', $command->getName());
     }
 
     public function test_command_description_exists(): void
     {
-        $command = $this->app->make(\App\Console\Commands\Article\CheckDeadLink::class);
+        $command = $this->app->make(CheckDeadLink::class);
 
         $this->assertNotEmpty($command->getDescription());
     }

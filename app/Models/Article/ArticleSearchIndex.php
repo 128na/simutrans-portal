@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Models\Article;
 
 use App\Models\Article;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $article_id
  * @property string|null $text
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property-read Article|null $article
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleSearchIndex newModelQuery()

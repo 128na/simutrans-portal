@@ -28,21 +28,21 @@
     "spatie/laravel-sitemap": "^7.4"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^4.2.4",
+    "barryvdh/laravel-debugbar": "^4.2.5",
     "barryvdh/laravel-ide-helper": "^3.7.0",
     "darkaonline/l5-swagger": "^10.1",
-    "driftingly/rector-laravel": "^2.2.0",
+    "driftingly/rector-laravel": "^2.3.0",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",
     "icanhazstring/composer-unused": "^0.9.6",
     "larastan/larastan": "^3.9.3",
-    "laravel/boost": "^2.4.1",
+    "laravel/boost": "^2.4.2",
     "laravel/dusk": "^8.5.0",
     "laravel/pint": "^1.29.0",
     "mockery/mockery": "^1.6.12",
-    "nunomaduro/collision": "^8.9.2",
-    "phpunit/phpunit": "^12.5.16",
-    "rector/rector": "^2.4.0",
+    "nunomaduro/collision": "^8.9.3",
+    "phpunit/phpunit": "^12.5.17",
+    "rector/rector": "^2.4.1",
     "spatie/laravel-ignition": "^2.12.0"
   },
   "config": {

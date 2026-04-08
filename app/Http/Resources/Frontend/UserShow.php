@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Resources\Frontend;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserShow extends JsonResource
 {
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array<mixed>
      */
     #[\Override]

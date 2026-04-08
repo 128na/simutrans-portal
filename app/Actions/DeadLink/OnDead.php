@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Actions\DeadLink;
 
 use App\Enums\ArticleStatus;
+use App\Events\Article\CloseByDeadLinkDetected;
+use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
 use App\Repositories\ArticleRepository;
@@ -20,7 +22,7 @@ class OnDead
 
     public function __invoke(Article $article): bool
     {
-        event(new \App\Events\Article\DeadLinkDetected($article));
+        event(new DeadLinkDetected($article));
 
         $this->articleLinkCheckHistoryRepository->increment($article);
         $count = $this->articleLinkCheckHistoryRepository->get($article);
@@ -31,7 +33,7 @@ class OnDead
 
         $this->articleRepository->update($article, ['status' => ArticleStatus::Private]);
 
-        event(new \App\Events\Article\CloseByDeadLinkDetected($article));
+        event(new CloseByDeadLinkDetected($article));
         $this->articleLinkCheckHistoryRepository->clear($article);
 
         return true;

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use MarvinLabs\DiscordLogger\Logger;
 
 $prod = env('APP_ENV') === 'production';
 
@@ -70,7 +71,7 @@ return [
         // 各種ログ設定
         'discord_error' => [
             'driver' => 'custom',
-            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'via' => Logger::class,
             'level' => 'error',
             'url' => env('DISCORD_WEBHOOK_ERROR'),
             'ignore_exceptions' => true, // Discord送信失敗を無視
@@ -78,14 +79,14 @@ return [
 
         'discord_notification' => [
             'driver' => 'custom',
-            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'via' => Logger::class,
             'level' => 'info',
             'url' => env('DISCORD_WEBHOOK_NOTIFICATION'),
         ],
 
         'discord_invite' => [
             'driver' => 'custom',
-            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'via' => Logger::class,
             'level' => 'info',
             'url' => env('DISCORD_WEBHOOK_INVITE'),
         ],

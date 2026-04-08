@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Database\Factories\MyListItemFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,10 +17,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $article_id
  * @property string|null $note
  * @property int|null $position
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Article $article
- * @property-read \App\Models\MyList $list
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Article $article
+ * @property-read MyList $list
  *
  * @method static \Database\Factories\MyListItemFactory factory($count = null, $state = [])
  * @method static Builder<static>|MyListItem newModelQuery()
@@ -32,7 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class MyListItem extends Model
 {
-    /** @use HasFactory<\Database\Factories\MyListItemFactory> */
+    /** @use HasFactory<MyListItemFactory> */
     use HasFactory;
 
     protected $table = 'mylist_items';

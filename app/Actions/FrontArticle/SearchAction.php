@@ -6,6 +6,7 @@ namespace App\Actions\FrontArticle;
 
 use App\Enums\ArticlePostType;
 use App\Http\Resources\Frontend\ArticleList;
+use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
@@ -51,7 +52,7 @@ class SearchAction
 
     /**
      * @param  array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}  $condition
-     * @return LengthAwarePaginator<int, \App\Models\Article>
+     * @return LengthAwarePaginator<int, Article>
      */
     public function search(array $condition, int $limit = 24): LengthAwarePaginator
     {

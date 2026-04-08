@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
@@ -74,7 +75,7 @@ class GetAnnouncesTest extends TestCase
     public function test非公開記事は取得されない(): void
     {
         $article = Article::factory()->page()->draft()->create(['user_id' => $this->user->id]);
-        $announceCategory = \App\Models\Category::where('slug', 'announce')->firstOrFail();
+        $announceCategory = Category::where('slug', 'announce')->firstOrFail();
         $article->categories()->save($announceCategory);
 
         $result = $this->articleRepository->getAnnounces(10);
@@ -85,7 +86,7 @@ class GetAnnouncesTest extends TestCase
     public function test論理削除された記事は取得されない(): void
     {
         $article = Article::factory()->page()->publish()->deleted()->create(['user_id' => $this->user->id]);
-        $announceCategory = \App\Models\Category::where('slug', 'announce')->firstOrFail();
+        $announceCategory = Category::where('slug', 'announce')->firstOrFail();
         $article->categories()->save($announceCategory);
 
         $result = $this->articleRepository->getAnnounces(10);
@@ -103,7 +104,7 @@ class GetAnnouncesTest extends TestCase
 
         // AddonIntroduction記事を作成（これは除外されるべき）
         $addonArticle = $this->createAddonIntroduction($this->user);
-        $announceCategory = \App\Models\Category::where('slug', 'announce')->firstOrFail();
+        $announceCategory = Category::where('slug', 'announce')->firstOrFail();
         $addonArticle->categories()->save($announceCategory);
 
         $result = $this->articleRepository->getAnnounces(10);

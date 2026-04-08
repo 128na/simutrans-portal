@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Services\Front;
 
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\User;
 use App\Services\Front\MetaOgpService;
 use Tests\Feature\TestCase;
@@ -41,8 +42,8 @@ class MetaOgpServiceTest extends TestCase
         $this->assertStringContainsString($article->slug, $meta['canonical']);
 
         // Create an attachment and set the article's contents.thumbnail to the attachment id
-        $attachment = \App\Models\Attachment::factory()->create([
-            'attachmentable_type' => \App\Models\Article::class,
+        $attachment = Attachment::factory()->create([
+            'attachmentable_type' => Article::class,
             'attachmentable_id' => $article->id,
             'user_id' => $user->id,
             'path' => 'default/test.png',

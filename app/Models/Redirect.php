@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Database\Factories\RedirectFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,10 +16,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property string $from リダイレクト元
  * @property string $to リダイレクト先
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
  * @property int|null $user_id
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
  *
  * @method static \Database\Factories\RedirectFactory factory($count = null, $state = [])
  * @method static Builder<static>|Redirect from(string $from)
@@ -29,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Redirect extends Model
 {
-    /** @use HasFactory<\Database\Factories\RedirectFactory> */
+    /** @use HasFactory<RedirectFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -54,7 +57,7 @@ class Redirect extends Model
     /**
      * @param  Builder<Redirect>  $builder
      */
-    #[\Illuminate\Database\Eloquent\Attributes\Scope]
+    #[Scope]
     protected function from(Builder $builder, string $from): void
     {
         $builder->where('from', $from);

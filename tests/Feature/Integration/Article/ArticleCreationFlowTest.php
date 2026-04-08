@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Integration\Article;
 
 use App\Actions\Article\StoreArticle;
+use App\Actions\Article\UpdateArticle;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
@@ -108,7 +109,7 @@ class ArticleCreationFlowTest extends TestCase
         $this->assertNull($article->published_at);
 
         // 公開に変更
-        $updateAction = app(\App\Actions\Article\UpdateArticle::class);
+        $updateAction = app(UpdateArticle::class);
         $publishData = [
             'should_notify' => false,
             'should_update_modified' => true,

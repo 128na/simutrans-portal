@@ -22,7 +22,7 @@ class MisskeyApiClient
      */
     public function send(string $text): Response
     {
-        /** @var \Illuminate\Http\Client\Response */
+        /** @var Response */
         $response = Http::withHeader('Content-Type', 'application/json')
             ->post($this->baseUrl.'/notes/create', [
                 'i' => $this->token,

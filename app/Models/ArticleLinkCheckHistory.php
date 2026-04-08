@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Database\Factories\ArticleLinkCheckHistoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,10 +14,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $article_id
  * @property int $failed_count
- * @property \Carbon\CarbonImmutable $last_checked_at
- * @property \Carbon\CarbonImmutable|null $created_at
- * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Article $article
+ * @property CarbonImmutable $last_checked_at
+ * @property CarbonImmutable|null $created_at
+ * @property CarbonImmutable|null $updated_at
+ * @property-read Article $article
  *
  * @method static \Database\Factories\ArticleLinkCheckHistoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newModelQuery()
@@ -27,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class ArticleLinkCheckHistory extends Model
 {
-    /** @use HasFactory<\Database\Factories\ArticleLinkCheckHistoryFactory> */
+    /** @use HasFactory<ArticleLinkCheckHistoryFactory> */
     use HasFactory;
 
     /** @var list<string> */

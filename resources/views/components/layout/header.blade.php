@@ -18,11 +18,12 @@
           @endguest
 
           @auth
+            {{-- format-ignore-start --}}
             @php
               $avatarUrl = optional(auth()->user()?->profile?->avatar)?->thumbnail
-                  ?? \Illuminate\Support\Facades\Storage::disk('public')->url(\App\Constants\DefaultThumbnail::NO_AVATAR);
+                  ?? Illuminate\Support\Facades\Storage::disk('public')->url(App\Constants\DefaultThumbnail::NO_AVATAR);
             @endphp
-
+            {{-- format-ignore-end --}}
             <a
               href="{{ route('mypage.index') }}"
               class="v2-header-menu-item flex items-center gap-2"

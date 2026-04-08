@@ -5,25 +5,28 @@ declare(strict_types=1);
 namespace App\Casts;
 
 use App\Enums\ArticlePostType;
+use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use App\Models\Contents\AddonPostContent;
+use App\Models\Contents\Content;
 use App\Models\Contents\MarkdownContent;
 use App\Models\Contents\PageContent;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @implements CastsAttributes<\App\Models\Contents\Content,\App\Models\Contents\Content>
+ * @implements CastsAttributes<Content,Content>
  */
 class ToArticleContents implements CastsAttributes
 {
     /**
      * 指定された値をキャスト.
      *
-     * @param  \App\Models\Article  $model
+     * @param  Article  $model
      * @param  string  $key
      * @param  string  $value
      * @param  array<string>  $attributes
-     * @return \App\Models\Contents\Content
+     * @return Content
      */
     #[\Override]
     public function get($model, $key, $value, $attributes)
@@ -45,9 +48,9 @@ class ToArticleContents implements CastsAttributes
     /**
      * 指定された値を保存用に準備.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  Model  $model
      * @param  string  $key
-     * @param  \App\Models\Contents\Content  $value
+     * @param  Content  $value
      * @param  array<string>  $attributes
      * @return string
      */

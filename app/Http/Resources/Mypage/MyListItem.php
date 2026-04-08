@@ -6,8 +6,10 @@ namespace App\Http\Resources\Mypage;
 
 use App\Constants\DefaultThumbnail;
 use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\MyListItem as ModelsMyListItem;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +19,7 @@ class MyListItem extends JsonResource
     public $resource;
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array<string, mixed>
      */
     #[\Override]
@@ -30,7 +32,7 @@ class MyListItem extends JsonResource
             'note' => $this->resource->note,
             'position' => $this->resource->position,
             'created_at' => $this->resource->created_at?->format('Y/m/d H:i'),
-            'article' => $this->resource->article->status === \App\Enums\ArticleStatus::Publish
+            'article' => $this->resource->article->status === ArticleStatus::Publish
                 ? $this->publicArticle($article)
                 : $this->privateArticle($article),
         ];

@@ -6,8 +6,12 @@ namespace Tests\Unit;
 
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithAuthentication;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Sleep;
 use Mockery;
+use Mockery\Exception\InvalidCountException;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 /**
@@ -15,8 +19,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
-    use \Illuminate\Foundation\Testing\Concerns\InteractsWithAuthentication,
-        \Illuminate\Foundation\Testing\Concerns\InteractsWithConsole,
+    use \Illuminate\Foundation\Testing\Concerns\InteractsWithConsole,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithContainer,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithDeprecationHandling,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithExceptionHandling,
@@ -24,7 +27,8 @@ abstract class TestCase extends BaseTestCase
         \Illuminate\Foundation\Testing\Concerns\InteractsWithTestCaseLifecycle,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithTime,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithViews,
-        \Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
+        \Illuminate\Foundation\Testing\Concerns\MakesHttpRequests,
+        InteractsWithAuthentication;
 
     /**
      * The list of trait that this test uses, fetched recursively.
@@ -47,14 +51,14 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         $this->setUpTheTestEnvironment();
-        \Illuminate\Support\Sleep::fake();
+        Sleep::fake();
     }
 
     /**
      * Clean up the testing environment before the next test.
      *
      *
-     * @throws \Mockery\Exception\InvalidCountException
+     * @throws InvalidCountException
      */
     protected function tearDown(): void
     {
@@ -65,7 +69,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Creates the application.
      *
-     * @return \Illuminate\Foundation\Application
+     * @return Application
      */
     final public function createApplication()
     {
@@ -103,7 +107,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param  class-string<\Illuminate\Foundation\Http\FormRequest>  $requestClass
+     * @param  class-string<FormRequest>  $requestClass
      * @param  array<mixed>  $data
      */
     protected function makeValidator(string $requestClass, array $data): \Illuminate\Contracts\Validation\Validator

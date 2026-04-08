@@ -1,6 +1,17 @@
 <?php
 
 declare(strict_types=1);
+use Spatie\Backup\Notifications\Notifiable;
+use Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification;
+use Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification;
+use Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification;
+use Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification;
+use Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification;
+use Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification;
+use Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy;
+use Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays;
+use Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes;
+use Spatie\DbDumper\Compressors\Bzip2Compressor;
 
 return [
     'backup' => [
@@ -78,7 +89,7 @@ return [
          * If you do not want any compressor at all, set it to null.
          */
         // 'database_dump_compressor' => null,
-        'database_dump_compressor' => Spatie\DbDumper\Compressors\Bzip2Compressor::class,
+        'database_dump_compressor' => Bzip2Compressor::class,
 
         'destination' => [
             /*
@@ -110,19 +121,19 @@ return [
      */
     'notifications' => [
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['discord'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['discord'],
-            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['discord'],
-            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => ['discord'],
-            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => ['discord'],
-            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => ['discord'],
+            BackupHasFailedNotification::class => ['discord'],
+            UnhealthyBackupWasFoundNotification::class => ['discord'],
+            CleanupHasFailedNotification::class => ['discord'],
+            BackupWasSuccessfulNotification::class => ['discord'],
+            HealthyBackupWasFoundNotification::class => ['discord'],
+            CleanupWasSuccessfulNotification::class => ['discord'],
         ],
 
         /*
          * Here you can specify the notifiable to which the notifications should be sent. The default
          * notifiable will use the variables specified in this config file.
          */
-        'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
+        'notifiable' => Notifiable::class,
 
         'mail' => [
             'to' => 'your@example.com',
@@ -150,8 +161,8 @@ return [
                 'local_backup',
             ],
             'health_checks' => [
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+                MaximumAgeInDays::class => 1,
+                MaximumStorageInMegabytes::class => 5000,
             ],
         ],
         // [
@@ -185,7 +196,7 @@ return [
          * No matter how you configure it the default strategy will never
          * delete the newest backup.
          */
-        'strategy' => \Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy::class,
+        'strategy' => DefaultStrategy::class,
 
         'default_strategy' => [
             /*

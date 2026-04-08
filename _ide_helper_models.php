@@ -54,7 +54,7 @@ namespace App\Models{
  * @property-read mixed $thumbnail_url
  * @property-read \App\Models\Article\ConversionCount|null $totalConversionCount
  * @property-read \App\Models\Article\ViewCount|null $totalViewCount
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Article\ViewCount> $viewCounts
  * @property-read int|null $view_counts_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article active()
@@ -91,7 +91,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable $last_checked_at
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Article $article
+ * @property-read \App\Models\Article|null $article
  * @method static \Database\Factories\ArticleLinkCheckHistoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ArticleLinkCheckHistory newQuery()
@@ -177,7 +177,7 @@ namespace App\Models{
  * @property-read mixed $original
  * @property-read mixed $thumbnail
  * @property-read string $type
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newQuery()
@@ -258,7 +258,7 @@ namespace App\Models{
  * @property \Carbon\CarbonImmutable|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MyListItem> $items
  * @property-read int|null $items_count
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\MyListFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyList newQuery()
@@ -280,7 +280,7 @@ namespace App\Models{
  * @property int|null $position
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\Article $article
+ * @property-read \App\Models\Article|null $article
  * @property-read \App\Models\MyList $list
  * @method static \Database\Factories\MyListItemFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MyListItem newModelQuery()
@@ -415,7 +415,7 @@ namespace App\Models\User{
  * @property string|null $referer
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\User\LoginHistoryFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|LoginHistory newQuery()
@@ -436,7 +436,7 @@ namespace App\Models\User{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read mixed $avatar
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Profile query()

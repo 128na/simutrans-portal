@@ -7,6 +7,7 @@ namespace Tests\Feature\Repositories\LoginHistoryRepository;
 use App\Models\User;
 use App\Models\User\LoginHistory;
 use App\Repositories\LoginHistoryRepository;
+use Illuminate\Database\Eloquent\Collection;
 use Tests\Feature\TestCase;
 
 class GetByUserTest extends TestCase
@@ -89,7 +90,7 @@ class GetByUserTest extends TestCase
         $results = $this->loginHistoryRepository->getByUser($user->id);
 
         $this->assertCount(0, $results);
-        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $results);
+        $this->assertInstanceOf(Collection::class, $results);
     }
 
     public function test_does_not_return_other_users_login_histories(): void

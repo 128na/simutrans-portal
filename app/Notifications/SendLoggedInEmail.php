@@ -34,7 +34,7 @@ class SendLoggedInEmail extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail(mixed $notifiable)
     {

@@ -9,7 +9,7 @@ use App\Models\ArticleLinkCheckHistory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ArticleLinkCheckHistory>
+ * @extends Factory<ArticleLinkCheckHistory>
  */
 class ArticleLinkCheckHistoryFactory extends Factory
 {

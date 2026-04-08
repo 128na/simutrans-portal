@@ -33,7 +33,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
     #[\Override]
     public function register(): void
     {
-        $this->app->bind(PKCEService::class, fn (): \App\Services\Twitter\PKCEService => new PKCEService(
+        $this->app->bind(PKCEService::class, fn (): PKCEService => new PKCEService(
             $this->app->make(Carbon::class),
             $this->app->make(Client::class),
             $this->app->make(OauthTokenRepository::class),
@@ -42,7 +42,7 @@ class TwitterOauthProvider extends ServiceProvider implements DeferrableProvider
             route('admin.oauth.twitter.callback'),
         ));
 
-        $this->app->bind(function (): \App\Services\Twitter\TwitterV2Api {
+        $this->app->bind(function (): TwitterV2Api {
             $twitterV2Api = new TwitterV2Api(
                 Config::string('services.twitter.consumer_key'),
                 Config::string('services.twitter.consumer_secret'),

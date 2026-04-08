@@ -8,6 +8,7 @@ use App\Enums\ArticlePostType;
 use App\Models\Article as ModelsArticle;
 use App\Models\Attachment\FileInfo;
 use App\Models\User\Profile;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleShow extends JsonResource
@@ -16,7 +17,7 @@ class ArticleShow extends JsonResource
     public $resource;
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array<mixed>
      */
     #[\Override]

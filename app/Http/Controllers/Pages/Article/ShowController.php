@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Pages\Article;
 use App\Actions\FrontArticle\FallbackShowAction;
 use App\Actions\FrontArticle\ShowAction;
 use App\Actions\Redirect\DoRedirectIfExists;
-use App\Events\ArticleShown;
 use App\Http\Controllers\Concerns\RespondsWithJson;
 use App\Http\Resources\Frontend\ArticleShow;
 use App\Models\Article;
@@ -36,7 +35,7 @@ class ShowController extends Controller
         }
 
         if (Auth::check() === false || Auth::id() !== $article->user_id) {
-            event(new ArticleShown($article));
+            event(new \App\Events\ArticleShown($article));
         }
 
         $articleShow = new ArticleShow($article);

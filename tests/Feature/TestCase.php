@@ -13,13 +13,10 @@ use Database\Seeders\CategorySeeder;
 use Database\Seeders\ControllOptionsSeeder;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Sleep;
 use Mockery;
 
 abstract class TestCase extends BaseTestCase
@@ -30,7 +27,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Sleep::fake();
+        \Illuminate\Support\Sleep::fake();
         $this->dirtyDatabaseCheck();
 
         $this->seed(CategorySeeder::class);
@@ -56,7 +53,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param  class-string<FormRequest>  $requestClass
+     * @param  class-string<\Illuminate\Foundation\Http\FormRequest>  $requestClass
      * @param  array<mixed>  $data
      */
     protected function makeValidator(string $requestClass, array $data): \Illuminate\Contracts\Validation\Validator
@@ -173,7 +170,7 @@ abstract class TestCase extends BaseTestCase
                 dump("Database is dirty before test run. Model: {$class}, Record count: {$record}");
                 // 明示的にデータベースをクリーンアップ
                 try {
-                    DB::rollBack();
+                    \Illuminate\Support\Facades\DB::rollBack();
                 } catch (\Throwable) {
                     // ロールバックが失敗してもテストは続行
                 }

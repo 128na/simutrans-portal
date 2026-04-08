@@ -9,7 +9,6 @@ use App\Models\Article as ModelsArticle;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User\Profile;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleList extends JsonResource
@@ -18,7 +17,7 @@ class ArticleList extends JsonResource
     public $resource;
 
     /**
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
     #[\Override]

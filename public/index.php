@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Http\Request;
 
 /**
  * Laravel - A PHP Framework For Web Artisans
@@ -51,10 +49,10 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 |
 */
 
-$kernel = $app->make(Kernel::class);
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
-    $request = Request::capture()
+    $request = Illuminate\Http\Request::capture()
 );
 
 $response->send();

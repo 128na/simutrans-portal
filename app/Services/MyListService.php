@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Models\User;
 use App\Repositories\MyListItemRepository;
 use App\Repositories\MyListRepository;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Str;
 
 class MyListService
@@ -24,7 +22,7 @@ class MyListService
     /**
      * ユーザーのマイリスト一覧取得（ページネーション付き）
      *
-     * @return Paginator<int, MyList>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyList>
      */
     public function getListsForUser(User $user, int $page = 1, int $perPage = 20, string $sort = 'updated_at:desc')
     {
@@ -36,7 +34,7 @@ class MyListService
     /**
      * 公開マイリスト一覧取得（ページネーション付き）
      *
-     * @return Paginator<int, MyList>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyList>
      */
     public function getPublicLists(int $page = 1, int $perPage = 20, string $sort = 'updated_at:desc')
     {
@@ -95,7 +93,7 @@ class MyListService
      * リストのアイテム一覧取得（ページネーション付き）
      * 所有者向け: 非公開記事も含めて返す
      *
-     * @return Paginator<int, MyListItem>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyListItem>
      */
     public function getItemsForList(MyList $list, int $page = 1, int $perPage = 20, string $sort = 'position')
     {
@@ -109,7 +107,7 @@ class MyListService
     /**
      * リストのアイテム一覧取得（公開用 - 非公開記事を除外）
      *
-     * @return Paginator<int, MyListItem>
+     * @return \Illuminate\Contracts\Pagination\Paginator<int, MyListItem>
      */
     public function getPublicItemsForList(MyList $list, int $page = 1, int $perPage = 20, string $sort = 'position')
     {
@@ -205,7 +203,7 @@ class MyListService
     public function isArticlePublic(Article $article): bool
     {
         // Check status
-        if (! isset($article->status) || $article->status !== ArticleStatus::Publish) {
+        if (! isset($article->status) || $article->status !== \App\Enums\ArticleStatus::Publish) {
             return false;
         }
 

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Adapters;
 
 use Exception;
-use GuzzleHttp\Client;
 
 class AutoRefreshingDropBoxTokenService
 {
     public function getToken(string $key, string $secret, string $refreshToken): string
     {
-        $client = new Client;
+        $client = new \GuzzleHttp\Client;
         $response = $client->request('POST', sprintf('https://%s:%s@api.dropbox.com/oauth2/token', $key, $secret), [
             'form_params' => [
                 'grant_type' => 'refresh_token',

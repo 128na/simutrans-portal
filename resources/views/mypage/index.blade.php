@@ -93,7 +93,7 @@
                 <th>ユーザータイプ</th>
                 <td>@lang("role.{$user->role->value}")</td>
                 <td>
-                  @if ($user->role === UserRole::Admin)
+                  @if ($user->role === \App\Enums\UserRole::Admin)
                     @include('components.ui.link', ['url' => route('admin.index'), 'title' => '管理画面'])
                   @else
                     -

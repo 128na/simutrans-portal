@@ -13,7 +13,7 @@
     </div>
     <div class="v2-page-content-area-lg">
       @switch(true)
-        @case(session('status') === Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))
+        @case(session('status') === \Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_ENABLED || $errors->getBag('confirmTwoFactorAuthentication')->has('code'))
           {{-- Step.2 設定開始 --}}
           {!! $user->twoFactorQrCodeSvg() !!}
           <p class="text-c-sub">
@@ -46,7 +46,7 @@
           </form>
 
           @break
-        @case(session('status') === Fortify::TWO_FACTOR_AUTHENTICATION_CONFIRMED || $user->two_factor_secret)
+        @case(session('status') === \Laravel\Fortify\Fortify::TWO_FACTOR_AUTHENTICATION_CONFIRMED || $user->two_factor_secret)
           {{-- Step. コード入力成功 または設定済み --}}
           <div>
             <h4 class="v2-text-h3 mb-4">リカバリコード</h4>

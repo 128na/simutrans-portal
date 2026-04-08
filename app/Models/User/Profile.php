@@ -7,9 +7,7 @@ namespace App\Models\User;
 use App\Casts\ToProfileData;
 use App\Models\Attachment;
 use App\Models\User;
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -19,10 +17,10 @@ use Illuminate\Support\Facades\Storage;
 /**
  * @property int $id
  * @property int $user_id
- * @property ProfileData $data プロフィール情報
- * @property CarbonImmutable|null $created_at
- * @property CarbonImmutable|null $updated_at
- * @property-read Collection<int, Attachment> $attachments
+ * @property \App\Models\User\ProfileData $data プロフィール情報
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read mixed $avatar
  * @property-read User $user

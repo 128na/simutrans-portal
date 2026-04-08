@@ -7,18 +7,17 @@ namespace App\Services\FileInfo;
 use App\Models\Attachment;
 use App\Models\Attachment\FileInfo;
 use App\Repositories\Attachment\FileInfoRepository;
-use App\Services\FileInfo\Extractors\Extractor;
 use Exception;
 
 class FileInfoService
 {
     /**
-     * @var array<string, array<int, Extractor>>
+     * @var array<string, array<int, \App\Services\FileInfo\Extractors\Extractor>>
      */
     private array $extractorCache = [];
 
     /**
-     * @param  Extractor[]  $extractors
+     * @param  \App\Services\FileInfo\Extractors\Extractor[]  $extractors
      */
     public function __construct(
         private readonly FileInfoRepository $fileInfoRepository,
@@ -88,7 +87,7 @@ class FileInfoService
         if (! isset($this->extractorCache[$ext])) {
             $this->extractorCache[$ext] = array_filter(
                 $this->extractors,
-                fn (Extractor $e): bool => $e->isTarget($filename)
+                fn (\App\Services\FileInfo\Extractors\Extractor $e): bool => $e->isTarget($filename)
             );
         }
 

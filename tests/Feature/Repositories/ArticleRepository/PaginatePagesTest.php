@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Repositories\ArticleRepository;
 
-use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
@@ -156,7 +155,7 @@ class PaginatePagesTest extends TestCase
     {
         $article = $this->createPage($this->user);
         // createPage()で既にPageカテゴリが設定されているので、別のカテゴリタイプを追加
-        $this->attachRandomCategory($article, CategoryType::Pak);
+        $this->attachRandomCategory($article, \App\Enums\CategoryType::Pak);
 
         $result = $this->articleRepository->paginatePages(24);
 

@@ -7,7 +7,6 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Str;
-use Illuminate\Translation\PotentiallyTranslatedString;
 
 class NgWordRule implements ValidationRule
 {
@@ -27,7 +26,7 @@ class NgWordRule implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param  Closure(string): PotentiallyTranslatedString  $fail
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     #[\Override]
     public function validate(string $attribute, mixed $value, Closure $fail): void

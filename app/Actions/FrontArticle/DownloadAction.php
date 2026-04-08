@@ -6,7 +6,6 @@ namespace App\Actions\FrontArticle;
 
 use App\Events\ArticleConversion;
 use App\Models\Article;
-use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +20,7 @@ class DownloadAction
             event(new ArticleConversion($article));
         }
 
-        /** @var Attachment|null $file */
+        /** @var \App\Models\Attachment|null $file */
         $file = $article->file;
         if ($file === null) {
             abort(404);

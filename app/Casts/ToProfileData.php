@@ -6,7 +6,6 @@ namespace App\Casts;
 
 use App\Models\User\ProfileData;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * @implements CastsAttributes<ProfileData,ProfileData>
@@ -16,7 +15,7 @@ class ToProfileData implements CastsAttributes
     /**
      * 指定された値をキャスト.
      *
-     * @param  Model  $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
      * @param  string  $value
      * @param  array<string>  $attributes
@@ -34,7 +33,7 @@ class ToProfileData implements CastsAttributes
     /**
      * 指定された値を保存用に準備.
      *
-     * @param  Model  $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
      * @param  ProfileData  $value
      * @param  array<string>  $attributes

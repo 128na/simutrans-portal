@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Resources\Mypage;
 
 use App\Models\Tag;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TagEdit extends JsonResource
@@ -15,7 +13,7 @@ class TagEdit extends JsonResource
     public $resource;
 
     /**
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
     #[\Override]
@@ -27,7 +25,7 @@ class TagEdit extends JsonResource
             'description' => $this->resource->description,
             'editable' => $this->resource->editable ?? true,
             'created_by' => $this->when((bool) $this->resource->createdBy, function (): array {
-                /** @var User $user */
+                /** @var \App\Models\User $user */
                 $user = $this->resource->createdBy;
 
                 return [
@@ -36,7 +34,7 @@ class TagEdit extends JsonResource
                 ];
             }),
             'last_modified_by' => $this->when((bool) $this->resource->lastModifiedBy, function (): array {
-                /** @var User $user */
+                /** @var \App\Models\User $user */
                 $user = $this->resource->lastModifiedBy;
 
                 return [

@@ -13,7 +13,7 @@ use Exception;
 use Illuminate\Support\Collection;
 
 /**
- * @extends Collection<int,Section>
+ * @extends Collection<int,Sections\Section>
  */
 class PageContentsSections extends Collection
 {

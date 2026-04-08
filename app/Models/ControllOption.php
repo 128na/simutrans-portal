@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\ControllOptionKey;
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property ControllOptionKey $key
  * @property bool $value
- * @property CarbonImmutable|null $created_at
- * @property CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|ControllOption newQuery()

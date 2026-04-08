@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Resources\Mypage;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileEdit extends JsonResource
 {
     /**
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
     #[\Override]

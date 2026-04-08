@@ -6,8 +6,6 @@ namespace App\Actions\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
-use App\Events\Article\ArticleStored;
-use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
@@ -44,8 +42,8 @@ class StoreArticle
 
         ($this->syncRelatedModels)($article, $data);
 
-        dispatch(new JobUpdateRelated($article->id));
-        event(new ArticleStored($article, $data['should_notify'] ?? false));
+        dispatch(new \App\Jobs\Article\JobUpdateRelated($article->id));
+        event(new \App\Events\Article\ArticleStored($article, $data['should_notify'] ?? false));
 
         return $article->fresh() ?? $article;
     }

@@ -49,7 +49,7 @@ class PakParser
         // Check if this node is a named object (has TEXT child nodes)
         if ($node->hasChildren()) {
             $firstChild = $node->getChild(0);
-            if (! $firstChild instanceof Node) {
+            if (! $firstChild instanceof \App\Services\FileInfo\Extractors\Pak\Node) {
                 return $metadata;
             }
 
@@ -63,7 +63,7 @@ class PakParser
                 $objectType = ObjectTypeConverter::toString($node->type);
                 if ($objectType === 'factory' && $firstChild->hasChildren()) {
                     $buildingFirstChild = $firstChild->getChild(0);
-                    if ($buildingFirstChild instanceof Node && $buildingFirstChild->isType(Node::OBJ_TEXT)) {
+                    if ($buildingFirstChild instanceof \App\Services\FileInfo\Extractors\Pak\Node && $buildingFirstChild->isType(Node::OBJ_TEXT)) {
                         // This is a factory node - process it
                         $pakMetadata = PakMetadata::fromNode($node, $versionCode);
                         $metadata[] = $pakMetadata->toArray();

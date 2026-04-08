@@ -9,7 +9,6 @@ use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
-use App\Models\Attachment;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
@@ -585,7 +584,7 @@ class ArticleRepository
         $article->attachments()->saveMany($attachments);
 
         // remove
-        /** @var Collection<int,Attachment> */
+        /** @var Collection<int,\App\Models\Attachment> */
         $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
         foreach ($shouldDetach as $attachment) {
             $attachment->attachmentable()->disassociate()->save();

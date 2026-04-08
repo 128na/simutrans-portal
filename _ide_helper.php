@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.56.0.
+ * Generated for Laravel 12.53.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -3782,6 +3782,7 @@ namespace Illuminate\Support\Facades {
          * Assert if a job was pushed exactly once.
          *
          * @param string|\Closure $command
+         * @param int $times
          * @return void
          * @static
          */
@@ -8406,6 +8407,7 @@ namespace Illuminate\Support\Facades {
          * Assert if an event was dispatched exactly once.
          *
          * @param string $event
+         * @param int $times
          * @return void
          * @static
          */
@@ -8855,7 +8857,7 @@ namespace Illuminate\Support\Facades {
          * Get the file type of a given file.
          *
          * @param string $path
-         * @return string|false
+         * @return string
          * @static
          */
         public static function type($path)
@@ -13251,7 +13253,7 @@ namespace Illuminate\Support\Facades {
      */
     class RateLimiter {
         /**
-         * Register a named rate limiter configuration.
+         * Register a named limiter configuration.
          *
          * @param \UnitEnum|string $name
          * @param \Closure $callback
@@ -14495,18 +14497,6 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Determine if the current request is asking for Markdown.
-         *
-         * @return bool
-         * @static
-         */
-        public static function wantsMarkdown()
-        {
-            /** @var \Illuminate\Http\Request $instance */
-            return $instance->wantsMarkdown();
-        }
-
-        /**
          * Determines whether the current requests accepts a given content type.
          *
          * @param string|array $contentTypes
@@ -14554,18 +14544,6 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Http\Request $instance */
             return $instance->acceptsJson();
-        }
-
-        /**
-         * Determines whether a request accepts Markdown.
-         *
-         * @return bool
-         * @static
-         */
-        public static function acceptsMarkdown()
-        {
-            /** @var \Illuminate\Http\Request $instance */
-            return $instance->acceptsMarkdown();
         }
 
         /**
@@ -15134,20 +15112,6 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Http\Request $instance */
             return $instance->date($key, $format, $tz);
-        }
-
-        /**
-         * Retrieve data from the instance as a CarbonInterval instance.
-         *
-         * @param string $key
-         * @param \Carbon\Unit|string|null $unit
-         * @return \Carbon\CarbonInterval|null
-         * @static
-         */
-        public static function interval($key, $unit = null)
-        {
-            /** @var \Illuminate\Http\Request $instance */
-            return $instance->interval($key, $unit);
         }
 
         /**
@@ -17932,7 +17896,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Create new schedule group.
          *
-         * @param \Closure $events
+         * @param \Illuminate\Console\Scheduling\Event $event
          * @return void
          * @throws \RuntimeException
          * @static
@@ -23020,7 +22984,7 @@ namespace Abordage\LaravelHtmlMin\Facades {
     /**
      * @see \Abordage\LaravelHtmlMin\HtmlMin
      */
-    class HtmlMin {
+    class HtmlMin extends \Abordage\HtmlMin\HtmlMin {
         /**
          * @static
          */
@@ -23098,7 +23062,7 @@ namespace Fruitcake\LaravelDebugbar\Facades {
      * @method static void            warning(mixed $message)
      * @see \Fruitcake\LaravelDebugbar\LaravelDebugbar
      */
-    class Debugbar {
+    class Debugbar extends \DebugBar\DebugBar {
         /**
          * @static
          */
@@ -28492,20 +28456,6 @@ namespace  {
         {
             /** @var \Illuminate\Database\Query\Builder $instance */
             return $instance->inRandomOrder($seed);
-        }
-
-        /**
-         * Add an "order by" clause to order results by a given sequence of values.
-         *
-         * @param \Illuminate\Contracts\Database\Query\Expression|string $column
-         * @param \Illuminate\Contracts\Support\Arrayable|array $values
-         * @return \Illuminate\Database\Eloquent\Builder<static>
-         * @static
-         */
-        public static function inOrderOf($column, $values)
-        {
-            /** @var \Illuminate\Database\Query\Builder $instance */
-            return $instance->inOrderOf($column, $values);
         }
 
         /**

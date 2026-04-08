@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -17,12 +15,12 @@ class AdminCheck
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        /** @var ?User */
+        /** @var ?\App\Models\User */
         $user = Auth::user();
         if ($user && $user->isAdmin()) {
             return $next($request);

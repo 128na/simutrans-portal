@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,9 +12,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $scope
  * @property string $access_token
  * @property string $refresh_token
- * @property CarbonImmutable $expired_at
- * @property CarbonImmutable|null $created_at
- * @property CarbonImmutable|null $updated_at
+ * @property \Carbon\CarbonImmutable $expired_at
+ * @property \Carbon\CarbonImmutable|null $created_at
+ * @property \Carbon\CarbonImmutable|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OauthToken newQuery()

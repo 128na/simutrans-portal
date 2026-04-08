@@ -9,7 +9,6 @@ use App\Actions\User\UpdateProfile;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Http\Requests\User\UpdateRequest;
-use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -73,7 +72,7 @@ class UserProfileAndArticleFlowTest extends TestCase
         $article = $storeArticleAction($updatedUser, $articleData);
 
         // 記事が作成されたことを確認
-        $this->assertInstanceOf(Article::class, $article);
+        $this->assertInstanceOf(\App\Models\Article::class, $article);
         $this->assertEquals($updatedUser->id, $article->user_id);
         $this->assertEquals('My First Article', $article->title);
 

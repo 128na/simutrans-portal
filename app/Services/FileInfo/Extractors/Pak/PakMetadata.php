@@ -69,13 +69,13 @@ class PakMetadata
         // Child node 0 is name (TEXT node)
         $nameNode = $node->getChild(0);
         $name = '';
-        if ($nameNode instanceof Node && $nameNode->isType(Node::OBJ_TEXT)) {
+        if ($nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $nameNode->isType(Node::OBJ_TEXT)) {
             $name = TextNodeExtractor::extract($nameNode);
-        } elseif ($objectType === 'factory' && $nameNode instanceof Node) {
+        } elseif ($objectType === 'factory' && $nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node) {
             // Special case: Factory (FACT) node has BUIL node as first child
             // Extract name from BUIL node's first child (TEXT node)
             $buildingTextNode = $nameNode->getChild(0);
-            if ($buildingTextNode instanceof Node && $buildingTextNode->isType(Node::OBJ_TEXT)) {
+            if ($buildingTextNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $buildingTextNode->isType(Node::OBJ_TEXT)) {
                 $name = TextNodeExtractor::extract($buildingTextNode);
             }
         }
@@ -83,15 +83,15 @@ class PakMetadata
         // Child node 1 is copyright (TEXT node)
         $copyrightNode = $node->getChild(1);
         $copyright = null;
-        if ($copyrightNode instanceof Node && $copyrightNode->isType(Node::OBJ_TEXT)) {
+        if ($copyrightNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $copyrightNode->isType(Node::OBJ_TEXT)) {
             $copyright = TextNodeExtractor::extract($copyrightNode);
             if ($copyright === '') {
                 $copyright = null;
             }
-        } elseif ($objectType === 'factory' && $nameNode instanceof Node) {
+        } elseif ($objectType === 'factory' && $nameNode instanceof \App\Services\FileInfo\Extractors\Pak\Node) {
             // Special case: Factory (FACT) node - get copyright from BUIL node's second child
             $buildingCopyrightNode = $nameNode->getChild(1);
-            if ($buildingCopyrightNode instanceof Node && $buildingCopyrightNode->isType(Node::OBJ_TEXT)) {
+            if ($buildingCopyrightNode instanceof \App\Services\FileInfo\Extractors\Pak\Node && $buildingCopyrightNode->isType(Node::OBJ_TEXT)) {
                 $copyright = TextNodeExtractor::extract($buildingCopyrightNode);
                 if ($copyright === '') {
                     $copyright = null;

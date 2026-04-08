@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Services\MarkdownService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -38,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive(
             'markdown',
             fn (string $expression): string => sprintf(
-                '<?php echo app('.MarkdownService::class.'::class)->toEscapedHTML(%s); ?>',
+                '<?php echo app('.\App\Services\MarkdownService::class.'::class)->toEscapedHTML(%s); ?>',
                 $expression
             )
         );

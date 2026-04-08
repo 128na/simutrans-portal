@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\StoreAttachment;
 
 use App\Enums\ImageFormat;
-use App\Jobs\Attachments\JobGenerateThumbnail;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -49,7 +48,7 @@ class Store
             ]);
 
             // サムネイル生成ジョブをディスパッチ
-            dispatch(new JobGenerateThumbnail($attachment));
+            dispatch(new \App\Jobs\Attachments\JobGenerateThumbnail($attachment));
 
             return $attachment;
         } catch (ConvertFailedException $convertFailedException) {

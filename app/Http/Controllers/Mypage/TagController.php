@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Events\Tag\TagDescriptionUpdated;
 use App\Http\Requests\Tag\StoreRequest;
 use App\Http\Requests\Tag\UpdateRequest;
 use App\Http\Resources\Mypage\TagEdit;
@@ -154,7 +153,7 @@ class TagController extends Controller
             'last_modified_by' => $userId,
             'last_modified_at' => now(),
         ]);
-        event(new TagDescriptionUpdated($tag, $user, $old));
+        event(new \App\Events\Tag\TagDescriptionUpdated($tag, $user, $old));
 
         return new TagEdit($this->tagRepository->load($tag));
     }

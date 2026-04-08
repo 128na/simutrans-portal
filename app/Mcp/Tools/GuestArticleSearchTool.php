@@ -9,7 +9,6 @@ use App\Enums\ArticlePostType;
 use App\Http\Resources\Frontend\ArticleList;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Http\Request as HttpRequest;
-use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
@@ -76,7 +75,7 @@ class GuestArticleSearchTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, Type>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {

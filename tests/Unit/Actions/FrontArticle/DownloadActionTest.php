@@ -11,8 +11,6 @@ use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\Unit\TestCase;
 
 class DownloadActionTest extends TestCase
@@ -46,7 +44,7 @@ class DownloadActionTest extends TestCase
             return $event->article->id === $article->id;
         });
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\StreamedResponse::class, $response);
     }
 
     public function test_dispatches_conversion_event_for_other_user(): void
@@ -78,7 +76,7 @@ class DownloadActionTest extends TestCase
         $response = $action($article, $otherUser);
 
         Event::assertDispatched(ArticleConversion::class);
-        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\StreamedResponse::class, $response);
     }
 
     public function test_does_not_dispatch_event_for_article_author(): void
@@ -109,14 +107,14 @@ class DownloadActionTest extends TestCase
         $response = $action($article, $author);
 
         Event::assertNotDispatched(ArticleConversion::class);
-        $this->assertInstanceOf(StreamedResponse::class, $response);
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\StreamedResponse::class, $response);
     }
 
     public function test_aborts_when_no_file_attached(): void
     {
         Event::fake();
 
-        $this->expectException(HttpException::class);
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
 
         $article = Article::factory()->make([
             'id' => 1,

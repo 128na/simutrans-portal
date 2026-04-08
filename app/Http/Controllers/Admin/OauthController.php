@@ -9,13 +9,12 @@ use App\Actions\Oauth\CallbackAction;
 use App\Actions\Oauth\RefreshAction;
 use App\Actions\Oauth\RevokeAction;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class OauthController extends Controller
 {
-    public function index(): View
+    public function index(): \Illuminate\Contracts\View\View
     {
         return view('admin.index');
     }

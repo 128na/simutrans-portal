@@ -7,7 +7,6 @@ namespace App\Console\Commands\Attachment;
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 
 class ReparsePakFilesCommand extends Command
@@ -43,7 +42,7 @@ class ReparsePakFilesCommand extends Command
         // Build query
         $query = $this->buildQuery($attachmentId);
 
-        if (! $query instanceof Builder) {
+        if (! $query instanceof \Illuminate\Database\Eloquent\Builder) {
             return self::FAILURE; // Error already displayed
         }
 
@@ -67,9 +66,9 @@ class ReparsePakFilesCommand extends Command
     /**
      * Build query for attachments to reparse
      *
-     * @return Builder<Attachment>|null
+     * @return \Illuminate\Database\Eloquent\Builder<Attachment>|null
      */
-    private function buildQuery(?int $attachmentId): ?Builder
+    private function buildQuery(?int $attachmentId): ?\Illuminate\Database\Eloquent\Builder
     {
         if ($attachmentId !== null) {
             // Validate specific attachment
@@ -112,11 +111,11 @@ class ReparsePakFilesCommand extends Command
     /**
      * Process attachments and reparse them
      *
-     * @param  Builder<Attachment>  $builder
+     * @param  \Illuminate\Database\Eloquent\Builder<Attachment>  $builder
      * @param  int|null  $maxSizeMb  Maximum file size in MB (null = unlimited)
      * @param  bool  $sync  Process synchronously
      */
-    private function processAttachments(Builder $builder, int $total, ?int $maxSizeMb, bool $sync): int
+    private function processAttachments(\Illuminate\Database\Eloquent\Builder $builder, int $total, ?int $maxSizeMb, bool $sync): int
     {
         $this->output->progressStart($total);
 

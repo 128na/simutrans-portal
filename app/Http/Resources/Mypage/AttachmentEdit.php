@@ -6,9 +6,7 @@ namespace App\Http\Resources\Mypage;
 
 use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\Attachment\FileInfo;
 use App\Models\User\Profile;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AttachmentEdit extends JsonResource
@@ -17,7 +15,7 @@ class AttachmentEdit extends JsonResource
     public $resource;
 
     /**
-     * @param  Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array<mixed>
      */
     #[\Override]
@@ -34,7 +32,7 @@ class AttachmentEdit extends JsonResource
             'fileInfo' => $this->when(
                 $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo !== null,
                 function (): array {
-                    /** @var FileInfo $fileInfo */
+                    /** @var \App\Models\Attachment\FileInfo $fileInfo */
                     $fileInfo = $this->resource->fileInfo;
 
                     return [

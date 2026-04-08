@@ -34,7 +34,7 @@ class SendDeadLinkDetectedEmail extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @return MailMessage
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail(mixed $notifiable)
     {

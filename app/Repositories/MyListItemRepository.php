@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Enums\ArticleStatus;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Repositories\Concerns\HasCrud;
@@ -52,7 +51,7 @@ class MyListItemRepository
                 'article.attachments',
             ])
             ->whereHas('article', function ($q) {
-                $q->where('status', ArticleStatus::Publish)
+                $q->where('status', \App\Enums\ArticleStatus::Publish)
                     ->whereNull('deleted_at');
             })
             ->orderBy($sortField, $sortDirection);

@@ -34,7 +34,7 @@
     />
 
     {{-- 本番環境以外はnoindex nofollow --}}
-    @unless (App::environment('production'))
+    @unless (\Illuminate\Support\Facades\App::environment('production'))
       <meta name="robots" content="noindex, nofollow" />
     @endunless
 

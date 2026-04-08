@@ -8,7 +8,6 @@ use App\Actions\FrontMyList\PublicListAction;
 use App\Http\Resources\Mypage\MyListShow as MyListShowResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Http\Request as HttpRequest;
-use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Tool;
@@ -66,7 +65,7 @@ class GuestPublicMyListListTool extends Tool
     /**
      * Get the tool's input schema.
      *
-     * @return array<string, Type>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {

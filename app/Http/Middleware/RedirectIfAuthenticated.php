@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
-use Illuminate\Auth\Events\Login;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
@@ -17,9 +13,9 @@ class RedirectIfAuthenticated
     /**
      * Handle an incoming request.
      *
-     * @param  Closure(Request): (Response|RedirectResponse)  $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @param  string|null  ...$guards
-     * @return Response|RedirectResponse
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
@@ -31,13 +27,13 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                /** @var User */
+                /** @var \App\Models\User */
                 $user = Auth::user();
                 if ($user->isAdmin()) {
                     return redirect()->intended('admin');
                 }
 
-                return redirect()->intended(route(Login::class));
+                return redirect()->intended(route(\Illuminate\Auth\Events\Login::class));
             }
         }
 

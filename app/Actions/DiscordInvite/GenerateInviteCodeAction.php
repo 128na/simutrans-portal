@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\DiscordInvite;
 
-use App\Events\Discord\DiscordInviteCodeCreated;
 use App\Services\Discord\InviteService;
 use App\Services\Google\Recaptcha\RecaptchaService;
 
@@ -20,7 +19,7 @@ class GenerateInviteCodeAction
         $this->recaptchaService->assessment($recaptchaToken);
         $url = $this->inviteService->create();
 
-        event(new DiscordInviteCodeCreated);
+        event(new \App\Events\Discord\DiscordInviteCodeCreated);
 
         return $url;
     }

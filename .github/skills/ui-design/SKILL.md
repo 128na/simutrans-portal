@@ -1,3 +1,8 @@
+---
+name: ui-design
+description: 既存の UI コンポーネントとデザイン方針に沿って、最小変更で一貫した画面を実装する。
+---
+
 # UI Design Skill
 
 ## 目的

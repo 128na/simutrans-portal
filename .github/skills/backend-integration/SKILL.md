@@ -1,3 +1,8 @@
+---
+name: backend-integration
+description: Laravel 側の契約を守りつつ、フロント・バックの連携を安全に実装する。
+---
+
 # Backend Integration Skill
 
 ## 目的

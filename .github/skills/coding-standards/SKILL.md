@@ -1,3 +1,8 @@
+---
+name: coding-standards
+description: プロジェクトの規約に従い、保守しやすく一貫したコードを維持する。
+---
+
 # Coding Standards Skill
 
 ## 目的

@@ -1,3 +1,8 @@
+---
+name: architecture
+description: アプリ全体の構造・責務分離・影響範囲の見通しを保ったまま実装する。
+---
+
 # Architecture Skill
 
 ## 目的

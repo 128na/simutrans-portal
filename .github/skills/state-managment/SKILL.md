@@ -1,3 +1,8 @@
+---
+name: state-managment
+description: 状態管理の責務を明確にし、予期しない再描画や副作用を防ぐ。
+---
+
 # State Management Skill
 
 ## 目的

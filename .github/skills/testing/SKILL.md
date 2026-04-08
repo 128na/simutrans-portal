@@ -1,3 +1,8 @@
+---
+name: testing
+description: 変更の妥当性を短いフィードバックループで検証し、安全にリリース可能な状態を維持する。
+---
+
 # Testing Skill
 
 ## 目的

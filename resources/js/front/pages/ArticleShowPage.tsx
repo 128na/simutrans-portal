@@ -9,8 +9,12 @@ if (app) {
     const article = JSON.parse(
       document.getElementById("data-article")?.textContent || "{}"
     );
-    const isAuthenticated =
-      document.getElementById("data-is-authenticated")?.textContent === "true";
+    const isAuthenticatedElement = document.getElementById(
+      "data-is-authenticated"
+    );
+    const isAuthenticated = isAuthenticatedElement
+      ? JSON.parse(isAuthenticatedElement.textContent || "false")
+      : false;
 
     return <ArticleBase article={article} isAuthenticated={isAuthenticated} />;
   };

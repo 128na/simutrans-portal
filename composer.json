@@ -28,15 +28,15 @@
     "spatie/laravel-sitemap": "^7.4"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^4.2.5",
+    "barryvdh/laravel-debugbar": "^4.2.6",
     "barryvdh/laravel-ide-helper": "^3.7.0",
     "darkaonline/l5-swagger": "^10.1",
     "driftingly/rector-laravel": "^2.3.0",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.4",
     "icanhazstring/composer-unused": "^0.9.6",
-    "larastan/larastan": "^3.9.3",
-    "laravel/boost": "^2.4.2",
+    "larastan/larastan": "^3.9.4",
+    "laravel/boost": "^2.4.3",
     "laravel/dusk": "^8.5.0",
     "laravel/pint": "^1.29.0",
     "mockery/mockery": "^1.6.12",

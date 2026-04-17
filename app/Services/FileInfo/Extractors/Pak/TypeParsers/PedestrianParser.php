@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -40,14 +41,13 @@ class PedestrianParser implements TypeParserInterface
      */
     public function parse(Node $node): array
     {
-        $firstUint16 = (unpack('v', substr($node->data, 0, 2)) ?: [])[1] ?? 0;
-        $version = (($firstUint16 & 0x8000) !== 0) ? ($firstUint16 & 0x7FFF) : 0;
+        $stamp = VersionStamp::from($node->data);
 
-        return match ($version) {
-            0 => $this->parseVersion0($firstUint16),
+        return match ($stamp->version) {
+            0 => $this->parseVersion0($stamp->firstUint16),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported pedestrian version: '.$version),
+            default => throw new RuntimeException('Unsupported pedestrian version: '.$stamp->version),
         };
     }
 

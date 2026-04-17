@@ -7,6 +7,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -33,30 +34,21 @@ class FactoryParser implements TypeParserInterface
         $binaryData = $node->data;
         $offset = 0;
 
-        // Read first uint16
-        $firstUint16Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($firstUint16Data === false) {
-            throw new RuntimeException('Failed to read factory version/placement');
-        }
-
-        $firstUint16 = $firstUint16Data[1];
+        $stamp = VersionStamp::from($binaryData, $offset);
         $offset += 2;
 
-        // Check if high bit is set (versioned format)
-        if (($firstUint16 & 0x8000) !== 0) {
-            $version = $firstUint16 & 0x7FFF;
-
-            $result = match ($version) {
+        if ($stamp->isVersioned) {
+            $result = match ($stamp->version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
                 5 => $this->parseVersion5($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported factory version: '.$version),
+                default => throw new RuntimeException('Unsupported factory version: '.$stamp->version),
             };
         } else {
             // Version 0 (legacy): firstUint16 is placement type
-            $result = $this->parseVersion0($binaryData, $offset, $firstUint16);
+            $result = $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
         }
 
         // Extract input data from FSUP (factory supplier) child nodes

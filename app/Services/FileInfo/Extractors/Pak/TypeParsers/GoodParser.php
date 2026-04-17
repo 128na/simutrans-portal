@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -39,29 +41,20 @@ class GoodParser implements TypeParserInterface
         $binaryData = $node->data;
         $offset = 0;
 
-        // Read first uint16
-        $firstUint16Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($firstUint16Data === false) {
-            throw new RuntimeException('Failed to read goods version/value');
-        }
+        $stamp = VersionStamp::from($binaryData, $offset);
 
-        $firstUint16 = $firstUint16Data[1];
-
-        // Check if high bit is set (versioned format)
-        if (($firstUint16 & 0x8000) !== 0) {
-            $version = $firstUint16 & 0x7FFF; // Mask out high bit
+        if ($stamp->isVersioned) {
             $offset += 2;
-
-            $result = match ($version) {
+            $result = match ($stamp->version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported goods version: '.$version),
+                default => throw new RuntimeException('Unsupported goods version: '.$stamp->version),
             };
         } else {
             // Version 0 (legacy format): firstUint16 is actually base_value
-            $result = $this->parseVersion0($binaryData, $offset, $firstUint16);
+            $result = $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
         }
 
         // Add metric to result
@@ -258,7 +251,7 @@ class GoodParser implements TypeParserInterface
         $result = ['version' => 4];
 
         // base_value (sint64) - CHANGED in version 4
-        $result['base_value'] = $this->readInt64($binaryData, $offset);
+        $result['base_value'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // catg (uint8)
@@ -297,19 +290,6 @@ class GoodParser implements TypeParserInterface
         $result['color'] = $colorData[1];
 
         return $this->buildResult($result);
-    }
-
-    /**
-     * Read signed 64-bit integer (little-endian)
-     */
-    private function readInt64(string $binaryData, int $offset): int
-    {
-        $data = unpack('P', substr($binaryData, $offset, 8));
-        if ($data === false) {
-            throw new RuntimeException('Failed to read int64');
-        }
-
-        return $data[1];
     }
 
     /**

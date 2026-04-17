@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -45,30 +47,22 @@ class SignParser implements TypeParserInterface
         $binaryData = $node->data;
         $offset = 0;
 
-        // Read first uint16 to determine version
-        $firstUint16Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($firstUint16Data === false) {
-            throw new RuntimeException('Failed to read roadsign version');
-        }
+        $stamp = VersionStamp::from($binaryData, $offset);
 
-        $firstUint16 = $firstUint16Data[1];
-
-        // Check if high bit is set (versioned format)
-        if (($firstUint16 & 0x8000) === 0) {
+        if (! $stamp->isVersioned) {
             throw new RuntimeException('Roadsign version 0 (legacy) is not supported');
         }
 
-        $version = $firstUint16 & 0x7FFF; // Mask out high bit
         $offset += 2;
 
-        return match ($version) {
+        return match ($stamp->version) {
             1 => $this->parseVersion1($binaryData, $offset),
             2 => $this->parseVersion2($binaryData, $offset),
             3 => $this->parseVersion3($binaryData, $offset),
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported roadsign version: '.$version),
+            default => throw new RuntimeException('Unsupported roadsign version: '.$stamp->version),
         };
     }
 
@@ -396,11 +390,11 @@ class SignParser implements TypeParserInterface
         $offset += 2;
 
         // price (sint64) - CHANGED in version 6
-        $result['price'] = $this->readInt64($binaryData, $offset);
+        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // maintenance (sint64) - NEW in version 6
-        $result['maintenance'] = $this->readInt64($binaryData, $offset);
+        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // flags (uint16)
@@ -448,19 +442,6 @@ class SignParser implements TypeParserInterface
         $result['retire_date'] = $retireDateData[1];
 
         return $this->buildResult($result);
-    }
-
-    /**
-     * Read signed 64-bit integer (little-endian)
-     */
-    private function readInt64(string $binaryData, int $offset): int
-    {
-        $data = unpack('P', substr($binaryData, $offset, 8));
-        if ($data === false) {
-            throw new RuntimeException('Failed to read int64');
-        }
-
-        return $data[1];
     }
 
     /**

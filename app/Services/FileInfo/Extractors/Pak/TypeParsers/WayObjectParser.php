@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use RuntimeException;
 
@@ -136,11 +137,11 @@ class WayObjectParser implements TypeParserInterface
         $result = ['version' => 2];
 
         // price (sint64)
-        $result['price'] = $this->readInt64($binaryData, $offset);
+        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // maintenance (sint64)
-        $result['maintenance'] = $this->readInt64($binaryData, $offset);
+        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // topspeed (uint32)
@@ -188,19 +189,6 @@ class WayObjectParser implements TypeParserInterface
         $result['own_waytype'] = $ownWtypData[1];
 
         return $this->buildResult($result);
-    }
-
-    /**
-     * Read signed 64-bit integer (little-endian)
-     */
-    private function readInt64(string $binaryData, int $offset): int
-    {
-        $data = unpack('P', substr($binaryData, $offset, 8));
-        if ($data === false) {
-            throw new RuntimeException('Failed to read int64');
-        }
-
-        return $data[1];
     }
 
     /**

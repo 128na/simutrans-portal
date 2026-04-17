@@ -60,7 +60,7 @@ class MyList extends Model
     /**
      * リストの所有者（ユーザー）を取得
      *
-     * @return BelongsTo<User, self>
+     * @return BelongsTo<User, static>
      */
     public function user(): BelongsTo
     {
@@ -70,7 +70,7 @@ class MyList extends Model
     /**
      * リストのアイテムを取得
      *
-     * @return HasMany<MyListItem, self>
+     * @return HasMany<MyListItem, static>
      */
     public function items(): HasMany
     {

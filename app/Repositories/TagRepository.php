@@ -52,7 +52,7 @@ class TagRepository
     public function getForEdit(): Collection
     {
         return $this->model->query()
-            ->select('tags.*', DB::raw('COUNT(at.article_id) AS articles_count'))
+            ->select(['tags.*', DB::raw('COUNT(at.article_id) AS articles_count')])
             ->leftJoin('article_tag as at', 'tags.id', '=', 'at.tag_id')
             ->groupBy('tags.id')
             ->orderBy('name', 'asc')

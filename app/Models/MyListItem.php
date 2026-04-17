@@ -55,7 +55,7 @@ class MyListItem extends Model
     /**
      * このアイテムが属するリストを取得
      *
-     * @return BelongsTo<MyList, self>
+     * @return BelongsTo<MyList, static>
      */
     public function list(): BelongsTo
     {
@@ -65,7 +65,7 @@ class MyListItem extends Model
     /**
      * このアイテムが参照する記事を取得
      *
-     * @return BelongsTo<Article, self>
+     * @return BelongsTo<Article, static>
      */
     public function article(): BelongsTo
     {

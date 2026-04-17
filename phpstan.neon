@@ -16,6 +16,9 @@ parameters:
 
     reportUnmatchedIgnoredErrors: false
 
+    # Eloquent relations are typed as non-nullable in PHPDoc/ide-helper but can be null at runtime
+    treatPhpDocTypesAsCertain: false
+
     # ide-helper連携
     scanFiles:
         - _ide_helper_models.php

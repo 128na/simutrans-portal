@@ -82,6 +82,8 @@ use Spatie\Feed\FeedItem;
  * @property-read mixed $thumbnail_url
  * @property-read ConversionCount|null $totalConversionCount
  * @property-read ViewCount|null $totalViewCount
+ * @property int|null $past_view_count
+ * @property int|null $past_conversion_count
  * @property-read User $user
  * @property-read Collection<int, ViewCount> $viewCounts
  * @property-read int|null $view_counts_count
@@ -358,7 +360,7 @@ class Article extends Model implements Feedable
     protected function announce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereHas('categories', function (Builder $query): void {
+            ->whereHas('categories', function ($query): void {
                 $query->page()->slug('announce');
             });
     }
@@ -370,7 +372,7 @@ class Article extends Model implements Feedable
     protected function withoutAnnounce(Builder $builder): void
     {
         $builder->whereIn('post_type', [ArticlePostType::Page, ArticlePostType::Markdown])
-            ->whereDoesntHave('categories', function (Builder $query): void {
+            ->whereDoesntHave('categories', function ($query): void {
                 $query->page()->slug('announce');
             });
     }

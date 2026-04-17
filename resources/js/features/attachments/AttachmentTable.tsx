@@ -147,7 +147,7 @@ export const AttachmentTable = ({
                     ? "cursor-pointer v2-selected-bg"
                     : "cursor-pointer v2-hover-bg-sub")
               )}
-              onClick={() => onSelectAttachment?.(selected === a.id ? null : a)}
+              onClick={() => onSelectAttachment?.(a)}
             >
               <td>
                 <Image

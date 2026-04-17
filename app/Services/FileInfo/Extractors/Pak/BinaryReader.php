@@ -82,6 +82,35 @@ class BinaryReader
         return $result[1];
     }
 
+    public function readSint64LE(): int
+    {
+        if (! $this->hasMore(8)) {
+            throw InvalidPakFileException::unexpectedEof();
+        }
+
+        $result = unpack('P', substr($this->binary, $this->position, 8));
+        if ($result === false) {
+            throw new OutOfBoundsException('Failed to read sint64');
+        }
+
+        $this->position += 8;
+
+        return $result[1];
+    }
+
+    /**
+     * Read a signed 64-bit integer at a fixed offset (for non-sequential parsers).
+     */
+    public static function unpackSint64(string $data, int $offset): int
+    {
+        $result = unpack('P', substr($data, $offset, 8));
+        if ($result === false) {
+            throw new OutOfBoundsException('Failed to read sint64 at offset '.$offset);
+        }
+
+        return $result[1];
+    }
+
     public function readString(int $length): string
     {
         if (! $this->hasMore($length)) {

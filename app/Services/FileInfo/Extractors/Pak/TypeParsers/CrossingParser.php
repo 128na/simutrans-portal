@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -31,27 +32,17 @@ class CrossingParser implements TypeParserInterface
         $binaryData = $node->data;
         $offset = 0;
 
-        // Read first uint16
-        $firstUint16Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($firstUint16Data === false) {
-            throw new RuntimeException('Failed to read crossing version');
-        }
-
-        $firstUint16 = $firstUint16Data[1];
+        $stamp = VersionStamp::from($binaryData, $offset);
         $offset += 2;
 
-        // Check if high bit is set (versioned format)
-        if (($firstUint16 & 0x8000) === 0) {
-            // Version 0 (legacy): Not supported
+        if (! $stamp->isVersioned) {
             throw new RuntimeException('Crossing version 0 (legacy) is not supported');
         }
 
-        $version = $firstUint16 & 0x7FFF;
-
-        return match ($version) {
+        return match ($stamp->version) {
             1 => $this->parseVersion1($binaryData, $offset),
             2 => $this->parseVersion2($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported crossing version: '.$version),
+            default => throw new RuntimeException('Unsupported crossing version: '.$stamp->version),
         };
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -41,14 +42,13 @@ class SoundParser implements TypeParserInterface
      */
     public function parse(Node $node): array
     {
-        $firstUint16 = (unpack('v', substr($node->data, 0, 2)) ?: [])[1] ?? 0;
-        $version = (($firstUint16 & 0x8000) !== 0) ? ($firstUint16 & 0x7FFF) : 0;
+        $stamp = VersionStamp::from($node->data);
 
-        return match ($version) {
+        return match ($stamp->version) {
             0 => throw new RuntimeException('Sound version 0 does not exist'),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported sound version: '.$version),
+            default => throw new RuntimeException('Unsupported sound version: '.$stamp->version),
         };
     }
 

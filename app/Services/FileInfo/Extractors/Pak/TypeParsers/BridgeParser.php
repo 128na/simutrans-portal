@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -28,35 +30,27 @@ class BridgeParser implements TypeParserInterface
         $binaryData = $node->data;
         $offset = 0;
 
-        // Read first uint16 to determine version
-        $firstUint16Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($firstUint16Data === false) {
-            throw new RuntimeException('Failed to read bridge version/waytype');
-        }
+        $stamp = VersionStamp::from($binaryData, $offset);
 
-        $firstUint16 = $firstUint16Data[1];
-
-        // Check if high bit is set (versioned format)
-        if (($firstUint16 & 0x8000) !== 0) {
-            $version = $firstUint16 & 0x7FFF; // Mask out high bit
+        if ($stamp->isVersioned) {
             $offset += 2;
 
-            return match ($version) {
+            return match ($stamp->version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
                 5 => $this->parseVersion5($binaryData, $offset),
                 6 => $this->parseVersion6($binaryData, $offset),
-                7, 8 => $this->parseVersion7And8($binaryData, $offset, $version),
+                7, 8 => $this->parseVersion7And8($binaryData, $offset, $stamp->version),
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported bridge version: '.$version),
+                default => throw new RuntimeException('Unsupported bridge version: '.$stamp->version),
             };
         }
 
         // Version 0 (legacy format): firstUint16 is actually waytype
-        return $this->parseVersion0($binaryData, $offset, $firstUint16);
+        return $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
     }
 
     /**
@@ -546,11 +540,11 @@ class BridgeParser implements TypeParserInterface
         $offset += 2;
 
         // price (sint64) - CHANGED in version 10
-        $result['price'] = $this->readInt64($binaryData, $offset);
+        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // maintenance (sint64) - CHANGED in version 10
-        $result['maintenance'] = $this->readInt64($binaryData, $offset);
+        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
         $offset += 8;
 
         // wtyp (uint8)
@@ -634,19 +628,6 @@ class BridgeParser implements TypeParserInterface
         $result['number_of_seasons'] = $seasonsData[1];
 
         return $this->buildResult($result);
-    }
-
-    /**
-     * Read signed 64-bit integer (little-endian)
-     */
-    private function readInt64(string $binaryData, int $offset): int
-    {
-        $data = unpack('P', substr($binaryData, $offset, 8));
-        if ($data === false) {
-            throw new RuntimeException('Failed to read int64');
-        }
-
-        return $data[1];
     }
 
     /**

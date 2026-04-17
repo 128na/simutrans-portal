@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Enums\SimutransClimate;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
 /**
@@ -53,14 +54,13 @@ class TreeParser implements TypeParserInterface
      */
     public function parse(Node $node): array
     {
-        $firstUint16 = (unpack('v', substr($node->data, 0, 2)) ?: [])[1] ?? 0;
-        $version = (($firstUint16 & 0x8000) !== 0) ? ($firstUint16 & 0x7FFF) : 0;
+        $stamp = VersionStamp::from($node->data);
 
-        $result = match ($version) {
+        $result = match ($stamp->version) {
             0 => $this->parseVersion0(),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported tree version: '.$version),
+            default => throw new RuntimeException('Unsupported tree version: '.$stamp->version),
         };
 
         return $this->buildResult($result);

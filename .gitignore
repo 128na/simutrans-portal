@@ -23,6 +23,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.claude
 
 credential.json
 mix-manifest.json

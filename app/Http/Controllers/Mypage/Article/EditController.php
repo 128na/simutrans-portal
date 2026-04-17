@@ -10,7 +10,7 @@ use App\Http\Resources\Mypage\ArticleEdit;
 use App\Http\Resources\Mypage\AttachmentEdit;
 use App\Http\Resources\Mypage\UserShow;
 use App\Models\Article;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\MypageArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
@@ -24,7 +24,7 @@ use OpenApi\Attributes as OA;
 class EditController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
+        private readonly MypageArticleRepository $articleRepository,
         private readonly CategoryRepository $categoryRepository,
         private readonly TagRepository $tagRepository,
         private readonly MetaOgpService $metaOgpService,

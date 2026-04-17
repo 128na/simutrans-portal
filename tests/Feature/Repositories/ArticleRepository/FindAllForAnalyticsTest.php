@@ -8,7 +8,7 @@ use App\Enums\ArticleAnalyticsType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\MypageArticleRepository;
 use Illuminate\Support\Collection;
 use Tests\Feature\TestCase;
 
@@ -18,13 +18,13 @@ class FindAllForAnalyticsTest extends TestCase
 
     private Article $article;
 
-    private ArticleRepository $articleRepository;
+    private MypageArticleRepository $articleRepository;
 
     #[\Override]
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->articleRepository = app(MypageArticleRepository::class);
         $this->user = User::factory()->create();
         $this->article = Article::factory()->create(['user_id' => $this->user->id]);
     }

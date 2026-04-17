@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Pages;
 
 use App\Enums\CategoryType;
 use App\Http\Resources\Frontend\ArticleList;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
@@ -15,7 +15,7 @@ use Illuminate\Routing\Controller;
 class CategoryController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
+        private readonly FrontArticleRepository $articleRepository,
         private readonly CategoryRepository $categoryRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}

@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Pages;
 
 use App\Http\Resources\Frontend\ArticleList;
 use App\Models\Tag;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
@@ -15,7 +15,7 @@ use Illuminate\Routing\Controller;
 class TagController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
+        private readonly FrontArticleRepository $articleRepository,
         private readonly TagRepository $tagRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}

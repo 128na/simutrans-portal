@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Mypage;
 use App\Actions\Analytics\FindArticles;
 use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Http\Resources\Mypage\ArticleAnalytic;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\MypageArticleRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -18,7 +18,7 @@ use OpenApi\Attributes as OA;
 class AnalyticsController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
+        private readonly MypageArticleRepository $articleRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 

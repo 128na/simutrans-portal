@@ -7,12 +7,12 @@ namespace Tests\Feature\Repositories\ArticleRepository;
 use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use Tests\Feature\TestCase;
 
 class FirstTest extends TestCase
 {
-    private ArticleRepository $articleRepository;
+    private FrontArticleRepository $articleRepository;
 
     private User $user;
 
@@ -21,7 +21,7 @@ class FirstTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->articleRepository = app(FrontArticleRepository::class);
     }
 
     public function testユーザー_i_dとスラッグで検索(): void

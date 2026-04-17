@@ -16,23 +16,34 @@ Repositories/
 ├── Article/
 │   ├── ArticleSearchIndexRepository.php  # 記事検索インデックス
 │   ├── ConversionCountRepository.php     # ダウンロード数
+│   ├── FrontArticleRepository.php        # 公開ページ向けクエリ
+│   ├── MypageArticleRepository.php       # マイページ向けクエリ
 │   └── ViewCountRepository.php           # 閲覧数
 ├── Attachment/
 │   └── FileInfoRepository.php            # ファイル情報
+├── Concerns/
+│   ├── ArticleQueryConcern.php           # 記事クエリ共通ヘルパー
+│   └── HasCrud.php                       # 基本CRUD操作
 ├── User/
 │   └── ProfileRepository.php             # プロフィール
 ├── ArticleLinkCheckHistoryRepository.php # リンク切れチェック履歴
-├── ArticleRepository.php                 # 記事（メイン）
+├── ArticleRepository.php                 # 記事CRUD・同期・カーソル
 ├── AttachmentRepository.php              # 添付ファイル
 ├── CategoryRepository.php                # カテゴリ
 ├── LoginHistoryRepository.php            # ログイン履歴
 ├── OauthTokenRepository.php              # OAuthトークン
 ├── RedirectRepository.php                # リダイレクト
 ├── TagRepository.php                     # タグ
-├── UserRepository.php                    # ユーザー
-├── BaseCountRepository.php               # 【非推奨】継承禁止
-└── BaseRepository.php                    # 【非推奨】継承禁止
+└── UserRepository.php                    # ユーザー
 ```
+
+### 記事リポジトリの分割方針
+
+| クラス | 役割 | 利用箇所 |
+|---|---|---|
+| `ArticleRepository` | CRUD・syncX・cursorX | Actions, Console Commands |
+| `FrontArticleRepository` | 公開ページ向けクエリ | Pages Controllers, FeedService, FrontArticle Actions |
+| `MypageArticleRepository` | マイページ向けクエリ | Mypage Controllers, Analytics Actions |
 
 ## 実装パターン
 

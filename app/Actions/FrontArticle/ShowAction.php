@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Actions\FrontArticle;
 
 use App\Models\Article;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 
 class ShowAction
 {
-    public function __construct(private ArticleRepository $articleRepository) {}
+    public function __construct(private FrontArticleRepository $articleRepository) {}
 
     public function __invoke(string $userIdOrNickname, string $slug): ?Article
     {

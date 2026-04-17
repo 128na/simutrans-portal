@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Article;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 class FeedService
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
+        private FrontArticleRepository $articleRepository,
     ) {}
 
     /**

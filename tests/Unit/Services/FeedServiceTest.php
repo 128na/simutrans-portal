@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Services;
 
 use App\Models\Article;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use App\Services\FeedService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -16,12 +16,12 @@ class FeedServiceTest extends TestCase
 {
     private FeedService $service;
 
-    private ArticleRepository $articleRepository;
+    private FrontArticleRepository $articleRepository;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->articleRepository = Mockery::mock(ArticleRepository::class);
+        $this->articleRepository = Mockery::mock(FrontArticleRepository::class);
         $this->service = new FeedService($this->articleRepository);
     }
 

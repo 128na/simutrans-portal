@@ -6,13 +6,13 @@ namespace Tests\Feature\Repositories\ArticleRepository;
 
 use App\Models\Article;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\MypageArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Feature\TestCase;
 
 class GetForMypageListTest extends TestCase
 {
-    private ArticleRepository $articleRepository;
+    private MypageArticleRepository $articleRepository;
 
     private User $user;
 
@@ -21,7 +21,7 @@ class GetForMypageListTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->articleRepository = app(MypageArticleRepository::class);
     }
 
     public function test(): void

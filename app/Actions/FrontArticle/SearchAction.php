@@ -7,7 +7,7 @@ namespace App\Actions\FrontArticle;
 use App\Enums\ArticlePostType;
 use App\Http\Resources\Frontend\ArticleList;
 use App\Models\Article;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
@@ -16,7 +16,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class SearchAction
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
+        private FrontArticleRepository $articleRepository,
         private CategoryRepository $categoryRepository,
         private TagRepository $tagRepository,
         private UserRepository $userRepository,

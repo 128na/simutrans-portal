@@ -8,7 +8,7 @@ use App\Actions\Analytics\FindArticles;
 use App\Enums\ArticleAnalyticsType;
 use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\MypageArticleRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,7 +22,7 @@ class FindArticlesTest extends TestCase
     {
         $user = new User;
         $searchRequest = new SearchRequest(['ids' => [1], ...$data]);
-        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($user, $expected): void {
+        $this->mock(MypageArticleRepository::class, function (MockInterface $mock) use ($user, $expected): void {
             $mock->expects()->findAllForAnalytics($user, [1], ...$expected)->once()->andReturn(new Collection);
         });
         $result = $this->getSUT()($user, $searchRequest);

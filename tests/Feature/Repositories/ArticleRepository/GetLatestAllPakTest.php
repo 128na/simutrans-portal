@@ -8,13 +8,13 @@ use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Tests\Feature\TestCase;
 
 class GetLatestAllPakTest extends TestCase
 {
-    private ArticleRepository $articleRepository;
+    private FrontArticleRepository $articleRepository;
 
     private User $user;
 
@@ -23,7 +23,7 @@ class GetLatestAllPakTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
-        $this->articleRepository = app(ArticleRepository::class);
+        $this->articleRepository = app(FrontArticleRepository::class);
     }
 
     public function test(): void

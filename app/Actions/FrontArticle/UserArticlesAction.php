@@ -6,14 +6,14 @@ namespace App\Actions\FrontArticle;
 
 use App\Models\Article;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserArticlesAction
 {
     public function __construct(
-        private ArticleRepository $articleRepository,
+        private FrontArticleRepository $articleRepository,
         private UserRepository $userRepository,
     ) {}
 

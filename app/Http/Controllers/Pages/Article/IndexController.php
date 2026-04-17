@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Pages\Article;
 
 use App\Actions\FrontArticle\SearchAction;
 use App\Http\Resources\Frontend\ArticleList;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\FrontArticleRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ use Illuminate\Routing\Controller;
 class IndexController extends Controller
 {
     public function __construct(
-        private readonly ArticleRepository $articleRepository,
+        private readonly FrontArticleRepository $articleRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 

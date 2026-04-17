@@ -8,14 +8,14 @@ use App\Enums\ArticleAnalyticsType;
 use App\Http\Requests\ArticleAnalytics\SearchRequest;
 use App\Models\Article;
 use App\Models\User;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Article\MypageArticleRepository;
 use Carbon\CarbonImmutable as Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use UnexpectedValueException;
 
 class FindArticles
 {
-    public function __construct(private ArticleRepository $articleRepository) {}
+    public function __construct(private MypageArticleRepository $articleRepository) {}
 
     /**
      * @return Collection<int,Article>

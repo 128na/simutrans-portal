@@ -101,7 +101,6 @@ use Spatie\Feed\FeedItem;
  * @method static Builder<static>|Article query()
  * @method static Builder<static>|Article slug(string $slug)
  * @method static Builder<static>|Article tag(\App\Models\Tag $tag)
- * @method static Builder<static>|Article user(\App\Models\User $user)
  * @method static Builder<static>|Article withTrashed(bool $withTrashed = true)
  * @method static Builder<static>|Article withUserTrashed()
  * @method static Builder<static>|Article withoutAnnounce()
@@ -301,14 +300,6 @@ class Article extends Model implements Feedable
     protected function withUserTrashed(Builder $builder): void
     {
         $builder->withoutGlobalScope('WithoutTrashedUser');
-    }
-
-    /**
-     * @param  Builder<Article>  $builder
-     */
-    protected function scopeUser(Builder $builder, User $user): void
-    {
-        $builder->where('user_id', $user->id);
     }
 
     /**

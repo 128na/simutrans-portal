@@ -72,7 +72,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article slug(string $slug)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article tag(\App\Models\Tag $tag)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Article user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withUserTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Article withoutAnnounce()

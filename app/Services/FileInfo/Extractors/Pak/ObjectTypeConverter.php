@@ -31,7 +31,12 @@ class ObjectTypeConverter
             Node::OBJ_CITYCAR, 'CCAR' => 'citycar', // CCAR is used by makeobj 60.8+
             Node::OBJ_PEDESTRIAN => 'pedestrian',
             Node::OBJ_SOUND => 'sound',
-            Node::OBJ_SKIN => 'skin',
+            Node::OBJ_MENU => 'menu',
+            Node::OBJ_CURSOR => 'cursor',
+            Node::OBJ_SYMBOL => 'symbol',
+            Node::OBJ_FIELD => 'field',
+            Node::OBJ_SMOKE => 'smoke',
+            Node::OBJ_MISCIMAGES => 'miscimages',
             default => sprintf('unknown_%s', $type),
         };
     }

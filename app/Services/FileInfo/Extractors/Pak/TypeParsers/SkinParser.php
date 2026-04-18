@@ -25,7 +25,14 @@ class SkinParser implements TypeParserInterface
 {
     public function canParse(Node $node): bool
     {
-        return $node->type === Node::OBJ_SKIN || $node->type === 'smoke';
+        return in_array($node->type, [
+            Node::OBJ_MENU,
+            Node::OBJ_CURSOR,
+            Node::OBJ_SYMBOL,
+            Node::OBJ_FIELD,
+            Node::OBJ_SMOKE,
+            Node::OBJ_MISCIMAGES,
+        ], true);
     }
 
     /**
@@ -37,12 +44,12 @@ class SkinParser implements TypeParserInterface
      */
     public function parse(Node $node): array
     {
-        // skin/smoke オブジェクトはデータフィールドを持たない
+        // skin系オブジェクトはデータフィールドを持たない
         // 画像のみが子ノード（image-list）に含まれる
         return [
             'version' => 0,
             'has_data' => false,
-            'object_subtype' => $node->type, // 'skin' または 'smoke'
+            'object_subtype' => $node->type,
         ];
     }
 }

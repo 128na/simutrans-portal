@@ -42,6 +42,7 @@ class WayParser implements TypeParserInterface
                 4, 5 => $this->parseVersion4And5($reader),
                 6 => $this->parseVersion6($reader),
                 7 => $this->parseVersion7($reader),
+                8 => $this->parseVersion8($reader),
                 default => [],
             };
 
@@ -54,6 +55,11 @@ class WayParser implements TypeParserInterface
             // axle_load defaults to 9999 for versions < 6
             if ($version < 6 && ! isset($data['axle_load'])) {
                 $data['axle_load'] = 9999;
+            }
+
+            // clip_below defaults based on waytype for versions < 8 (from way_reader.cc)
+            if ($version < 8) {
+                $data['clip_below'] = ($data['waytype'] ?? 0) !== 7; // 7 = powerline_wt
             }
 
             if (isset($data['styp'])) {
@@ -90,13 +96,17 @@ class WayParser implements TypeParserInterface
      */
     private function parseVersion1(BinaryReader $reader): array
     {
+        $price = $reader->readUint32LE();
+        $maintenance = $reader->readUint32LE();
+        $topspeed = $reader->readUint32LE();
+        $maxWeight = $reader->readUint32LE();
         $introDateRaw = $reader->readUint32LE();
 
         return [
-            'price' => $reader->readUint32LE(),
-            'maintenance' => $reader->readUint32LE(),
-            'topspeed' => $reader->readUint32LE(),
-            'max_weight' => $reader->readUint32LE(),
+            'price' => $price,
+            'maintenance' => $maintenance,
+            'topspeed' => $topspeed,
+            'max_weight' => $maxWeight,
             'intro_date' => intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 16),
             'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
@@ -204,6 +214,32 @@ class WayParser implements TypeParserInterface
             'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
             'draw_as_obj' => $reader->readUint8(),
+            'number_of_seasons' => $reader->readSint8(),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function parseVersion8(BinaryReader $reader): array
+    {
+        $price = $reader->readUint32LE();
+        $reader->readUint32LE(); // upper 32 bits
+        $maintenance = $reader->readUint32LE();
+        $reader->readUint32LE(); // upper 32 bits
+
+        return [
+            'price' => $price,
+            'maintenance' => $maintenance,
+            'topspeed' => $reader->readUint32LE(),
+            'max_weight' => $reader->readUint32LE(),
+            'intro_date' => $reader->readUint16LE(),
+            'retire_date' => $reader->readUint16LE(),
+            'axle_load' => $reader->readUint16LE(),
+            'waytype' => $reader->readUint8(),
+            'styp' => $reader->readUint8(),
+            'draw_as_obj' => $reader->readUint8(),
+            'clip_below' => $reader->readUint8(),
             'number_of_seasons' => $reader->readSint8(),
         ];
     }

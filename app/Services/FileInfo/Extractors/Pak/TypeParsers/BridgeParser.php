@@ -45,6 +45,7 @@ class BridgeParser implements TypeParserInterface
                 7, 8 => $this->parseVersion7And8($binaryData, $offset, $stamp->version),
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
+                11 => $this->parseVersion11($binaryData, $offset),
                 default => throw new RuntimeException('Unsupported bridge version: '.$stamp->version),
             };
         }
@@ -625,6 +626,100 @@ class BridgeParser implements TypeParserInterface
             throw new RuntimeException('Failed to read number_of_seasons');
         }
 
+        $result['number_of_seasons'] = $seasonsData[1];
+
+        return $this->buildResult($result);
+    }
+
+    /**
+     * Parse version 11 (adds clip_below)
+     *
+     * @return array<string, mixed>
+     */
+    private function parseVersion11(string $binaryData, int $offset): array
+    {
+        $result = ['version' => 11];
+
+        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
+        if ($topspeedData === false) {
+            throw new RuntimeException('Failed to read topspeed');
+        }
+        $result['topspeed'] = $topspeedData[1];
+        $offset += 2;
+
+        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
+        $offset += 8;
+
+        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
+        $offset += 8;
+
+        $wtypData = unpack('C', substr($binaryData, $offset, 1));
+        if ($wtypData === false) {
+            throw new RuntimeException('Failed to read wtyp');
+        }
+        $result['waytype'] = $wtypData[1];
+        $offset += 1;
+
+        $pillarsData = unpack('C', substr($binaryData, $offset, 1));
+        if ($pillarsData === false) {
+            throw new RuntimeException('Failed to read pillars_every');
+        }
+        $result['pillars_every'] = $pillarsData[1];
+        $offset += 1;
+
+        $maxLengthData = unpack('C', substr($binaryData, $offset, 1));
+        if ($maxLengthData === false) {
+            throw new RuntimeException('Failed to read max_length');
+        }
+        $result['max_length'] = $maxLengthData[1];
+        $offset += 1;
+
+        $introDateData = unpack('v', substr($binaryData, $offset, 2));
+        if ($introDateData === false) {
+            throw new RuntimeException('Failed to read intro_date');
+        }
+        $result['intro_date'] = $introDateData[1];
+        $offset += 2;
+
+        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
+        if ($retireDateData === false) {
+            throw new RuntimeException('Failed to read retire_date');
+        }
+        $result['retire_date'] = $retireDateData[1];
+        $offset += 2;
+
+        $asymmetricData = unpack('C', substr($binaryData, $offset, 1));
+        if ($asymmetricData === false) {
+            throw new RuntimeException('Failed to read pillars_asymmetric');
+        }
+        $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
+        $offset += 1;
+
+        $axleLoadData = unpack('v', substr($binaryData, $offset, 2));
+        if ($axleLoadData === false) {
+            throw new RuntimeException('Failed to read axle_load');
+        }
+        $result['axle_load'] = $axleLoadData[1];
+        $offset += 2;
+
+        $maxHeightData = unpack('C', substr($binaryData, $offset, 1));
+        if ($maxHeightData === false) {
+            throw new RuntimeException('Failed to read max_height');
+        }
+        $result['max_height'] = $maxHeightData[1];
+        $offset += 1;
+
+        $clipBelowData = unpack('C', substr($binaryData, $offset, 1));
+        if ($clipBelowData === false) {
+            throw new RuntimeException('Failed to read clip_below');
+        }
+        $result['clip_below'] = $clipBelowData[1] !== 0;
+        $offset += 1;
+
+        $seasonsData = unpack('C', substr($binaryData, $offset, 1));
+        if ($seasonsData === false) {
+            throw new RuntimeException('Failed to read number_of_seasons');
+        }
         $result['number_of_seasons'] = $seasonsData[1];
 
         return $this->buildResult($result);

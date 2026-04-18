@@ -46,6 +46,7 @@ class VehicleParser implements TypeParserInterface
                 10 => $this->parseVersion10($reader),
                 11 => $this->parseVersion11($reader),
                 12 => $this->parseVersion12($reader),
+                13 => $this->parseVersion13($reader),
                 default => [],
             };
 
@@ -296,6 +297,47 @@ class VehicleParser implements TypeParserInterface
         $reader->readUint32LE(); // upper 32 bits
         $capacity = $reader->readUint16LE();
         $loadingTime = $reader->readUint16LE();
+        $topspeed = $reader->readUint16LE();
+        $weight = $reader->readUint32LE();
+        $axleLoad = $reader->readUint16LE();
+        $power = $reader->readUint32LE();
+        $runningCost = $reader->readUint32LE();
+        $reader->readUint32LE(); // upper 32 bits
+        $maintenance = $reader->readUint32LE();
+        $reader->readUint32LE(); // upper 32 bits
+
+        return [
+            'price' => $price,
+            'capacity' => $capacity,
+            'loading_time' => $loadingTime,
+            'topspeed' => $topspeed,
+            'weight' => $weight,
+            'axle_load' => $axleLoad,
+            'power' => $power,
+            'running_cost' => $runningCost,
+            'maintenance' => $maintenance,
+            'intro_date' => $reader->readUint16LE(),
+            'retire_date' => $reader->readUint16LE(),
+            'gear' => $reader->readUint16LE(),
+            'waytype' => $reader->readUint8(),
+            'sound' => $reader->readUint8(),
+            'engine_type' => $reader->readUint8(),
+            'len' => $reader->readUint8(),
+            'leader_count' => $reader->readUint8(),
+            'trailer_count' => $reader->readUint8(),
+            'freight_image_type' => $reader->readUint8(),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function parseVersion13(BinaryReader $reader): array
+    {
+        $price = $reader->readUint32LE();
+        $reader->readUint32LE(); // upper 32 bits
+        $capacity = $reader->readUint16LE();
+        $loadingTime = $reader->readUint32LE(); // uint32 (changed from uint16 in v12)
         $topspeed = $reader->readUint16LE();
         $weight = $reader->readUint32LE();
         $axleLoad = $reader->readUint16LE();

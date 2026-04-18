@@ -8,8 +8,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import TextBadge from "@/components/ui/TextBadge";
 import axios from "axios";
 import { useRef } from "react";
-import { isValidationError } from "@/lib/errorHandler";
-import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { handleError } from "@/lib/errorHandler";
 import { FormCaption } from "@/components/ui/FormCaption";
 import MultiColumn from "@/components/ui/MultiColumn";
 import { ProfileIcon } from "./ProfileIcon";
@@ -33,10 +32,7 @@ export const ProfileForm = ({
   onChangeAttachments,
 }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { getError, setError } = useAxiosError();
-  const { handleErrorWithContext } = useErrorHandler({
-    component: "ProfileForm",
-  });
+  const { getError, setValidationErrorFrom } = useAxiosError();
 
   const addWebsite = () => {
     if (user.profile.data.website.length >= 10) {
@@ -80,14 +76,13 @@ export const ProfileForm = ({
         window.location.href = `/mypage/profile?updated=1`;
       }
     } catch (error) {
-      if (isValidationError(error)) {
-        setError(error.response.data);
+      if (setValidationErrorFrom(error)) {
         containerRef.current?.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });
       } else {
-        handleErrorWithContext(error, { action: "save" });
+        handleError(error, { component: "ProfileForm", action: "save" });
       }
     }
   };

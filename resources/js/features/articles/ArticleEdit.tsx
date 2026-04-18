@@ -4,8 +4,7 @@ import axios from "axios";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import { ArticlePreview } from "./ArticlePreview";
 import { ArticleForm } from "./ArticleForm";
-import { isValidationError } from "@/lib/errorHandler";
-import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { handleError } from "@/lib/errorHandler";
 import Button from "@/components/ui/Button";
 
 export const ArticleEdit = () => {
@@ -17,10 +16,7 @@ export const ArticleEdit = () => {
   );
   const followRedirect = useArticleEditor((s) => s.followRedirect);
 
-  const { setError } = useAxiosError();
-  const { handleErrorWithContext } = useErrorHandler({
-    component: "ArticleEdit",
-  });
+  const { setValidationErrorFrom } = useAxiosError();
   const url = article.id
     ? `/api/v2/articles/${article.id}`
     : "/api/v2/articles";
@@ -34,11 +30,10 @@ export const ArticleEdit = () => {
       });
       window.location.href = `/mypage/articles/edit/${res.data.article_id}?updated=1`;
     } catch (error) {
-      if (isValidationError(error)) {
-        setError(error.response.data);
+      if (setValidationErrorFrom(error)) {
         contentRef.current?.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        handleErrorWithContext(error, { action: "save" });
+        handleError(error, { component: "ArticleEdit", action: "save" });
       }
     }
   };

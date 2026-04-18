@@ -24,20 +24,12 @@ vi.mock("axios");
 const mockedAxios = vi.mocked(axios);
 
 // useAxiosError をモック
-const mockSetError = vi.fn();
+const mockSetValidationErrorFrom = vi.fn();
 vi.mock("@/hooks/useAxiosError", () => ({
   useAxiosError: () => ({
-    setError: mockSetError,
+    setValidationErrorFrom: mockSetValidationErrorFrom,
     getError: vi.fn(),
     hasError: vi.fn(),
-  }),
-}));
-
-// useErrorHandler をモック
-const mockHandleErrorWithContext = vi.fn();
-vi.mock("@/hooks/useErrorHandler", () => ({
-  useErrorHandler: () => ({
-    handleErrorWithContext: mockHandleErrorWithContext,
   }),
 }));
 
@@ -186,18 +178,18 @@ describe("ArticleEdit", () => {
     });
   });
 
-  it("バリデーションエラー発生時にエラーを設定する", async () => {
+  it("バリデーションエラー発生時にsetValidationErrorFromが呼ばれる", async () => {
     // scrollTo のモック
     Element.prototype.scrollTo = vi.fn();
+    mockSetValidationErrorFrom.mockReturnValue(true);
 
     const validationError = {
       isAxiosError: true,
       response: {
         status: 422,
         data: {
-          errors: {
-            "article.title": ["タイトルは必須です"],
-          },
+          errors: { "article.title": ["タイトルは必須です"] },
+          message: null,
         },
       },
     };
@@ -205,28 +197,26 @@ describe("ArticleEdit", () => {
     vi.spyOn(mockedAxios, "post").mockRejectedValue(validationError);
 
     render(<ArticleEdit />);
-    const saveButton = screen.getByRole("button", { name: "保存" });
-    fireEvent.click(saveButton);
+    fireEvent.click(screen.getByRole("button", { name: "保存" }));
 
     await waitFor(() => {
-      expect(mockedAxios.post).toHaveBeenCalled();
-      expect(mockSetError).toHaveBeenCalledWith(validationError.response.data);
+      expect(mockSetValidationErrorFrom).toHaveBeenCalledWith(validationError);
     });
   });
 
-  it("一般的なエラー発生時にエラーハンドラーが呼ばれる", async () => {
+  it("一般的なエラー発生時にalertが表示される", async () => {
+    const alertMock = vi.fn();
+    vi.stubGlobal("alert", alertMock);
+    mockSetValidationErrorFrom.mockReturnValue(false);
+
     const generalError = new Error("Network error");
     vi.spyOn(mockedAxios, "post").mockRejectedValue(generalError);
 
     render(<ArticleEdit />);
-    const saveButton = screen.getByRole("button", { name: "保存" });
-    fireEvent.click(saveButton);
+    fireEvent.click(screen.getByRole("button", { name: "保存" }));
 
     await waitFor(() => {
-      expect(mockedAxios.post).toHaveBeenCalled();
-      expect(mockHandleErrorWithContext).toHaveBeenCalledWith(generalError, {
-        action: "save",
-      });
+      expect(alertMock).toHaveBeenCalledWith("Network error");
     });
   });
 });

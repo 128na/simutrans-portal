@@ -12,17 +12,12 @@ vi.mock("axios", () => ({
 vi.mock("@/hooks/useAxiosError", () => ({
   useAxiosError: () => ({
     getError: () => undefined,
-    setError: vi.fn(),
+    setValidationErrorFrom: vi.fn().mockReturnValue(false),
   }),
 }));
 
-vi.mock("@/hooks/useErrorHandler", () => ({
-  useErrorHandler: () => ({ handleErrorWithContext: vi.fn() }),
-}));
-
 vi.mock("@/lib/errorHandler", () => ({
-  isValidationError: (error: unknown) =>
-    Boolean((error as { isValidationError?: boolean })?.isValidationError),
+  handleError: vi.fn(),
 }));
 
 vi.mock("@/components/form/Upload", () => ({

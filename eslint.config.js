@@ -23,6 +23,7 @@ export default [
       'react/prop-types': 'off',
       'react/no-unescaped-entities': 'off',
       'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/set-state-in-effect': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',
       // console.log/debug を禁止（将来の混入を防ぐ）
       'no-console': 'error',

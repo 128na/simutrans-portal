@@ -6,7 +6,7 @@ import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
 import { useApiCall } from "@/hooks/useApiCall";
 import { useMyLists } from "@/hooks/useMyLists";
-import type { MyListShow, MyListCreateRequest } from "@/types/models";
+import type { MyListCreateRequest } from "@/types/models";
 
 interface AddToMyListButtonProps {
   articleId: number;

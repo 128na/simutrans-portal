@@ -49,11 +49,19 @@ class Node
 
     public const string OBJ_PEDESTRIAN = 'PASS';
 
-    public const string OBJ_SOUND = 'SOND';
-
-    public const string OBJ_SKIN = 'SKIN';
+    public const string OBJ_SOUND = 'SOUN';
 
     public const string OBJ_CURSOR = 'CURS';
+
+    public const string OBJ_MENU = 'MENU';
+
+    public const string OBJ_SMOKE = 'SMOK';
+
+    public const string OBJ_SYMBOL = 'SYMB';
+
+    public const string OBJ_MISCIMAGES = 'MISC';
+
+    public const string OBJ_FIELD = 'FIEL';
 
     public const string OBJ_XREF = 'XREF';
 

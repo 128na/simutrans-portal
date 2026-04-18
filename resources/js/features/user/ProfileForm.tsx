@@ -34,44 +34,30 @@ export const ProfileForm = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const { getError, setValidationErrorFrom } = useAxiosError();
 
+  const updateProfileData = (patch: Partial<Profile.Edit["data"]>) =>
+    onChangeUser({
+      ...user,
+      profile: { ...user.profile, data: { ...user.profile.data, ...patch } },
+    });
+
   const addWebsite = () => {
     if (user.profile.data.website.length >= 10) {
       window.alert("最大10個までです");
       return;
     }
-    onChangeUser({
-      ...user,
-      profile: {
-        ...user.profile,
-        data: {
-          ...user.profile.data,
-          website: [...user.profile.data.website, ""],
-        },
-      },
-    });
+    updateProfileData({ website: [...user.profile.data.website, ""] });
   };
 
   const removeWebsite = (index: number) => {
-    if (!window.confirm("削除しますか？")) {
-      return;
-    }
-    onChangeUser({
-      ...user,
-      profile: {
-        ...user.profile,
-        data: {
-          ...user.profile.data,
-          website: [...user.profile.data.website.filter((_, i) => i !== index)],
-        },
-      },
+    if (!window.confirm("削除しますか？")) return;
+    updateProfileData({
+      website: user.profile.data.website.filter((_, i) => i !== index),
     });
   };
 
   const save = async () => {
     try {
-      const res = await axios.post("/api/v2/profile", {
-        user,
-      });
+      const res = await axios.post("/api/v2/profile", { user });
       if (res.status === 200) {
         window.location.href = `/mypage/profile?updated=1`;
       }
@@ -146,16 +132,7 @@ export const ProfileForm = ({
           <Upload
             accept="image/*"
             onUploaded={(a) => {
-              onChangeUser({
-                ...user,
-                profile: {
-                  ...user.profile,
-                  data: {
-                    ...user.profile.data,
-                    avatar: a.id,
-                  },
-                },
-              });
+              updateProfileData({ avatar: a.id });
               onChangeAttachments([a, ...attachments]);
             }}
           />
@@ -171,16 +148,7 @@ export const ProfileForm = ({
                 selected={user.profile.data.avatar}
                 types={["image"]}
                 onSelectAttachment={(attachmentId) => {
-                  onChangeUser({
-                    ...user,
-                    profile: {
-                      ...user.profile,
-                      data: {
-                        ...user.profile.data,
-                        avatar: attachmentId,
-                      },
-                    },
-                  });
+                  updateProfileData({ avatar: attachmentId });
                   close();
                 }}
                 onChangeAttachments={onChangeAttachments}
@@ -198,18 +166,7 @@ export const ProfileForm = ({
           value={user.profile.data.description || ""}
           rows={4}
           maxLength={1024}
-          onChange={(e) => {
-            onChangeUser({
-              ...user,
-              profile: {
-                ...user.profile,
-                data: {
-                  ...user.profile.data,
-                  description: e.target.value,
-                },
-              },
-            });
-          }}
+          onChange={(e) => updateProfileData({ description: e.target.value })}
         />
       </div>
 
@@ -223,18 +180,9 @@ export const ProfileForm = ({
         </div>
         <SortableList
           items={user.profile.data.website}
-          onReorder={(newWebsites) => {
-            onChangeUser({
-              ...user,
-              profile: {
-                ...user.profile,
-                data: {
-                  ...user.profile.data,
-                  website: newWebsites,
-                },
-              },
-            });
-          }}
+          onReorder={(newWebsites) =>
+            updateProfileData({ website: newWebsites })
+          }
           getItemId={(_, idx) => `website-${idx}`}
           renderItem={(website, idx) => {
             const service = getService(website);
@@ -259,20 +207,13 @@ export const ProfileForm = ({
                       className="w-full"
                       maxLength={255}
                       value={website}
-                      onChange={(e) => {
-                        onChangeUser({
-                          ...user,
-                          profile: {
-                            ...user.profile,
-                            data: {
-                              ...user.profile.data,
-                              website: user.profile.data.website.map((w, i) =>
-                                i === idx ? e.target.value : w
-                              ),
-                            },
-                          },
-                        });
-                      }}
+                      onChange={(e) =>
+                        updateProfileData({
+                          website: user.profile.data.website.map((w, i) =>
+                            i === idx ? e.target.value : w
+                          ),
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -288,6 +229,7 @@ export const ProfileForm = ({
           }}
         />
       </div>
+
       <div className="v2-divider pt-4">
         <Button size="lg" onClick={save}>
           保存

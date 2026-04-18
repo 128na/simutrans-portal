@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
 import { useApiCall } from "@/hooks/useApiCall";
+import { useMyLists } from "@/hooks/useMyLists";
 import type { MyListShow, MyListCreateRequest } from "@/types/models";
 
 interface AddToMyListButtonProps {
@@ -75,35 +76,12 @@ const AddToMyListModal = ({
   onSuccess,
 }: AddToMyListModalProps) => {
   const { call } = useApiCall();
-  const [lists, setLists] = useState<MyListShow[]>([]);
+  const { lists, setLists, isLoading, error, setError } = useMyLists();
   const [selectedListIds, setSelectedListIds] = useState<Set<number>>(
     new Set()
   );
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [newListTitle, setNewListTitle] = useState("");
-
-  // リスト一覧を取得
-  useEffect(() => {
-    const fetchLists = async () => {
-      try {
-        setIsLoading(true);
-        const { data } = await axios.get("/api/v1/mylist");
-        if (Array.isArray(data.data)) {
-          setLists(data.data);
-        } else {
-          throw new Error("リストの取得に失敗しました");
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "エラーが発生しました");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchLists();
-  }, []);
 
   const handleToggleList = (listId: number) => {
     const newSelected = new Set(selectedListIds);

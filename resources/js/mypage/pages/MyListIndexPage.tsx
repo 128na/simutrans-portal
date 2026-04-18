@@ -1,9 +1,8 @@
-import axios from "axios";
 import { createRoot } from "react-dom/client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "@/components/ui/Button";
 import { AppWrapper } from "../../components/AppWrapper";
-import { extractErrorMessage } from "@/lib/errorHandler";
+import { useMyLists } from "@/hooks/useMyLists";
 import {
   MyListTable,
   MyListEditModal,
@@ -16,34 +15,10 @@ const app = document.getElementById("app-mylist-index");
 if (app) {
   const App = () => {
     // 成功メッセージはモーダル内から showSuccess() で出力される
-    const [lists, setLists] = useState<MyListShow[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const { lists, isLoading, error, refetch } = useMyLists();
     const [editingList, setEditingList] = useState<MyListShow | null>(null);
     const [deletingList, setDeletingList] = useState<MyListShow | null>(null);
     const [isCreating, setIsCreating] = useState(false);
-
-    const fetchLists = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        const { data } = await axios.get("/api/v1/mylist");
-        if (Array.isArray(data.data)) {
-          setLists(data.data);
-        } else {
-          throw new Error("リストの取得に失敗しました");
-        }
-      } catch (err) {
-        setError(extractErrorMessage(err));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    useEffect(() => {
-      fetchLists();
-    }, []);
 
     const handleEdit = (list: MyListShow) => {
       setEditingList(list);
@@ -61,7 +36,7 @@ if (app) {
       setEditingList(null);
       setDeletingList(null);
       setIsCreating(false);
-      fetchLists();
+      refetch();
       // 成功メッセージはモーダル内から呼び出される
     };
 

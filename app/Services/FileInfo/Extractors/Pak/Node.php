@@ -8,6 +8,8 @@ use App\Exceptions\InvalidPakFileException;
 
 /**
  * Pak file node structure
+ *
+ * @property-read string $data Node data bytes (lazily extracted from source binary)
  */
 class Node
 {

@@ -57,14 +57,17 @@ class FileInfoService
 
             $contentCursor = $this->zipArchiveParser->parseContent($attachment);
             foreach ($contentCursor as $filename => $fileData) {
+                $isBinary = $fileData['is_binary'];
                 $content = $fileData['content'];
+                unset($fileData); // 配列ラッパーを早期解放
 
                 // Skip BOM removal for binary files (performance optimization)
-                if (! $fileData['is_binary']) {
+                if (! $isBinary) {
                     $content = $this->textService->removeBom($content);
                 }
 
                 $data = $this->handleExtractors($filename, $content, $data);
+                unset($content); // 抽出完了後にバイナリを即解放
             }
 
             // Sanitize data before JSON encoding to prevent UTF-8 errors

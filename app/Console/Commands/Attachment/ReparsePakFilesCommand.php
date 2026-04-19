@@ -168,6 +168,8 @@ class ReparsePakFilesCommand extends Command
      */
     private function reparseAttachment(Attachment $attachment, ?int $maxSizeMb, bool $sync): bool
     {
+        $peakBefore = memory_get_peak_usage(true);
+
         try {
             $job = new UpdateFileInfo($attachment, $maxSizeMb);
 
@@ -175,6 +177,19 @@ class ReparsePakFilesCommand extends Command
                 dispatch_sync($job);
             } else {
                 dispatch($job)->onQueue('parse');
+            }
+
+            $peakAfter = memory_get_peak_usage(true);
+
+            if ($peakAfter > $peakBefore) {
+                Log::debug('New peak memory during pak reparse', [
+                    'attachment_id' => $attachment->id,
+                    'filename' => $attachment->original_name,
+                    'file_size_mb' => round($attachment->size / 1048576, 2),
+                    'peak_before_mb' => round($peakBefore / 1048576, 2),
+                    'peak_after_mb' => round($peakAfter / 1048576, 2),
+                    'peak_delta_mb' => round(($peakAfter - $peakBefore) / 1048576, 2),
+                ]);
             }
 
             return true;

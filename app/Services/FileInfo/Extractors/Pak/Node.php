@@ -76,9 +76,25 @@ class Node
         public string $type,
         public int $children,
         public int $size,
-        public string $data,
+        private readonly string $sourceBinary,
+        private readonly int $dataOffset,
         public array $childNodes = [],
     ) {}
+
+    /**
+     * データを元バイナリから都度生成する（ツリー構築時に全コピーを避けるため）。
+     * パーサーからは $node->data としてアクセスする。
+     */
+    public function __get(string $name): mixed
+    {
+        if ($name === 'data') {
+            return $this->size > 0
+                ? substr($this->sourceBinary, $this->dataOffset, $this->size)
+                : '';
+        }
+
+        throw new \RuntimeException("Undefined property Node::\${$name}");
+    }
 
     public static function parse(BinaryReader $reader, int $depth = 0): self
     {
@@ -96,8 +112,11 @@ class Node
             $size = $reader->readUint32LE();
         }
 
-        // Read node data
-        $data = $size > 0 ? $reader->readString($size) : '';
+        // Record offset instead of copying data bytes into a new string
+        $dataOffset = $reader->getPosition();
+        if ($size > 0) {
+            $reader->skip($size);
+        }
 
         // Parse child nodes recursively
         $childNodes = [];
@@ -105,7 +124,7 @@ class Node
             $childNodes[] = self::parse($reader, $depth + 1);
         }
 
-        return new self($type, $children, $size, $data, $childNodes);
+        return new self($type, $children, $size, $reader->getBinary(), $dataOffset, $childNodes);
     }
 
     public function isType(string $type): bool

@@ -170,4 +170,9 @@ class BinaryReader
     {
         return strlen($this->binary) - $this->position;
     }
+
+    public function getBinary(): string
+    {
+        return $this->binary;
+    }
 }

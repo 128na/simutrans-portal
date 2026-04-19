@@ -20,12 +20,14 @@ class PakParser
     public function parse(string $binary): array
     {
         $reader = new BinaryReader($binary);
+        unset($binary); // BinaryReader が保持するので呼び出し元の参照を早期解放
 
         // Parse header
         $header = PakHeader::parse($reader);
 
         // Parse root node
         $root = Node::parse($reader);
+        unset($reader); // Node ツリーが sourceBinary を保持するので reader は不要
 
         // Extract metadata from nodes
         return $this->extractMetadata($root, $header->compilerVersionCode);

@@ -35,3 +35,5 @@ coverage-repos/
 **/caddy
 frankenphp
 frankenphp-worker.php
+
+clonesite/

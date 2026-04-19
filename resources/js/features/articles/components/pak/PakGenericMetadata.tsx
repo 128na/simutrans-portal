@@ -45,6 +45,15 @@ function getObjectTypeLabel(objectType: ObjectType): string {
     building: "建物",
     pedestrian: "歩行者",
     tree: "樹木",
+    groundobj: "地上オブジェクト",
+    ground: "地形テクスチャ",
+    sound: "効果音",
+    menu: "メニュー画像",
+    cursor: "カーソル画像",
+    symbol: "シンボル画像",
+    field: "フィールド画像",
+    smoke: "煙エフェクト",
+    miscimages: "その他画像",
   };
 
   return labels[objectType]

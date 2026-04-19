@@ -144,6 +144,54 @@ class ZipArchiveParserTest extends TestCase
         unlink($tempFile);
     }
 
+    /**
+     * .pak/.bmp/.png など非テキスト拡張子は is_binary=true でコンテンツ無変換であることを確認する。
+     */
+    public function test_binary_files_are_not_encoding_converted(): void
+    {
+        $binaryContent = "\x42\x4D\xFF\xFE\x00\x00"; // BMP マジックバイト
+        $zipPath = $this->createTempZip([
+            'image.bmp' => $binaryContent,
+            'sound.wav' => $binaryContent,
+            'object.pak' => $binaryContent,
+        ]);
+
+        $this->mock(Attachment::class, function (MockInterface $mock) use ($zipPath): void {
+            $mock->shouldReceive('getAttribute')->with('full_path')->andReturn($zipPath);
+        });
+
+        $attachment = app(Attachment::class);
+        $result = $this->getSUT()->parseContent($attachment)->all();
+
+        $this->assertCount(3, $result);
+        foreach (['image.bmp', 'sound.wav', 'object.pak'] as $name) {
+            $this->assertTrue($result[$name]['is_binary'], "{$name} should be binary");
+            $this->assertSame($binaryContent, $result[$name]['content'], "{$name} content should not be converted");
+        }
+
+        unlink($zipPath);
+    }
+
+    /**
+     * 未知の拡張子はバイナリ扱いになることを確認する。
+     */
+    public function test_unknown_extension_is_treated_as_binary(): void
+    {
+        $zipPath = $this->createTempZip(['file.xyz' => 'some content']);
+
+        $this->mock(Attachment::class, function (MockInterface $mock) use ($zipPath): void {
+            $mock->shouldReceive('getAttribute')->with('full_path')->andReturn($zipPath);
+        });
+
+        $attachment = app(Attachment::class);
+        $result = $this->getSUT()->parseContent($attachment)->all();
+
+        $this->assertCount(1, $result);
+        $this->assertTrue($result['file.xyz']['is_binary']);
+
+        unlink($zipPath);
+    }
+
     private function createTempZip(array $files): string
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'test_zip_').'.zip';

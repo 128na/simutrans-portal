@@ -59,7 +59,9 @@ class ZipArchiveParser
 
     private function isBinaryFile(string $filename): bool
     {
-        return str_ends_with(strtolower($filename), '.pak');
+        $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        return ! in_array($ext, ['dat', 'txt', 'tab', 'md'], true);
     }
 
     private function convert(string $str): string

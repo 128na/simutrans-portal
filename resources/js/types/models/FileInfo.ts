@@ -83,6 +83,8 @@ export interface WayData extends BaseObj {
   number_of_seasons?: number;
   /** 前面画像の有無 (version > 4) */
   front_images?: boolean;
+  /** 下部クリップ (v8+: uint8, v<8: waytype!=powerline) */
+  clip_below?: boolean | number;
 }
 
 /**
@@ -128,6 +130,8 @@ export interface BridgeData extends BaseObj {
   max_height?: number;
   /** 季節グラフィック数 (0 = なし, 1 = 雪あり) */
   number_of_seasons?: number;
+  /** 下部クリップ (v11+) */
+  clip_below?: boolean;
 }
 
 /**
@@ -211,8 +215,8 @@ export interface PedestrianData extends BaseObj {
 export interface TreeData extends BaseObj {
   /** 許可される気候（ビットマスク） / Allowed climates (bitmask) */
   allowed_climates: number;
-  /** 許可される気候（文字列） / Allowed climates (string) */
-  allowed_climates_str: string;
+  /** 許可される気候名（配列） / Allowed climate names (array) */
+  climate_names?: string[];
   /** 出現確率（重み） / Distribution weight (spawn probability) */
   distribution_weight: number;
   /** 季節数（0=旧形式） / Number of seasons (0=old format) */
@@ -225,8 +229,8 @@ export interface TreeData extends BaseObj {
 export interface GroundobjData extends BaseObj {
   /** 許可される気候（ビットマスク） / Allowed climates (bitmask) */
   allowed_climates: number;
-  /** 許可される気候（文字列） / Allowed climates (string) */
-  allowed_climates_str: string;
+  /** 許可される気候名（配列） / Allowed climate names (array) */
+  climate_names?: string[];
   /** 出現確率（重み） / Distribution weight (spawn probability) */
   distribution_weight: number;
   /** 季節数 / Number of seasons */
@@ -265,7 +269,7 @@ export interface SoundData extends BaseObj {
 export interface SkinData extends BaseObj {
   /** データフィールドの有無（常にfalse） / Has data fields (always false) */
   has_data: boolean;
-  /** オブジェクトサブタイプ ('skin' または 'smoke') / Object subtype */
+  /** オブジェクトサブタイプ ('MENU','CURS','SYMB','FIEL','SMOK','MISC') / Object subtype */
   object_subtype: string;
 }
 

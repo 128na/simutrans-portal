@@ -153,6 +153,28 @@ export const formatBoolean = (value: boolean | undefined): string => {
   return value ? "Yes" : "No";
 };
 
+export const formatAxleLoad = (axle_load: number | undefined): string => {
+  if (axle_load === undefined) return "";
+  if (axle_load >= 9999) return "無制限";
+  return `${axle_load} t`;
+};
+
+const CLIMATE_NAME_TRANSLATIONS: Record<string, string> = {
+  water_climate: "水域",
+  desert_climate: "砂漠",
+  tropic_climate: "熱帯",
+  mediterran_climate: "地中海性",
+  temperate_climate: "温帯",
+  tundra_climate: "ツンドラ",
+  rocky_climate: "岩地",
+  arctic_climate: "極地",
+};
+
+export const formatClimates = (names: string[] | undefined): string => {
+  if (!names || names.length === 0) return "";
+  return names.map((n) => CLIMATE_NAME_TRANSLATIONS[n] || n).join(", ");
+};
+
 export const formatSignalType = (data: RoadsignData) => {
   return data.is_signal ? "信号" : "標識";
 };

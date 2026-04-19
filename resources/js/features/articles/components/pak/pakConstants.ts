@@ -21,10 +21,19 @@ export type ObjectType =
   | "roadsign"
   | "crossing"
   | "tree"
+  | "groundobj"
+  | "ground"
   | "good"
   | "factory"
   | "citycar"
-  | "pedestrian";
+  | "pedestrian"
+  | "sound"
+  | "menu"
+  | "cursor"
+  | "symbol"
+  | "field"
+  | "smoke"
+  | "miscimages";
 
 /**
  * Waytype enum

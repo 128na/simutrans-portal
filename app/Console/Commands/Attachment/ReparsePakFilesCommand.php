@@ -15,7 +15,7 @@ class ReparsePakFilesCommand extends Command
     protected $signature = 'attachment:reparse-pak-files
                             {id? : Specific attachment ID to reparse}
                             {--limit= : Limit the number of files to process}
-                            {--max-size=100 : Maximum file size in MB (0 = unlimited)}
+                            {--max-size=500 : Maximum file size in MB (0 = unlimited)}
                             {--sync : Process synchronously instead of using queue}';
 
     protected $description = 'Reparse all pak and zip files to extract metadata';

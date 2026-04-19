@@ -115,7 +115,9 @@ describe("formatter", () => {
         "arctic_climate",
       ];
       const result = formatClimates(allClimates);
-      expect(result).toBe("水域, 砂漠, 熱帯, 地中海性, 温帯, ツンドラ, 岩地, 極地");
+      expect(result).toBe(
+        "水域, 砂漠, 熱帯, 地中海性, 温帯, ツンドラ, 岩地, 極地"
+      );
     });
 
     it("空配列は空文字を返す", () => {

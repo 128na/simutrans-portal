@@ -19,14 +19,6 @@ class WayParserTest extends TestCase
         $this->parser = new WayParser;
     }
 
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = "WAY\x00" . pack('v', 0) . pack('v', $size) . $data;
-
-        return Node::parse(new BinaryReader($binary));
-    }
-
     /**
      * v1 のフィールド読み込み順序バグの修正を検証する。
      *
@@ -92,8 +84,8 @@ class WayParserTest extends TestCase
     public function test_version7_clip_below_defaults_to_true_for_road(): void
     {
         $data = pack('v', 7);         // version = 7
-        $data .= pack('V', 0) . pack('V', 0);  // price sint64
-        $data .= pack('V', 0) . pack('V', 0);  // maintenance sint64
+        $data .= pack('V', 0).pack('V', 0);  // price sint64
+        $data .= pack('V', 0).pack('V', 0);  // maintenance sint64
         $data .= pack('V', 100);     // topspeed
         $data .= pack('V', 500);     // max_weight
         $data .= pack('v', 23880);   // intro_date
@@ -118,8 +110,8 @@ class WayParserTest extends TestCase
     public function test_version7_clip_below_defaults_to_false_for_powerline(): void
     {
         $data = pack('v', 7);         // version = 7
-        $data .= pack('V', 0) . pack('V', 0);  // price sint64
-        $data .= pack('V', 0) . pack('V', 0);  // maintenance sint64
+        $data .= pack('V', 0).pack('V', 0);  // price sint64
+        $data .= pack('V', 0).pack('V', 0);  // maintenance sint64
         $data .= pack('V', 100);     // topspeed
         $data .= pack('V', 500);     // max_weight
         $data .= pack('v', 23880);   // intro_date
@@ -135,5 +127,13 @@ class WayParserTest extends TestCase
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
         $this->assertFalse((bool) $result['clip_below']);
+    }
+
+    private function makeNode(string $data): Node
+    {
+        $size = strlen($data);
+        $binary = "WAY\x00".pack('v', 0).pack('v', $size).$data;
+
+        return Node::parse(new BinaryReader($binary));
     }
 }

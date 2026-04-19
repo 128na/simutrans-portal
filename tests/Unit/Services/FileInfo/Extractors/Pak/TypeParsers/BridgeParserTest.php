@@ -19,14 +19,6 @@ class BridgeParserTest extends TestCase
         $this->parser = new BridgeParser;
     }
 
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'BRDG' . pack('v', 0) . pack('v', $size) . $data;
-
-        return Node::parse(new BinaryReader($binary));
-    }
-
     /**
      * v11 で clip_below フィールドが読み取れることを検証する。
      *
@@ -119,5 +111,13 @@ class BridgeParserTest extends TestCase
 
         $this->assertNotNull($result);
         $this->assertArrayNotHasKey('clip_below', $result);
+    }
+
+    private function makeNode(string $data): Node
+    {
+        $size = strlen($data);
+        $binary = 'BRDG'.pack('v', 0).pack('v', $size).$data;
+
+        return Node::parse(new BinaryReader($binary));
     }
 }

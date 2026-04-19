@@ -42,7 +42,10 @@ describe("buildDetailRows", () => {
     });
 
     it("9999の軸重は無制限を表示する", () => {
-      const rows = buildDetailRows("vehicle", { ...base, axle_load: 9999 } as Record<string, unknown>);
+      const rows = buildDetailRows("vehicle", {
+        ...base,
+        axle_load: 9999,
+      } as Record<string, unknown>);
       expect(labelOf(rows, "軸重")).toBe("無制限");
     });
 
@@ -93,7 +96,10 @@ describe("buildDetailRows", () => {
     });
 
     it("clip_below=false はNoを表示する", () => {
-      const rows = buildDetailRows("way", { ...base, clip_below: false } as Record<string, unknown>);
+      const rows = buildDetailRows("way", {
+        ...base,
+        clip_below: false,
+      } as Record<string, unknown>);
       expect(labelOf(rows, "下部クリップ")).toBe("No");
     });
   });
@@ -130,7 +136,10 @@ describe("buildDetailRows", () => {
     });
 
     it("支柱間隔=0は支柱なしを表示する", () => {
-      const rows = buildDetailRows("bridge", { ...base, pillars_every: 0 } as Record<string, unknown>);
+      const rows = buildDetailRows("bridge", {
+        ...base,
+        pillars_every: 0,
+      } as Record<string, unknown>);
       expect(labelOf(rows, "支柱間隔")).toBe("支柱なし");
     });
 
@@ -207,22 +216,34 @@ describe("buildDetailRows", () => {
     };
 
     it("出現確率を表示する", () => {
-      const rows = buildDetailRows("groundobj", base as Record<string, unknown>);
+      const rows = buildDetailRows(
+        "groundobj",
+        base as Record<string, unknown>
+      );
       expect(labelOf(rows, "出現確率（重み）")).toBe(3);
     });
 
     it("対応気候を日本語で表示する", () => {
-      const rows = buildDetailRows("groundobj", base as Record<string, unknown>);
+      const rows = buildDetailRows(
+        "groundobj",
+        base as Record<string, unknown>
+      );
       expect(labelOf(rows, "対応気候")).toBe("温帯");
     });
 
     it("speed=0は静止を表示する", () => {
-      const rows = buildDetailRows("groundobj", base as Record<string, unknown>);
+      const rows = buildDetailRows(
+        "groundobj",
+        base as Record<string, unknown>
+      );
       expect(labelOf(rows, "移動速度")).toBe("静止");
     });
 
     it("上に木を生やせるをYesで表示する", () => {
-      const rows = buildDetailRows("groundobj", base as Record<string, unknown>);
+      const rows = buildDetailRows(
+        "groundobj",
+        base as Record<string, unknown>
+      );
       expect(labelOf(rows, "上に木を生やせる")).toBe("Yes");
     });
   });
@@ -245,18 +266,29 @@ describe("buildDetailRows", () => {
     });
 
     it("filenameなしは空文字を表示する", () => {
-      const rows = buildDetailRows("sound", { ...base, filename: undefined } as Record<string, unknown>);
+      const rows = buildDetailRows("sound", {
+        ...base,
+        filename: undefined,
+      } as Record<string, unknown>);
       expect(labelOf(rows, "ファイル名")).toBe("");
     });
   });
 
   describe("skin系 (menu/cursor/symbol/field/smoke/miscimages/ground)", () => {
-    it.each(["menu", "cursor", "symbol", "field", "smoke", "miscimages", "ground"])(
-      "%s は空の行配列を返す",
-      (type) => {
-        const rows = buildDetailRows(type, { has_data: false, object_subtype: type });
-        expect(rows).toHaveLength(0);
-      }
-    );
+    it.each([
+      "menu",
+      "cursor",
+      "symbol",
+      "field",
+      "smoke",
+      "miscimages",
+      "ground",
+    ])("%s は空の行配列を返す", (type) => {
+      const rows = buildDetailRows(type, {
+        has_data: false,
+        object_subtype: type,
+      });
+      expect(rows).toHaveLength(0);
+    });
   });
 });

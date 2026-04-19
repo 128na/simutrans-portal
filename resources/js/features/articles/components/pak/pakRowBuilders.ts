@@ -121,7 +121,10 @@ function buildVehicleRows(data: VehicleData): TableRow[] {
     { label: "重量", value: formatWeight(data.weight) },
     { label: "軸重", value: formatAxleLoad(data.axle_load) },
     { label: "長さ", value: data.len },
-    { label: "乗降時間", value: data.loading_time !== undefined ? `${data.loading_time} ms` : "" },
+    {
+      label: "乗降時間",
+      value: data.loading_time !== undefined ? `${data.loading_time} ms` : "",
+    },
     { label: "先頭連結可能数", value: data.leader_count },
     { label: "付随連結可能数", value: data.trailer_count },
     { label: "登場年月", value: formatDate(data.intro_date) },
@@ -144,7 +147,10 @@ function buildWayRows(data: WayData): TableRow[] {
     },
     {
       label: "下部クリップ",
-      value: data.clip_below !== undefined ? formatBoolean(Boolean(data.clip_below)) : "",
+      value:
+        data.clip_below !== undefined
+          ? formatBoolean(Boolean(data.clip_below))
+          : "",
     },
     { label: "登場年月", value: formatDate(data.intro_date) },
     { label: "引退年月", value: formatDate(data.retire_date) },
@@ -162,9 +168,12 @@ function buildBridgeRows(data: BridgeData): TableRow[] {
     { label: "最大高さ", value: data.max_height || "無制限" },
     {
       label: "支柱間隔",
-      value: data.pillars_every !== undefined
-        ? (data.pillars_every === 0 ? "支柱なし" : `${data.pillars_every} タイル`)
-        : "",
+      value:
+        data.pillars_every !== undefined
+          ? data.pillars_every === 0
+            ? "支柱なし"
+            : `${data.pillars_every} タイル`
+          : "",
     },
     {
       label: "降雪対応",
@@ -172,7 +181,8 @@ function buildBridgeRows(data: BridgeData): TableRow[] {
     },
     {
       label: "下部クリップ",
-      value: data.clip_below !== undefined ? formatBoolean(data.clip_below) : "",
+      value:
+        data.clip_below !== undefined ? formatBoolean(data.clip_below) : "",
     },
     { label: "登場年月", value: formatDate(data.intro_date) },
     { label: "引退年月", value: formatDate(data.retire_date) },
@@ -196,7 +206,10 @@ function buildTunnelRows(data: TunnelData): TableRow[] {
     },
     {
       label: "広口ポータル",
-      value: data.broad_portals !== undefined ? formatBoolean(data.broad_portals) : "",
+      value:
+        data.broad_portals !== undefined
+          ? formatBoolean(data.broad_portals)
+          : "",
     },
     { label: "登場年月", value: formatDate(data.intro_date) },
     { label: "引退年月", value: formatDate(data.retire_date) },

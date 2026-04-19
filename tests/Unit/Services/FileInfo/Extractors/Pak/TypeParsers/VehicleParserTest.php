@@ -19,14 +19,6 @@ class VehicleParserTest extends TestCase
         $this->parser = new VehicleParser;
     }
 
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'VHCL' . pack('v', 0) . pack('v', $size) . $data;
-
-        return Node::parse(new BinaryReader($binary));
-    }
-
     /**
      * v13 の loading_time が uint32 で読まれることを検証する。
      *
@@ -117,5 +109,13 @@ class VehicleParserTest extends TestCase
         $this->assertSame(2, $result['leader_count']);
         $this->assertSame(3, $result['trailer_count']);
         $this->assertSame(1, $result['freight_image_type']);
+    }
+
+    private function makeNode(string $data): Node
+    {
+        $size = strlen($data);
+        $binary = 'VHCL'.pack('v', 0).pack('v', $size).$data;
+
+        return Node::parse(new BinaryReader($binary));
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithAuthentication;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithConsole;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithContainer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Sleep;
 use Mockery;
@@ -20,8 +21,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
-    use \Illuminate\Foundation\Testing\Concerns\InteractsWithContainer,
-        \Illuminate\Foundation\Testing\Concerns\InteractsWithDeprecationHandling,
+    use \Illuminate\Foundation\Testing\Concerns\InteractsWithDeprecationHandling,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithExceptionHandling,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithSession,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithTestCaseLifecycle,
@@ -29,7 +29,8 @@ abstract class TestCase extends BaseTestCase
         \Illuminate\Foundation\Testing\Concerns\InteractsWithViews,
         \Illuminate\Foundation\Testing\Concerns\MakesHttpRequests,
         InteractsWithAuthentication,
-        InteractsWithConsole;
+        InteractsWithConsole,
+        InteractsWithContainer;
 
     /**
      * The list of trait that this test uses, fetched recursively.

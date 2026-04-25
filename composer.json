@@ -16,7 +16,7 @@
     "google/cloud-recaptcha-enterprise": ">=2.3.1",
     "guzzlehttp/guzzle": ">=7.10.0",
     "laravel/fortify": "^1.36.2",
-    "laravel/framework": "^12.56.0",
+    "laravel/framework": "^12.57.0",
     "laravel/mcp": "^0.5.9",
     "laravel/sanctum": ">=4.3.1",
     "laravel/tinker": "^2.11.1",
@@ -28,7 +28,7 @@
     "spatie/laravel-sitemap": "^7.4"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^4.2.6",
+    "barryvdh/laravel-debugbar": "^4.2.8",
     "barryvdh/laravel-ide-helper": "^3.7.0",
     "darkaonline/l5-swagger": "^10.1",
     "driftingly/rector-laravel": "^2.3.0",
@@ -36,11 +36,11 @@
     "filp/whoops": "^2.18.4",
     "icanhazstring/composer-unused": "^0.9.6",
     "larastan/larastan": "^3.9.6",
-    "laravel/boost": "^2.4",
-    "laravel/dusk": "^8.5.0",
-    "laravel/pint": "^1.29.0",
+    "laravel/boost": "^2.4.5",
+    "laravel/dusk": "^8.6.0",
+    "laravel/pint": "^1.29.1",
     "mockery/mockery": "^1.6.12",
-    "nunomaduro/collision": "^8.9.3",
+    "nunomaduro/collision": "^8.9.4",
     "phpunit/phpunit": "^12.5.23",
     "rector/rector": "^2.4.2",
     "spatie/laravel-ignition": "^2.12.0"

@@ -1,0 +1,43 @@
+{
+    "name": "abordage/laravel-html-min",
+    "description": "HtmlMin is very simple (and very fast) html compression package for Laravel",
+    "license": "MIT",
+    "keywords": [
+        "html compress",
+        "html minification",
+        "html minifier",
+        "html minify",
+        "html min"
+    ],
+    "authors": [
+        {
+            "name": "Pavel Bychko",
+            "email": "box@abordage.dev",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://github.com/abordage/laravel-html-min",
+    "require": {
+        "php": ">=7.4",
+        "abordage/html-min": "^1.0",
+        "illuminate/support": "^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Abordage\\LaravelHtmlMin\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "aliases": {
+                "HtmlMin": "Abordage\\LaravelHtmlMin\\Facades\\HtmlMin"
+            },
+            "providers": [
+                "Abordage\\LaravelHtmlMin\\HtmlMinServiceProvider"
+            ]
+        }
+    }
+}

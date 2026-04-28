@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\UserArticleUpdateStatusTool;
 use App\Mcp\Tools\UserMyArticleListTool;
 use App\Mcp\Tools\UserMyArticleShowTool;
 use App\Mcp\Tools\UserMyListAddItemTool;
@@ -45,6 +46,7 @@ class SimutransAddonPortalUserServer extends Server
     protected array $tools = [
         UserMyArticleListTool::class,
         UserMyArticleShowTool::class,
+        UserArticleUpdateStatusTool::class,
         UserMyListListTool::class,
         UserMyListShowTool::class,
         UserMyListCreateTool::class,

@@ -6,8 +6,13 @@ namespace App\Mcp\Servers;
 
 use App\Mcp\Tools\UserMyArticleListTool;
 use App\Mcp\Tools\UserMyArticleShowTool;
+use App\Mcp\Tools\UserMyListAddItemTool;
+use App\Mcp\Tools\UserMyListCreateTool;
+use App\Mcp\Tools\UserMyListDeleteTool;
 use App\Mcp\Tools\UserMyListListTool;
+use App\Mcp\Tools\UserMyListRemoveItemTool;
 use App\Mcp\Tools\UserMyListShowTool;
+use App\Mcp\Tools\UserMyListUpdateTool;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Prompt;
 use Laravel\Mcp\Server\Tool;
@@ -42,6 +47,11 @@ class SimutransAddonPortalUserServer extends Server
         UserMyArticleShowTool::class,
         UserMyListListTool::class,
         UserMyListShowTool::class,
+        UserMyListCreateTool::class,
+        UserMyListUpdateTool::class,
+        UserMyListDeleteTool::class,
+        UserMyListAddItemTool::class,
+        UserMyListRemoveItemTool::class,
     ];
 
     /**

@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # 並列実行可能なものは並列に
   lint-php:

@@ -61,7 +61,7 @@ class MypageArticleRepository
     public function getForAnalyticsList(User $user): Collection
     {
         $builder = $this->model->query()
-            ->select(['articles.id', 'articles.title', 'articles.published_at', 'articles.modified_at'])
+            ->select(['articles.id', 'articles.title', 'articles.slug', 'articles.published_at', 'articles.modified_at'])
             ->where('articles.user_id', $user->id);
 
         $this->wherePublished($builder);

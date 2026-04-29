@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\Article\MypageArticleRepository;
@@ -45,8 +44,7 @@ class UserAnalyticsTool extends Tool
             return Response::error('Unauthorized.');
         }
 
-        $articles = $this->repository->getForMypageList($user)
-            ->filter(fn (Article $article): bool => $article->status === ArticleStatus::Publish);
+        $articles = $this->repository->getForAnalyticsList($user);
 
         return Response::json(
             $articles->map(fn (Article $article): array => [

@@ -16,11 +16,7 @@ use OpenApi\Attributes as OA;
 #[OA\Info(version: '1.0.0', description: 'Simutrans Addon Portal API Documentation', title: 'Simutrans Portal API')]
 #[OA\Server(
     url: \L5_SWAGGER_CONST_HOST,
-    description: 'Local Development Server'
-)]
-#[OA\Server(
-    url: 'https://portal.128-bit.net',
-    description: 'Production Server'
+    description: 'API Server'
 )]
 abstract class Controller extends BaseController
 {

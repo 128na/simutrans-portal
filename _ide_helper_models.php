@@ -391,6 +391,8 @@ namespace App\Models{
  * @property-read \App\Models\User\Profile|null $profile
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Redirect> $redirects
  * @property-read int|null $redirects_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @property-read int|null $tokens_count
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User admin()
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()

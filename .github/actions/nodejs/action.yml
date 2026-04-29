@@ -12,9 +12,16 @@ runs:
       uses: actions/setup-node@v6
       with:
         node-version: 24
-        cache-dependency-path: "**/package-lock.json"
+
+    - name: Cache npm
+      id: cache-npm
+      uses: actions/cache@v5
+      with:
+        path: node_modules
+        key: npm-${{ hashFiles('**/package-lock.json') }}
 
     - name: npm install
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       run: npm ci
       shell: bash
 

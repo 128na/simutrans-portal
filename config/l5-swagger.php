@@ -53,6 +53,7 @@ return [
                 'annotations' => [
                     base_path('app/Http/Controllers/Controller.php'),
                     base_path('app/Http/Controllers/Mypage'),
+                    base_path('app/Http/Controllers/Api'),
                     base_path('app/OpenApi/Schemas'),
                 ],
 

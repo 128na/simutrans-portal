@@ -16,6 +16,410 @@
         }
     ],
     "paths": {
+        "/api/v1/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "自分の記事一覧取得",
+                "description": "ログイン中のユーザーの記事一覧を返します。下書き・非公開記事も含みます。",
+                "operationId": "3fe8bf684063a5479fb27f5432db77e2",
+                "responses": {
+                    "200": {
+                        "description": "取得成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "記事タイトル"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string",
+                                                        "example": "my-article"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "publish",
+                                                        "enum": [
+                                                            "publish",
+                                                            "draft",
+                                                            "private",
+                                                            "trash"
+                                                        ]
+                                                    },
+                                                    "post_type": {
+                                                        "type": "string",
+                                                        "example": "markdown",
+                                                        "enum": [
+                                                            "addon-post",
+                                                            "addon-introduction",
+                                                            "page",
+                                                            "markdown"
+                                                        ]
+                                                    },
+                                                    "published_at": {
+                                                        "type": "string",
+                                                        "example": "2024/01/01 12:00",
+                                                        "nullable": true
+                                                    },
+                                                    "modified_at": {
+                                                        "type": "string",
+                                                        "example": "2024/01/01 12:00",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "認証エラー",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/articles/{id}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "自分の記事詳細取得",
+                "description": "ログイン中のユーザーの記事詳細を返します。下書き・非公開記事も取得可能です。",
+                "operationId": "0e00aae7c370b295281ca65f1d061354",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "記事ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "取得成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "記事タイトル"
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "my-article"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "publish"
+                                        },
+                                        "post_type": {
+                                            "type": "string",
+                                            "example": "markdown"
+                                        },
+                                        "published_at": {
+                                            "type": "string",
+                                            "example": "2024/01/01 12:00",
+                                            "nullable": true
+                                        },
+                                        "modified_at": {
+                                            "type": "string",
+                                            "example": "2024/01/01 12:00",
+                                            "nullable": true
+                                        },
+                                        "categories": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "tags": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "認証エラー",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "記事が見つかりません",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/articles/{id}/status": {
+            "patch": {
+                "tags": [
+                    "Articles"
+                ],
+                "summary": "記事ステータス変更",
+                "description": "ログイン中のユーザーの記事のステータスのみを変更します。タイトル・本文は変更しません。",
+                "operationId": "ced43f981d7d81d8e03ad502e23042bf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "記事ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "description": "新しいステータス",
+                                        "type": "string",
+                                        "example": "draft",
+                                        "enum": [
+                                            "publish",
+                                            "draft",
+                                            "private",
+                                            "trash"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "更新成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "記事タイトル"
+                                        },
+                                        "slug": {
+                                            "type": "string",
+                                            "example": "my-article"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "draft"
+                                        },
+                                        "post_type": {
+                                            "type": "string",
+                                            "example": "markdown"
+                                        },
+                                        "published_at": {
+                                            "type": "string",
+                                            "example": "2024/01/01 12:00",
+                                            "nullable": true
+                                        },
+                                        "modified_at": {
+                                            "type": "string",
+                                            "example": "2024/01/01 12:00",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "認証エラー",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "記事が見つかりません",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "バリデーションエラー",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/attachments": {
+            "get": {
+                "tags": [
+                    "Attachments"
+                ],
+                "summary": "添付ファイル一覧取得",
+                "description": "ログイン中のユーザーがアップロードした添付ファイルの一覧を返します。記事作成時のfile_id・thumbnail_id確認に使用します。",
+                "operationId": "823bbbdb7dfd433cada0f2e91d2e082f",
+                "responses": {
+                    "200": {
+                        "description": "取得成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "description": "attachment ID",
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "original_name": {
+                                                        "description": "元のファイル名",
+                                                        "type": "string",
+                                                        "example": "addon.zip"
+                                                    },
+                                                    "is_image": {
+                                                        "description": "画像ファイルかどうか",
+                                                        "type": "boolean",
+                                                        "example": false
+                                                    },
+                                                    "created_at": {
+                                                        "description": "アップロード日時",
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-01-01T12:00:00+09:00"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "認証エラー",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
         "/api/v2/mypage/analytics/search": {
             "post": {
                 "tags": [
@@ -1279,16 +1683,16 @@
     },
     "tags": [
         {
-            "name": "Analytics",
-            "description": "Analytics"
-        },
-        {
             "name": "Articles",
             "description": "Articles"
         },
         {
             "name": "Attachments",
             "description": "Attachments"
+        },
+        {
+            "name": "Analytics",
+            "description": "Analytics"
         },
         {
             "name": "Profile",

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\UserAnalyticsTool;
+use App\Mcp\Tools\UserArticleCreateTool;
 use App\Mcp\Tools\UserArticleUpdateStatusTool;
 use App\Mcp\Tools\UserMyArticleListTool;
 use App\Mcp\Tools\UserMyArticleShowTool;
@@ -47,6 +49,8 @@ class SimutransAddonPortalUserServer extends Server
         UserMyArticleListTool::class,
         UserMyArticleShowTool::class,
         UserArticleUpdateStatusTool::class,
+        UserArticleCreateTool::class,
+        UserAnalyticsTool::class,
         UserMyListListTool::class,
         UserMyListShowTool::class,
         UserMyListCreateTool::class,

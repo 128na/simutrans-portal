@@ -10,9 +10,9 @@
     </div>
 
     @if (session('new_token'))
-      <div class="mb-8 v2-card v2-card-warning">
+      <div class="mb-8 v2-card v2-card-warn">
         <p class="font-bold mb-2">新しいAPIトークンが発行されました</p>
-        <p class="text-sm mb-3 text-c-sub">このトークンは一度しか表示されません。必ずコピーして安全な場所に保管してください。</p>
+        <p class="text-sm mb-3">このトークンは一度しか表示されません。必ずコピーして安全な場所に保管してください。</p>
         <div class="flex gap-2 items-center">
           <input
             type="text"
@@ -23,18 +23,12 @@
           />
           <button
             type="button"
-            class="v2-button v2-button-sub js-clipboard shrink-0"
+            class="v2-button v2-button-md v2-button-sub js-clipboard shrink-0"
             data-text="{{ session('new_token') }}"
           >
             コピー
           </button>
         </div>
-      </div>
-    @endif
-
-    @if (session('status'))
-      <div class="mb-6 v2-card v2-card-primary">
-        <p>{{ session('status') }}</p>
       </div>
     @endif
 
@@ -59,7 +53,7 @@
               <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
           </div>
-          <button type="submit" class="v2-button v2-button-primary shrink-0">発行</button>
+          <button type="submit" class="v2-button v2-button-md v2-button-primary shrink-0">発行</button>
         </form>
       </div>
 
@@ -107,7 +101,7 @@
       <div>
         <h4 class="v2-text-h3 mb-4">MCPサーバーへの接続設定</h4>
         <p class="text-sm text-c-sub mb-3">Claude Desktopなどのクライアントで以下のように設定します。</p>
-        <pre class="v2-card bg-gray-900 text-gray-100 text-sm overflow-x-auto p-4 rounded"><code>{
+        <pre class="bg-gray-900 text-gray-100 text-sm overflow-x-auto p-4 rounded-lg"><code>{
   "mcpServers": {
     "simutrans-portal-user": {
       "url": "{{ config('app.url') }}/mcp/user",

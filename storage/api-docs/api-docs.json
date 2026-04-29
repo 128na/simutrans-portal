@@ -3,11 +3,18 @@
     "info": {
         "title": "Simutrans Portal API",
         "description": "Simutrans Addon Portal API Documentation",
+        "contact": {
+            "name": "128na",
+            "url": "https://github.com/128na"
+        },
+        "license": {
+            "name": "MIT"
+        },
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "http://localhost",
+            "url": "http://localhost:1080",
             "description": "API Server"
         }
     ],

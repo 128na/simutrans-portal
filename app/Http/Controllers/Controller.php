@@ -13,7 +13,13 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(version: '1.0.0', description: 'Simutrans Addon Portal API Documentation', title: 'Simutrans Portal API')]
+#[OA\Info(
+    version: '1.0.0',
+    description: 'Simutrans Addon Portal API Documentation',
+    title: 'Simutrans Portal API',
+    contact: new OA\Contact(name: '128na', url: 'https://github.com/128na'),
+    license: new OA\License(name: 'MIT'),
+)]
 #[OA\Server(
     url: \L5_SWAGGER_CONST_HOST,
     description: 'API Server'

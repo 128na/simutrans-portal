@@ -1,851 +1,851 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "Simutrans Portal API",
-        "description": "Simutrans Addon Portal API Documentation",
-        "version": "1.0.0"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Simutrans Portal API",
+    "description": "Simutrans Addon Portal API Documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:1080",
+      "description": "API Server"
+    }
+  ],
+  "paths": {
+    "/api/v1/articles": {
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "自分の記事一覧取得",
+        "description": "ログイン中のユーザーの記事一覧を返します。下書き・非公開記事も含みます。",
+        "operationId": "3fe8bf684063a5479fb27f5432db77e2",
+        "responses": {
+          "200": {
+            "description": "取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "記事タイトル"
+                          },
+                          "slug": {
+                            "type": "string",
+                            "example": "my-article"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "publish",
+                            "enum": [
+                              "publish",
+                              "draft",
+                              "private",
+                              "trash"
+                            ]
+                          },
+                          "post_type": {
+                            "type": "string",
+                            "example": "markdown",
+                            "enum": [
+                              "addon-post",
+                              "addon-introduction",
+                              "page",
+                              "markdown"
+                            ]
+                          },
+                          "published_at": {
+                            "type": "string",
+                            "example": "2024/01/01 12:00",
+                            "nullable": true
+                          },
+                          "modified_at": {
+                            "type": "string",
+                            "example": "2024/01/01 12:00",
+                            "nullable": true
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sanctum": []
+          }
+        ]
+      }
     },
-    "servers": [
-        {
-            "url": "http://localhost:1080",
-            "description": "API Server"
-        }
-    ],
-    "paths": {
-        "/api/v1/articles": {
-            "get": {
-                "tags": [
-                    "Articles"
-                ],
-                "summary": "自分の記事一覧取得",
-                "description": "ログイン中のユーザーの記事一覧を返します。下書き・非公開記事も含みます。",
-                "operationId": "3fe8bf684063a5479fb27f5432db77e2",
-                "responses": {
-                    "200": {
-                        "description": "取得成功",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "title": {
-                                                        "type": "string",
-                                                        "example": "記事タイトル"
-                                                    },
-                                                    "slug": {
-                                                        "type": "string",
-                                                        "example": "my-article"
-                                                    },
-                                                    "status": {
-                                                        "type": "string",
-                                                        "example": "publish",
-                                                        "enum": [
-                                                            "publish",
-                                                            "draft",
-                                                            "private",
-                                                            "trash"
-                                                        ]
-                                                    },
-                                                    "post_type": {
-                                                        "type": "string",
-                                                        "example": "markdown",
-                                                        "enum": [
-                                                            "addon-post",
-                                                            "addon-introduction",
-                                                            "page",
-                                                            "markdown"
-                                                        ]
-                                                    },
-                                                    "published_at": {
-                                                        "type": "string",
-                                                        "example": "2024/01/01 12:00",
-                                                        "nullable": true
-                                                    },
-                                                    "modified_at": {
-                                                        "type": "string",
-                                                        "example": "2024/01/01 12:00",
-                                                        "nullable": true
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "認証エラー",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
+    "/api/v1/articles/{id}": {
+      "get": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "自分の記事詳細取得",
+        "description": "ログイン中のユーザーの記事詳細を返します。下書き・非公開記事も取得可能です。",
+        "operationId": "0e00aae7c370b295281ca65f1d061354",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "記事ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
-        },
-        "/api/v1/articles/{id}": {
-            "get": {
-                "tags": [
-                    "Articles"
-                ],
-                "summary": "自分の記事詳細取得",
-                "description": "ログイン中のユーザーの記事詳細を返します。下書き・非公開記事も取得可能です。",
-                "operationId": "0e00aae7c370b295281ca65f1d061354",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "記事ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "取得成功",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "記事タイトル"
-                                        },
-                                        "slug": {
-                                            "type": "string",
-                                            "example": "my-article"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "example": "publish"
-                                        },
-                                        "post_type": {
-                                            "type": "string",
-                                            "example": "markdown"
-                                        },
-                                        "published_at": {
-                                            "type": "string",
-                                            "example": "2024/01/01 12:00",
-                                            "nullable": true
-                                        },
-                                        "modified_at": {
-                                            "type": "string",
-                                            "example": "2024/01/01 12:00",
-                                            "nullable": true
-                                        },
-                                        "categories": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer"
-                                                    },
-                                                    "slug": {
-                                                        "type": "string"
-                                                    },
-                                                    "type": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
-                                        "tags": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer"
-                                                    },
-                                                    "name": {
-                                                        "type": "string"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "認証エラー",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "記事が見つかりません",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/articles/{id}/status": {
-            "patch": {
-                "tags": [
-                    "Articles"
-                ],
-                "summary": "記事ステータス変更",
-                "description": "ログイン中のユーザーの記事のステータスのみを変更します。タイトル・本文は変更しません。",
-                "operationId": "ced43f981d7d81d8e03ad502e23042bf",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "記事ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "status"
-                                ],
-                                "properties": {
-                                    "status": {
-                                        "description": "新しいステータス",
-                                        "type": "string",
-                                        "example": "draft",
-                                        "enum": [
-                                            "publish",
-                                            "draft",
-                                            "private",
-                                            "trash"
-                                        ]
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "更新成功",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "記事タイトル"
-                                        },
-                                        "slug": {
-                                            "type": "string",
-                                            "example": "my-article"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "example": "draft"
-                                        },
-                                        "post_type": {
-                                            "type": "string",
-                                            "example": "markdown"
-                                        },
-                                        "published_at": {
-                                            "type": "string",
-                                            "example": "2024/01/01 12:00",
-                                            "nullable": true
-                                        },
-                                        "modified_at": {
-                                            "type": "string",
-                                            "example": "2024/01/01 12:00",
-                                            "nullable": true
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "認証エラー",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "記事が見つかりません",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "バリデーションエラー",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/attachments": {
-            "get": {
-                "tags": [
-                    "Attachments"
-                ],
-                "summary": "添付ファイル一覧取得",
-                "description": "ログイン中のユーザーがアップロードした添付ファイルの一覧を返します。記事作成時のfile_id・thumbnail_id確認に使用します。",
-                "operationId": "823bbbdb7dfd433cada0f2e91d2e082f",
-                "responses": {
-                    "200": {
-                        "description": "取得成功",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "description": "attachment ID",
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "original_name": {
-                                                        "description": "元のファイル名",
-                                                        "type": "string",
-                                                        "example": "addon.zip"
-                                                    },
-                                                    "is_image": {
-                                                        "description": "画像ファイルかどうか",
-                                                        "type": "boolean",
-                                                        "example": false
-                                                    },
-                                                    "created_at": {
-                                                        "description": "アップロード日時",
-                                                        "type": "string",
-                                                        "format": "date-time",
-                                                        "example": "2024-01-01T12:00:00+09:00"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "認証エラー",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "sanctum": []
-                    }
-                ]
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Article": {
-                "title": "記事",
-                "description": "記事情報",
-                "properties": {
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
                     "id": {
-                        "description": "記事ID",
-                        "type": "integer",
-                        "example": 1
+                      "type": "integer",
+                      "example": 1
                     },
                     "title": {
-                        "description": "タイトル",
-                        "type": "string",
-                        "example": "新しいアドオン"
+                      "type": "string",
+                      "example": "記事タイトル"
                     },
                     "slug": {
-                        "description": "スラッグ",
-                        "type": "string",
-                        "example": "new-addon"
+                      "type": "string",
+                      "example": "my-article"
                     },
                     "status": {
-                        "description": "ステータス",
-                        "type": "string",
-                        "example": "publish",
-                        "enum": [
-                            "publish",
-                            "draft",
-                            "private"
-                        ]
+                      "type": "string",
+                      "example": "publish"
                     },
                     "post_type": {
-                        "description": "投稿タイプ",
-                        "type": "string",
-                        "example": "addon-post"
-                    },
-                    "contents": {
-                        "description": "コンテンツデータ",
-                        "type": "object"
-                    },
-                    "categories": {
-                        "description": "カテゴリID配列",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    },
-                    "tags": {
-                        "description": "タグID配列",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    },
-                    "articles": {
-                        "description": "関連記事ID配列",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    },
-                    "attachments": {
-                        "description": "添付ファイルID配列",
-                        "type": "array",
-                        "items": {
-                            "type": "integer"
-                        }
-                    },
-                    "created_at": {
-                        "description": "作成日時",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T12:00"
+                      "type": "string",
+                      "example": "markdown"
                     },
                     "published_at": {
-                        "description": "公開日時",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T12:00"
+                      "type": "string",
+                      "example": "2024/01/01 12:00",
+                      "nullable": true
                     },
                     "modified_at": {
-                        "description": "更新日時",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T12:00"
+                      "type": "string",
+                      "example": "2024/01/01 12:00",
+                      "nullable": true
+                    },
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "type": "object"
+                      }
                     }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "記事が見つかりません",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sanctum": []
+          }
+        ]
+      }
+    },
+    "/api/v1/articles/{id}/status": {
+      "patch": {
+        "tags": [
+          "Articles"
+        ],
+        "summary": "記事ステータス変更",
+        "description": "ログイン中のユーザーの記事のステータスのみを変更します。タイトル・本文は変更しません。",
+        "operationId": "ced43f981d7d81d8e03ad502e23042bf",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "記事ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "description": "新しいステータス",
+                    "type": "string",
+                    "example": "draft",
+                    "enum": [
+                      "publish",
+                      "draft",
+                      "private",
+                      "trash"
+                    ]
+                  }
                 },
                 "type": "object"
-            },
-            "Attachment": {
-                "title": "添付ファイル",
-                "description": "添付ファイル情報",
-                "properties": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
                     "id": {
-                        "description": "添付ファイルID",
-                        "type": "integer",
-                        "example": 1
+                      "type": "integer",
+                      "example": 1
                     },
-                    "attachmentable_type": {
-                        "description": "関連エンティティタイプ",
-                        "type": "string",
-                        "example": "Article"
-                    },
-                    "attachmentable_id": {
-                        "description": "関連エンティティID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "type": {
-                        "description": "ファイルタイプ",
-                        "type": "string",
-                        "example": "image/png"
-                    },
-                    "original_name": {
-                        "description": "オリジナルファイル名",
-                        "type": "string",
-                        "example": "sample.pak"
-                    },
-                    "thumbnail": {
-                        "description": "サムネイルURL",
-                        "type": "string",
-                        "example": "https://example.com/thumb.jpg"
-                    },
-                    "url": {
-                        "description": "ファイルURL",
-                        "type": "string",
-                        "example": "https://example.com/file.pak"
-                    },
-                    "size": {
-                        "description": "ファイルサイズ(bytes)",
-                        "type": "integer",
-                        "example": 1024
-                    },
-                    "fileInfo": {
-                        "description": "ファイル情報",
-                        "properties": {
-                            "data": {
-                                "description": "ファイルメタデータ",
-                                "type": "object"
-                            }
-                        },
-                        "type": "object",
-                        "nullable": true
-                    },
-                    "caption": {
-                        "description": "画像キャプション（画像のみ）",
-                        "type": "string",
-                        "example": "キャプション"
-                    },
-                    "order": {
-                        "description": "表示順（画像のみ）",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "attachmentable": {
-                        "description": "関連記事情報",
-                        "properties": {
-                            "id": {
-                                "type": "integer"
-                            },
-                            "title": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object",
-                        "nullable": true
-                    },
-                    "created_at": {
-                        "description": "作成日時",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T12:00:00Z"
-                    }
-                },
-                "type": "object"
-            },
-            "Category": {
-                "title": "カテゴリ",
-                "description": "カテゴリ情報",
-                "properties": {
-                    "id": {
-                        "description": "カテゴリID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "type": {
-                        "description": "カテゴリタイプ",
-                        "type": "string",
-                        "example": "addon"
+                    "title": {
+                      "type": "string",
+                      "example": "記事タイトル"
                     },
                     "slug": {
-                        "description": "スラッグ",
-                        "type": "string",
-                        "example": "vehicles"
+                      "type": "string",
+                      "example": "my-article"
                     },
-                    "name": {
-                        "description": "名前",
-                        "type": "string",
-                        "example": "乗り物"
+                    "status": {
+                      "type": "string",
+                      "example": "draft"
                     },
-                    "description": {
-                        "description": "説明",
-                        "type": "string",
-                        "example": "乗り物関連アドオン"
+                    "post_type": {
+                      "type": "string",
+                      "example": "markdown"
+                    },
+                    "published_at": {
+                      "type": "string",
+                      "example": "2024/01/01 12:00",
+                      "nullable": true
+                    },
+                    "modified_at": {
+                      "type": "string",
+                      "example": "2024/01/01 12:00",
+                      "nullable": true
                     }
-                },
-                "type": "object"
-            },
-            "Error": {
-                "title": "エラー",
-                "description": "エラーレスポンス",
-                "properties": {
-                    "message": {
-                        "description": "エラーメッセージ",
-                        "type": "string",
-                        "example": "An error occurred"
-                    },
-                    "errors": {
-                        "description": "バリデーションエラー詳細",
-                        "type": "object",
-                        "example": {
-                            "field": [
-                                "The field is required"
-                            ]
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "ProfileEdit": {
-                "title": "プロフィール編集",
-                "description": "プロフィール編集情報",
-                "properties": {
-                    "id": {
-                        "description": "ユーザーID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "description": "ユーザー名",
-                        "type": "string",
-                        "example": "user123"
-                    },
-                    "nickname": {
-                        "description": "表示名",
-                        "type": "string",
-                        "example": "ニックネーム"
-                    },
-                    "email": {
-                        "description": "メールアドレス",
-                        "type": "string",
-                        "format": "email",
-                        "example": "user@example.com"
-                    },
-                    "role": {
-                        "description": "ロール",
-                        "type": "string",
-                        "example": "user"
-                    },
-                    "profile": {
-                        "description": "プロフィール情報",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "data": {
-                                "type": "string",
-                                "example": "プロフィール本文"
-                            }
-                        },
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
-            "Tag": {
-                "title": "タグ",
-                "description": "タグ情報",
-                "properties": {
-                    "id": {
-                        "description": "タグID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "description": "タグ名",
-                        "type": "string",
-                        "example": "pak128.japan"
-                    },
-                    "description": {
-                        "description": "説明",
-                        "type": "string",
-                        "example": "pak128.japan用アドオン"
-                    },
-                    "editable": {
-                        "description": "編集可能かどうか",
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "created_by": {
-                        "description": "作成者",
-                        "properties": {
-                            "id": {
-                                "type": "integer"
-                            },
-                            "name": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object",
-                        "nullable": true
-                    },
-                    "last_modified_by": {
-                        "description": "最終更新者",
-                        "properties": {
-                            "id": {
-                                "type": "integer"
-                            },
-                            "name": {
-                                "type": "string"
-                            }
-                        },
-                        "type": "object",
-                        "nullable": true
-                    },
-                    "last_modified_at": {
-                        "description": "最終更新日時",
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T12:00"
-                    },
-                    "articles_count": {
-                        "description": "記事数",
-                        "type": "integer",
-                        "example": 10
-                    }
-                },
-                "type": "object"
-            },
-            "User": {
-                "title": "ユーザー",
-                "description": "ユーザー情報",
-                "properties": {
-                    "id": {
-                        "description": "ユーザーID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "description": "ユーザー名",
-                        "type": "string",
-                        "example": "user123"
-                    },
-                    "nickname": {
-                        "description": "表示名",
-                        "type": "string",
-                        "example": "ニックネーム"
-                    },
-                    "role": {
-                        "description": "ロール",
-                        "type": "string",
-                        "example": "user",
-                        "enum": [
-                            "user",
-                            "admin"
-                        ]
-                    },
-                    "profile": {
-                        "description": "プロフィール情報",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "example": 1
-                            },
-                            "data": {
-                                "type": "string",
-                                "example": "プロフィール本文"
-                            },
-                            "attachments": {
-                                "description": "プロフィール添付ファイル",
-                                "type": "array",
-                                "items": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer"
-                                        },
-                                        "thumbnail": {
-                                            "type": "string"
-                                        },
-                                        "original_name": {
-                                            "type": "string"
-                                        },
-                                        "url": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        },
-                        "type": "object"
-                    }
-                },
-                "type": "object"
+                  },
+                  "type": "object"
+                }
+              }
             }
-        },
-        "securitySchemes": {
-            "sanctum": {
-                "type": "http",
-                "description": "Laravel Sanctum token authentication",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
-        }
-    },
-    "tags": [
-        {
-            "name": "Articles",
-            "description": "Articles"
+          },
+          "404": {
+            "description": "記事が見つかりません",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "バリデーションエラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         },
-        {
-            "name": "Attachments",
-            "description": "Attachments"
-        }
-    ],
-    "security": [
-        {
+        "security": [
+          {
             "sanctum": []
-        }
-    ]
+          }
+        ]
+      }
+    },
+    "/api/v1/attachments": {
+      "get": {
+        "tags": [
+          "Attachments"
+        ],
+        "summary": "添付ファイル一覧取得",
+        "description": "ログイン中のユーザーがアップロードした添付ファイルの一覧を返します。記事作成時のfile_id・thumbnail_id確認に使用します。",
+        "operationId": "823bbbdb7dfd433cada0f2e91d2e082f",
+        "responses": {
+          "200": {
+            "description": "取得成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "id": {
+                            "description": "attachment ID",
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "original_name": {
+                            "description": "元のファイル名",
+                            "type": "string",
+                            "example": "addon.zip"
+                          },
+                          "is_image": {
+                            "description": "画像ファイルかどうか",
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "created_at": {
+                            "description": "アップロード日時",
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-01-01T12:00:00+09:00"
+                          }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認証エラー",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "sanctum": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "title": "記事",
+        "description": "記事情報",
+        "properties": {
+          "id": {
+            "description": "記事ID",
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "description": "タイトル",
+            "type": "string",
+            "example": "新しいアドオン"
+          },
+          "slug": {
+            "description": "スラッグ",
+            "type": "string",
+            "example": "new-addon"
+          },
+          "status": {
+            "description": "ステータス",
+            "type": "string",
+            "example": "publish",
+            "enum": [
+              "publish",
+              "draft",
+              "private"
+            ]
+          },
+          "post_type": {
+            "description": "投稿タイプ",
+            "type": "string",
+            "example": "addon-post"
+          },
+          "contents": {
+            "description": "コンテンツデータ",
+            "type": "object"
+          },
+          "categories": {
+            "description": "カテゴリID配列",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "tags": {
+            "description": "タグID配列",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "articles": {
+            "description": "関連記事ID配列",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "attachments": {
+            "description": "添付ファイルID配列",
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "created_at": {
+            "description": "作成日時",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T12:00"
+          },
+          "published_at": {
+            "description": "公開日時",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T12:00"
+          },
+          "modified_at": {
+            "description": "更新日時",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T12:00"
+          }
+        },
+        "type": "object"
+      },
+      "Attachment": {
+        "title": "添付ファイル",
+        "description": "添付ファイル情報",
+        "properties": {
+          "id": {
+            "description": "添付ファイルID",
+            "type": "integer",
+            "example": 1
+          },
+          "attachmentable_type": {
+            "description": "関連エンティティタイプ",
+            "type": "string",
+            "example": "Article"
+          },
+          "attachmentable_id": {
+            "description": "関連エンティティID",
+            "type": "integer",
+            "example": 1
+          },
+          "type": {
+            "description": "ファイルタイプ",
+            "type": "string",
+            "example": "image/png"
+          },
+          "original_name": {
+            "description": "オリジナルファイル名",
+            "type": "string",
+            "example": "sample.pak"
+          },
+          "thumbnail": {
+            "description": "サムネイルURL",
+            "type": "string",
+            "example": "https://example.com/thumb.jpg"
+          },
+          "url": {
+            "description": "ファイルURL",
+            "type": "string",
+            "example": "https://example.com/file.pak"
+          },
+          "size": {
+            "description": "ファイルサイズ(bytes)",
+            "type": "integer",
+            "example": 1024
+          },
+          "fileInfo": {
+            "description": "ファイル情報",
+            "properties": {
+              "data": {
+                "description": "ファイルメタデータ",
+                "type": "object"
+              }
+            },
+            "type": "object",
+            "nullable": true
+          },
+          "caption": {
+            "description": "画像キャプション（画像のみ）",
+            "type": "string",
+            "example": "キャプション"
+          },
+          "order": {
+            "description": "表示順（画像のみ）",
+            "type": "integer",
+            "example": 1
+          },
+          "attachmentable": {
+            "description": "関連記事情報",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "nullable": true
+          },
+          "created_at": {
+            "description": "作成日時",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T12:00:00Z"
+          }
+        },
+        "type": "object"
+      },
+      "Category": {
+        "title": "カテゴリ",
+        "description": "カテゴリ情報",
+        "properties": {
+          "id": {
+            "description": "カテゴリID",
+            "type": "integer",
+            "example": 1
+          },
+          "type": {
+            "description": "カテゴリタイプ",
+            "type": "string",
+            "example": "addon"
+          },
+          "slug": {
+            "description": "スラッグ",
+            "type": "string",
+            "example": "vehicles"
+          },
+          "name": {
+            "description": "名前",
+            "type": "string",
+            "example": "乗り物"
+          },
+          "description": {
+            "description": "説明",
+            "type": "string",
+            "example": "乗り物関連アドオン"
+          }
+        },
+        "type": "object"
+      },
+      "Error": {
+        "title": "エラー",
+        "description": "エラーレスポンス",
+        "properties": {
+          "message": {
+            "description": "エラーメッセージ",
+            "type": "string",
+            "example": "An error occurred"
+          },
+          "errors": {
+            "description": "バリデーションエラー詳細",
+            "type": "object",
+            "example": {
+              "field": [
+                "The field is required"
+              ]
+            }
+          }
+        },
+        "type": "object"
+      },
+      "ProfileEdit": {
+        "title": "プロフィール編集",
+        "description": "プロフィール編集情報",
+        "properties": {
+          "id": {
+            "description": "ユーザーID",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "ユーザー名",
+            "type": "string",
+            "example": "user123"
+          },
+          "nickname": {
+            "description": "表示名",
+            "type": "string",
+            "example": "ニックネーム"
+          },
+          "email": {
+            "description": "メールアドレス",
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "role": {
+            "description": "ロール",
+            "type": "string",
+            "example": "user"
+          },
+          "profile": {
+            "description": "プロフィール情報",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "data": {
+                "type": "string",
+                "example": "プロフィール本文"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "Tag": {
+        "title": "タグ",
+        "description": "タグ情報",
+        "properties": {
+          "id": {
+            "description": "タグID",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "タグ名",
+            "type": "string",
+            "example": "pak128.japan"
+          },
+          "description": {
+            "description": "説明",
+            "type": "string",
+            "example": "pak128.japan用アドオン"
+          },
+          "editable": {
+            "description": "編集可能かどうか",
+            "type": "boolean",
+            "example": true
+          },
+          "created_by": {
+            "description": "作成者",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "nullable": true
+          },
+          "last_modified_by": {
+            "description": "最終更新者",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": "object",
+            "nullable": true
+          },
+          "last_modified_at": {
+            "description": "最終更新日時",
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-01T12:00"
+          },
+          "articles_count": {
+            "description": "記事数",
+            "type": "integer",
+            "example": 10
+          }
+        },
+        "type": "object"
+      },
+      "User": {
+        "title": "ユーザー",
+        "description": "ユーザー情報",
+        "properties": {
+          "id": {
+            "description": "ユーザーID",
+            "type": "integer",
+            "example": 1
+          },
+          "name": {
+            "description": "ユーザー名",
+            "type": "string",
+            "example": "user123"
+          },
+          "nickname": {
+            "description": "表示名",
+            "type": "string",
+            "example": "ニックネーム"
+          },
+          "role": {
+            "description": "ロール",
+            "type": "string",
+            "example": "user",
+            "enum": [
+              "user",
+              "admin"
+            ]
+          },
+          "profile": {
+            "description": "プロフィール情報",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 1
+              },
+              "data": {
+                "type": "string",
+                "example": "プロフィール本文"
+              },
+              "attachments": {
+                "description": "プロフィール添付ファイル",
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "thumbnail": {
+                      "type": "string"
+                    },
+                    "original_name": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "sanctum": {
+        "type": "http",
+        "description": "Laravel Sanctum token authentication",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Articles",
+      "description": "Articles"
+    },
+    {
+      "name": "Attachments",
+      "description": "Attachments"
+    }
+  ],
+  "security": [
+    {
+      "sanctum": []
+    }
+  ]
 }

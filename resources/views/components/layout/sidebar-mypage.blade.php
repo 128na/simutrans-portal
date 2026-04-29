@@ -42,6 +42,9 @@
           @include('components.ui.link', ['url' => route('mypage.invite'), 'title' => 'ユーザー招待'])
         </li>
         <li>
+          @include('components.ui.link', ['url' => route('mypage.tokens.index'), 'title' => 'APIトークン'])
+        </li>
+        <li>
           @include('components.ui.link', ['url' => route('mypage.login-histories'), 'title' => 'ログイン履歴'])
         </li>
       </ul>

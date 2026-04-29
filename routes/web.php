@@ -15,6 +15,7 @@ use App\Http\Controllers\Mypage\DashboardController;
 use App\Http\Controllers\Mypage\InviteController;
 use App\Http\Controllers\Mypage\MyListPageController;
 use App\Http\Controllers\Mypage\ProfileController;
+use App\Http\Controllers\Mypage\TokenController;
 use App\Http\Controllers\Pages\Article\DownloadController;
 use App\Http\Controllers\Pages\Article\IndexController;
 use App\Http\Controllers\Pages\Article\PakController;
@@ -109,6 +110,10 @@ Route::middleware(['auth'])->group(function (): void {
         Route::get('/mypage/invite', [InviteController::class, 'index'])->name('mypage.invite');
         Route::post('/mypage/invite', [InviteController::class, 'createOrUpdate']);
         Route::delete('/mypage/invite', [InviteController::class, 'revoke']);
+
+        Route::get('/mypage/tokens', [TokenController::class, 'index'])->name('mypage.tokens.index');
+        Route::post('/mypage/tokens', [TokenController::class, 'store'])->name('mypage.tokens.store');
+        Route::delete('/mypage/tokens/{tokenId}', [TokenController::class, 'destroy'])->name('mypage.tokens.destroy');
 
         Route::get('/mypage/tags', [\App\Http\Controllers\Mypage\TagController::class, 'index'])->name('mypage.tags');
         Route::post('/mypage/tags', [\App\Http\Controllers\Mypage\TagController::class, 'store']);

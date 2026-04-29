@@ -13,7 +13,7 @@ jobs:
     name: Lint (PHP)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/php
       - run: composer run pint
 
@@ -21,7 +21,7 @@ jobs:
     name: Lint (Frontend)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
       - run: npm run build
@@ -32,7 +32,7 @@ jobs:
     name: Static Analysis (PHPStan)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
       - run: composer run phpstan
@@ -41,14 +41,14 @@ jobs:
     name: Test (Vitest)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
       - uses: ./.github/actions/nodejs
       - run: npm run test:front
         env:
           LARAVEL_BYPASS_ENV_CHECK: 1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: vitest-coverage
@@ -64,7 +64,7 @@ jobs:
         php: ["8.3", "8.4", "8.5"]
         suite: [Unit, Feature]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: php -r "copy('.env.ci', '.env');"
       - uses: ./.github/actions/php
         with:
@@ -73,7 +73,7 @@ jobs:
       - uses: ./.github/actions/mysql
         if: matrix.suite == 'Feature'
       - run: php artisan test --testsuite=${{ matrix.suite }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: laravel-logs-${{ matrix.php }}-${{ matrix.suite }}
@@ -93,7 +93,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: php -r "copy('.env.deploy', '.env');"
       - uses: ./.github/actions/php
         with:

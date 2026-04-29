@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Mcp\Servers;
 
 use App\Mcp\Tools\UserAnalyticsTool;
+use App\Mcp\Tools\UserArticleCreateAddonIntroductionTool;
+use App\Mcp\Tools\UserArticleCreateAddonPostTool;
+use App\Mcp\Tools\UserArticleCreatePageTool;
 use App\Mcp\Tools\UserArticleCreateTool;
 use App\Mcp\Tools\UserArticleUpdateStatusTool;
+use App\Mcp\Tools\UserAttachmentListTool;
 use App\Mcp\Tools\UserMyArticleListTool;
 use App\Mcp\Tools\UserMyArticleShowTool;
 use App\Mcp\Tools\UserMyListAddItemTool;
@@ -50,6 +54,10 @@ class SimutransAddonPortalUserServer extends Server
         UserMyArticleShowTool::class,
         UserArticleUpdateStatusTool::class,
         UserArticleCreateTool::class,
+        UserArticleCreatePageTool::class,
+        UserArticleCreateAddonIntroductionTool::class,
+        UserArticleCreateAddonPostTool::class,
+        UserAttachmentListTool::class,
         UserAnalyticsTool::class,
         UserMyListListTool::class,
         UserMyListShowTool::class,

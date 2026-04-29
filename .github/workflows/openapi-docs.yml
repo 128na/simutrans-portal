@@ -51,7 +51,7 @@ jobs:
 
       - name: Commit OpenAPI documentation
         if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push'
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "[openapi] Update OpenAPI documentation"
           commit_author: "GitHub Action <actions@github.com>"

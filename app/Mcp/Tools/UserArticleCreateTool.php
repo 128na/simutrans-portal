@@ -7,9 +7,11 @@ namespace App\Mcp\Tools;
 use App\Actions\Article\StoreArticle;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -53,6 +55,10 @@ class UserArticleCreateTool extends Tool
             return Response::error('Unauthorized.');
         }
 
+        if ($user->cannot('store', Article::class)) {
+            return Response::error('Forbidden.');
+        }
+
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'slug' => [
@@ -72,7 +78,7 @@ class UserArticleCreateTool extends Tool
             $contents['thumbnail'] = $validated['thumbnail_id'];
         }
 
-        $article = ($this->storeArticle)($user, [
+        $article = DB::transaction(fn (): Article => ($this->storeArticle)($user, [
             'article' => [
                 'title' => $validated['title'],
                 'slug' => $validated['slug'],
@@ -81,7 +87,7 @@ class UserArticleCreateTool extends Tool
                 'contents' => $contents,
             ],
             'should_notify' => false,
-        ]);
+        ]));
 
         return Response::json([
             'id' => $article->id,

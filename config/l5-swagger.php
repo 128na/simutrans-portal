@@ -52,7 +52,6 @@ return [
                 */
                 'annotations' => [
                     base_path('app/Http/Controllers/Controller.php'),
-                    base_path('app/Http/Controllers/Mypage'),
                     base_path('app/Http/Controllers/Api'),
                     base_path('app/OpenApi/Schemas'),
                 ],
@@ -221,7 +220,7 @@ return [
              * Constants which can be used in annotations
              */
             'constants' => [
-                'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://localhost:8000'),
+                'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', env('APP_URL', 'http://localhost')),
             ],
         ],
     ],

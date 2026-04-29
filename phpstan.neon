@@ -22,3 +22,7 @@ parameters:
     # ide-helper連携
     scanFiles:
         - _ide_helper_models.php
+
+    # l5-swagger constants defined at runtime via define()
+    bootstrapFiles:
+        - phpstan-bootstrap.php

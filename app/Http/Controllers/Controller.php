@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Info(version: '1.0.0', description: 'Simutrans Addon Portal API Documentation', title: 'Simutrans Portal API')]
 #[OA\Server(
-    url: 'http://localhost',
+    url: \L5_SWAGGER_CONST_HOST,
     description: 'Local Development Server'
 )]
 #[OA\Server(

@@ -18,7 +18,7 @@
     "laravel/fortify": "^1.37.0",
     "laravel/framework": "^12.58.0",
     "laravel/mcp": "^0.5.9",
-    "laravel/sanctum": ">=4.3.1",
+    "laravel/sanctum": ">=4.3.2",
     "laravel/tinker": "^2.11.1",
     "marvinlabs/laravel-discord-logger": "^1.4.4",
     "potibm/phluesky": ">=0.6.1",

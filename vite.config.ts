@@ -20,9 +20,6 @@ export default defineConfig({
       refresh: true,
     }),
   ],
-  esbuild: {
-    jsx: "automatic",
-  },
   build: {
     rollupOptions: {
       output: {},

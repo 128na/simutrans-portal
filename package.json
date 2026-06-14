@@ -1,4 +1,5 @@
 {
+  "name": "simutrans-portal",
   "private": true,
   "type": "module",
   "scripts": {

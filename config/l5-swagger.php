@@ -44,6 +44,59 @@ return [
                     base_path('app/Http/Controllers/Api'),
                     base_path('app/OpenApi/Schemas'),
                 ],
+
+                /*
+                 * Absolute path to directory where to export views
+                */
+                'views' => base_path('resources/views/vendor/l5-swagger'),
+
+                /*
+                 * Edit to set the api's base path
+                */
+                'base' => env('L5_SWAGGER_BASE_PATH', null),
+
+                /*
+                 * Edit to set path where swagger ui assets should be stored
+                */
+                'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
+
+                /*
+                 * Absolute path to directories that should be excluded from scanning
+                */
+                'excludes' => [],
+            ],
+
+            'scanOptions' => [
+                /**
+                 * analyser: defaults to \OpenApi\StaticAnalyser .
+                 *
+                 * @see scan
+                 */
+                'analyser' => null,
+
+                /**
+                 * analysis: defaults to a new \OpenApi\Analysis .
+                 *
+                 * @see scan
+                 */
+                'analysis' => null,
+
+                /**
+                 * Custom query path processors classes.
+                 *
+                 * @link https://github.com/zircote/swagger-php/tree/master/Examples/schema-query-parameter-validation
+                 * @see scan
+                 */
+                'processors' => [
+                    // new \App\SwaggerProcessors\SchemaQueryParameter(),
+                ],
+
+                /**
+                 * pattern: string       $pattern File pattern(s) to scan (default: *.php) .
+                 *
+                 * @see scan
+                 */
+                'pattern' => null,
             ],
 
             /*

@@ -14,4 +14,4 @@ runs:
         php-version: ${{ inputs.php-version }}
         coverage: none
 
-    - uses: "ramsey/composer-install@v3"
+    - uses: "ramsey/composer-install@v4"

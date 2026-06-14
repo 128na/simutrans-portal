@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-use OpenApi\scan;
 
 return [
     'default' => 'default',
@@ -15,16 +14,6 @@ return [
                  * Route for accessing api documentation interface
                 */
                 'api' => 'api/documentation',
-
-                /*
-                 * Middleware allows to prevent unexpected access to API documentation
-                */
-                'middleware' => [
-                    'api' => [],
-                    'asset' => [],
-                    'docs' => [],
-                    'oauth2_callback' => [],
-                ],
             ],
             'paths' => [
                 /*
@@ -108,18 +97,6 @@ return [
                  * @see scan
                  */
                 'pattern' => null,
-
-                /*
-                 * Callback function to replace namespace for custom rules.
-                */
-                'namespaceAliases' => [
-                    // 'App\OpenApi\Schemas' => 'App\Schemas',
-                ],
-
-                /*
-                 * Determines whether the Generator should throw an exception if it encounters a non-existent class or not.
-                */
-                'validate_class_names' => false,
             ],
 
             /*
@@ -182,6 +159,7 @@ return [
             */
             'ui' => [
                 'display' => [
+                    'dark_mode' => env('L5_SWAGGER_UI_DARK_MODE', false),
                     /*
                      * Controls the default expansion setting for the operations and tags. It can be :
                      * 'list' (expands only the tags),

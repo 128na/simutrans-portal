@@ -29,6 +29,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./resources/js/__tests__/setup.ts",
+    exclude: [".claude/**", "**/node_modules/**", "**/dist/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],

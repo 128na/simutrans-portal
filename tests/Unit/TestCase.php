@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithConsole;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithContainer;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDeprecationHandling;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithExceptionHandling;
+use Illuminate\Foundation\Testing\Concerns\InteractsWithSession;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Sleep;
 use Mockery;
@@ -23,8 +24,7 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
-    use \Illuminate\Foundation\Testing\Concerns\InteractsWithSession,
-        \Illuminate\Foundation\Testing\Concerns\InteractsWithTestCaseLifecycle,
+    use \Illuminate\Foundation\Testing\Concerns\InteractsWithTestCaseLifecycle,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithTime,
         \Illuminate\Foundation\Testing\Concerns\InteractsWithViews,
         \Illuminate\Foundation\Testing\Concerns\MakesHttpRequests,
@@ -32,7 +32,8 @@ abstract class TestCase extends BaseTestCase
         InteractsWithConsole,
         InteractsWithContainer,
         InteractsWithDeprecationHandling,
-        InteractsWithExceptionHandling;
+        InteractsWithExceptionHandling,
+        InteractsWithSession;
 
     /**
      * The list of trait that this test uses, fetched recursively.

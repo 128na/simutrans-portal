@@ -26,3 +26,8 @@ updates:
       composer:
         patterns:
           - "*"
+    # Laravel 13 は prod の PHP 8.3 制約で上げられない（docs/dependency-debt.md 参照）。
+    # 解除条件: prod を PHP 8.4+ へ。揃ったらこの ignore を外して移行する。
+    ignore:
+      - dependency-name: "laravel/framework"
+        update-types: ["version-update:semver-major"]

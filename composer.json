@@ -25,7 +25,7 @@
     "spatie/flysystem-dropbox": "^3.1.0",
     "spatie/laravel-backup": ">=10.2.0",
     "spatie/laravel-feed": "^4.5.0",
-    "spatie/laravel-sitemap": "^7.4"
+    "spatie/laravel-sitemap": "^8.0"
   },
   "require-dev": {
     "barryvdh/laravel-debugbar": "^4.3.0",

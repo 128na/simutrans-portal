@@ -41,4 +41,15 @@ class StoreTest extends TestCase
         $testResponse = $this->postJson($url, []);
         $testResponse->assertUnauthorized();
     }
+
+    public function test_許可されていない拡張子は拒否される(): void
+    {
+        $url = '/api/v2/attachments';
+
+        $this->actingAs($this->user);
+
+        $testResponse = $this->postJson($url, ['file' => UploadedFile::fake()->create('shell.php', 1)]);
+        $testResponse->assertUnprocessable();
+        $testResponse->assertJsonValidationErrors('file');
+    }
 }

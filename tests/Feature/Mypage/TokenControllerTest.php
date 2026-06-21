@@ -118,4 +118,15 @@ class TokenControllerTest extends TestCase
 
         $this->assertNotEquals(401, $response->getStatusCode());
     }
+
+    public function test_mcp_rejects_unverified_user(): void
+    {
+        $user = User::factory()->create(['email_verified_at' => null]);
+        $tokenResult = $user->createToken('MCP Token');
+
+        $response = $this->withToken($tokenResult->plainTextToken)
+            ->postJson('/mcp/user', []);
+
+        $response->assertForbidden();
+    }
 }

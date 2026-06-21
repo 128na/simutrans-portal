@@ -34,4 +34,18 @@ class LoginTest extends TestCase
         $testResponse = $this->postJson($this->url, ['email' => $user->email, 'password' => 'password']);
         $testResponse->assertForbidden();
     }
+
+    public function test_6回目のログイン失敗で429になる(): void
+    {
+        $user = User::factory()->create(['password' => bcrypt('password')]);
+
+        for ($i = 0; $i < 5; $i++) {
+            $testResponse = $this->postJson($this->url, ['email' => $user->email, 'password' => 'wrong-password']);
+            $testResponse->assertStatus(422);
+        }
+
+        $testResponse = $this->postJson($this->url, ['email' => $user->email, 'password' => 'wrong-password']);
+        $testResponse->assertStatus(429);
+        $this->assertGuest();
+    }
 }

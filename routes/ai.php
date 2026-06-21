@@ -9,4 +9,4 @@ use Laravel\Mcp\Facades\Mcp;
 Mcp::web('/mcp', SimutransAddonPortalGuestServer::class);
 
 Mcp::web('/mcp/user', SimutransAddonPortalUserServer::class)
-    ->middleware('auth:sanctum');
+    ->middleware(['auth:sanctum', 'verified']);

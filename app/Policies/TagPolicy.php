@@ -25,9 +25,4 @@ class TagPolicy extends BasePolicy
 
         return $tag->editable;
     }
-
-    public function toggleEditable(User $user): bool
-    {
-        return $user->isAdmin();
-    }
 }

@@ -28,9 +28,11 @@ class DownloadController extends Controller
 
     public function conversion(Article $article, ConversionAction $conversionAction): RedirectResponse
     {
-        if (Gate::allows('conversion', $article)) {
-            $conversionAction($article, Auth::user());
+        if (Gate::denies('conversion', $article)) {
+            abort(404);
         }
+
+        $conversionAction($article, Auth::user());
 
         if ($article->contents instanceof AddonIntroductionContent && $article->contents->link) {
             return redirect($article->contents->link, Response::HTTP_FOUND);

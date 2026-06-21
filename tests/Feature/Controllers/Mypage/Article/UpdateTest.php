@@ -7,6 +7,7 @@ namespace Tests\Feature\Controllers\Mypage\Article;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
+use App\Models\User;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
 use Illuminate\Support\Facades\Notification;
@@ -29,6 +30,25 @@ class UpdateTest extends TestCase
 
         $testResponse = $this->postJson($url);
         $testResponse->assertUnauthorized();
+    }
+
+    public function test_他人の記事は更新できない(): void
+    {
+        $otherUser = User::factory()->create();
+        $url = '/api/v2/articles/'.$this->article->id;
+        $originalTitle = $this->article->title;
+
+        $this->actingAs($otherUser);
+
+        $testResponse = $this->postJson($url, [
+            'article' => $this->createArticle(),
+            'should_notify' => false,
+            'without_update_modified_at' => true,
+        ]);
+        $testResponse->assertForbidden();
+
+        $this->article->refresh();
+        $this->assertSame($originalTitle, $this->article->title);
     }
 
     public function test_更新通知する(): void

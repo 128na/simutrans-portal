@@ -35,12 +35,33 @@ class StoreRequestTest extends TestCase
             ['file' => 'test.zip'],
             'file',
         ];
+        yield '許可されていない拡張子(.php)' => [
+            ['file' => UploadedFile::fake()->create('shell.php', 1)],
+            'file',
+        ];
+        yield '許可されていない拡張子(.exe)' => [
+            ['file' => UploadedFile::fake()->create('malware.exe', 1)],
+            'file',
+        ];
+        yield 'サイズ上限(1GB)を超える' => [
+            ['file' => UploadedFile::fake()->create('test.zip', 1_000_001, 'application/zip')],
+            'file',
+        ];
     }
 
     public static function dataPass(): \Generator
     {
         yield '指定なしで通常ファイル' => [
             ['file' => UploadedFile::fake()->create('test.zip', 1, 'application/zip')],
+        ];
+        yield 'Simutransアドオンファイル(.pak)' => [
+            ['file' => UploadedFile::fake()->create('addon.pak', 1)],
+        ];
+        yield '設定ファイル(.tab)' => [
+            ['file' => UploadedFile::fake()->create('simuconf.tab', 1)],
+        ];
+        yield 'サイズ上限(1GB)以内' => [
+            ['file' => UploadedFile::fake()->create('test.zip', 1_000_000, 'application/zip')],
         ];
     }
 }

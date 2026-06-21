@@ -34,6 +34,18 @@ class DestroyTest extends TestCase
         $testResponse->assertStatus(403);
     }
 
+    public function test_他人のファイルは削除されずに残る(): void
+    {
+        $othersUser = User::factory()->create();
+        $attachment = $this->createAttachment($othersUser);
+        $url = '/api/v2/attachments/'.$attachment->id;
+
+        $this->actingAs($this->user);
+        $this->deleteJson($url);
+
+        $this->assertNotNull(Attachment::find($attachment->id));
+    }
+
     public function test(): void
     {
         $url = '/api/v2/attachments/'.$this->attachment->id;

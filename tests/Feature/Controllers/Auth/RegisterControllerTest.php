@@ -35,6 +35,13 @@ class RegisterControllerTest extends TestCase
         $testResponse->assertForbidden();
     }
 
+    public function test_show_invite_設定行が存在しない(): void
+    {
+        ControllOption::query()->where('key', ControllOptionKey::InvitationCode)->delete();
+        $testResponse = $this->get(route('user.invite', ['invitation_code' => $this->user->invitation_code]));
+        $testResponse->assertForbidden();
+    }
+
     public function test_show_invite_無効なユーザー(): void
     {
         $this->user->delete();
@@ -63,6 +70,18 @@ class RegisterControllerTest extends TestCase
     public function test_registration_機能無効(): void
     {
         ControllOption::updateOrCreate(['key' => ControllOptionKey::InvitationCode], ['value' => false]);
+        $testResponse = $this->post(route('user.registration', ['invitation_code' => $this->user->invitation_code]), [
+            'name' => 'example',
+            'email' => 'example@example.com',
+            'password' => 'example123456',
+            'agreement' => 'on',
+        ]);
+        $testResponse->assertForbidden();
+    }
+
+    public function test_registration_設定行が存在しない(): void
+    {
+        ControllOption::query()->where('key', ControllOptionKey::InvitationCode)->delete();
         $testResponse = $this->post(route('user.registration', ['invitation_code' => $this->user->invitation_code]), [
             'name' => 'example',
             'email' => 'example@example.com',

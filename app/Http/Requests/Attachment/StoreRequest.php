@@ -31,7 +31,10 @@ class StoreRequest extends FormRequest
         return [
             'file' => [
                 'required',
-                File::default()->extensions(self::ALLOWED_EXTENSIONS)->max('1gb'),
+                // .pak/.tab はSymfonyのMIME種別辞書に存在しないため mimes:/File::types() ではなく
+                // 拡張子ベースの extensions() で判定する。グローバルな File::defaults() の影響を受けないよう
+                // new File() で素の状態から組み立てる。
+                (new File)->extensions(self::ALLOWED_EXTENSIONS)->max('1gb'),
             ],
         ];
     }

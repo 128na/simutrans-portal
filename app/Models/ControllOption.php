@@ -70,7 +70,7 @@ class ControllOption extends Model
 
     private function isRestrict(ControllOptionKey $controllOptionKey): bool
     {
-        $option = $this->where('key', $controllOptionKey)->first();
+        $option = self::where('key', $controllOptionKey)->first();
 
         // 行が存在しない場合は安全側に倒して制限する（fail-closed）。
         if ($option === null) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5975acc50f23ab5e6f20ebb40f32c673",
+    "content-hash": "ac86114f776b2b738198dc1428e2985d",
     "packages": [
         {
             "name": "abordage/html-min",
@@ -1359,16 +1359,16 @@
         },
         {
             "name": "google/common-protos",
-            "version": "4.14.0",
+            "version": "4.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "f8e72f7b581702e7c3ee0776144f4974da172428"
+                "reference": "4eb6813b8068653e055fc8a63dbda3446f3e8869"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/f8e72f7b581702e7c3ee0776144f4974da172428",
-                "reference": "f8e72f7b581702e7c3ee0776144f4974da172428",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/4eb6813b8068653e055fc8a63dbda3446f3e8869",
+                "reference": "4eb6813b8068653e055fc8a63dbda3446f3e8869",
                 "shasum": ""
             },
             "require": {
@@ -1412,9 +1412,9 @@
                 "google"
             ],
             "support": {
-                "source": "https://github.com/googleapis/common-protos-php/tree/v4.14.0"
+                "source": "https://github.com/googleapis/common-protos-php/tree/v4.14.1"
             },
-            "time": "2026-04-09T21:01:46+00:00"
+            "time": "2026-06-17T23:07:32+00:00"
         },
         {
             "name": "google/gax",
@@ -1779,22 +1779,22 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "7.12.0",
+            "version": "7.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "eaa81598031cf57a9e36258c8546defffc994cba"
+                "reference": "d34627490fbc03bf5c5d7cfed81f2faa19519425"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/eaa81598031cf57a9e36258c8546defffc994cba",
-                "reference": "eaa81598031cf57a9e36258c8546defffc994cba",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/d34627490fbc03bf5c5d7cfed81f2faa19519425",
+                "reference": "d34627490fbc03bf5c5d7cfed81f2faa19519425",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/promises": "^2.5",
-                "guzzlehttp/psr7": "^2.12",
+                "guzzlehttp/psr7": "^2.12.1",
                 "php": "^7.2.5 || ^8.0",
                 "psr/http-client": "^1.0",
                 "symfony/deprecation-contracts": "^2.5 || ^3.0",
@@ -1807,7 +1807,7 @@
                 "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-curl": "*",
                 "guzzle/client-integration-tests": "3.0.2",
-                "guzzlehttp/test-server": "^0.5",
+                "guzzlehttp/test-server": "^0.5.1",
                 "php-http/message-factory": "^1.1",
                 "phpunit/phpunit": "^8.5.52 || ^9.6.34",
                 "psr/log": "^1.1 || ^2.0 || ^3.0"
@@ -1887,7 +1887,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/guzzle/issues",
-                "source": "https://github.com/guzzle/guzzle/tree/7.12.0"
+                "source": "https://github.com/guzzle/guzzle/tree/7.12.1"
             },
             "funding": [
                 {
@@ -1903,7 +1903,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-16T22:11:48+00:00"
+            "time": "2026-06-18T14:12:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1991,16 +1991,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.12.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "9b38012e7b54f594707e6db52c684dc0a74b3a43"
+                "reference": "172ef2f4e9824c1e058b7f30be8ae25a02c0f2b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/9b38012e7b54f594707e6db52c684dc0a74b3a43",
-                "reference": "9b38012e7b54f594707e6db52c684dc0a74b3a43",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/172ef2f4e9824c1e058b7f30be8ae25a02c0f2b7",
+                "reference": "172ef2f4e9824c1e058b7f30be8ae25a02c0f2b7",
                 "shasum": ""
             },
             "require": {
@@ -2090,7 +2090,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.12.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.12.1"
             },
             "funding": [
                 {
@@ -2106,7 +2106,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-16T21:50:11+00:00"
+            "time": "2026-06-18T09:49:37+00:00"
         },
         {
             "name": "guzzlehttp/uri-template",
@@ -3675,16 +3675,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.12.3",
+            "version": "3.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon.git",
-                "reference": "6e7853a668c3107294aff38d42bf760ec02126b6"
+                "reference": "40f6618f052df16b545f626fbf9a878e6497d16a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/6e7853a668c3107294aff38d42bf760ec02126b6",
-                "reference": "6e7853a668c3107294aff38d42bf760ec02126b6",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/40f6618f052df16b545f626fbf9a878e6497d16a",
+                "reference": "40f6618f052df16b545f626fbf9a878e6497d16a",
                 "shasum": ""
             },
             "require": {
@@ -3776,7 +3776,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-14T20:41:42+00:00"
+            "time": "2026-06-18T13:49:15+00:00"
         },
         {
             "name": "nette/schema",
@@ -5357,20 +5357,20 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.9.2",
+            "version": "4.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "8429c78ca35a09f27565311b98101e2826affde0"
+                "reference": "1df15849d00943a67d677dc9cfd80795f038c9f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/8429c78ca35a09f27565311b98101e2826affde0",
-                "reference": "8429c78ca35a09f27565311b98101e2826affde0",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/1df15849d00943a67d677dc9cfd80795f038c9f8",
+                "reference": "1df15849d00943a67d677dc9cfd80795f038c9f8",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.8.16 || ^0.9 || ^0.10 || ^0.11 || ^0.12 || ^0.13 || ^0.14",
+                "brick/math": ">=0.8.16 <=0.18",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
             },
@@ -5429,9 +5429,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.9.2"
+                "source": "https://github.com/ramsey/uuid/tree/4.9.3"
             },
-            "time": "2025-12-14T04:43:48+00:00"
+            "time": "2026-06-18T03:57:49+00:00"
         },
         {
             "name": "spatie/browsershot",
@@ -5635,16 +5635,16 @@
         },
         {
             "name": "spatie/dropbox-api",
-            "version": "1.24.0",
+            "version": "1.24.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/dropbox-api.git",
-                "reference": "22f80410699d1bc83dbc19b0fe5b15b83e0a3e00"
+                "reference": "0cc01d43341d6c5a3323e79f370c9ffadaaa3d87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/dropbox-api/zipball/22f80410699d1bc83dbc19b0fe5b15b83e0a3e00",
-                "reference": "22f80410699d1bc83dbc19b0fe5b15b83e0a3e00",
+                "url": "https://api.github.com/repos/spatie/dropbox-api/zipball/0cc01d43341d6c5a3323e79f370c9ffadaaa3d87",
+                "reference": "0cc01d43341d6c5a3323e79f370c9ffadaaa3d87",
                 "shasum": ""
             },
             "require": {
@@ -5693,7 +5693,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/dropbox-api/issues",
-                "source": "https://github.com/spatie/dropbox-api/tree/1.24.0"
+                "source": "https://github.com/spatie/dropbox-api/tree/1.24.1"
             },
             "funding": [
                 {
@@ -5705,7 +5705,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-22T08:53:25+00:00"
+            "time": "2026-06-15T14:29:00+00:00"
         },
         {
             "name": "spatie/flysystem-dropbox",
@@ -11193,16 +11193,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.29.1",
+            "version": "v1.29.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "0770e9b7fafd50d4586881d456d6eb41c9247a80"
+                "reference": "da1d1111a6aa2e082d2a388b194afe1ba0a05d14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/0770e9b7fafd50d4586881d456d6eb41c9247a80",
-                "reference": "0770e9b7fafd50d4586881d456d6eb41c9247a80",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/da1d1111a6aa2e082d2a388b194afe1ba0a05d14",
+                "reference": "da1d1111a6aa2e082d2a388b194afe1ba0a05d14",
                 "shasum": ""
             },
             "require": {
@@ -11213,14 +11213,14 @@
                 "php": "^8.2.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.95.1",
-                "illuminate/view": "^12.56.0",
-                "larastan/larastan": "^3.9.6",
+                "friendsofphp/php-cs-fixer": "^3.95.8",
+                "illuminate/view": "^12.62.0",
+                "larastan/larastan": "^3.10.0",
                 "laravel-zero/framework": "^12.1.0",
+                "laravel/agent-detector": "^2.0.2",
                 "mockery/mockery": "^1.6.12",
                 "nunomaduro/termwind": "^2.4.0",
-                "pestphp/pest": "^3.8.6",
-                "shipfastlabs/agent-detector": "^1.1.3"
+                "pestphp/pest": "^3.8.6"
             },
             "bin": [
                 "builds/pint"
@@ -11257,7 +11257,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2026-04-20T15:26:14+00:00"
+            "time": "2026-06-16T15:34:04+00:00"
         },
         {
             "name": "laravel/roster",
@@ -12400,16 +12400,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "12.5.29",
+            "version": "12.5.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9aa66a47db3ea70f1a468e66dd969f67e594945a"
+                "reference": "900400a5b616d6fb306f9549f6da33ba615d3fbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9aa66a47db3ea70f1a468e66dd969f67e594945a",
-                "reference": "9aa66a47db3ea70f1a468e66dd969f67e594945a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/900400a5b616d6fb306f9549f6da33ba615d3fbb",
+                "reference": "900400a5b616d6fb306f9549f6da33ba615d3fbb",
                 "shasum": ""
             },
             "require": {
@@ -12478,7 +12478,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.29"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/12.5.30"
             },
             "funding": [
                 {
@@ -12486,7 +12486,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-06-04T06:14:42+00:00"
+            "time": "2026-06-15T13:12:30+00:00"
         },
         {
             "name": "radebatz/type-info-extras",
@@ -12552,21 +12552,21 @@
         },
         {
             "name": "rector/rector",
-            "version": "2.4.5",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "cbd86024be5014d3c14d9f0b3f7aae8ecbffd62c"
+                "reference": "7526beadb3da0b88cfa9e8290d74944799d1f3a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/cbd86024be5014d3c14d9f0b3f7aae8ecbffd62c",
-                "reference": "cbd86024be5014d3c14d9f0b3f7aae8ecbffd62c",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/7526beadb3da0b88cfa9e8290d74944799d1f3a4",
+                "reference": "7526beadb3da0b88cfa9e8290d74944799d1f3a4",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4|^8.0",
-                "phpstan/phpstan": "^2.1.56"
+                "phpstan/phpstan": "^2.2.2"
             },
             "conflict": {
                 "rector/rector-doctrine": "*",
@@ -12600,7 +12600,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rectorphp/rector/issues",
-                "source": "https://github.com/rectorphp/rector/tree/2.4.5"
+                "source": "https://github.com/rectorphp/rector/tree/2.5.0"
             },
             "funding": [
                 {
@@ -12608,7 +12608,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-05-26T21:03:22+00:00"
+            "time": "2026-06-20T17:02:36+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -14508,16 +14508,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "6.1.2",
+            "version": "6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "f66289ab9c9c3a1cf70222e0bebbe7c6c7109f2f"
+                "reference": "060af3bb9c4cba6a5859aba2c51cd1c129479410"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/f66289ab9c9c3a1cf70222e0bebbe7c6c7109f2f",
-                "reference": "f66289ab9c9c3a1cf70222e0bebbe7c6c7109f2f",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/060af3bb9c4cba6a5859aba2c51cd1c129479410",
+                "reference": "060af3bb9c4cba6a5859aba2c51cd1c129479410",
                 "shasum": ""
             },
             "require": {
@@ -14586,7 +14586,7 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/6.1.2"
+                "source": "https://github.com/zircote/swagger-php/tree/6.2.0"
             },
             "funding": [
                 {
@@ -14594,7 +14594,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-28T04:47:53+00:00"
+            "time": "2026-06-14T06:51:56+00:00"
         }
     ],
     "aliases": [],

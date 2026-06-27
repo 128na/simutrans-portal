@@ -1,3 +1,11 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## グローバル規約
+
+`~/.claude/CLAUDE.md` のポリシーに従う。パッケージ更新は `/repo-maintenance`、Dependabot PR 整理は `/dependabot-maintenance`、複数エージェント作業は `/orchestrate` スキルを使う。
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

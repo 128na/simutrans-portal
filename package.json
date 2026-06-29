@@ -40,11 +40,11 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.7.0",
     "jsdom": "^29.0.0",
-    "prettier": "^3.8.3",
+    "prettier": "^3.9.3",
     "prettier-plugin-blade": "^3.0.0",
     "prettier-plugin-organize-imports": "^4.3.0",
     "prettier-plugin-tailwindcss": "^0.8.0",
-    "typescript-eslint": "^8.62.0",
+    "typescript-eslint": "^8.62.1",
     "vitest": "^4"
   },
   "dependencies": {
@@ -52,7 +52,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@eslint/js": "^10",
-    "@tailwindcss/vite": "^4.2.2",
+    "@tailwindcss/vite": "^4.3.2",
     "@tailwindplus/elements": "^1.0.22",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

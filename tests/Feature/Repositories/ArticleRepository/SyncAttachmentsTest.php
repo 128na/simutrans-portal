@@ -74,4 +74,31 @@ class SyncAttachmentsTest extends TestCase
             'attachmentable_id' => null,
         ]);
     }
+
+    public function test現在添付中でも他人の添付idは検証されデタッチされる(): void
+    {
+        $article = Article::factory()->create(['user_id' => $this->user->id]);
+        $othersAttachmentAttachedToArticle = Attachment::factory()->create([
+            'user_id' => User::factory()->create()->id,
+            'attachmentable_type' => Article::class,
+            'attachmentable_id' => $article->id,
+        ]);
+
+        $this->assertDatabaseHas('attachments', [
+            'id' => $othersAttachmentAttachedToArticle->id,
+            'attachmentable_type' => Article::class,
+            'attachmentable_id' => $article->id,
+        ]);
+
+        // $othersAttachmentAttachedToArticle は $this->user の myAttachments に含まれないため
+        // 検証済みの add 対象にはならない。しかし生の id をそのまま whereNotIn に渡すと
+        // デタッチ対象から誤って除外されてしまう不具合があった。
+        $this->articleRepository->syncAttachments($article, [$othersAttachmentAttachedToArticle->id]);
+
+        $this->assertDatabaseHas('attachments', [
+            'id' => $othersAttachmentAttachedToArticle->id,
+            'attachmentable_type' => null,
+            'attachmentable_id' => null,
+        ]);
+    }
 }

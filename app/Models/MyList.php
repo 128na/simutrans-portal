@@ -51,12 +51,6 @@ class MyList extends Model
         'slug',
     ];
 
-    protected $casts = [
-        'is_public' => 'boolean',
-        'created_at' => 'immutable_datetime',
-        'updated_at' => 'immutable_datetime',
-    ];
-
     /**
      * リストの所有者（ユーザー）を取得
      *
@@ -99,5 +93,15 @@ class MyList extends Model
     public function scopeWherePublic(Builder $query): Builder
     {
         return $query->where('is_public', true);
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'is_public' => 'boolean',
+            'created_at' => 'immutable_datetime',
+            'updated_at' => 'immutable_datetime',
+        ];
     }
 }

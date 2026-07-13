@@ -55,7 +55,7 @@ class FirstTest extends TestCase
     public function test削除済みユーザーの記事は取得されない(): void
     {
         $article = $this->createPage($this->user);
-        $this->user->update(['deleted_at' => now()]);
+        $this->user->delete();
 
         $result = $this->articleRepository->first((string) $this->user->id, $article->slug);
 

@@ -46,12 +46,6 @@ class MyListItem extends Model
         'position',
     ];
 
-    protected $casts = [
-        'position' => 'integer',
-        'created_at' => 'immutable_datetime',
-        'updated_at' => 'immutable_datetime',
-    ];
-
     /**
      * このアイテムが属するリストを取得
      *
@@ -92,5 +86,15 @@ class MyListItem extends Model
     public function scopeOrderByPosition(Builder $query): Builder
     {
         return $query->orderBy('position')->orderBy('created_at');
+    }
+
+    #[\Override]
+    protected function casts(): array
+    {
+        return [
+            'position' => 'integer',
+            'created_at' => 'immutable_datetime',
+            'updated_at' => 'immutable_datetime',
+        ];
     }
 }

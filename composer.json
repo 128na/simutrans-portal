@@ -53,10 +53,8 @@
       "php": "8.3.30"
     },
     "allow-plugins": {
-      "pestphp/pest-plugin": true,
       "php-http/discovery": true
-    },
-    "secure-http": false
+    }
   },
   "extra": {
     "laravel": {

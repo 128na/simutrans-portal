@@ -46,7 +46,9 @@ class ArticleLinkCheckHistory extends Model
     }
 
     /**
-     * @return array<string, string> */
+     * @return array<string, string>
+     */
+    #[\Override]
     protected function casts(): array
     {
         return [

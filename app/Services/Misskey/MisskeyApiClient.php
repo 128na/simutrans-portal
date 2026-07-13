@@ -29,6 +29,6 @@ class MisskeyApiClient
                 'text' => $text,
             ]);
 
-        return $response;
+        return $response->throw();
     }
 }

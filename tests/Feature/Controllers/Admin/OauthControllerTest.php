@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Admin;
 
 use App\Enums\UserRole;
+use App\Models\OauthToken;
 use App\Models\User;
 use App\Services\Twitter\Exceptions\InvalidStateException;
+use App\Services\Twitter\PKCEService;
 use Illuminate\Support\Facades\Session;
+use Mockery;
+use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
 class OauthControllerTest extends TestCase
@@ -123,6 +127,31 @@ class OauthControllerTest extends TestCase
         $testResponse->assertSessionHas('error', 'token not found');
     }
 
+    public function test_refresh_admin_success(): void
+    {
+        $token = OauthToken::create([
+            'application' => 'twitter',
+            'token_type' => 'bearer',
+            'scope' => 'tweet.read tweet.write users.read offline.access',
+            'access_token' => 'old_access_token',
+            'refresh_token' => 'old_refresh_token',
+            'expired_at' => now()->subHour(),
+        ]);
+
+        $this->mock(PKCEService::class, function (MockInterface $mock) use ($token): void {
+            $mock->expects('refreshToken')
+                ->once()
+                ->with(Mockery::on(fn (OauthToken $arg): bool => $arg->application === $token->application))
+                ->andReturn($token);
+        });
+
+        $this->actingAs($this->adminUser);
+        $testResponse = $this->get(route('admin.oauth.twitter.refresh'));
+
+        $testResponse->assertRedirect(route('admin.index'));
+        $testResponse->assertSessionHas('success', 'access token refreshed');
+    }
+
     public function test_revoke_guest(): void
     {
         $testResponse = $this->get(route('admin.oauth.twitter.revoke'));
@@ -146,5 +175,56 @@ class OauthControllerTest extends TestCase
 
         $testResponse->assertRedirect(route('admin.index'));
         $testResponse->assertSessionHas('error', 'token not found');
+    }
+
+    public function test_revoke_admin_success(): void
+    {
+        $token = OauthToken::create([
+            'application' => 'twitter',
+            'token_type' => 'bearer',
+            'scope' => 'tweet.read tweet.write users.read offline.access',
+            'access_token' => 'access_token_to_revoke',
+            'refresh_token' => 'refresh_token_123',
+            'expired_at' => now()->addHour(),
+        ]);
+
+        $this->mock(PKCEService::class, function (MockInterface $mock) use ($token): void {
+            $mock->expects('revokeToken')
+                ->once()
+                ->with(Mockery::on(fn (OauthToken $arg): bool => $arg->application === $token->application));
+        });
+
+        $this->actingAs($this->adminUser);
+        $testResponse = $this->get(route('admin.oauth.twitter.revoke'));
+
+        $testResponse->assertRedirect(route('admin.index'));
+        $testResponse->assertSessionHas('success', 'access token revoked');
+    }
+
+    public function test_callback_admin_success(): void
+    {
+        $token = new OauthToken([
+            'application' => 'twitter',
+            'token_type' => 'bearer',
+            'scope' => 'tweet.read tweet.write users.read offline.access',
+            'access_token' => 'access_token_abc',
+            'refresh_token' => 'refresh_token_xyz',
+            'expired_at' => now()->addHour(),
+        ]);
+
+        $this->mock(PKCEService::class, function (MockInterface $mock) use ($token): void {
+            $mock->expects('verifyState')->once()->with('test_state', 'test_state');
+            $mock->expects('generateToken')->once()->with('code123', 'test_verifier')->andReturn($token);
+        });
+
+        $this->actingAs($this->adminUser);
+        $this->withSession([
+            'oauth2.twitter.state' => 'test_state',
+            'oauth2.twitter.codeVerifier' => 'test_verifier',
+        ]);
+        $testResponse = $this->get(route('admin.oauth.twitter.callback', ['state' => 'test_state', 'code' => 'code123']));
+
+        $testResponse->assertRedirect(route('admin.index'));
+        $testResponse->assertSessionHas('success', 'access token created');
     }
 }

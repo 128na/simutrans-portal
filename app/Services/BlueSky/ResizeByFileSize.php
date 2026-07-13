@@ -11,6 +11,10 @@ class ResizeByFileSize
     public function __invoke(string $inputPath, int $targetFileSize): string
     {
         $filesize = @filesize($inputPath);
+        if ($filesize === false) {
+            throw new ResizeFailedException('filesize failed');
+        }
+
         if ($filesize < $targetFileSize) {
             return $inputPath;
         }

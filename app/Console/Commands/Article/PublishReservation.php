@@ -9,6 +9,7 @@ use App\Jobs\Article\JobUpdateRelated;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class PublishReservation extends Command
 {
@@ -45,18 +46,27 @@ class PublishReservation extends Command
     {
         $lazyCollection = $this->articleRepository->cursorReservations($this->now);
         $changed = false;
+        $errorCount = 0;
         foreach ($lazyCollection as $article) {
-            $article->update([
-                'status' => ArticleStatus::Publish,
-                'modified_at' => $article->published_at,
-            ]);
-            $changed = true;
+            try {
+                $article->update([
+                    'status' => ArticleStatus::Publish,
+                    'modified_at' => $article->published_at,
+                ]);
+                $changed = true;
+            } catch (\Throwable $throwable) {
+                $errorCount++;
+                Log::error('Failed to publish reserved article', [
+                    'article_id' => $article->id,
+                    'error' => $throwable->getMessage(),
+                ]);
+            }
         }
 
         if ($changed) {
             dispatch_sync(new JobUpdateRelated);
         }
 
-        return 0;
+        return $errorCount > 0 ? self::FAILURE : self::SUCCESS;
     }
 }

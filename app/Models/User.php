@@ -93,10 +93,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'email_verified_at',
         'password',
-        'two_factor_confirmed_at',
         'two_factor_secret',
         'two_factor_recovery_codes',
-        'deleted_at',
     ];
 
     protected $hidden = [
@@ -182,7 +180,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function lastModifiedBy(): HasMany
     {
-        return $this->hasMany(Tag::class, 'lastModifiedBy');
+        return $this->hasMany(Tag::class, 'last_modified_by');
     }
 
     /**

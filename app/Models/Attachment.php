@@ -135,7 +135,7 @@ class Attachment extends Model
             }
 
             return 'file';
-        });
+        })->shouldCache();
     }
 
     /**

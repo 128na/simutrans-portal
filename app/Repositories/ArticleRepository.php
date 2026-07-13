@@ -7,10 +7,8 @@ namespace App\Repositories;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
-use App\Models\Attachment;
 use App\Repositories\Concerns\ArticleQueryConcern;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\LazyCollection;
 
 class ArticleRepository
@@ -52,12 +50,11 @@ class ArticleRepository
         $attachments = $article->user->myAttachments()->find($attachmentsIds);
         $article->attachments()->saveMany($attachments);
 
-        // remove
-        /** @var Collection<int,Attachment> */
-        $shouldDetach = $article->attachments()->whereNotIn('id', $attachmentsIds)->get();
-        foreach ($shouldDetach as $attachment) {
-            $attachment->attachmentable()->disassociate()->save();
-        }
+        // remove（対象外の添付は一括でデタッチ。個別に取得・保存する必要はない）
+        $article->attachments()->whereNotIn('id', $attachmentsIds)->update([
+            'attachmentable_type' => null,
+            'attachmentable_id' => null,
+        ]);
     }
 
     /**

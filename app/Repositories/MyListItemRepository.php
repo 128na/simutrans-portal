@@ -9,6 +9,7 @@ use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Repositories\Concerns\HasCrud;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class MyListItemRepository
 {
@@ -51,7 +52,7 @@ class MyListItemRepository
                 'article.user.profile.attachments',
                 'article.attachments',
             ])
-            ->whereHas('article', function ($q) {
+            ->whereHas('article', function ($q): void {
                 $q->where('status', ArticleStatus::Publish)
                     ->whereNull('deleted_at');
             })
@@ -77,15 +78,37 @@ class MyListItemRepository
     /**
      * 複数アイテムの位置を更新（バルク更新）
      *
+     * id ごとに個別UPDATEを発行せず、CASE WHEN による単一クエリで更新する。
+     * list_id での絞り込みは維持し、他リストのアイテムを誤って更新しないようにする。
+     *
      * @param  array<int, array<string, int|string>>  $itemPositions
      */
     public function updatePositions(MyList $list, array $itemPositions): void
     {
-        foreach ($itemPositions as $item) {
-            $this->model
-                ->where('id', $item['id'])
-                ->where('list_id', $list->id)
-                ->update(['position' => $item['position']]);
+        if ($itemPositions === []) {
+            return;
         }
+
+        $ids = array_column($itemPositions, 'id');
+
+        $caseSql = 'CASE id';
+        $bindings = [];
+        foreach ($itemPositions as $item) {
+            $caseSql .= ' WHEN ? THEN ?';
+            $bindings[] = $item['id'];
+            $bindings[] = $item['position'];
+        }
+        $caseSql .= ' ELSE position END';
+
+        $table = $this->model->getTable();
+        $idPlaceholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $bindings[] = $list->id;
+        array_push($bindings, ...$ids);
+
+        DB::statement(
+            "UPDATE {$table} SET position = {$caseSql} WHERE list_id = ? AND id IN ({$idPlaceholders})",
+            $bindings
+        );
     }
 }

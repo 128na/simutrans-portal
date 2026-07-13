@@ -21,6 +21,16 @@ class UpdateFileInfo implements ShouldQueue
     use SerializesModels;
 
     /**
+     * リトライ回数
+     */
+    public int $tries = 3;
+
+    /**
+     * タイムアウト（秒）
+     */
+    public int $timeout = 180;
+
+    /**
      * @param  int|null  $maxSizeMb  Maximum file size in MB (null = unlimited)
      */
     public function __construct(
@@ -66,5 +76,16 @@ class UpdateFileInfo implements ShouldQueue
                 'duration_seconds' => round($duration, 2),
             ]);
         }
+    }
+
+    /**
+     * ジョブ失敗時の処理
+     */
+    public function failed(?\Throwable $throwable): void
+    {
+        Log::error('UpdateFileInfo failed', [
+            'attachment_id' => $this->attachment->id,
+            'exception' => $throwable?->getMessage(),
+        ]);
     }
 }

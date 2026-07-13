@@ -10,6 +10,9 @@ use App\Models\Article;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
 use App\Services\Misskey\MisskeyApiClient;
+use GuzzleHttp\Psr7\Response as PsrResponse;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 
@@ -107,5 +110,27 @@ class ToMisskeyTest extends TestCase
     {
         // SendSNSNotificationは抽象クラスなので、実際の例外処理テストは他のテストで十分
         $this->markTestSkipped('Cannot instantiate abstract SendSNSNotification');
+    }
+
+    public function test_handles_api_request_failure_gracefully(): void
+    {
+        $article = Article::factory()->make(['id' => 4, 'user_id' => 1]);
+
+        $this->mock(GetArticleParam::class, function (MockInterface $mock): void {
+            $mock->allows('__invoke')->andReturn([]);
+        });
+
+        $this->mock(MisskeyApiClient::class, function (MockInterface $mock): void {
+            $mock->expects('send')
+                ->once()
+                ->andThrow(new RequestException(new Response(new PsrResponse(401, [], 'unauthorized'))));
+        });
+
+        $notification = new SendArticlePublished($article);
+        $action = app(ToMisskey::class);
+
+        // MisskeyApiClientがHTTPエラーで例外を投げても、Actionレベルで捕捉され伝播しない
+        $action($article, $notification);
+        $this->assertTrue(true);
     }
 }

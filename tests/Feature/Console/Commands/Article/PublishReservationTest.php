@@ -9,6 +9,7 @@ use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\TestCase;
 
@@ -118,5 +119,53 @@ class PublishReservationTest extends TestCase
         // $command = $this->app->make(\App\Console\Commands\Article\PublishReservation::class);
 
         // $this->assertEquals('article:publish-reservation', $command->getName());
+    }
+
+    public function test_one_bad_reservation_does_not_block_others(): void
+    {
+        $now = CarbonImmutable::parse('2024-01-15 12:00:00');
+
+        $goodArticle = Article::factory()->create([
+            'status' => 'reservation',
+            'published_at' => $now->subHours(1)->toDateTimeString(),
+        ]);
+
+        $badArticle = Article::factory()->create([
+            'status' => 'reservation',
+            'published_at' => $now->subHours(2)->toDateTimeString(),
+        ]);
+
+        // 特定の記事だけ update() で例外を発生させ、他への影響がないことを確認する
+        Event::listen('eloquent.updating: '.Article::class, function (Article $article) use ($badArticle): void {
+            if ($article->id === $badArticle->id) {
+                throw new \RuntimeException('forced failure for test');
+            }
+        });
+
+        try {
+            $command = new PublishReservation(
+                app(ArticleRepository::class),
+                $now
+            );
+
+            $exitCode = $command->handle();
+        } finally {
+            Event::forget('eloquent.updating: '.Article::class);
+        }
+
+        // 一部失敗があった場合は FAILURE を返すが、処理自体は最後まで継続する
+        $this->assertEquals(PublishReservation::FAILURE, $exitCode);
+
+        // 失敗した記事は予約のまま
+        $this->assertDatabaseHas('articles', [
+            'id' => $badArticle->id,
+            'status' => 'reservation',
+        ]);
+
+        // 他の記事は正常に公開される（1件の失敗が全体を止めない）
+        $this->assertDatabaseHas('articles', [
+            'id' => $goodArticle->id,
+            'status' => 'publish',
+        ]);
     }
 }

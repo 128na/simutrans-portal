@@ -8,6 +8,7 @@ use App\Models\Article;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
 use App\Notifications\SendSNSNotification;
+use App\Services\Twitter\Exceptions\TwitterApiRequestException;
 use App\Services\Twitter\TwitterV2Api;
 use Exception;
 use Throwable;
@@ -28,6 +29,12 @@ class ToTwitter
                 default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
             }];
             $result = $this->twitterV2Api->post('tweets', $data);
+            $httpCode = $this->twitterV2Api->getLastHttpCode();
+
+            if ($httpCode < 200 || $httpCode >= 300) {
+                throw new TwitterApiRequestException(sprintf('Twitter API request failed with status %d', $httpCode));
+            }
+
             logger('[TwitterChannel]', [$result]);
         } catch (Throwable $throwable) {
             report($throwable);

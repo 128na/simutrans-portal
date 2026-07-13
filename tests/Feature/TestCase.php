@@ -40,8 +40,11 @@ abstract class TestCase extends BaseTestCase
     #[\Override]
     protected function tearDown(): void
     {
-        Mockery::close();
-        parent::tearDown();
+        try {
+            Mockery::close();
+        } finally {
+            parent::tearDown();
+        }
     }
 
     /**

@@ -40,6 +40,9 @@ class ToTwitterTest extends TestCase
                     return isset($data['text']) && is_string($data['text']);
                 }))
                 ->andReturn(['data' => ['id' => '123456']]);
+            $mock->expects('getLastHttpCode')
+                ->once()
+                ->andReturn(201);
         });
 
         $notification = new SendArticlePublished($article);
@@ -74,6 +77,9 @@ class ToTwitterTest extends TestCase
                 ->once()
                 ->with('tweets', \Mockery::any())
                 ->andReturn(['data' => ['id' => '789012']]);
+            $mock->expects('getLastHttpCode')
+                ->once()
+                ->andReturn(200);
         });
 
         $notification = new SendArticleUpdated($article);
@@ -111,5 +117,32 @@ class ToTwitterTest extends TestCase
     {
         // SendSNSNotificationは抽象クラスなので、実際の例外処理テストは他のテストで十分
         $this->markTestSkipped('Cannot instantiate abstract SendSNSNotification');
+    }
+
+    public function test_handles_non_2xx_http_status_gracefully(): void
+    {
+        $article = Article::factory()->make(['id' => 4, 'user_id' => 1]);
+
+        $this->mock(GetArticleParam::class, function (MockInterface $mock): void {
+            $mock->allows('__invoke')->andReturn([]);
+        });
+
+        $this->mock(TwitterV2Api::class, function (MockInterface $mock): void {
+            // TwitterOAuth::post() does not throw on 4xx/5xx responses; it only
+            // exposes the failure via getLastHttpCode(), so the Action must check it.
+            $mock->expects('post')
+                ->once()
+                ->andReturn(['errors' => [['message' => 'Unauthorized']]]);
+            $mock->expects('getLastHttpCode')
+                ->once()
+                ->andReturn(401);
+        });
+
+        $notification = new SendArticlePublished($article);
+        $action = app(ToTwitter::class);
+
+        // TwitterApiRequestExceptionが投げられてもActionレベルで捕捉され伝播しない
+        $action($article, $notification);
+        $this->assertTrue(true);
     }
 }

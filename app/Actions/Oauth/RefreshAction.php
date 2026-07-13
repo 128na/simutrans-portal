@@ -20,8 +20,8 @@ class RefreshAction
     {
         try {
             $token = $this->oauthTokenRepository->getToken('twitter');
-            $this->pkceService->revokeToken($token);
-            Session::flash('success', 'access token revoked');
+            $this->pkceService->refreshToken($token);
+            Session::flash('success', 'access token refreshed');
         } catch (ModelNotFoundException) {
             Session::flash('error', 'token not found');
         }

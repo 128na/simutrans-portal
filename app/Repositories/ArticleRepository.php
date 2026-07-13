@@ -51,7 +51,7 @@ class ArticleRepository
         $article->attachments()->saveMany($attachments);
 
         // remove（対象外の添付は一括でデタッチ。個別に取得・保存する必要はない）
-        $article->attachments()->whereNotIn('id', $attachmentsIds)->update([
+        $article->attachments()->whereNotIn('id', $attachments->modelKeys())->update([
             'attachmentable_type' => null,
             'attachmentable_id' => null,
         ]);

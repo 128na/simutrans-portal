@@ -20,7 +20,7 @@ class CorsConfigTest extends TestCase
     {
         parent::setUp();
 
-        $this->configPath = base_path('config/cors.php');
+        $this->configPath = dirname(__DIR__, 3).'/config/cors.php';
         $this->originalCorsAllowedOrigins = getenv('CORS_ALLOWED_ORIGINS');
         $this->originalAppUrl = getenv('APP_URL');
     }

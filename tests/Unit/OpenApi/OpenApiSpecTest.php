@@ -96,7 +96,8 @@ class OpenApiSpecTest extends TestCase
 
         $this->assertNotNull($schema, "Schema \"{$schemaName}\" was not found in the generated OpenAPI spec.");
 
-        $actualProperties = collect($schema->properties ?? [])
+        $properties = is_array($schema->properties) ? $schema->properties : [];
+        $actualProperties = collect($properties)
             ->keyBy(fn ($property): string => (string) $property->property);
 
         foreach ($expectedProperties as $expected) {

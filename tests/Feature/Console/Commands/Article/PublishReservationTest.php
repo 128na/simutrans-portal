@@ -125,10 +125,9 @@ class PublishReservationTest extends TestCase
     {
         $now = CarbonImmutable::parse('2024-01-15 12:00:00');
 
-        // cursorReservations() には ORDER BY が無く、MySQL/InnoDB は明示的な並び順指定が
-        // 無い単純なクエリではクラスタインデックス(主キー)順、すなわち作成順でレコードを
-        // 返す。この前提の下で badArticle を goodArticle より先に作成し、確実に
-        // badArticle → goodArticle の順でイテレーションされるようにする。
+        // cursorReservations() は published_at 昇順で返すため、badArticle を
+        // goodArticle より published_at を早く設定し、確実に badArticle →
+        // goodArticle の順でイテレーションされるようにする。
         // (この順序でなければ、badArticle の失敗直後に catch 節後で break するような
         //  退行を注入してもテストが検知できない)
         $badArticle = Article::factory()->create([

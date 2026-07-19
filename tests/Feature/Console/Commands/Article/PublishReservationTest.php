@@ -125,14 +125,20 @@ class PublishReservationTest extends TestCase
     {
         $now = CarbonImmutable::parse('2024-01-15 12:00:00');
 
-        $goodArticle = Article::factory()->create([
-            'status' => 'reservation',
-            'published_at' => $now->subHours(1)->toDateTimeString(),
-        ]);
-
+        // cursorReservations() には ORDER BY が無く、MySQL/InnoDB は明示的な並び順指定が
+        // 無い単純なクエリではクラスタインデックス(主キー)順、すなわち作成順でレコードを
+        // 返す。この前提の下で badArticle を goodArticle より先に作成し、確実に
+        // badArticle → goodArticle の順でイテレーションされるようにする。
+        // (この順序でなければ、badArticle の失敗直後に catch 節後で break するような
+        //  退行を注入してもテストが検知できない)
         $badArticle = Article::factory()->create([
             'status' => 'reservation',
             'published_at' => $now->subHours(2)->toDateTimeString(),
+        ]);
+
+        $goodArticle = Article::factory()->create([
+            'status' => 'reservation',
+            'published_at' => $now->subHours(1)->toDateTimeString(),
         ]);
 
         // 特定の記事だけ update() で例外を発生させ、他への影響がないことを確認する
@@ -162,7 +168,9 @@ class PublishReservationTest extends TestCase
             'status' => 'reservation',
         ]);
 
-        // 他の記事は正常に公開される（1件の失敗が全体を止めない）
+        // badArticle（先に処理され失敗する）の後に処理される goodArticle が実際に公開されている
+        // ことを確認する。ここが本テストの核心のアサーションであり、
+        // catch 節の後に break を入れる退行があればこの assertion が失敗する。
         $this->assertDatabaseHas('articles', [
             'id' => $goodArticle->id,
             'status' => 'publish',

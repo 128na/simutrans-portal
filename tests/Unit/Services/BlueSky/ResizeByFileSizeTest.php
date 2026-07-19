@@ -56,6 +56,20 @@ class ResizeByFileSizeTest extends TestCase
         }
     }
 
+    public function test_throws_resize_failed_exception_when_input_file_is_zero_bytes(): void
+    {
+        $tmpFile = tempnam(sys_get_temp_dir(), 'resize_test_');
+        $this->assertIsString($tmpFile);
+
+        try {
+            $this->expectException(ResizeFailedException::class);
+
+            (new ResizeByFileSize)($tmpFile, 1000);
+        } finally {
+            @unlink($tmpFile);
+        }
+    }
+
     public function test_returns_original_path_when_file_is_smaller_than_target(): void
     {
         $tmpFile = tempnam(sys_get_temp_dir(), 'resize_test_');

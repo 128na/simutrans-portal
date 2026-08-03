@@ -17,8 +17,7 @@ type Props = {
 export const AddonPost = ({ article, preview }: Props) => {
   const contents = article.contents as ArticleContent.AddonPost;
   const file = article.attachments.find((att) => att.id === contents.file) as
-    | Attachment.Show
-    | undefined;
+    Attachment.Show | undefined;
   const fileInfo = file?.fileInfo as FileInfo.Show | undefined;
   const dats = fileInfo?.data?.dats ?? {};
   const tabs = fileInfo?.data?.tabs ?? {};

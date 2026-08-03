@@ -3,8 +3,7 @@ import ButtonClose from "./ButtonClose";
 
 type Props = {
   children:
-    | React.ReactNode
-    | ((props: { close: () => void }) => React.ReactNode);
+    React.ReactNode | ((props: { close: () => void }) => React.ReactNode);
   title: string;
   modalClass?: string;
   onClose?: () => void;

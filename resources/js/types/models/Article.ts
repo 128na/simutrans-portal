@@ -8,21 +8,14 @@
  * Article post type
  */
 export type ArticlePostType =
-  | "addon-post"
-  | "addon-introduction"
-  | "page"
-  | "markdown";
+  "addon-post" | "addon-introduction" | "page" | "markdown";
 
 /**
  * 記事のステータス
  * Article status
  */
 export type ArticleStatus =
-  | "publish"
-  | "reservation"
-  | "draft"
-  | "trash"
-  | "private";
+  "publish" | "reservation" | "draft" | "trash" | "private";
 
 /**
  * セクションタイプ

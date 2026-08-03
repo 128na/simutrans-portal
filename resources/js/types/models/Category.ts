@@ -8,12 +8,7 @@
  * Category type
  */
 export type CategoryType =
-  | "pak"
-  | "addon"
-  | "pak128_position"
-  | "license"
-  | "page"
-  | "double_slope";
+  "pak" | "addon" | "pak128_position" | "license" | "page" | "double_slope";
 
 /**
  * カテゴリ表示型

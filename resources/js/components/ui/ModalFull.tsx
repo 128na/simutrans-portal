@@ -5,8 +5,7 @@ import Button from "./Button";
 
 type Props = {
   children:
-    | React.ReactNode
-    | ((props: { close: () => void }) => React.ReactNode);
+    React.ReactNode | ((props: { close: () => void }) => React.ReactNode);
   buttonTitle: string;
   title: string;
   buttonClass?: string;

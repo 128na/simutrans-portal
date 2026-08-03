@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
 import { Modal } from "@/components/ui/Modal";
@@ -35,8 +35,16 @@ export const TagModal = ({ tag, onClose, onSave }: Props) => {
     await handleSave(
       () =>
         tag.id
-          ? axios.post(`/api/v2/tags/${tag.id}`, { description })
-          : axios.post(`/api/v2/tags`, { name, description }),
+          ? axios.post<
+              Tag.MypageEdit,
+              AxiosResponse<Tag.MypageEdit>,
+              { name?: string; description: string }
+            >(`/api/v2/tags/${tag.id}`, { description })
+          : axios.post<
+              Tag.MypageEdit,
+              AxiosResponse<Tag.MypageEdit>,
+              { name?: string; description: string }
+            >(`/api/v2/tags`, { name, description }),
       {
         onSuccess: (res) => {
           onSave?.(res.data as Tag.MypageEdit);

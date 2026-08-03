@@ -5,7 +5,8 @@
 
 | Package | Current | Target | Blocker | Type | Revisit condition | Recorded |
 |---------|---------|--------|---------|------|-------------------|----------|
-| laravel/framework | 12.62 | 13.x | prod が PHP 8.3。Laravel 13.3+ は Symfony 8 を引き込み PHP 8.4.1+ が必須 | infra | prod を PHP 8.4+ に更新する | 2026-06-17 |
+| laravel/framework | 12.63 | 13.x | prod が PHP 8.3。Laravel 13.3+ は Symfony 8 を引き込み PHP 8.4.1+ が必須 | infra | prod を PHP 8.4+ に更新する | 2026-06-17 |
+| markdown-it (npm) | 14.3.0 | 15.x | 内部で linkify-it が v6 化され、fuzzy link(裸ドメイン等の自動リンク化)が既定offになる。`resources/js/features/articles/components/postType/Markdown.tsx` は `linkify: true` でユーザー投稿記事本文を描画しており、専用のレンダリングテストも無いため、既存記事の表示が無言で変わるリスクがある。加えて `@types/markdown-it` はv15で同梱型と衝突するため削除が必要 | behavior-change | Markdown描画の自動テストを追加し、fuzzy link無効化後の表示を確認できるようにしてから移行する | 2026-08-03 |
 
 <!--
 運用メモ:

@@ -78,8 +78,7 @@ export const extractErrorMessage = (error: unknown): string => {
   if (isAxiosError(error)) {
     // APIレスポンスのエラーメッセージを優先的に取得
     const responseData = error.response?.data as
-      | { error?: string; message?: string }
-      | undefined;
+      { error?: string; message?: string } | undefined;
     if (responseData?.error) {
       return responseData.error;
     }

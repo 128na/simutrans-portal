@@ -24,33 +24,67 @@ class OpenApiSpecTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: string, 1: list<string>}>
+     * @return array<string, array{0: string, 1: list<array{name: string, type: string, format?: string}>}>
      */
     public static function schemaPropertyProvider(): array
     {
         return [
             'Article' => ['Article', [
-                'id', 'title', 'slug', 'status', 'post_type', 'contents',
-                'categories', 'tags', 'articles', 'attachments',
-                'created_at', 'published_at', 'modified_at',
+                ['name' => 'id', 'type' => 'integer'],
+                ['name' => 'title', 'type' => 'string'],
+                ['name' => 'slug', 'type' => 'string'],
+                ['name' => 'status', 'type' => 'string'],
+                ['name' => 'post_type', 'type' => 'string'],
+                ['name' => 'contents', 'type' => 'object'],
+                ['name' => 'categories', 'type' => 'array'],
+                ['name' => 'tags', 'type' => 'array'],
+                ['name' => 'articles', 'type' => 'array'],
+                ['name' => 'attachments', 'type' => 'array'],
+                ['name' => 'created_at', 'type' => 'string', 'format' => 'date-time'],
+                ['name' => 'published_at', 'type' => 'string', 'format' => 'date-time'],
+                ['name' => 'modified_at', 'type' => 'string', 'format' => 'date-time'],
             ]],
             'Attachment' => ['Attachment', [
-                'id', 'attachmentable_type', 'attachmentable_id', 'type',
-                'original_name', 'thumbnail', 'url', 'size', 'fileInfo',
-                'caption', 'order', 'attachmentable', 'created_at',
+                ['name' => 'id', 'type' => 'integer'],
+                ['name' => 'attachmentable_type', 'type' => 'string'],
+                ['name' => 'attachmentable_id', 'type' => 'integer'],
+                ['name' => 'type', 'type' => 'string'],
+                ['name' => 'original_name', 'type' => 'string'],
+                ['name' => 'thumbnail', 'type' => 'string'],
+                ['name' => 'url', 'type' => 'string'],
+                ['name' => 'size', 'type' => 'integer'],
+                ['name' => 'fileInfo', 'type' => 'object'],
+                ['name' => 'caption', 'type' => 'string'],
+                ['name' => 'order', 'type' => 'integer'],
+                ['name' => 'attachmentable', 'type' => 'object'],
+                ['name' => 'created_at', 'type' => 'string', 'format' => 'date-time'],
             ]],
             'User' => ['User', [
-                'id', 'name', 'nickname', 'role', 'profile',
+                ['name' => 'id', 'type' => 'integer'],
+                ['name' => 'name', 'type' => 'string'],
+                ['name' => 'nickname', 'type' => 'string'],
+                ['name' => 'role', 'type' => 'string'],
+                ['name' => 'profile', 'type' => 'object'],
             ]],
-            'Category' => ['Category', ['id', 'name']],
-            'Tag' => ['Tag', ['id', 'name']],
-            'Error' => ['Error', ['message']],
-            'ProfileEdit' => ['ProfileEdit', ['nickname']],
+            'Category' => ['Category', [
+                ['name' => 'id', 'type' => 'integer'],
+                ['name' => 'name', 'type' => 'string'],
+            ]],
+            'Tag' => ['Tag', [
+                ['name' => 'id', 'type' => 'integer'],
+                ['name' => 'name', 'type' => 'string'],
+            ]],
+            'Error' => ['Error', [
+                ['name' => 'message', 'type' => 'string'],
+            ]],
+            'ProfileEdit' => ['ProfileEdit', [
+                ['name' => 'nickname', 'type' => 'string'],
+            ]],
         ];
     }
 
     /**
-     * @param  list<string>  $expectedProperties
+     * @param  list<array{name: string, type: string, format?: string}>  $expectedProperties
      */
     #[DataProvider('schemaPropertyProvider')]
     public function test_schema_has_expected_properties(string $schemaName, array $expectedProperties): void
@@ -62,16 +96,31 @@ class OpenApiSpecTest extends TestCase
 
         $this->assertNotNull($schema, "Schema \"{$schemaName}\" was not found in the generated OpenAPI spec.");
 
-        $actualProperties = collect($schema->properties ?? [])
-            ->map(fn ($property): string => (string) $property->property)
-            ->all();
+        $properties = is_array($schema->properties) ? $schema->properties : [];
+        $actualProperties = collect($properties)
+            ->keyBy(fn ($property): string => (string) $property->property);
 
         foreach ($expectedProperties as $expected) {
-            $this->assertContains(
-                $expected,
-                $actualProperties,
-                "Schema \"{$schemaName}\" is missing expected property \"{$expected}\"."
+            $property = $actualProperties->get($expected['name']);
+
+            $this->assertNotNull(
+                $property,
+                "Schema \"{$schemaName}\" is missing expected property \"{$expected['name']}\"."
             );
+
+            $this->assertSame(
+                $expected['type'],
+                $property->type,
+                "Schema \"{$schemaName}\" property \"{$expected['name']}\" has unexpected type."
+            );
+
+            if (isset($expected['format'])) {
+                $this->assertSame(
+                    $expected['format'],
+                    $property->format,
+                    "Schema \"{$schemaName}\" property \"{$expected['name']}\" has unexpected format."
+                );
+            }
         }
     }
 

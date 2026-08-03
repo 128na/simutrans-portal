@@ -129,6 +129,6 @@ class ArticleRepository
 
         $this->joinActiveUsers($builder);
 
-        return $builder->cursor();
+        return $builder->orderBy('articles.published_at')->cursor();
     }
 }

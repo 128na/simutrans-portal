@@ -86,7 +86,7 @@ class CheckTest extends TestCase
         Queue::assertPushed(JobUpdateRelated::class);
     }
 
-    public function test_接続エラーが3回続く場合は非公開にしない(): void
+    public function test_接続エラーが3回続く場合は非公開にせず履歴も変更しない(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {
             $mock->allows()->getAttribute('contents')
@@ -98,8 +98,9 @@ class CheckTest extends TestCase
         $this->mock(GetHeaders::class, function (MockInterface $mock): void {
             $mock->expects()->__invoke('dummy')->times(3)->andReturn(null);
         });
-        $this->mock(ArticleLinkCheckHistoryRepository::class, function (MockInterface $mock) use ($article): void {
-            $mock->expects()->clear($article)->once();
+        $this->mock(ArticleLinkCheckHistoryRepository::class, function (MockInterface $mock): void {
+            $mock->shouldNotReceive('clear');
+            $mock->shouldNotReceive('increment');
         });
 
         $fn = fn (): true => true;

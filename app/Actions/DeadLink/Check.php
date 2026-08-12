@@ -34,7 +34,14 @@ class Check
     {
         foreach ($this->getArticles() as $article) {
             if ($this->shouldProcess($article)) {
-                if ($this->isDead($article) === false) {
+                $isDead = $this->isDead($article);
+
+                if ($isDead === null) {
+                    // 判定不能（一度も応答を受け取れなかった）。既存の履歴に手を付けない。
+                    continue;
+                }
+
+                if ($isDead === false) {
                     $this->articleLinkCheckHistoryRepository->clear($article);
 
                     continue;
@@ -71,7 +78,17 @@ class Check
             && $article->contents->exclude_link_check === false;
     }
 
-    private function isDead(Article $article): bool
+    /**
+     * リンク切れかどうかを判定する。
+     *
+     * 戻り値は3値:
+     * - true: リンク切れ確定（200 OK以外の応答を受け取り続けた）
+     * - false: 生存確認済み（200 OKを受信した）
+     * - null: 判定不能（FAILED_LIMIT回とも一度も応答を受け取れなかった。
+     *   接続不能を「生存」と同一視して履歴をクリアしないよう、呼び出し元で
+     *   このケースは何もせずスキップする）
+     */
+    private function isDead(Article $article): ?bool
     {
         if (! $article->contents instanceof AddonIntroductionContent) {
             return false;
@@ -98,10 +115,11 @@ class Check
                 }
             }
 
-            Sleep::for(self::INTERVAL_SEC)->second();
+            if ($i < self::FAILED_LIMIT - 1) {
+                Sleep::for(self::INTERVAL_SEC)->second();
+            }
         }
 
-        // 3回とも接続すらできなかった場合は判定不能として dead 扱いにしない
-        return $receivedResponse;
+        return $receivedResponse ? true : null;
     }
 }

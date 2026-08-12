@@ -26,22 +26,22 @@
   </form>
   <ul class="space-y-4">
     <li>
-      @include('components.ui.link', ['url' => route('latest'), 'title' => '新着アドオン'])
+      <x-ui.link :url="route('latest')" :title="'新着アドオン'" />
     </li>
     <li>
       <p class="mb-1 font-bold">pak別一覧</p>
       <ul class="ml-3 space-y-2">
         <li>
-          @include('components.ui.link', ['url' => route('pak.128japan'), 'title' => 'pak128.Japan'])
+          <x-ui.link :url="route('pak.128japan')" :title="'pak128.Japan'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('pak.128'), 'title' => 'pak128'])
+          <x-ui.link :url="route('pak.128')" :title="'pak128'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('pak.64'), 'title' => 'pak64'])
+          <x-ui.link :url="route('pak.64')" :title="'pak64'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('pak.others'), 'title' => 'その他のpak'])
+          <x-ui.link :url="route('pak.others')" :title="'その他のpak'" />
         </li>
       </ul>
     </li>
@@ -49,13 +49,13 @@
       <p class="mb-1 font-bold">ジャンル別一覧</p>
       <ul class="ml-3 space-y-2">
         <li>
-          @include('components.ui.link', ['url' => route('users.index'), 'title' => 'ユーザー'])
+          <x-ui.link :url="route('users.index')" :title="'ユーザー'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('categories.index'), 'title' => 'カテゴリ'])
+          <x-ui.link :url="route('categories.index')" :title="'カテゴリ'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('tags.index'), 'title' => 'タグ'])
+          <x-ui.link :url="route('tags.index')" :title="'タグ'" />
         </li>
       </ul>
     </li>
@@ -63,25 +63,25 @@
       <p class="mb-1 font-bold">その他</p>
       <ul class="ml-3 space-y-2">
         <li>
-          @include('components.ui.link', ['url' => route('pages'), 'title' => '一般記事'])
+          <x-ui.link :url="route('pages')" :title="'一般記事'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('announces'), 'title' => 'お知らせ'])
+          <x-ui.link :url="route('announces')" :title="'お知らせ'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('search'), 'title' => '詳細検索'])
+          <x-ui.link :url="route('search')" :title="'詳細検索'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('public-mylist.index'), 'title' => '公開マイリスト一覧'])
+          <x-ui.link :url="route('public-mylist.index')" :title="'公開マイリスト一覧'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => route('social'), 'title' => '各種ツール（SNS, RSS, API, MCP）'])
+          <x-ui.link :url="route('social')" :title="'各種ツール（SNS, RSS, API, MCP）'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => config('app.support_site_url'), 'title' => 'サイトの使い方'])
+          <x-ui.link :url="config('app.support_site_url')" :title="'サイトの使い方'" />
         </li>
         <li>
-          @include('components.ui.link', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー'])
+          <x-ui.link :url="config('app.privacy_policy_url')" :title="'プライバシーポリシー'" />
         </li>
       </ul>
     </li>

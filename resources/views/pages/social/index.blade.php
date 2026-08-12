@@ -29,22 +29,19 @@
               <tr>
                 <th>Twitter</th>
                 <td>
-                  @include('components.ui.link', [
-                      'url' => 'https://twitter.com/PortalSimutrans', 'title' => '@PortalSimutrans'])
+                  <x-ui.link :url="'https://twitter.com/PortalSimutrans'" :title="'@PortalSimutrans'" />
                 </td>
               </tr>
               <tr>
                 <th>Misskey</th>
                 <td>
-                  @include('components.ui.link', [
-                      'url' => 'https://misskey.io/@PortalSimutrans', 'title' => '@PortalSimutrans'])
+                  <x-ui.link :url="'https://misskey.io/@PortalSimutrans'" :title="'@PortalSimutrans'" />
                 </td>
               </tr>
               <tr>
                 <th>Bluesky</th>
                 <td>
-                  @include('components.ui.link', [
-                      'url' => 'https://bsky.app/profile/portalsimutrans.bsky.social', 'title' => '@PortalSimutrans.bsky.social'])
+                  <x-ui.link :url="'https://bsky.app/profile/portalsimutrans.bsky.social'" :title="'@PortalSimutrans.bsky.social'" />
                 </td>
               </tr>
             </tbody>
@@ -86,7 +83,7 @@
           投稿記事などの情報を取得するためのAPIを提供しています。（ユーザー登録不要）
           <br />
           詳細はこちら
-          @include('components.ui.link', ['url' => 'https://simutrans-intro.notion.site/API-2cbb6813417b4b2f80c27392b4d6b3d2', 'title' => 'APIドキュメント'])
+          <x-ui.link :url="'https://simutrans-intro.notion.site/API-2cbb6813417b4b2f80c27392b4d6b3d2'" :title="'APIドキュメント'" />
         </div>
       </div>
 
@@ -95,7 +92,7 @@
         <div class="text-c-sub">
           MCP対応ツール向けに投稿記事などの情報を取得するためのサーバーを提供しています。（ユーザー登録不要）
           <br />
-          @include('components.ui.link', ['url' => url('/mcp')])
+          <x-ui.link :url="url('/mcp')" />
           をVSCodeやClaudeなどの各種ツールに登録して利用可能です。
 
           <div class="markdown-body">
@@ -107,10 +104,10 @@
 		}
 	}
 }</code></pre>
-            @include('components.ui.link', ['url' => 'https://code.visualstudio.com/docs/copilot/customization/mcp-servers'])
+            <x-ui.link :url="'https://code.visualstudio.com/docs/copilot/customization/mcp-servers'" />
 
             <pre><code>claude mcp add --transport http SimutransAddonPortal {{ url('/mcp') }}</code></pre>
-            @include('components.ui.link', ['url' => 'https://platform.claude.com/docs/ja/agents-and-tools/mcp-connector'])
+            <x-ui.link :url="'https://platform.claude.com/docs/ja/agents-and-tools/mcp-connector'" />
           </div>
         </div>
       </div>
@@ -123,15 +120,13 @@
               <tr>
                 <th>中の人のTwitter</th>
                 <td>
-                  @include('components.ui.link', [
-                      'url' => 'https://twitter.com/128Na', 'title' => '@128Na'])
+                  <x-ui.link :url="'https://twitter.com/128Na'" :title="'@128Na'" />
                 </td>
               </tr>
               <tr>
                 <th>Github</th>
                 <td>
-                  @include('components.ui.link', [
-                      'url' => 'https://github.com/128na/simutrans-portal', 'title' => '128na/simutrans-portal'])
+                  <x-ui.link :url="'https://github.com/128na/simutrans-portal'" :title="'128na/simutrans-portal'" />
                 </td>
               </tr>
             </tbody>

@@ -17,7 +17,7 @@
       </div>
       <div>
         ログインは
-        @include('components.ui.link', ['url' => route('login'), 'title' => 'マイページ'])
+        <x-ui.link :url="route('login')" :title="'マイページ'" />
         からできます。
         <br />
       </div>

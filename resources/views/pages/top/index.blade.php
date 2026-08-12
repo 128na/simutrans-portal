@@ -48,12 +48,12 @@
         <div class="grid gap-10">
           <section class="space-y-8">
             <h3 class="v2-text-h4">
-              @include('components.ui.link', ['url' => route('latest'), 'title' => '新着アドオン'])
+              <x-ui.link :url="route('latest')" :title="'新着アドオン'" />
             </h3>
 
             <div>
               <h3 class="v2-text-h4 mb-4">
-                @include('components.ui.link', ['url' => route('announces'), 'title' => 'お知らせ'])
+                <x-ui.link :url="route('announces')" :title="'お知らせ'" />
               </h3>
               <div class="gap-2 flex flex-col">
                 @foreach ($announces as $article)
@@ -65,11 +65,11 @@
           <section class="space-y-4">
             <h3 class="v2-text-h4">関連サイトのリンク</h3>
             <div class="gap-2 grid">
-              @include('components.ui.link', ['url' => 'https://forum.simutrans.com/', 'title' => 'International Simutrans Forum'])
-              @include('components.ui.link', ['url' => 'https://japanese.simutrans.com/index.php', 'title' => 'Simutrans 日本語化･解説'])
-              @include('components.ui.link', ['url' => 'https://wikiwiki.jp/twitrans/', 'title' => 'Simutrans 的な実験室'])
-              @include('components.ui.link', ['url' => 'https://cross-search.128-bit.net/', 'title' => 'Simutrans 横断検索'])
-              @include('components.ui.link', ['url' => route('redirect', ['name' => 'simutrans-interact-meeting']), 'title' => 'シムトランス交流会議'])
+              <x-ui.link :url="'https://forum.simutrans.com/'" :title="'International Simutrans Forum'" />
+              <x-ui.link :url="'https://japanese.simutrans.com/index.php'" :title="'Simutrans 日本語化･解説'" />
+              <x-ui.link :url="'https://wikiwiki.jp/twitrans/'" :title="'Simutrans 的な実験室'" />
+              <x-ui.link :url="'https://cross-search.128-bit.net/'" :title="'Simutrans 横断検索'" />
+              <x-ui.link :url="route('redirect', ['name' => 'simutrans-interact-meeting'])" :title="'シムトランス交流会議'" />
             </div>
           </section>
         </div>

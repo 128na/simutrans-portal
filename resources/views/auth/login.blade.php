@@ -48,7 +48,7 @@
           </button>
         </div>
         <div>
-          @include('components.ui.link', ['url' => route('forgot-password'), 'title' => 'パスワードをリセットするには？'])
+          <x-ui.link :url="route('forgot-password')" :title="'パスワードをリセットするには？'" />
         </div>
       </div>
     </form>

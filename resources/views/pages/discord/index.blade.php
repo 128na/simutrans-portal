@@ -16,7 +16,7 @@
 
     <div class="v2-page-content-area-lg">
       @if (isset($url))
-        @include('components.ui.link', ['url' => $url])
+        <x-ui.link :url="$url" />
       @else
         <form
           id="inviteForm"

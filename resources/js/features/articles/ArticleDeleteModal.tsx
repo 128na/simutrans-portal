@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import { useApiCall } from "@/hooks/useApiCall";
@@ -19,24 +18,14 @@ export const ArticleDeleteModal = ({
   onSuccess,
 }: ArticleDeleteModalProps) => {
   const { call, isLoading } = useApiCall();
-  const [error, setError] = useState<string | null>(null);
 
   const handleDelete = async () => {
     if (!article) return;
 
-    setError(null);
-
-    const result = await call(() => axios.delete(`/api/v2/articles/${article.id}`), {
+    await call(() => axios.delete(`/api/v2/articles/${article.id}`), {
       successMessage: "記事を削除しました",
       onSuccess: () => onSuccess(),
     });
-
-    if (result.validationErrors) {
-      const errorMessages = Object.values(result.validationErrors)
-        .flat()
-        .join("\n");
-      setError(errorMessages);
-    }
   };
 
   if (!article) {
@@ -45,12 +34,6 @@ export const ArticleDeleteModal = ({
 
   return (
     <Modal title="記事を削除" onClose={onClose}>
-      {error && (
-        <div className="v2-card v2-card-danger mb-4" role="alert">
-          <p className="v2-text-body">{error}</p>
-        </div>
-      )}
-
       <p className="v2-text-body mb-4">
         「<strong>{article.title}</strong>」を削除してもよろしいですか？
       </p>

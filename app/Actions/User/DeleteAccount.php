@@ -16,6 +16,7 @@ class DeleteAccount
 
     public function __invoke(User $user): void
     {
+        $user->tokens()->delete();
         $this->userRepository->destroy($user);
 
         event(new UserWithdrawn($user));

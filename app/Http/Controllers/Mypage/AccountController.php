@@ -22,8 +22,11 @@ class AccountController extends Controller
         $deleteAccount($user);
 
         Auth::guard('web')->logout();
-        $withdrawRequest->session()->invalidate();
-        $withdrawRequest->session()->regenerateToken();
+
+        if ($withdrawRequest->hasSession()) {
+            $withdrawRequest->session()->invalidate();
+            $withdrawRequest->session()->regenerateToken();
+        }
 
         return response()->json();
     }

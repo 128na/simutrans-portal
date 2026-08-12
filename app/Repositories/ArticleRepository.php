@@ -37,6 +37,10 @@ class ArticleRepository
 
     public function destroy(Article $article): void
     {
+        if ($article->trashed()) {
+            return;
+        }
+
         $article->delete();
     }
 

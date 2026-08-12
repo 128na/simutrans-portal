@@ -4,6 +4,7 @@ import { Modal } from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useApiCall } from "@/hooks/useApiCall";
+import { flattenValidationErrors } from "@/lib/errorHandler";
 
 interface AccountDeleteModalProps {
   onClose: () => void;
@@ -33,10 +34,7 @@ export const AccountDeleteModal = ({ onClose }: AccountDeleteModalProps) => {
     );
 
     if (result.validationErrors) {
-      const errorMessages = Object.values(result.validationErrors)
-        .flat()
-        .join("\n");
-      setError(errorMessages);
+      setError(flattenValidationErrors(result.validationErrors));
     }
   };
 

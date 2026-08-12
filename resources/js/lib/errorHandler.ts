@@ -162,6 +162,15 @@ export const isValidationError = (
 };
 
 /**
+ * バリデーションエラーをまとめて1つの文字列に整形する
+ */
+export const flattenValidationErrors = (
+  errors: Record<string, string[]>
+): string => {
+  return Object.values(errors).flat().join("\n");
+};
+
+/**
  * 統一されたエラーハンドラー
  *
  * 注意: このハンドラーはユーティリティ関数として機能します。

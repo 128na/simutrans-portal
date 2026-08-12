@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Http\Requests\Token\StoreRequest;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -29,16 +29,14 @@ class TokenController extends Controller
         return view('mypage.tokens', ['tokens' => $tokens]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
         $user = Auth::user();
         if ($user === null) {
             abort(401);
         }
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
+        $validated = $request->validated();
 
         /** @var User $user */
         $token = $user->createToken($validated['name']);

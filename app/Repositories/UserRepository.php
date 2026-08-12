@@ -5,6 +5,11 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Enums\ArticleStatus;
+use App\Models\Article;
+use App\Models\Attachment;
+use App\Models\MyList;
+use App\Models\Redirect;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -34,32 +39,32 @@ class UserRepository
         /** @var object{article_count: int|null, attachment_count: int|null, total_attachment_size: int|null, total_conversion_count: int|null, total_view_count: int|null, redirect_count: int|null, tag_count: int|null} $result */
         $result = DB::query()
             ->selectSub(
-                DB::table('articles')
+                DB::table((new Article)->getTable())
                     ->where('user_id', $userId)
                     ->whereNull('deleted_at')
                     ->selectRaw('COUNT(*)'),
                 'article_count'
             )
             ->selectSub(
-                DB::table('attachments')
+                DB::table((new Attachment)->getTable())
                     ->where('user_id', $userId)
                     ->selectRaw('COUNT(*)'),
                 'attachment_count'
             )
             ->selectSub(
-                DB::table('attachments')
+                DB::table((new Attachment)->getTable())
                     ->where('user_id', $userId)
                     ->selectRaw('SUM(size)'),
                 'total_attachment_size'
             )
             ->selectSub(
-                DB::table('mylists')
+                DB::table((new MyList)->getTable())
                     ->where('user_id', $userId)
                     ->selectRaw('COUNT(*)'),
                 'mylist_count'
             )
             ->selectSub(
-                DB::table('mylists')
+                DB::table((new MyList)->getTable())
                     ->where('user_id', $userId)
                     ->where('is_public', true)
                     ->selectRaw('COUNT(*)'),
@@ -82,13 +87,13 @@ class UserRepository
                 'total_view_count'
             )
             ->selectSub(
-                DB::table('redirects')
+                DB::table((new Redirect)->getTable())
                     ->where('user_id', $userId)
                     ->selectRaw('COUNT(*)'),
                 'redirect_count'
             )
             ->selectSub(
-                DB::table('tags')
+                DB::table((new Tag)->getTable())
                     ->where(function ($q) use ($userId): void {
                         $q->where('created_by', $userId)
                             ->orWhere('last_modified_by', $userId);

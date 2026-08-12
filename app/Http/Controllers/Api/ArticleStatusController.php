@@ -7,15 +7,14 @@ namespace App\Http\Controllers\Api;
 use App\Enums\ArticleStatus;
 use App\Events\Article\ArticleUpdated;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Article\UpdateStatusRequest;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 class ArticleStatusController extends Controller
@@ -63,21 +62,14 @@ class ArticleStatusController extends Controller
             new OA\Response(response: 422, description: 'バリデーションエラー', content: new OA\JsonContent(ref: '#/components/schemas/Error')),
         ]
     )]
-    public function update(Request $request, int $id): JsonResponse
+    public function update(UpdateStatusRequest $request, int $id): JsonResponse
     {
         $user = Auth::user();
         if ($user === null) {
             abort(401);
         }
 
-        $validated = $request->validate([
-            'status' => ['required', 'string', Rule::in([
-                ArticleStatus::Publish->value,
-                ArticleStatus::Draft->value,
-                ArticleStatus::Private->value,
-                ArticleStatus::Trash->value,
-            ])],
-        ]);
+        $validated = $request->validated();
 
         try {
             $article = Article::where('id', $id)

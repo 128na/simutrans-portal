@@ -43,6 +43,10 @@ class MyList extends Model
 
     protected $table = 'mylists';
 
+    protected $attributes = [
+        'is_public' => false,
+    ];
+
     protected $fillable = [
         'user_id',
         'title',

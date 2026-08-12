@@ -7,13 +7,10 @@ namespace Tests\Feature\Controllers\Mypage\MyListController;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class DestroyItemTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_deletes_item_successfully(): void
     {
         $user = User::factory()->create();

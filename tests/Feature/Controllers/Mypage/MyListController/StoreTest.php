@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Mypage\MyListController;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class StoreTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_creates_list_successfully(): void
     {
         $user = User::factory()->create();

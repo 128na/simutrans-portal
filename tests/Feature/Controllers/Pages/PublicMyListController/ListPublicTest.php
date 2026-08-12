@@ -6,13 +6,10 @@ namespace Tests\Feature\Controllers\Pages\PublicMyListController;
 
 use App\Models\MyList;
 use App\Models\MyListItem;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class ListPublicTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_returns_public_lists_only(): void
     {
         $publicOld = MyList::factory()->public()->create([

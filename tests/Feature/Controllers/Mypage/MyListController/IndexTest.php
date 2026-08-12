@@ -6,13 +6,10 @@ namespace Tests\Feature\Controllers\Mypage\MyListController;
 
 use App\Models\MyList;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class IndexTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_returns_user_lists_successfully(): void
     {
         $user = User::factory()->create();

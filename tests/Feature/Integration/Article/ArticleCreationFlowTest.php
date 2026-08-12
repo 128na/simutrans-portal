@@ -12,7 +12,6 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 /**
@@ -21,8 +20,6 @@ use Tests\Feature\TestCase;
  */
 class ArticleCreationFlowTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      * 完全な記事作成フローが正常に動作する

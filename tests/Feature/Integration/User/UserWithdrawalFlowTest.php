@@ -10,7 +10,6 @@ use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Models\User;
 use App\Repositories\Article\FrontArticleRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Tests\Feature\TestCase;
 
@@ -20,8 +19,6 @@ use Tests\Feature\TestCase;
  */
 class UserWithdrawalFlowTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_退会後は記事が公開一覧から消え再ログインできない(): void
     {
         $user = User::factory()->create();

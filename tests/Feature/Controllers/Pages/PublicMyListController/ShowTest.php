@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Pages\PublicMyListController;
 
 use App\Models\MyList;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class ShowTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_公開リストはslugで表示できる(): void
     {
         $mylist = MyList::factory()->public()->create();

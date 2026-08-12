@@ -12,7 +12,6 @@ use App\Http\Requests\User\UpdateRequest;
 use App\Models\Article;
 use App\Models\Attachment;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 /**
@@ -21,8 +20,6 @@ use Tests\Feature\TestCase;
  */
 class UserProfileAndArticleFlowTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      * プロフィール更新後に記事投稿が正常に動作する

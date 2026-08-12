@@ -104,7 +104,7 @@ class TokenControllerTest extends TestCase
 
         $this->actingAs($user)->delete(route('mypage.tokens.destroy', $token->id));
 
-        $this->assertDatabaseHas('personal_access_tokens', ['id' => $token->id]);
+        $this->assertModelExists($token);
     }
 
     public function test_mcp_does_not_reject_valid_token(): void

@@ -30,7 +30,7 @@ class DestroyTest extends TestCase
         $testResponse = $this->delete(route('mypage.redirects.destroy', $redirect));
 
         $testResponse->assertRedirect(route('login'));
-        $this->assertDatabaseHas('redirects', ['id' => $redirect->id]);
+        $this->assertModelExists($redirect);
     }
 
     public function test_他人のリダイレクトは削除できない(): void
@@ -43,6 +43,6 @@ class DestroyTest extends TestCase
         $testResponse = $this->actingAs($otherUser)->delete(route('mypage.redirects.destroy', $redirect));
 
         $testResponse->assertForbidden();
-        $this->assertDatabaseHas('redirects', ['id' => $redirect->id]);
+        $this->assertModelExists($redirect);
     }
 }

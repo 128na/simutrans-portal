@@ -13,7 +13,6 @@ use App\Models\Attachment;
 use App\Models\User;
 use App\Repositories\Article\ConversionCountRepository;
 use App\Repositories\Article\ViewCountRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\Feature\TestCase;
 
@@ -23,8 +22,6 @@ use Tests\Feature\TestCase;
  */
 class ArticleViewAndConversionTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      * ビューカウントが正しく記録される

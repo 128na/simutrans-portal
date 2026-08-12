@@ -43,11 +43,9 @@ class UpdateOrCreateTest extends TestCase
         $this->assertSame('test_refresh_token_456', $token->refresh_token);
         $this->assertNotNull($token->expired_at);
 
-        // データベースに保存されていることを確認
-        $this->assertDatabaseHas('oauth_tokens', [
-            'application' => $application,
-            'access_token' => 'test_access_token_123',
-        ]);
+        // データベースに保存されていることを確認（access_tokenは暗号化されて保存される）
+        $this->assertDatabaseHas('oauth_tokens', ['application' => $application]);
+        $this->assertSame('test_access_token_123', $token->fresh()->access_token);
     }
 
     public function test_既存トークン更新(): void
@@ -84,14 +82,7 @@ class UpdateOrCreateTest extends TestCase
 
         // データベースには1つだけ存在することを確認
         $this->assertDatabaseCount('oauth_tokens', 1);
-        $this->assertDatabaseHas('oauth_tokens', [
-            'application' => $application,
-            'access_token' => 'new_access_token_789',
-        ]);
-        $this->assertDatabaseMissing('oauth_tokens', [
-            'application' => $application,
-            'access_token' => 'old_access_token',
-        ]);
+        $this->assertSame('new_access_token_789', $updatedToken->fresh()->access_token);
     }
 
     public function test_複数プロバイダーの独立管理(): void
@@ -139,7 +130,7 @@ class UpdateOrCreateTest extends TestCase
         $this->assertSame('bluesky', $blueskyToken->application);
 
         // Twitterトークンを更新しても他のトークンは影響を受けないことを確認
-        $this->oauthTokenRepository->updateOrCreate(
+        $updatedTwitterToken = $this->oauthTokenRepository->updateOrCreate(
             ['application' => 'twitter'],
             [
                 'token_type' => 'bearer',
@@ -151,18 +142,9 @@ class UpdateOrCreateTest extends TestCase
         );
 
         $this->assertDatabaseCount('oauth_tokens', 3);
-        $this->assertDatabaseHas('oauth_tokens', [
-            'application' => 'twitter',
-            'access_token' => 'twitter_new_access_token',
-        ]);
-        $this->assertDatabaseHas('oauth_tokens', [
-            'application' => 'discord',
-            'access_token' => 'discord_access_token',
-        ]);
-        $this->assertDatabaseHas('oauth_tokens', [
-            'application' => 'bluesky',
-            'access_token' => 'bluesky_access_token',
-        ]);
+        $this->assertSame('twitter_new_access_token', $updatedTwitterToken->fresh()->access_token);
+        $this->assertSame('discord_access_token', $discordToken->fresh()->access_token);
+        $this->assertSame('bluesky_access_token', $blueskyToken->fresh()->access_token);
     }
 
     public function test_トークンリフレッシュシナリオ(): void

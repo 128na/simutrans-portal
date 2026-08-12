@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Mypage\AnalyticsController;
 use App\Http\Controllers\Mypage\Article\CreateController;
+use App\Http\Controllers\Mypage\Article\DestroyController;
 use App\Http\Controllers\Mypage\Article\EditController;
 use App\Http\Controllers\Mypage\AttachmentController;
 use App\Http\Controllers\Mypage\MyListController;
@@ -37,6 +38,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
 
         Route::post('v2/articles', [CreateController::class, 'store']);
         Route::post('v2/articles/{article}', [EditController::class, 'update']);
+        Route::delete('v2/articles/{article}', [DestroyController::class, 'destroy']);
     });
 
     Route::post('v2/profile', [ProfileController::class, 'update']);

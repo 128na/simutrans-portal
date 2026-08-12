@@ -180,6 +180,11 @@ class UserRepository
         return $user;
     }
 
+    public function destroy(User $user): void
+    {
+        $user->delete();
+    }
+
     /**
      * MFA設定が未完了のユーザー一覧を取得
      *

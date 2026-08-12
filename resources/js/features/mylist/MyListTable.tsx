@@ -11,6 +11,7 @@ import { copyToClipboard } from "@/lib/copyText";
 import { useToast } from "@/hooks/useToast";
 import { useApiCall } from "@/hooks/useApiCall";
 import { useModelModal } from "@/hooks/useModelModal";
+import { flattenValidationErrors } from "@/lib/errorHandler";
 import type { MyListShow } from "@/types/models";
 
 interface MyListTableProps {
@@ -302,10 +303,7 @@ export const MyListDeleteModal = ({
 
     // バリデーションエラーがある場合は表示
     if (result.validationErrors) {
-      const errorMessages = Object.values(result.validationErrors)
-        .flat()
-        .join("\n");
-      setError(errorMessages);
+      setError(flattenValidationErrors(result.validationErrors));
     }
   };
 

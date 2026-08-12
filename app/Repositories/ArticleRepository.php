@@ -35,6 +35,15 @@ class ArticleRepository
         return $article;
     }
 
+    public function destroy(Article $article): void
+    {
+        if ($article->trashed()) {
+            return;
+        }
+
+        $article->delete();
+    }
+
     /**
      * 添付ファイルを関連付ける
      *

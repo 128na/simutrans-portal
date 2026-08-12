@@ -86,6 +86,29 @@ class CheckTest extends TestCase
         Queue::assertPushed(JobUpdateRelated::class);
     }
 
+    public function test_接続エラーが3回続く場合は非公開にしない(): void
+    {
+        $article = $this->mock(Article::class, function (MockInterface $mock): void {
+            $mock->allows()->getAttribute('contents')
+                ->andReturn(new AddonIntroductionContent(['link' => 'dummy', 'exclude_link_check' => false]));
+        });
+        $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article): void {
+            $mock->expects()->cursorCheckLink()->once()->andReturn(LazyCollection::make([$article]));
+        });
+        $this->mock(GetHeaders::class, function (MockInterface $mock): void {
+            $mock->expects()->__invoke('dummy')->times(3)->andReturn(null);
+        });
+        $this->mock(ArticleLinkCheckHistoryRepository::class, function (MockInterface $mock) use ($article): void {
+            $mock->expects()->clear($article)->once();
+        });
+
+        $fn = fn (): true => true;
+
+        Queue::fake();
+        $this->getSUT()($fn);
+        Queue::assertNothingPushed();
+    }
+
     public function test_除外指定時(): void
     {
         $article = $this->mock(Article::class, function (MockInterface $mock): void {

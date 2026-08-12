@@ -27,7 +27,7 @@ export const MyListTable = ({ lists, onEdit, onDelete }: MyListTableProps) => {
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
   const handleCopyPublicUrl = async (list: MyListShow) => {
-    const publicUrl = `${window.location.origin}/mylist/${list.slug}`;
+    const publicUrl = `${window.location.origin}/mylist/${encodeURIComponent(list.slug ?? "")}`;
     const success = await copyToClipboard(publicUrl);
 
     if (success) {

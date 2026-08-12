@@ -77,21 +77,31 @@ class Check
             return false;
         }
 
+        $receivedResponse = false;
+
         for ($i = 0; $i < self::FAILED_LIMIT; $i++) {
             if (! in_array($article->contents->link, [null, '', '0'], true)) {
                 $info = ($this->getHeaders)($article->contents->link);
-                foreach ($info as $inf) {
-                    if (mb_stripos($inf, '200 OK') !== false) {
-                        return false;
-                    }
-                }
 
-                logger('[DeadLinkChecker] status check failed.', [$article->contents->link, ...$info]);
+                if ($info === null) {
+                    logger('[DeadLinkChecker] could not connect.', [$article->contents->link]);
+                } else {
+                    $receivedResponse = true;
+
+                    foreach ($info as $inf) {
+                        if (mb_stripos($inf, '200 OK') !== false) {
+                            return false;
+                        }
+                    }
+
+                    logger('[DeadLinkChecker] status check failed.', [$article->contents->link, ...$info]);
+                }
             }
 
             Sleep::for(self::INTERVAL_SEC)->second();
         }
 
-        return true;
+        // 3回とも接続すらできなかった場合は判定不能として dead 扱いにしない
+        return $receivedResponse;
     }
 }

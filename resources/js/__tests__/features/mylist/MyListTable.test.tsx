@@ -106,6 +106,40 @@ describe("MyListTable コンポーネント", () => {
     expect(onDelete).toHaveBeenCalledWith(mockLists[0]);
   });
 
+  it("公開URLコピー時に日本語slugがURLエンコードされる", async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+    const onDelete = vi.fn();
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+
+    const listsWithJapaneseSlug: MyListShow[] = [
+      { ...mockLists[0], slug: "日本語スラッグ" },
+    ];
+
+    render(
+      <ToastProvider>
+        <MyListTable
+          lists={listsWithJapaneseSlug}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
+      </ToastProvider>
+    );
+
+    await user.click(screen.getByText("URLコピー"));
+
+    expect(writeText).toHaveBeenCalledWith(
+      expect.stringContaining(encodeURIComponent("日本語スラッグ"))
+    );
+    expect(writeText).not.toHaveBeenCalledWith(
+      expect.stringContaining("日本語スラッグ")
+    );
+  });
+
   it("空のリストでメッセージが表示される", () => {
     const onEdit = vi.fn();
     const onDelete = vi.fn();

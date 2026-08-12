@@ -23,6 +23,11 @@ class ArticlePolicy extends BasePolicy
         return $this->isSameUser($user, $article);
     }
 
+    public function delete(User $user, Article $article): bool
+    {
+        return $this->isSameUser($user, $article);
+    }
+
     public function download(?User $user, Article $article): bool
     {
         /** @var ArticlePostType $postType */

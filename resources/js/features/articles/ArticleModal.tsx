@@ -4,9 +4,15 @@ type Props = {
   user: User.MypageShow;
   article: Article.MypageShow | null;
   onClose?: () => void;
+  onDeleteRequest?: (article: Article.MypageShow) => void;
 };
 
-export const ArticleModal = ({ user, article, onClose }: Props) => {
+export const ArticleModal = ({
+  user,
+  article,
+  onClose,
+  onDeleteRequest,
+}: Props) => {
   // article が null の場合はモーダルを非表示にする
   if (!article) return null;
 
@@ -49,6 +55,17 @@ export const ArticleModal = ({ user, article, onClose }: Props) => {
               onClick={() => onCopyClick()}
             >
               URLをコピー
+              <span className="absolute inset-0"></span>
+            </button>
+          </div>
+        </div>
+        <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+          <div className="flex-auto">
+            <button
+              className="block font-semibold cursor-pointer text-red-600"
+              onClick={() => onDeleteRequest?.(article)}
+            >
+              削除する
               <span className="absolute inset-0"></span>
             </button>
           </div>

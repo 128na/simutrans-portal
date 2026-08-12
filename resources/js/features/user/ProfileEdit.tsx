@@ -2,6 +2,7 @@ import TextBadge from "@/components/ui/TextBadge";
 import TextSub from "@/components/ui/TextSub";
 import { ProfileShow } from "./ProfileShow";
 import { ProfileForm } from "./ProfileForm";
+import { AccountDeleteSection } from "./AccountDeleteSection";
 
 type Props = {
   user: User.MypageEdit;
@@ -33,6 +34,8 @@ export const ProfileEdit = ({
         attachments={attachments}
         onChangeAttachments={onChangeAttachments}
       />
+
+      <AccountDeleteSection />
     </>
   );
 };

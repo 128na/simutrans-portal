@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\TwoFactorController;
+use App\Http\Controllers\Mypage\AccountController;
 use App\Http\Controllers\Mypage\AnalyticsController;
 use App\Http\Controllers\Mypage\Article\CreateController;
 use App\Http\Controllers\Mypage\Article\EditController;
@@ -123,6 +124,7 @@ Route::middleware(['auth'])->group(function (): void {
 
         Route::get('/mypage/profile', [ProfileController::class, 'index'])->name('mypage.profile');
         Route::post('/mypage/profile', [ProfileController::class, 'update']);
+        Route::delete('/mypage/account', [AccountController::class, 'destroy'])->name('mypage.account.destroy');
 
         Route::get('/mypage/analytics', [AnalyticsController::class, 'index'])->name('mypage.analytics');
 

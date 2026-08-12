@@ -156,7 +156,7 @@ export const AddonIntroduction = () => {
               {getError("article.contents.exclude_link_check")}
             </TextError>
             <Checkbox
-              checked={contents.exclude_link_check}
+              checked={!contents.exclude_link_check}
               onChange={() =>
                 updateContents<ArticleContent.AddonIntroduction>(
                   (draft) =>

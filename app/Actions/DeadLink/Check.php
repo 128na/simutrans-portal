@@ -34,7 +34,14 @@ class Check
     {
         foreach ($this->getArticles() as $article) {
             if ($this->shouldProcess($article)) {
-                if ($this->isDead($article) === false) {
+                $isDead = $this->isDead($article);
+
+                if ($isDead === null) {
+                    // 判定不能（一度も応答を受け取れなかった）。既存の履歴に手を付けない。
+                    continue;
+                }
+
+                if ($isDead === false) {
                     $this->articleLinkCheckHistoryRepository->clear($article);
 
                     continue;
@@ -71,27 +78,48 @@ class Check
             && $article->contents->exclude_link_check === false;
     }
 
-    private function isDead(Article $article): bool
+    /**
+     * リンク切れかどうかを判定する。
+     *
+     * 戻り値は3値:
+     * - true: リンク切れ確定（200 OK以外の応答を受け取り続けた）
+     * - false: 生存確認済み（200 OKを受信した）
+     * - null: 判定不能（FAILED_LIMIT回とも一度も応答を受け取れなかった。
+     *   接続不能を「生存」と同一視して履歴をクリアしないよう、呼び出し元で
+     *   このケースは何もせずスキップする）
+     */
+    private function isDead(Article $article): ?bool
     {
         if (! $article->contents instanceof AddonIntroductionContent) {
             return false;
         }
 
+        $receivedResponse = false;
+
         for ($i = 0; $i < self::FAILED_LIMIT; $i++) {
             if (! in_array($article->contents->link, [null, '', '0'], true)) {
                 $info = ($this->getHeaders)($article->contents->link);
-                foreach ($info as $inf) {
-                    if (mb_stripos($inf, '200 OK') !== false) {
-                        return false;
-                    }
-                }
 
-                logger('[DeadLinkChecker] status check failed.', [$article->contents->link, ...$info]);
+                if ($info === null) {
+                    logger('[DeadLinkChecker] could not connect.', [$article->contents->link]);
+                } else {
+                    $receivedResponse = true;
+
+                    foreach ($info as $inf) {
+                        if (mb_stripos($inf, '200 OK') !== false) {
+                            return false;
+                        }
+                    }
+
+                    logger('[DeadLinkChecker] status check failed.', [$article->contents->link, ...$info]);
+                }
             }
 
-            Sleep::for(self::INTERVAL_SEC)->second();
+            if ($i < self::FAILED_LIMIT - 1) {
+                Sleep::for(self::INTERVAL_SEC)->second();
+            }
         }
 
-        return true;
+        return $receivedResponse ? true : null;
     }
 }

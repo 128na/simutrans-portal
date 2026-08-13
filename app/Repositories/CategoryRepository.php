@@ -42,6 +42,7 @@ class CategoryRepository
         return $this->model->query()
             ->where('type', $categoryType->value)
             ->whereNotIn('slug', $slugs)
+            ->orderBy('order', 'asc')
             ->get();
     }
 

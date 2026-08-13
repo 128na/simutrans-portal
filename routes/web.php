@@ -16,6 +16,8 @@ use App\Http\Controllers\Mypage\DashboardController;
 use App\Http\Controllers\Mypage\InviteController;
 use App\Http\Controllers\Mypage\MyListPageController;
 use App\Http\Controllers\Mypage\ProfileController;
+use App\Http\Controllers\Mypage\RedirectController as MypageRedirectController;
+use App\Http\Controllers\Mypage\TagController as MypageTagController;
 use App\Http\Controllers\Mypage\TokenController;
 use App\Http\Controllers\Pages\Article\DownloadController;
 use App\Http\Controllers\Pages\Article\IndexController;
@@ -105,8 +107,8 @@ Route::middleware(['auth'])->group(function (): void {
         Route::get('/mypage/two-factor', [DashboardController::class, 'twoFactor'])->name('mypage.two-factor');
         Route::get('/mypage/login-histories', [DashboardController::class, 'loginHistories'])->name('mypage.login-histories');
 
-        Route::get('/mypage/redirects', [\App\Http\Controllers\Mypage\RedirectController::class, 'index'])->name('mypage.redirects');
-        Route::delete('/mypage/redirects/{redirect}', [\App\Http\Controllers\Mypage\RedirectController::class, 'destroy'])->name('mypage.redirects.destroy');
+        Route::get('/mypage/redirects', [MypageRedirectController::class, 'index'])->name('mypage.redirects');
+        Route::delete('/mypage/redirects/{redirect}', [MypageRedirectController::class, 'destroy'])->name('mypage.redirects.destroy');
 
         Route::get('/mypage/invite', [InviteController::class, 'index'])->name('mypage.invite');
         Route::post('/mypage/invite', [InviteController::class, 'createOrUpdate']);
@@ -116,9 +118,9 @@ Route::middleware(['auth'])->group(function (): void {
         Route::post('/mypage/tokens', [TokenController::class, 'store'])->name('mypage.tokens.store');
         Route::delete('/mypage/tokens/{tokenId}', [TokenController::class, 'destroy'])->name('mypage.tokens.destroy');
 
-        Route::get('/mypage/tags', [\App\Http\Controllers\Mypage\TagController::class, 'index'])->name('mypage.tags');
-        Route::post('/mypage/tags', [\App\Http\Controllers\Mypage\TagController::class, 'store']);
-        Route::post('/mypage/tags/{tag}', [\App\Http\Controllers\Mypage\TagController::class, 'update']);
+        Route::get('/mypage/tags', [MypageTagController::class, 'index'])->name('mypage.tags');
+        Route::post('/mypage/tags', [MypageTagController::class, 'store']);
+        Route::post('/mypage/tags/{tag}', [MypageTagController::class, 'update']);
 
         Route::get('/mypage/attachments', [AttachmentController::class, 'index'])->name('mypage.attachments');
 

@@ -179,9 +179,8 @@ class UpdateOrCreateTest extends TestCase
         $this->assertFalse($refreshedToken->isExpired());
         $this->assertSame('refreshed_access_token', $refreshedToken->access_token);
         $this->assertSame('new_refresh_token', $refreshedToken->refresh_token);
-        $this->assertDatabaseMissing('oauth_tokens', [
-            'access_token' => 'expired_access_token',
-        ]);
+        $this->assertDatabaseCount('oauth_tokens', 1);
+        $this->assertSame('refreshed_access_token', $refreshedToken->fresh()->access_token);
     }
 
     public function test_最小限のデータでトークン作成(): void

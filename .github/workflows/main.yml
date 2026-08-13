@@ -120,6 +120,7 @@ jobs:
             git checkout ${{ github.ref }}
             php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
             php -c ~/www/php.ini artisan migrate --force
+            php -c ~/www/php.ini artisan oauth-tokens:encrypt-existing
             php -c ~/www/php.ini artisan optimize:clear
             php -c ~/www/php.ini artisan optimize
             php -c ~/www/php.ini artisan event:cache

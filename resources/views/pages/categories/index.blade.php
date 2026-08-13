@@ -21,12 +21,15 @@
           </div>
           <div class="ml-2 space-y-1">
             @foreach ($addonCategories as $addonCategorie)
+              @php
+                $addonCategoryUrl = route('categories.pakAddon', [
+                    'pak' => $pakSlug,
+                    'addon' => $addonCategorie->addon_slug,
+                ]);
+                $addonCategoryTitle = __("category.addon.{$addonCategorie->addon_slug}")." ({$addonCategorie->article_count})";
+              @endphp
               <div>
-                <x-ui.link :url="route('categories.pakAddon', [
-                        'pak' => $pakSlug,
-                        'addon' => $addonCategorie->addon_slug,
-                    ])" :title='__("category.addon.{$addonCategorie->addon_slug}")
-                    ." ({$addonCategorie->article_count})"' />
+                <x-ui.link :url="$addonCategoryUrl" :title="$addonCategoryTitle" />
               </div>
             @endforeach
           </div>

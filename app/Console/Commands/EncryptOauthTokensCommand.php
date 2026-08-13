@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * oauth_tokens テーブルの access_token / refresh_token を暗号化する一時コマンド.
  *
  * OauthToken モデルに encrypted キャストを追加する前に、既存の平文データを
- * 一度だけ暗号化するために実行する。反映確認後、フォローアップで削除する。
+ * 暗号化するために実行する。既に暗号化済みの値はスキップするため複数回
+ * 実行しても安全。反映確認後、フォローアップで削除する。
  */
 class EncryptOauthTokensCommand extends Command
 {
@@ -28,13 +31,26 @@ class EncryptOauthTokensCommand extends Command
      *
      * @var string
      */
-    protected $description = 'oauth_tokens テーブルの既存の平文トークンを暗号化する（一度だけ実行）';
+    protected $description = 'oauth_tokens テーブルの既存の平文トークンを暗号化する（再実行しても安全）';
 
     public function handle(): int
     {
+        if (Schema::getColumnType('oauth_tokens', 'access_token') !== 'text') {
+            $this->error('oauth_tokens.access_token/refresh_tokenがtext型に拡張されていません。先にマイグレーションを実行してください。');
+
+            return Command::FAILURE;
+        }
+
         $rows = DB::table('oauth_tokens')->get();
+        $encryptedCount = 0;
 
         foreach ($rows as $row) {
+            if ($this->isAlreadyEncrypted($row->access_token) && $this->isAlreadyEncrypted($row->refresh_token)) {
+                $this->info("Already encrypted, skipped: {$row->application}");
+
+                continue;
+            }
+
             DB::table('oauth_tokens')
                 ->where('application', $row->application)
                 ->update([
@@ -43,10 +59,26 @@ class EncryptOauthTokensCommand extends Command
                 ]);
 
             $this->info("Encrypted tokens for application: {$row->application}");
+            $encryptedCount++;
         }
 
-        $this->info(sprintf('Done. %d row(s) processed.', count($rows)));
+        $this->info(sprintf(
+            'Done. %d row(s) encrypted, %d row(s) already encrypted.',
+            $encryptedCount,
+            count($rows) - $encryptedCount
+        ));
 
         return Command::SUCCESS;
+    }
+
+    private function isAlreadyEncrypted(string $value): bool
+    {
+        try {
+            Crypt::decryptString($value);
+
+            return true;
+        } catch (DecryptException) {
+            return false;
+        }
     }
 }

@@ -35,36 +35,41 @@ class UserRepository
     {
         $userId = $user->id;
         $period = now()->format('Ym');
+        $articlesTable = (new Article)->getTable();
+        $attachmentsTable = (new Attachment)->getTable();
+        $mylistsTable = (new MyList)->getTable();
+        $redirectsTable = (new Redirect)->getTable();
+        $tagsTable = (new Tag)->getTable();
 
         /** @var object{article_count: int|null, attachment_count: int|null, total_attachment_size: int|null, total_conversion_count: int|null, total_view_count: int|null, redirect_count: int|null, tag_count: int|null} $result */
         $result = DB::query()
             ->selectSub(
-                DB::table((new Article)->getTable())
+                DB::table($articlesTable)
                     ->where('user_id', $userId)
                     ->whereNull('deleted_at')
                     ->selectRaw('COUNT(*)'),
                 'article_count'
             )
             ->selectSub(
-                DB::table((new Attachment)->getTable())
+                DB::table($attachmentsTable)
                     ->where('user_id', $userId)
                     ->selectRaw('COUNT(*)'),
                 'attachment_count'
             )
             ->selectSub(
-                DB::table((new Attachment)->getTable())
+                DB::table($attachmentsTable)
                     ->where('user_id', $userId)
                     ->selectRaw('SUM(size)'),
                 'total_attachment_size'
             )
             ->selectSub(
-                DB::table((new MyList)->getTable())
+                DB::table($mylistsTable)
                     ->where('user_id', $userId)
                     ->selectRaw('COUNT(*)'),
                 'mylist_count'
             )
             ->selectSub(
-                DB::table((new MyList)->getTable())
+                DB::table($mylistsTable)
                     ->where('user_id', $userId)
                     ->where('is_public', true)
                     ->selectRaw('COUNT(*)'),
@@ -87,13 +92,13 @@ class UserRepository
                 'total_view_count'
             )
             ->selectSub(
-                DB::table((new Redirect)->getTable())
+                DB::table($redirectsTable)
                     ->where('user_id', $userId)
                     ->selectRaw('COUNT(*)'),
                 'redirect_count'
             )
             ->selectSub(
-                DB::table((new Tag)->getTable())
+                DB::table($tagsTable)
                     ->where(function ($q) use ($userId): void {
                         $q->where('created_by', $userId)
                             ->orWhere('last_modified_by', $userId);

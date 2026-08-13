@@ -16,6 +16,11 @@ return new class extends Migration
         });
     }
 
+    /**
+     * 注意: OauthToken::casts()でencryptedキャストが有効になった後にロールバックすると、
+     * 暗号化済みペイロード（通常255文字超）がvarchar(255)に収まらず、データが破損する。
+     * ロールバックする場合は、先にencryptedキャストを外し、平文に戻してから実行すること。
+     */
     public function down(): void
     {
         Schema::table('oauth_tokens', function (Blueprint $table) {

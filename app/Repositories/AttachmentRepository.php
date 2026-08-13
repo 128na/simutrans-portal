@@ -26,6 +26,11 @@ class AttachmentRepository
         return $attachment->update($data);
     }
 
+    public function delete(Attachment $attachment): void
+    {
+        $attachment->delete();
+    }
+
     public function syncProfile(User $user, int $id): void
     {
         $attachment = $user->myAttachments()->find($id);

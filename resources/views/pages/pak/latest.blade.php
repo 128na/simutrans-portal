@@ -7,7 +7,7 @@
       <h2 class="v2-text-h3">新着アドオン</h2>
       <div>
         <h3 class="v2-text-h4 mb-4">
-          @include('components.ui.link', ['url' => route('pak.128japan'), 'title' => 'Pak128Japan'])
+          <x-ui.link :url="route('pak.128japan')" :title="'Pak128Japan'" />
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
           @foreach ($pak128Japan as $article)
@@ -17,7 +17,7 @@
       </div>
       <div>
         <h3 class="v2-text-h4 mb-4">
-          @include('components.ui.link', ['url' => route('pak.128'), 'title' => 'Pak128'])
+          <x-ui.link :url="route('pak.128')" :title="'Pak128'" />
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
           @foreach ($pak128 as $article)
@@ -27,7 +27,7 @@
       </div>
       <div>
         <h3 class="v2-text-h4 mb-4">
-          @include('components.ui.link', ['url' => route('pak.64'), 'title' => 'Pak64'])
+          <x-ui.link :url="route('pak.64')" :title="'Pak64'" />
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
           @foreach ($pak64 as $article)

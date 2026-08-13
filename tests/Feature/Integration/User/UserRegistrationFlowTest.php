@@ -8,7 +8,6 @@ use App\Actions\User\Registration;
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Notifications\UserInvited;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\TestCase;
@@ -19,8 +18,6 @@ use Tests\Feature\TestCase;
  */
 class UserRegistrationFlowTest extends TestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      * 完全なユーザー招待・登録フローが正常に動作する

@@ -14,7 +14,7 @@ use Database\Seeders\ControllOptionsSeeder;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +24,7 @@ use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
 
     #[\Override]
     protected function setUp(): void

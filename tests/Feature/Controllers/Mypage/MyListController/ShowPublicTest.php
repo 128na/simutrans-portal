@@ -6,13 +6,10 @@ namespace Tests\Feature\Controllers\Mypage\MyListController;
 
 use App\Models\MyList;
 use App\Models\MyListItem;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class ShowPublicTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_returns_public_list_items_successfully(): void
     {
         // Arrange: 公開リストと紐づく公開記事アイテムを作成

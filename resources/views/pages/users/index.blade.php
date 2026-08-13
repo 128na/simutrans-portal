@@ -12,10 +12,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
       @foreach ($users as $user)
         <div>
-          @include('components.ui.link', [
-              'url' => route('users.show', ['userIdOrNickname' => $user->nickname ?? $user->id]),
-              'title' => "{$user->name} ({$user->articles_count})",
-          ])
+          <x-ui.link :url="route('users.show', ['userIdOrNickname' => $user->nickname ?? $user->id])" :title='"{$user->name} ({$user->articles_count})"' />
         </div>
       @endforeach
     </div>

@@ -80,7 +80,7 @@
               required
             />
             <span class="v2-checkbox-label">
-              @include('components.ui.link', ['url' => config('app.privacy_policy_url'), 'title' => 'プライバシーポリシー'])
+              <x-ui.link :url="config('app.privacy_policy_url')" :title="'プライバシーポリシー'" />
               に同意します。
             </span>
           </label>

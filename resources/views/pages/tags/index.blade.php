@@ -12,10 +12,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
       @foreach ($tags as $tag)
         <div>
-          @include('components.ui.link', [
-              'url' => route('tags.show', ['tag' => $tag]),
-              'title' => "{$tag->name} ({$tag->articles_count})",
-          ])
+          <x-ui.link :url="route('tags.show', ['tag' => $tag])" :title='"{$tag->name} ({$tag->articles_count})"' />
         </div>
       @endforeach
     </div>

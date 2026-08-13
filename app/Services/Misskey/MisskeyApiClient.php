@@ -24,6 +24,7 @@ class MisskeyApiClient
     {
         /** @var Response */
         $response = Http::withHeader('Content-Type', 'application/json')
+            ->timeout(10)
             ->post($this->baseUrl.'/notes/create', [
                 'i' => $this->token,
                 'text' => $text,

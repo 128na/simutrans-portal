@@ -35,17 +35,17 @@ class SitemapController extends Controller
             ->add(Url::create('/social')->setPriority(0.5));
 
         // 記事を1つ以上投稿しているユーザーすべて
-        User::has('articles')->get()->each(function (User $user) use ($sitemap) {
+        User::has('articles')->take(1000)->get()->each(function (User $user) use ($sitemap) {
             $sitemap->add(Url::create(route('users.show', $user->nickname ?? $user->id))->setPriority(0.7));
         });
 
         // 記事に紐づいているタグすべて
-        Tag::has('articles')->get()->each(function (Tag $tag) use ($sitemap) {
+        Tag::has('articles')->take(1000)->get()->each(function (Tag $tag) use ($sitemap) {
             $sitemap->add(Url::create(route('tags.show', $tag->name))->setPriority(0.6));
         });
 
         // 公開マイリストすべて
-        MyList::where('is_public', true)->get()->each(function (MyList $myList) use ($sitemap) {
+        MyList::where('is_public', true)->take(1000)->get()->each(function (MyList $myList) use ($sitemap) {
             $sitemap->add(Url::create(route('public-mylist.show', $myList->slug))->setPriority(0.7));
         });
 

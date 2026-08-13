@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Actions\StoreAttachment\DeleteAttachment;
 use App\Actions\StoreAttachment\Store;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Attachment\StoreRequest;
 use App\Http\Resources\Mypage\AttachmentEdit;
-use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
@@ -16,7 +16,6 @@ use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
-use Throwable;
 
 class AttachmentController extends Controller
 {
@@ -99,14 +98,6 @@ class AttachmentController extends Controller
         }
 
         $attachment = $store($user, $file);
-        try {
-            $maxSizeMb = is_numeric(config('app.max_file_info_size'))
-                ? (int) config('app.max_file_info_size')
-                : 300;
-            dispatch_sync(new UpdateFileInfo($attachment, $maxSizeMb));
-        } catch (Throwable $throwable) {
-            report($throwable);
-        }
 
         return new AttachmentEdit($attachment);
     }
@@ -146,7 +137,7 @@ class AttachmentController extends Controller
             ),
         ]
     )]
-    public function destroy(Attachment $attachment): Response
+    public function destroy(Attachment $attachment, DeleteAttachment $deleteAttachment): Response
     {
         $user = Auth::user();
         if ($user === null) {
@@ -157,7 +148,7 @@ class AttachmentController extends Controller
             abort(403);
         }
 
-        $attachment->delete();
+        $deleteAttachment($attachment);
 
         return response('');
     }

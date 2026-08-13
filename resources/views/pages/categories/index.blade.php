@@ -9,7 +9,7 @@
         {{ $meta['description'] }}
         <br />
         記載以外のPaksetやカテゴリは
-        @include('components.ui.link', ['url' => route('search'), 'title' => '検索'])
+        <x-ui.link :url="route('search')" :title="'検索'" />
         から探せます。
       </p>
     </div>
@@ -22,14 +22,11 @@
           <div class="ml-2 space-y-1">
             @foreach ($addonCategories as $addonCategorie)
               <div>
-                @include('components.ui.link', [
-                    'url' => route('categories.pakAddon', [
+                <x-ui.link :url="route('categories.pakAddon', [
                         'pak' => $pakSlug,
                         'addon' => $addonCategorie->addon_slug,
-                    ]),
-                    'title' => __("category.addon.{$addonCategorie->addon_slug}")
-                    ." ({$addonCategorie->article_count})",
-                ])
+                    ])" :title='__("category.addon.{$addonCategorie->addon_slug}")
+                    ." ({$addonCategorie->article_count})"' />
               </div>
             @endforeach
           </div>

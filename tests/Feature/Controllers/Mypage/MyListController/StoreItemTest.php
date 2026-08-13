@@ -7,13 +7,10 @@ namespace Tests\Feature\Controllers\Mypage\MyListController;
 use App\Models\Article;
 use App\Models\MyList;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class StoreItemTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_adds_item_to_list_successfully(): void
     {
         $user = User::factory()->create();

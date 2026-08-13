@@ -14,6 +14,7 @@ class InviteService
     {
         /** @var Response */
         $response = Http::withHeaders(['Authorization' => 'Bot '.Config::string('services.discord.token')])
+            ->timeout(5)
             ->post(
                 'https://discord.com/api/v10/channels/'.Config::string('services.discord.channel').'/invites',
                 [

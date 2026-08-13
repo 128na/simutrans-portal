@@ -15,7 +15,8 @@ class GetHeaders
      */
     public function __invoke(string $url): ?array
     {
-        $headers = @get_headers(($this->normalizeUrl)($url));
+        $context = stream_context_create(['http' => ['timeout' => 5]]);
+        $headers = @get_headers(($this->normalizeUrl)($url), false, $context);
 
         return $headers === false ? null : $headers;
     }

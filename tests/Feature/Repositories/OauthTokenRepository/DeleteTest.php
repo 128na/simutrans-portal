@@ -125,10 +125,8 @@ class DeleteTest extends TestCase
 
         // トークンは有効な状態
         $this->assertFalse($twitterToken->isExpired());
-        $this->assertDatabaseHas('oauth_tokens', [
-            'application' => 'twitter',
-            'access_token' => 'active_twitter_token',
-        ]);
+        $this->assertDatabaseHas('oauth_tokens', ['application' => 'twitter']);
+        $this->assertSame('active_twitter_token', $twitterToken->fresh()->access_token);
 
         // ユーザーが連携を解除
         $this->oauthTokenRepository->delete($twitterToken);

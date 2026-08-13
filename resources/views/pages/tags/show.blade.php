@@ -12,7 +12,7 @@
 {{ $tag->description }}</pre
       >
       <div>
-        @include('components.ui.link', ['url' => route('search', ['tagIds' => [$tag->id]]), 'title' => 'さらに検索条件を追加する'])
+        <x-ui.link :url="route('search', ['tagIds' => [$tag->id]])" :title="'さらに検索条件を追加する'" />
       </div>
     </div>
     <div id="app-article-list">読み込み中...</div>

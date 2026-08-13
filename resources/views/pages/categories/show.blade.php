@@ -14,7 +14,7 @@
         の記事
       </h2>
       <div class="mt-2">
-        @include('components.ui.link', ['url' => route('search', ['categoryIds' => [$pak->id, $addon->id]]), 'title' => 'さらに検索条件を追加する'])
+        <x-ui.link :url="route('search', ['categoryIds' => [$pak->id, $addon->id]])" :title="'さらに検索条件を追加する'" />
       </div>
     </div>
     <div id="app-article-list">読み込み中...</div>

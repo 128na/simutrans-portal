@@ -6,10 +6,12 @@ namespace App\Actions\StoreAttachment;
 
 use App\Enums\ImageFormat;
 use App\Jobs\Attachments\JobGenerateThumbnail;
+use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
+use Throwable;
 
 class Store
 {
@@ -19,11 +21,25 @@ class Store
 
     public function __invoke(User $user, UploadedFile $uploadedFile): Attachment
     {
-        if ($this->isImage($uploadedFile)) {
-            return $this->storeAsImage($user, $uploadedFile);
-        }
+        $attachment = $this->isImage($uploadedFile)
+            ? $this->storeAsImage($user, $uploadedFile)
+            : $this->storeAsFile($user, $uploadedFile);
 
-        return $this->storeAsFile($user, $uploadedFile);
+        $this->dispatchFileInfoUpdate($attachment);
+
+        return $attachment;
+    }
+
+    private function dispatchFileInfoUpdate(Attachment $attachment): void
+    {
+        try {
+            $maxSizeMb = is_numeric(config('app.max_file_info_size'))
+                ? (int) config('app.max_file_info_size')
+                : 300;
+            dispatch_sync(new UpdateFileInfo($attachment, $maxSizeMb));
+        } catch (Throwable $throwable) {
+            report($throwable);
+        }
     }
 
     private function isImage(UploadedFile $uploadedFile): bool

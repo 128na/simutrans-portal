@@ -103,7 +103,7 @@ class UserMyListWriteToolTest extends TestCase
             ->tool(UserMyListDeleteTool::class, ['mylist_id' => $mylist->id]);
 
         $response->assertHasErrors();
-        $this->assertDatabaseHas('mylists', ['id' => $mylist->id]);
+        $this->assertModelExists($mylist);
     }
 
     public function test_add_item_appends_published_article_to_mylist(): void
@@ -188,6 +188,6 @@ class UserMyListWriteToolTest extends TestCase
             ]);
 
         $response->assertHasErrors();
-        $this->assertDatabaseHas('mylist_items', ['id' => $item->id]);
+        $this->assertModelExists($item);
     }
 }

@@ -7,13 +7,10 @@ namespace Tests\Feature\Controllers\Mypage\MyListController;
 use App\Models\MyList;
 use App\Models\MyListItem;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class GetItemsTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_returns_list_items_for_authenticated_owner(): void
     {
         // Arrange

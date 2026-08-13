@@ -8,13 +8,10 @@ use App\Models\Article;
 use App\Models\MyList;
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class SitemapControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_sitemap_returns_xml(): void
     {
         // テストデータ作成

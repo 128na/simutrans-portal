@@ -6,13 +6,10 @@ namespace Tests\Feature\Repositories\UserRepository;
 
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\TestCase;
 
 class FindIncompleteMFAUsersTest extends TestCase
 {
-    use RefreshDatabase;
-
     private UserRepository $repository;
 
     protected function setUp(): void

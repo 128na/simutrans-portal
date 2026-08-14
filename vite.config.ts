@@ -3,6 +3,8 @@ import laravel from "laravel-vite-plugin";
 import { defineConfig } from "vite";
 import { exec, execSync } from "child_process";
 import * as fs from "fs";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 
 export default defineConfig({
   plugins: [
@@ -19,6 +21,8 @@ export default defineConfig({
       ],
       refresh: true,
     }),
+    react(),
+    babel({ presets: [reactCompilerPreset()] }),
   ],
   build: {
     rollupOptions: {

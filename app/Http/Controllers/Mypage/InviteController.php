@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Mypage;
 
 use App\Events\User\InviteCodeCreated;
+use App\Http\Controllers\Controller;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class InviteController extends Controller
@@ -20,10 +19,7 @@ class InviteController extends Controller
 
     public function index(): View
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
+        $user = $this->loggedinUser();
 
         return view('mypage.invite', [
             'user' => $user->loadMissing('invites'),
@@ -33,10 +29,7 @@ class InviteController extends Controller
 
     public function createOrUpdate(): RedirectResponse
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
+        $user = $this->loggedinUser();
 
         $user->update(['invitation_code' => Str::uuid()]);
         event(new InviteCodeCreated($user));
@@ -46,10 +39,7 @@ class InviteController extends Controller
 
     public function revoke(): RedirectResponse
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
+        $user = $this->loggedinUser();
 
         $user->update(['invitation_code' => null]);
         event(new InviteCodeCreated($user));

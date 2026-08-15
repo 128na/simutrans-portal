@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\LoginHistoryRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -22,10 +21,7 @@ class DashboardController extends Controller
 
     public function index(): View
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
+        $user = $this->loggedinUser();
 
         return view('mypage.index', [
             'user' => $user,
@@ -49,7 +45,7 @@ class DashboardController extends Controller
 
     public function twoFactor(): View
     {
-        $user = Auth::user();
+        $user = $this->loggedinUser();
 
         return view('mypage.two-factor', [
             'user' => $user,
@@ -59,10 +55,7 @@ class DashboardController extends Controller
 
     public function loginHistories(): View
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
+        $user = $this->loggedinUser();
 
         return view('mypage.login-histories', [
             'loginHistories' => $this->loginHistoryRepository->getByUser($user->id),

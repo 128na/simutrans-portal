@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration\User;
 
+use App\Actions\User\Data\RegisterUserData;
 use App\Actions\User\Registration;
 use App\Enums\UserRole;
 use App\Models\User;
@@ -40,7 +41,7 @@ class UserRegistrationFlowTest extends TestCase
 
         // ユーザー登録アクション実行
         $registrationAction = app(Registration::class);
-        $newUser = $registrationAction($data, $admin);
+        $newUser = $registrationAction(RegisterUserData::fromArray($data), $admin);
 
         // ユーザーが作成されたことを確認
         $this->assertInstanceOf(User::class, $newUser);
@@ -80,11 +81,11 @@ class UserRegistrationFlowTest extends TestCase
         // 3人のユーザーを登録
         $users = [];
         for ($i = 1; $i <= 3; $i++) {
-            $users[] = $registrationAction([
+            $users[] = $registrationAction(RegisterUserData::fromArray([
                 'name' => "User {$i}",
                 'email' => "user{$i}@example.com",
                 'password' => 'password123',
-            ], $admin);
+            ]), $admin);
         }
 
         // 全員が登録されていることを確認
@@ -107,11 +108,11 @@ class UserRegistrationFlowTest extends TestCase
         $admin = User::factory()->create();
 
         $registrationAction = app(Registration::class);
-        $newUser = $registrationAction([
+        $newUser = $registrationAction(RegisterUserData::fromArray([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password123',
-        ], $admin);
+        ]), $admin);
 
         // ユーザーがプロフィールを持っていることを確認（モデルイベントで作成）
         $this->assertNotNull($newUser->profile);
@@ -134,11 +135,11 @@ class UserRegistrationFlowTest extends TestCase
         ]);
 
         $registrationAction = app(Registration::class);
-        $newUser = $registrationAction([
+        $newUser = $registrationAction(RegisterUserData::fromArray([
             'name' => 'Invited User',
             'email' => 'invited@example.com',
             'password' => 'password123',
-        ], $inviter);
+        ]), $inviter);
 
         // ユーザーが正常に作成されることを確認
         $this->assertInstanceOf(User::class, $newUser);
@@ -159,11 +160,11 @@ class UserRegistrationFlowTest extends TestCase
         $plainPassword = 'SecurePassword123!@#';
 
         $registrationAction = app(Registration::class);
-        $newUser = $registrationAction([
+        $newUser = $registrationAction(RegisterUserData::fromArray([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => $plainPassword,
-        ], $admin);
+        ]), $admin);
 
         // パスワードが平文で保存されていないことを確認
         $this->assertNotEquals($plainPassword, $newUser->password);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\User;
 
+use App\Actions\User\Data\RegisterUserData;
 use App\Enums\UserRole;
 use App\Models\User;
 use App\Notifications\UserInvited;
@@ -17,20 +18,13 @@ class Registration
         private UserRepository $userRepository,
     ) {}
 
-    /**
-     * @param array{
-     *     name: string,
-     *     email: string,
-     *     password: string,
-     * } $data
-     */
-    public function __invoke(array $data, User $user): User
+    public function __invoke(RegisterUserData $registerUserData, User $user): User
     {
         $inviter = $this->userRepository->store([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name' => $registerUserData->name,
+            'email' => $registerUserData->email,
             'role' => UserRole::User,
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($registerUserData->password),
             'invited_by' => $user->id,
         ]);
 

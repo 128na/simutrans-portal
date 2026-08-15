@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage\Article;
 
+use App\Actions\Article\Data\UpdateArticleData;
 use App\Actions\Article\UpdateArticle;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\UpdateRequest;
@@ -157,11 +158,12 @@ class EditController extends Controller
         $this->authorize('update', $article);
 
         /**
-         * @var array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
+         * @var array{should_notify?:bool,without_update_modified_at?:bool,follow_redirect?:bool,article:array{status:string,title:string,slug:string,post_type?:string,published_at?:string,contents:mixed,categories?:array<int>,tags?:array<int>,articles?:array<int>}} $validated
          */
-        $data = $updateRequest->validated();
+        $validated = $updateRequest->validated();
+        $updateArticleData = UpdateArticleData::fromArray($validated);
 
-        $article = DB::transaction(fn (): Article => $updateArticle($article, $data));
+        $article = DB::transaction(fn (): Article => $updateArticle($article, $updateArticleData));
 
         return response()->json(['article_id' => $article->id], 200);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Article;
 
+use App\Actions\Article\Data\ArticleData;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
 
@@ -13,34 +14,23 @@ class SyncRelatedModels
         private ArticleRepository $articleRepository,
     ) {}
 
-    /**
-     * @param  array<mixed>  $data
-     */
-    public function __invoke(Article $article, array $data): void
+    public function __invoke(Article $article, ArticleData $articleData): void
     {
         /** @var int[] */
-        $ids = data_get($data, 'article.contents.sections.*.id', []);
+        $ids = data_get($articleData->contents, 'sections.*.id', []);
 
         /** @var int[] */
         $attachmentIds = collect([
-            data_get($data, 'article.contents.thumbnail'),
-            data_get($data, 'article.contents.file'),
+            data_get($articleData->contents, 'thumbnail'),
+            data_get($articleData->contents, 'file'),
             ...$ids,
         ])
             ->filter()
             ->toArray();
 
         $this->articleRepository->syncAttachments($article, $attachmentIds);
-        /** @var int[] */
-        $articleIds = data_get($data, 'article.articles', []);
-        $this->articleRepository->syncArticles($article, $articleIds);
-
-        /** @var int[] */
-        $categoryIds = data_get($data, 'article.categories', []);
-        $this->articleRepository->syncCategories($article, $categoryIds);
-
-        /** @var int[] */
-        $tagIds = data_get($data, 'article.tags', []);
-        $this->articleRepository->syncTags($article, $tagIds);
+        $this->articleRepository->syncArticles($article, $articleData->articles);
+        $this->articleRepository->syncCategories($article, $articleData->categories);
+        $this->articleRepository->syncTags($article, $articleData->tags);
     }
 }

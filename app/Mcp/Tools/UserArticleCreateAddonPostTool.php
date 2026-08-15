@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Actions\Article\Data\StoreArticleData;
 use App\Actions\Article\StoreArticle;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
@@ -112,7 +113,7 @@ class UserArticleCreateAddonPostTool extends Tool
             $contents['thumbnail'] = $validated['thumbnail_id'];
         }
 
-        $article = DB::transaction(fn (): Article => ($this->storeArticle)($user, [
+        $storeArticleData = StoreArticleData::fromArray([
             'article' => [
                 'title' => $validated['title'],
                 'slug' => $validated['slug'],
@@ -123,7 +124,8 @@ class UserArticleCreateAddonPostTool extends Tool
                 'tags' => $validated['tags'],
             ],
             'should_notify' => false,
-        ]));
+        ]);
+        $article = DB::transaction(fn (): Article => ($this->storeArticle)($user, $storeArticleData));
 
         return Response::json([
             'id' => $article->id,
@@ -141,6 +143,7 @@ class UserArticleCreateAddonPostTool extends Tool
      *
      * @return array<string, Type>
      */
+    #[\Override]
     public function schema(JsonSchema $schema): array
     {
         return [

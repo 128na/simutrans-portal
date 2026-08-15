@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
+use App\Actions\Article\Data\StoreArticleData;
 use App\Actions\Article\StoreArticle;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
@@ -100,7 +101,7 @@ class UserArticleCreatePageTool extends Tool
             fn (int $id): bool => ! Category::where('id', $id)->where('type', CategoryType::Page)->exists()
         );
 
-        if (! empty($invalidCategories)) {
+        if ($invalidCategories !== []) {
             return Response::error('Invalid categories: must be page type. Use guest-article-search-options-tool to find valid category IDs.');
         }
 
@@ -109,7 +110,7 @@ class UserArticleCreatePageTool extends Tool
             $contents['thumbnail'] = $validated['thumbnail_id'];
         }
 
-        $article = DB::transaction(fn (): Article => ($this->storeArticle)($user, [
+        $storeArticleData = StoreArticleData::fromArray([
             'article' => [
                 'title' => $validated['title'],
                 'slug' => $validated['slug'],
@@ -119,7 +120,8 @@ class UserArticleCreatePageTool extends Tool
                 'categories' => $categoryIds,
             ],
             'should_notify' => false,
-        ]));
+        ]);
+        $article = DB::transaction(fn (): Article => ($this->storeArticle)($user, $storeArticleData));
 
         return Response::json([
             'id' => $article->id,
@@ -137,6 +139,7 @@ class UserArticleCreatePageTool extends Tool
      *
      * @return array<string, Type>
      */
+    #[\Override]
     public function schema(JsonSchema $schema): array
     {
         return [

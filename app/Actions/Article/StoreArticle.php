@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Article;
 
+use App\Actions\Article\Data\StoreArticleData;
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Events\Article\ArticleStored;
@@ -12,6 +13,7 @@ use App\Models\Article;
 use App\Models\User;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
+use LogicException;
 
 class StoreArticle
 {
@@ -22,30 +24,26 @@ class StoreArticle
         private SyncRelatedModels $syncRelatedModels,
     ) {}
 
-    /**
-     * @param  array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data
-     */
-    public function __invoke(User $user, array $data): Article
+    public function __invoke(User $user, StoreArticleData $storeArticleData): Article
     {
-        $articleStatus = ArticleStatus::from($data['article']['status']);
-        $publishedAt = $data['article']['published_at'] ?? null;
+        $articleStatus = ArticleStatus::from($storeArticleData->article->status);
+        $postType = $storeArticleData->article->postType ?? throw new LogicException('post_type is required to store an article.');
         $newData = [
             'user_id' => $user->id,
-            'post_type' => ArticlePostType::from($data['article']['post_type']),
-            'title' => $data['article']['title'],
-            'slug' => $data['article']['slug'],
+            'post_type' => ArticlePostType::from($postType),
+            'title' => $storeArticleData->article->title,
+            'slug' => $storeArticleData->article->slug,
             'status' => $articleStatus,
-            'contents' => $data['article']['contents'],
-            'published_at' => ($this->decidePublishedAt)($publishedAt, $articleStatus),
+            'contents' => $storeArticleData->article->contents,
+            'published_at' => ($this->decidePublishedAt)($storeArticleData->article->publishedAt, $articleStatus),
             'modified_at' => $this->now->toDateTimeString(),
         ];
-        /** @var Article */
         $article = $this->articleRepository->store($newData);
 
-        ($this->syncRelatedModels)($article, $data);
+        ($this->syncRelatedModels)($article, $storeArticleData->article);
 
         dispatch(new JobUpdateRelated($article->id));
-        event(new ArticleStored($article, $data['should_notify'] ?? false));
+        event(new ArticleStored($article, $storeArticleData->shouldNotify));
 
         return $article->fresh() ?? $article;
     }

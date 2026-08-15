@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Article;
 
+use App\Actions\Article\Data\UpdateArticleData;
 use App\Actions\Redirect\AddRedirect;
 use App\Enums\ArticleStatus;
 use App\Events\Article\ArticleUpdated;
@@ -22,29 +23,25 @@ class UpdateArticle
         private AddRedirect $addRedirect,
     ) {}
 
-    /**
-     * @param  array{should_notify?:bool,without_update_modified_at?:bool,follow_redirect?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}  $data
-     */
-    public function __invoke(Article $article, array $data): Article
+    public function __invoke(Article $article, UpdateArticleData $updateArticleData): Article
     {
         $notYetPublished = is_null($article->published_at);
-        $withoutUpdateModifiedAt = $data['without_update_modified_at'] ?? false;
-        $followRedirect = $data['follow_redirect'] ?? false;
+        $withoutUpdateModifiedAt = $updateArticleData->withoutUpdateModifiedAt;
+        $followRedirect = $updateArticleData->followRedirect;
         if ($followRedirect) {
             $oldSlug = $article->slug;
         }
 
-        $articleStatus = ArticleStatus::from($data['article']['status']);
-        $publishedAt = $data['article']['published_at'] ?? null;
+        $articleStatus = ArticleStatus::from($updateArticleData->article->status);
 
         $newData = [
-            'title' => $data['article']['title'],
-            'slug' => $data['article']['slug'],
+            'title' => $updateArticleData->article->title,
+            'slug' => $updateArticleData->article->slug,
             'status' => $articleStatus,
-            'contents' => $data['article']['contents'],
+            'contents' => $updateArticleData->article->contents,
         ];
         if ($article->is_reservation || $this->inactiveToPublish($article, $articleStatus)) {
-            $newData['published_at'] = ($this->decidePublishedAt)($publishedAt, $articleStatus);
+            $newData['published_at'] = ($this->decidePublishedAt)($updateArticleData->article->publishedAt, $articleStatus);
         }
 
         if ($this->shouldUpdateModifiedAt($withoutUpdateModifiedAt)) {
@@ -53,15 +50,15 @@ class UpdateArticle
 
         $this->articleRepository->update($article, $newData);
 
-        ($this->syncRelatedModels)($article, $data);
+        ($this->syncRelatedModels)($article, $updateArticleData->article);
 
-        if ($followRedirect && $oldSlug !== $data['article']['slug'] && $article->user) {
-            ($this->addRedirect)($article->user, $oldSlug, $data['article']['slug']);
+        if ($followRedirect && $oldSlug !== $updateArticleData->article->slug && $article->user) {
+            ($this->addRedirect)($article->user, $oldSlug, $updateArticleData->article->slug);
         }
 
         dispatch(new JobUpdateRelated($article->id));
 
-        $shouldNotify = ($data['should_notify'] ?? false) && ! $withoutUpdateModifiedAt;
+        $shouldNotify = $updateArticleData->shouldNotify && ! $withoutUpdateModifiedAt;
         event(new ArticleUpdated($article, $shouldNotify, $notYetPublished));
 
         return $article->fresh() ?? $article;

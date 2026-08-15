@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `~/.claude/CLAUDE.md` のポリシーに従う。パッケージ更新は `/repo-maintenance`、Dependabot PR 整理は `/dependabot-maintenance`、複数エージェント作業は `/orchestrate` スキルを使う。
 
+## Repository層の設計方針
+
+このプロジェクトの `app/Repositories/` は**インターフェースを挟まない具象クラス直接DI**を採用している（`app/Repositories/**/*Repository.php` をコンストラクタで直接型指定し、コンテナに自動解決させる）。共通のCRUD操作は個々にインターフェースを作るのではなく `App\Repositories\Concerns\HasCrud` トレイトを `use` して再利用する。
+
+- 採用理由: 個人開発規模ではRepositoryの実装を差し替える具体的な予定がなく、インターフェースは「呼び出し側とテストのモック生成」以上の実利が薄い間接層になりがちなため。Eloquent自体が既にデータアクセスの抽象化を提供している。
+- 新しいRepositoryを追加する際もこの方針（具象クラス直DI、共通処理は`HasCrud`等のTraitで共有）に従うこと。「テストでモックしたい」「将来的にDB以外のデータソースに切り替える可能性が具体的にある」等、明確な理由が生じた場合に限りインターフェース化を検討する。
+- 他プロジェクト（例: media-manager）ではインターフェース越しDIを採用しており、プロジェクトごとに方針が異なる。プロジェクトをまたいでコードを参考にする際はこの違いに注意する。
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

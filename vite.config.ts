@@ -21,8 +21,13 @@ export default defineConfig({
       ],
       refresh: true,
     }),
-    react(),
-    babel({ presets: [reactCompilerPreset()] }),
+    // Fast Refresh・React CompilerはテストではJSXの解釈にのみ必要でメモ化最適化に
+    // 意味がなく、babelトランスフォームがテスト実行時間を大幅に増やす(実測で
+    // `vitest run`のtransform時間が約5倍・全体で3倍超に悪化)ため、Vitest実行時は
+    // 適用しない。JSX自体はViteのデフォルト(esbuild)変換で問題なく処理される。
+    ...(process.env.VITEST
+      ? []
+      : [react(), babel({ presets: [reactCompilerPreset()] })]),
   ],
   build: {
     rollupOptions: {

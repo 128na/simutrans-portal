@@ -6,12 +6,11 @@ namespace App\Http\Controllers\Mypage;
 
 use App\Actions\Redirect\DeleteRedirect;
 use App\Actions\Redirect\FindMyRedirects;
+use App\Http\Controllers\Controller;
 use App\Models\Redirect;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 
 class RedirectController extends Controller
 {
@@ -21,10 +20,7 @@ class RedirectController extends Controller
 
     public function index(FindMyRedirects $findMyRedirects): View
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
+        $user = $this->loggedinUser();
 
         return view('mypage.redirects', [
             'redirects' => $findMyRedirects($user),
@@ -34,14 +30,7 @@ class RedirectController extends Controller
 
     public function destroy(Redirect $redirect, DeleteRedirect $deleteRedirect): RedirectResponse
     {
-        $user = Auth::user();
-        if ($user === null) {
-            abort(401);
-        }
-
-        if ($user->cannot('update', $redirect)) {
-            abort(403);
-        }
+        $this->authorize('update', $redirect);
 
         $deleteRedirect($redirect);
 

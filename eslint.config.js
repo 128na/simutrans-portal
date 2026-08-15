@@ -1,9 +1,9 @@
-import js from '@eslint/js';
-import prettier from 'eslint-config-prettier/flat';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import globals from 'globals';
-import typescript from 'typescript-eslint';
+import js from "@eslint/js";
+import prettier from "eslint-config-prettier/flat";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import globals from "globals";
+import typescript from "typescript-eslint";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -12,37 +12,45 @@ export default [
   ...typescript.configs.recommended,
   {
     ...react.configs.flat.recommended,
-    ...react.configs.flat['jsx-runtime'], // Required for React 17+
+    ...react.configs.flat["jsx-runtime"], // Required for React 17+
     languageOptions: {
       globals: {
         ...globals.browser,
       },
     },
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'react/no-unescaped-entities': 'off',
-      'react-hooks/exhaustive-deps': 'off',
-      'react-hooks/set-state-in-effect': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react/no-unescaped-entities": "off",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/set-state-in-effect": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
       // console.log/debug を禁止（将来の混入を防ぐ）
-      'no-console': 'error',
+      "no-console": "error",
     },
     settings: {
       react: {
-        version: 'detect',
+        version: "detect",
       },
     },
   },
   {
     // logger.ts では console の使用を許可
-    files: ['**/utils/logger.ts'],
+    files: ["**/utils/logger.ts"],
     rules: {
-      'no-console': 'off',
+      "no-console": "off",
     },
   },
   {
-    ignores: ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js', 'vite.config.ts', 'clonesite'],
+    ignores: [
+      "vendor",
+      "node_modules",
+      "public",
+      "bootstrap/ssr",
+      "tailwind.config.js",
+      "vite.config.ts",
+      "clonesite",
+    ],
   },
   prettier, // Turn off all rules that might conflict with Prettier
 ];

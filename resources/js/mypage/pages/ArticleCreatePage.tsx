@@ -27,19 +27,21 @@ if (app) {
         withoutUpdateModifiedAt: false,
         followRedirect: false,
       });
-    }, []);
+    }, [init]);
 
     const article = useArticleEditor((s) => s.article);
     const user = useArticleEditor((s) => s.user);
 
     const [postType, setPostType] = useState<ArticlePostType | null>(null);
-    // postTypeが変更されたときのみ初期化
     useEffect(() => {
       if (postType) {
         useArticleEditor.setState((state) => {
           state.article = createArticle(postType, user);
         });
       }
+      // postTypeが変更されたときのみ初期化したいため意図的にuserを依存配列から除外している。
+      // userはpostType選択より前のinit()で確定済みで、以後この画面では変化しない想定。
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [postType]);
 
     if (!postType || !article || !article.post_type) {

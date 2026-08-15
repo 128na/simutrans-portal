@@ -25,7 +25,7 @@ if (app) {
         withoutUpdateModifiedAt: false,
         followRedirect: false,
       });
-    }, []);
+    }, [init]);
 
     return <ArticleEdit />;
   };

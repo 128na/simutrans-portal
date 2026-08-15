@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration\User;
 
+use App\Actions\Article\Data\StoreArticleData;
 use App\Actions\Article\StoreArticle;
 use App\Actions\User\UpdateProfile;
 use App\Enums\ArticlePostType;
@@ -67,7 +68,7 @@ class UserProfileAndArticleFlowTest extends TestCase
         ];
 
         $storeArticleAction = app(StoreArticle::class);
-        $article = $storeArticleAction($updatedUser, $articleData);
+        $article = $storeArticleAction($updatedUser, StoreArticleData::fromArray($articleData));
 
         // 記事が作成されたことを確認
         $this->assertInstanceOf(Article::class, $article);
@@ -247,7 +248,7 @@ class UserProfileAndArticleFlowTest extends TestCase
         $articles = [];
 
         for ($i = 1; $i <= 3; $i++) {
-            $articles[] = $storeArticleAction($updatedUser, [
+            $articles[] = $storeArticleAction($updatedUser, StoreArticleData::fromArray([
                 'should_notify' => false,
                 'article' => [
                     'status' => ArticleStatus::Publish->value,
@@ -256,7 +257,7 @@ class UserProfileAndArticleFlowTest extends TestCase
                     'post_type' => ArticlePostType::Page->value,
                     'contents' => ['sections' => []],
                 ],
-            ]);
+            ]));
         }
 
         // 記事が3つ作成されたことを確認

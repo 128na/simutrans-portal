@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration\Article;
 
+use App\Actions\Article\Data\StoreArticleData;
+use App\Actions\Article\Data\UpdateArticleData;
 use App\Actions\Article\StoreArticle;
 use App\Actions\Article\UpdateArticle;
 use App\Enums\ArticlePostType;
@@ -52,7 +54,7 @@ class ArticleCreationFlowTest extends TestCase
 
         // 記事作成
         $storeAction = app(StoreArticle::class);
-        $article = $storeAction($user, $data);
+        $article = $storeAction($user, StoreArticleData::fromArray($data));
 
         // 記事が作成されたことを確認
         $this->assertInstanceOf(Article::class, $article);
@@ -99,7 +101,7 @@ class ArticleCreationFlowTest extends TestCase
         ];
 
         $storeAction = app(StoreArticle::class);
-        $article = $storeAction($user, $draftData);
+        $article = $storeAction($user, StoreArticleData::fromArray($draftData));
 
         // 下書き状態を確認
         $this->assertEquals(ArticleStatus::Draft, $article->status);
@@ -119,7 +121,7 @@ class ArticleCreationFlowTest extends TestCase
             ],
         ];
 
-        $updatedArticle = $updateAction($article, $publishData);
+        $updatedArticle = $updateAction($article, UpdateArticleData::fromArray($publishData));
 
         // 公開状態を確認
         $this->assertEquals(ArticleStatus::Publish, $updatedArticle->status);
@@ -151,7 +153,7 @@ class ArticleCreationFlowTest extends TestCase
         ];
 
         $storeAction = app(StoreArticle::class);
-        $article = $storeAction($user, $data);
+        $article = $storeAction($user, StoreArticleData::fromArray($data));
 
         // 全カテゴリが関連付けられていることを確認
         $this->assertCount(3, $article->fresh()->categories);
@@ -184,7 +186,7 @@ class ArticleCreationFlowTest extends TestCase
         ];
 
         $storeAction = app(StoreArticle::class);
-        $article = $storeAction($user, $data);
+        $article = $storeAction($user, StoreArticleData::fromArray($data));
 
         // 3つのタグが関連付けられていることを確認
         $this->assertCount(3, $article->fresh()->tags);
@@ -218,7 +220,7 @@ class ArticleCreationFlowTest extends TestCase
         ];
 
         $storeAction = app(StoreArticle::class);
-        $article = $storeAction($user, $data);
+        $article = $storeAction($user, StoreArticleData::fromArray($data));
 
         // 予約状態を確認
         $this->assertEquals(ArticleStatus::Reservation, $article->status);

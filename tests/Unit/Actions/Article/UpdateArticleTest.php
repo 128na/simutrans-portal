@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions\Article;
 
+use App\Actions\Article\Data\UpdateArticleData;
 use App\Actions\Article\SyncRelatedModels;
 use App\Actions\Article\UpdateArticle;
 use App\Enums\ArticlePostType;
@@ -23,7 +24,7 @@ class UpdateArticleTest extends TestCase
     public function test更新(): void
     {
         $article = new Article;
-        $data = [
+        $data = UpdateArticleData::fromArray([
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
                 'title' => 'dummy title',
@@ -33,7 +34,7 @@ class UpdateArticleTest extends TestCase
                 'articles' => [],
             ],
             'without_update_modified_at' => false,
-        ];
+        ]);
         $carbonImmutable = new CarbonImmutable;
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article, $carbonImmutable, $data): void {
@@ -48,7 +49,7 @@ class UpdateArticleTest extends TestCase
                 ],
             )->once()->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
-                $mock->expects()->__invoke($article, $data);
+                $mock->expects()->__invoke($article, $data->article);
             });
         });
 
@@ -63,7 +64,7 @@ class UpdateArticleTest extends TestCase
     public function test更新日を更新しない更新(): void
     {
         $article = new Article;
-        $data = [
+        $data = UpdateArticleData::fromArray([
             'article' => [
                 'post_type' => ArticlePostType::AddonIntroduction->value,
                 'title' => 'dummy title',
@@ -73,7 +74,7 @@ class UpdateArticleTest extends TestCase
                 'articles' => [],
             ],
             'without_update_modified_at' => true,
-        ];
+        ]);
         $carbonImmutable = new CarbonImmutable;
 
         $this->mock(ArticleRepository::class, function (MockInterface $mock) use ($article, $data): void {
@@ -87,7 +88,7 @@ class UpdateArticleTest extends TestCase
                 ],
             )->once()->andReturn($article);
             $this->mock(SyncRelatedModels::class, function (MockInterface $mock) use ($article, $data): void {
-                $mock->expects()->__invoke($article, $data);
+                $mock->expects()->__invoke($article, $data->article);
             });
         });
 

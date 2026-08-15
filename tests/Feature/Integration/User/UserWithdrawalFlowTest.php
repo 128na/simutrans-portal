@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Integration\User;
 
+use App\Actions\Article\Data\StoreArticleData;
 use App\Actions\Article\StoreArticle;
 use App\Actions\User\DeleteAccount;
 use App\Enums\ArticlePostType;
@@ -25,7 +26,7 @@ class UserWithdrawalFlowTest extends TestCase
         $this->actingAs($user);
 
         $storeArticleAction = app(StoreArticle::class);
-        $article = $storeArticleAction($user, [
+        $article = $storeArticleAction($user, StoreArticleData::fromArray([
             'should_notify' => false,
             'article' => [
                 'status' => ArticleStatus::Publish->value,
@@ -34,7 +35,7 @@ class UserWithdrawalFlowTest extends TestCase
                 'post_type' => ArticlePostType::Markdown->value,
                 'contents' => ['markdown' => '# Hello World'],
             ],
-        ]);
+        ]));
 
         $frontArticleRepository = app(FrontArticleRepository::class);
         $this->assertNotNull($frontArticleRepository->first((string) $user->id, $article->slug));

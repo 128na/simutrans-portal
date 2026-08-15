@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage\Article;
 
+use App\Actions\Article\Data\StoreArticleData;
 use App\Actions\Article\StoreArticle;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\StoreRequest;
@@ -54,11 +55,12 @@ class CreateController extends Controller
         $user = $this->loggedinUser();
 
         /**
-         * @var array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type:string,published_at?:string,contents:mixed}}
+         * @var array{should_notify?:bool,article:array{status:string,title:string,slug:string,post_type?:string,published_at?:string,contents:mixed,categories?:array<int>,tags?:array<int>,articles?:array<int>}} $validated
          */
-        $data = $storeRequest->validated();
+        $validated = $storeRequest->validated();
+        $storeArticleData = StoreArticleData::fromArray($validated);
 
-        $article = DB::transaction(fn (): Article => $storeArticle($user, $data));
+        $article = DB::transaction(fn (): Article => $storeArticle($user, $storeArticleData));
 
         return response()->json(['article_id' => $article->id], 200);
     }

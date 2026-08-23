@@ -62,7 +62,8 @@ export const formatGear = (gear: number | undefined): string => {
   if (gear === undefined) {
     return "";
   }
-  return `${(gear / 100).toFixed(1)}`;
+  // gear は 64 = 1.00 (等倍) として保存される (vehicle_desc.h)
+  return `${(gear / 64).toFixed(1)}`;
 };
 
 export const formatWeight = (weight: number | undefined): string => {
@@ -83,14 +84,18 @@ export const formatPrice = (price: number | undefined): string => {
   if (price === undefined) {
     return "";
   }
-  return `${price.toLocaleString()} Cr`;
+  return `${price.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })} Cr`;
 };
 
 export const formatBuildPrice = (price: number | undefined): string => {
   if (price === undefined) {
     return "";
   }
-  return formatPrice(price * 100);
+  // price は 1/100 Cr 単位で保存される (obj_base_desc.h)
+  return formatPrice(price / 100);
 };
 
 export const formatRunningCost = (

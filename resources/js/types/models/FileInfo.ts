@@ -18,7 +18,7 @@ type BaseObj = {
 export interface VehicleData extends BaseObj {
   /** 輸送容量 */
   capacity?: number;
-  /** 購入価格 (単位: 100cr) */
+  /** 購入価格 (単位: 1/100 credits) */
   price?: number;
   /** 最高速度 (km/h) */
   topspeed?: number;
@@ -63,7 +63,7 @@ export interface VehicleData extends BaseObj {
  * Way data type
  */
 export interface WayData extends BaseObj {
-  /** 建設価格 (単位: 100cr/タイル) */
+  /** 建設価格 (単位: 1/100 credits/タイル) */
   price?: number;
   /** 維持費 (単位: 0.01cr/月/タイル) */
   maintenance?: number;
@@ -75,7 +75,7 @@ export interface WayData extends BaseObj {
   axle_load?: number;
   /** 道路タイプID (0=道路, 1=線路, 2=単軌鉄道, etc) */
   waytype?: number;
-  /** システムタイプID (0=平地, 1=高架, 7=地下, etc) */
+  /** システムタイプID (0=平地, 1=高架, 7=市電, etc) */
   styp?: number;
   /** オブジェクトとして描画するか */
   draw_as_obj?: boolean | number;
@@ -435,7 +435,7 @@ export interface BuildingData extends BaseObj {
   capacity?: number;
   /** 維持費 (単位: 0.01cr/月) */
   maintenance?: number;
-  /** 建設価格 (単位: 100cr) */
+  /** 建設価格 (単位: 1/100 credits) */
   price?: number;
   /** 地下建設可否 (0=不可, 1=地下のみ, 2=どちらでも) */
   allow_underground?: number;

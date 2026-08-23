@@ -5,6 +5,7 @@ import {
   formatBuildPrice,
   formatClimates,
   formatDate,
+  formatGear,
   formatMaintenanceCost,
   formatRunningCost,
   formatSpeed,
@@ -50,8 +51,26 @@ describe("formatter", () => {
   });
 
   describe("formatBuildPrice", () => {
-    it("×100して Cr 単位で返す", () => {
-      expect(formatBuildPrice(100)).toBe("10,000 Cr");
+    it("÷100して Cr 単位で返す (price は 1/100 Cr 単位で保存される)", () => {
+      expect(formatBuildPrice(500000)).toBe("5,000.00 Cr");
+    });
+
+    it("undefinedは空文字を返す", () => {
+      expect(formatBuildPrice(undefined)).toBe("");
+    });
+  });
+
+  describe("formatGear", () => {
+    it("64 (等倍) を 1.0 に変換する (vehicle_desc.h: 64=100%)", () => {
+      expect(formatGear(64)).toBe("1.0");
+    });
+
+    it("128 (2倍) を 2.0 に変換する", () => {
+      expect(formatGear(128)).toBe("2.0");
+    });
+
+    it("undefinedは空文字を返す", () => {
+      expect(formatGear(undefined)).toBe("");
     });
   });
 

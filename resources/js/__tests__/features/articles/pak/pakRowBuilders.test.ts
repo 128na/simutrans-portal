@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { buildDetailRows } from "@/features/articles/components/pak/pakRowBuilders";
 import type {
   BridgeData,
+  FactoryData,
   GroundobjData,
   SoundData,
   TreeData,
@@ -245,6 +246,114 @@ describe("buildDetailRows", () => {
         base as Record<string, unknown>
       );
       expect(labelOf(rows, "上に木を生やせる")).toBe("Yes");
+    });
+  });
+
+  describe("factory", () => {
+    const base: FactoryData = {
+      placement: 0,
+      productivity: 1000,
+      range: 50,
+      distribution_weight: 100,
+      color: 3,
+      supplier_count: 1,
+      product_count: 1,
+      pax_level: 16,
+    };
+
+    it("フィールドグループが無い場合はフィールド行を出力しない", () => {
+      const rows = buildDetailRows("factory", base as Record<string, unknown>);
+      expect(labelOf(rows, "フィールド出現確率1")).toBeUndefined();
+    });
+
+    it("フィールドグループ1件・クラス1件の行を出力する", () => {
+      const data: FactoryData = {
+        ...base,
+        field_groups: [
+          {
+            version: 3,
+            probability: 9500,
+            max_fields: 10,
+            min_fields: 2,
+            start_fields: 1,
+            classes: [
+              {
+                snow_image: 1,
+                production_per_field: 200,
+                storage_capacity: 500,
+                spawn_weight: 1000,
+              },
+            ],
+          },
+        ],
+      };
+      const rows = buildDetailRows("factory", data as Record<string, unknown>);
+
+      expect(labelOf(rows, "フィールド出現確率1")).toBe("95.0%");
+      expect(labelOf(rows, "フィールド数(最小-最大)1")).toBe("2〜10");
+      expect(labelOf(rows, "初期フィールド数1")).toBe(1);
+      expect(labelOf(rows, "生産量/フィールド1")).toBe(200);
+      expect(labelOf(rows, "貯蔵容量1")).toBe(500);
+      expect(labelOf(rows, "出現重み1")).toBe(1000);
+    });
+
+    it("start_fields が null (v1/v2) の場合は初期フィールド数行を出力しない", () => {
+      const data: FactoryData = {
+        ...base,
+        field_groups: [
+          {
+            version: 1,
+            probability: 3000,
+            max_fields: 8,
+            min_fields: 1,
+            start_fields: null,
+            classes: [
+              {
+                snow_image: 0,
+                production_per_field: 150,
+                storage_capacity: 0,
+                spawn_weight: 1000,
+              },
+            ],
+          },
+        ],
+      };
+      const rows = buildDetailRows("factory", data as Record<string, unknown>);
+
+      expect(labelOf(rows, "初期フィールド数1")).toBeUndefined();
+    });
+
+    it("クラスが複数ある場合はグループ番号-クラス番号でラベル分けする", () => {
+      const data: FactoryData = {
+        ...base,
+        field_groups: [
+          {
+            version: 3,
+            probability: 5000,
+            max_fields: 5,
+            min_fields: 1,
+            start_fields: 0,
+            classes: [
+              {
+                snow_image: 0,
+                production_per_field: 100,
+                storage_capacity: 200,
+                spawn_weight: 500,
+              },
+              {
+                snow_image: 1,
+                production_per_field: 300,
+                storage_capacity: 400,
+                spawn_weight: 700,
+              },
+            ],
+          },
+        ],
+      };
+      const rows = buildDetailRows("factory", data as Record<string, unknown>);
+
+      expect(labelOf(rows, "生産量/フィールド1-1")).toBe(100);
+      expect(labelOf(rows, "生産量/フィールド1-2")).toBe(300);
     });
   });
 

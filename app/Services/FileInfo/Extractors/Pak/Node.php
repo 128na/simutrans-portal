@@ -47,6 +47,12 @@ class Node
 
     public const string OBJ_FACTORY_PRODUCT = 'FPRO';
 
+    public const string OBJ_FACTORY_FIELD_GROUP = 'FFIE';
+
+    public const string OBJ_FACTORY_FIELD_CLASS = 'FFCL';
+
+    public const string OBJ_FACTORY_SMOKE = 'FSMO';
+
     public const string OBJ_CITYCAR = 'CCAR';
 
     public const string OBJ_PEDESTRIAN = 'PASS';
@@ -66,6 +72,14 @@ class Node
     public const string OBJ_FIELD = 'FIEL';
 
     public const string OBJ_XREF = 'XREF';
+
+    public const string OBJ_TILE = 'TILE';
+
+    public const string OBJ_IMAGE = "IMG\0";
+
+    public const string OBJ_IMAGE_LIST = 'IMG1';
+
+    public const string OBJ_IMAGE_LIST_2D = 'IMG2';
 
     private const int LARGE_RECORD_SIZE = 0xFFFF;
 

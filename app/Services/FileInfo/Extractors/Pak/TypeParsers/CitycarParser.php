@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
@@ -17,11 +18,6 @@ use RuntimeException;
  */
 class CitycarParser implements TypeParserInterface
 {
-    // Default intro/retire dates from intro_dates.h
-    private const int DEFAULT_INTRO_DATE = 1930;
-
-    private const int DEFAULT_RETIRE_DATE = 2999;
-
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_CITYCAR;
@@ -61,8 +57,8 @@ class CitycarParser implements TypeParserInterface
             'version' => 0,
             'distribution_weight' => $distributionWeight,
             'topspeed' => 80, // Default 80 km/h
-            'intro_date' => self::DEFAULT_INTRO_DATE * 12,
-            'retire_date' => self::DEFAULT_RETIRE_DATE * 12,
+            'intro_date' => SimutransDefaults::INTRO_YEAR * 12,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * 12,
         ];
     }
 

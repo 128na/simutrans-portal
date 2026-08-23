@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 
 /**
  * Way data parser
@@ -59,7 +60,7 @@ class WayParser implements TypeParserInterface
 
             // clip_below defaults based on waytype for versions < 8 (from way_reader.cc)
             if ($version < 8) {
-                $data['clip_below'] = ($data['waytype'] ?? 0) !== 7; // 7 = powerline_wt
+                $data['clip_below'] = ($data['waytype'] ?? 0) !== 128; // 128 = powerline_wt
             }
 
             if (isset($data['styp'])) {
@@ -82,8 +83,8 @@ class WayParser implements TypeParserInterface
             'maintenance' => 800,
             'topspeed' => 999,
             'max_weight' => 999,
-            'intro_date' => 1930 * 12,
-            'retire_date' => 2999 * 12,
+            'intro_date' => SimutransDefaults::INTRO_YEAR * 12,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * 12,
             'waytype' => 1,
             'styp' => 0,
             'draw_as_obj' => false,
@@ -110,7 +111,7 @@ class WayParser implements TypeParserInterface
             'intro_date' => intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 16),
             'waytype' => $reader->readUint8(),
             'styp' => $reader->readUint8(),
-            'retire_date' => 2999 * 12,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * 12,
             'draw_as_obj' => false,
             'number_of_seasons' => 0,
         ];
@@ -198,10 +199,8 @@ class WayParser implements TypeParserInterface
      */
     private function parseVersion7(BinaryReader $reader): array
     {
-        $price = $reader->readUint32LE();
-        $reader->readUint32LE(); // upper 32 bits
-        $maintenance = $reader->readUint32LE();
-        $reader->readUint32LE(); // upper 32 bits
+        $price = $reader->readSint64LE();
+        $maintenance = $reader->readSint64LE();
 
         return [
             'price' => $price,
@@ -223,10 +222,8 @@ class WayParser implements TypeParserInterface
      */
     private function parseVersion8(BinaryReader $reader): array
     {
-        $price = $reader->readUint32LE();
-        $reader->readUint32LE(); // upper 32 bits
-        $maintenance = $reader->readUint32LE();
-        $reader->readUint32LE(); // upper 32 bits
+        $price = $reader->readSint64LE();
+        $maintenance = $reader->readSint64LE();
 
         return [
             'price' => $price,
@@ -247,18 +244,21 @@ class WayParser implements TypeParserInterface
     /**
      * Apply internal corrections from way_reader.cc
      *
+     * Current waytype_t/systemtype_t values (simtypes.h):
+     * road=1, track=2, water=3, overheadlines=4, monorail=5, maglev=6,
+     * tram=7, narrowgauge=8, powerline=128; type_flat=0, type_tram=7.
+     *
      * @param  array<string, mixed>  $data
      */
     private function applyInternalCorrections(array &$data): void
     {
-        if (isset($data['waytype']) && $data['waytype'] === 5) { // tram_wt
+        if (isset($data['waytype']) && $data['waytype'] === 7) { // tram_wt
             $data['styp'] = 7; // type_tram
-            $data['waytype'] = 1; // track_wt
-        } elseif (isset($data['styp'], $data['waytype']) && $data['styp'] === 5 && $data['waytype'] === 1) {
-            $data['waytype'] = 6; // monorail_wt
+            $data['waytype'] = 2; // track_wt
+        } elseif (isset($data['styp'], $data['waytype']) && $data['styp'] === 5 && $data['waytype'] === 2) {
+            $data['waytype'] = 5; // monorail_wt
             $data['styp'] = 0; // type_flat
-        } elseif (isset($data['waytype']) && $data['waytype'] === 128) {
-            $data['waytype'] = 7; // powerline_wt
         }
+        // powerline_wt(128) の補正は現行の番号体系では無変化 (no-op) のため実施しない
     }
 }

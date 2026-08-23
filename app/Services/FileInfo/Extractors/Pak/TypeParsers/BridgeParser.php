@@ -34,24 +34,33 @@ class BridgeParser implements TypeParserInterface
 
         if ($stamp->isVersioned) {
             $offset += 2;
+            $version = $stamp->version;
 
-            return match ($stamp->version) {
+            $data = match ($version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
                 5 => $this->parseVersion5($binaryData, $offset),
                 6 => $this->parseVersion6($binaryData, $offset),
-                7, 8 => $this->parseVersion7And8($binaryData, $offset, $stamp->version),
+                7, 8 => $this->parseVersion7And8($binaryData, $offset, $version),
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
                 11 => $this->parseVersion11($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported bridge version: '.$stamp->version),
+                default => throw new RuntimeException('Unsupported bridge version: '.$version),
             };
+        } else {
+            // Version 0 (legacy format): firstUint16 is actually waytype
+            $version = 0;
+            $data = $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
         }
 
-        // Version 0 (legacy format): firstUint16 is actually waytype
-        return $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
+        // clip_below defaults based on waytype for versions < 11 (from bridge_reader.cc)
+        if ($version < 11) {
+            $data['clip_below'] = ($data['waytype'] ?? 0) !== 128; // 128 = powerline_wt
+        }
+
+        return $data;
     }
 
     /**

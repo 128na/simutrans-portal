@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
 
@@ -97,8 +98,8 @@ class SignParser implements TypeParserInterface
         $result['maintenance'] = 0;
         $result['offset_left'] = 14;
         $result['waytype'] = 1; // road_wt
-        $result['intro_date'] = 0;
-        $result['retire_date'] = 65535;
+        $result['intro_date'] = SimutransDefaults::INTRO_YEAR * 12;
+        $result['retire_date'] = SimutransDefaults::RETIRE_YEAR * 12;
 
         return $this->buildResult($result);
     }
@@ -142,8 +143,8 @@ class SignParser implements TypeParserInterface
         $result['maintenance'] = 0;
         $result['offset_left'] = 14;
         $result['waytype'] = 1; // road_wt
-        $result['intro_date'] = 0;
-        $result['retire_date'] = 65535;
+        $result['intro_date'] = SimutransDefaults::INTRO_YEAR * 12;
+        $result['retire_date'] = SimutransDefaults::RETIRE_YEAR * 12;
 
         return $this->buildResult($result);
     }

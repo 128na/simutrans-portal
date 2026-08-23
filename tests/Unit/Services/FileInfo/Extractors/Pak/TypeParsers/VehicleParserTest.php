@@ -111,6 +111,90 @@ class VehicleParserTest extends TestCase
         $this->assertSame(1, $result['freight_image_type']);
     }
 
+    /**
+     * v1 では intro_date が base-16 (year*16+month) で保存されており、
+     * base-12 (year*12+month) に変換される必要がある (vehicle_reader.cc: version<5)。
+     * retire_date は保存されず、DEFAULT_RETIRE_YEAR(2999)*12 に変換されたデフォルト値になる。
+     */
+    public function test_version1_converts_base16_intro_date_to_base12(): void
+    {
+        $data = pack('v', 0x8001);  // version = 1
+        $data .= pack('V', 10000);  // price
+        $data .= pack('v', 200);    // capacity
+        $data .= pack('v', 100);    // topspeed
+        $data .= pack('v', 50);     // weight
+        $data .= pack('v', 300);    // power
+        $data .= pack('v', 120);    // running_cost
+        $data .= pack('v', 31840);  // intro_date raw (1990*16) → (31840/16)*12+(31840%16) = 23880
+        $data .= pack('C', 64);     // gear
+        $data .= pack('C', 1);      // waytype
+        $data .= pack('C', 0);      // sound
+        $data .= pack('C', 1);      // leader_count
+        $data .= pack('C', 1);      // trailer_count
+
+        $result = $this->parser->parse($this->makeNode($data));
+
+        $this->assertNotNull($result);
+        $this->assertSame(23880, $result['intro_date']);
+        $this->assertSame(2999 * 12, $result['retire_date']);
+    }
+
+    /**
+     * v3 では intro_date/retire_date ともに base-16 → base-12 変換が必要。
+     */
+    public function test_version3_converts_base16_dates_to_base12(): void
+    {
+        $data = pack('v', 0x8003);  // version = 3
+        $data .= pack('V', 10000);  // price
+        $data .= pack('v', 200);    // capacity
+        $data .= pack('v', 100);    // topspeed
+        $data .= pack('v', 50);     // weight
+        $data .= pack('v', 300);    // power
+        $data .= pack('v', 120);    // running_cost
+        $data .= pack('v', 31840);  // intro_date raw (1990*16) → 23880
+        $data .= pack('v', 47984);  // retire_date raw (2999*16) → 35988
+        $data .= pack('C', 64);     // gear
+        $data .= pack('C', 1);      // waytype
+        $data .= pack('C', 0);      // sound
+        $data .= pack('C', 1);      // leader_count
+        $data .= pack('C', 1);      // trailer_count
+        $data .= pack('C', 1);      // engine_type
+
+        $result = $this->parser->parse($this->makeNode($data));
+
+        $this->assertNotNull($result);
+        $this->assertSame(23880, $result['intro_date']);
+        $this->assertSame(35988, $result['retire_date']);
+    }
+
+    /**
+     * v5 以降は既に base-12 のため、変換を適用してはならない (回帰防止)。
+     */
+    public function test_version5_dates_are_not_converted(): void
+    {
+        $data = pack('v', 0x8005);  // version = 5
+        $data .= pack('V', 10000);  // price
+        $data .= pack('v', 200);    // capacity
+        $data .= pack('v', 100);    // topspeed
+        $data .= pack('v', 50);     // weight
+        $data .= pack('v', 300);    // power
+        $data .= pack('v', 120);    // running_cost
+        $data .= pack('v', 23880);  // intro_date (既に base-12)
+        $data .= pack('v', 24240);  // retire_date (既に base-12)
+        $data .= pack('C', 64);     // gear
+        $data .= pack('C', 1);      // waytype
+        $data .= pack('C', 0);      // sound
+        $data .= pack('C', 1);      // leader_count
+        $data .= pack('C', 1);      // trailer_count
+        $data .= pack('C', 1);      // engine_type
+
+        $result = $this->parser->parse($this->makeNode($data));
+
+        $this->assertNotNull($result);
+        $this->assertSame(23880, $result['intro_date']);
+        $this->assertSame(24240, $result['retire_date']);
+    }
+
     private function makeNode(string $data): Node
     {
         $size = strlen($data);

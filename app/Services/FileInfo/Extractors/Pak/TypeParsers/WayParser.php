@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
@@ -15,6 +16,8 @@ use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
  */
 class WayParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 8;
+
     #[\Override]
     public function canParse(Node $node): bool
     {
@@ -30,47 +33,43 @@ class WayParser implements TypeParserInterface
 
         $reader = new BinaryReader($node->data);
 
-        try {
-            // Read version stamp
-            $v = $reader->readUint16LE();
-            $version = $v & 0x7FFF;
+        // Read version stamp
+        $v = $reader->readUint16LE();
+        $version = $v & 0x7FFF;
 
-            $data = match ($version) {
-                0 => $this->parseVersion0(),
-                1 => $this->parseVersion1($reader),
-                2 => $this->parseVersion2($reader),
-                3 => $this->parseVersion3($reader),
-                4, 5 => $this->parseVersion4And5($reader),
-                6 => $this->parseVersion6($reader),
-                7 => $this->parseVersion7($reader),
-                8 => $this->parseVersion8($reader),
-                default => [],
-            };
+        $data = match ($version) {
+            0 => $this->parseVersion0(),
+            1 => $this->parseVersion1($reader),
+            2 => $this->parseVersion2($reader),
+            3 => $this->parseVersion3($reader),
+            4, 5 => $this->parseVersion4And5($reader),
+            6 => $this->parseVersion6($reader),
+            7 => $this->parseVersion7($reader),
+            8 => $this->parseVersion8($reader),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('way', $version, self::MAX_SUPPORTED_VERSION),
+        };
 
-            // Apply internal corrections (from way_reader.cc)
-            $this->applyInternalCorrections($data);
+        // Apply internal corrections (from way_reader.cc)
+        $this->applyInternalCorrections($data);
 
-            // front_images from version 5 on (from way_reader.cc)
-            $data['front_images'] = $version > 4;
+        // front_images from version 5 on (from way_reader.cc)
+        $data['front_images'] = $version > 4;
 
-            // axle_load defaults to 9999 for versions < 6
-            if ($version < 6 && ! isset($data['axle_load'])) {
-                $data['axle_load'] = 9999;
-            }
-
-            // clip_below defaults based on waytype for versions < 8 (from way_reader.cc)
-            if ($version < 8) {
-                $data['clip_below'] = ($data['waytype'] ?? 0) !== 128; // 128 = powerline_wt
-            }
-
-            if (isset($data['styp'])) {
-                assert(is_int($data['styp']));
-            }
-
-            return $data;
-        } catch (\Throwable) {
-            return null;
+        // axle_load defaults to 9999 for versions < 6
+        if ($version < 6 && ! isset($data['axle_load'])) {
+            $data['axle_load'] = 9999;
         }
+
+        // clip_below defaults based on waytype for versions < 8 (from way_reader.cc)
+        if ($version < 8) {
+            $data['clip_below'] = ($data['waytype'] ?? 0) !== 128; // 128 = powerline_wt
+        }
+
+        if (isset($data['styp'])) {
+            assert(is_int($data['styp']));
+        }
+
+        return $data;
     }
 
     /**

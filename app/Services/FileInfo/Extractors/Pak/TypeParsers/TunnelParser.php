@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
@@ -17,6 +18,8 @@ use RuntimeException;
  */
 class TunnelParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 6;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_TUNNEL;
@@ -33,7 +36,7 @@ class TunnelParser implements TypeParserInterface
         $stamp = VersionStamp::from($binaryData, $offset);
 
         if (! $stamp->isVersioned) {
-            throw new RuntimeException('Tunnel version 0 (legacy) is not supported');
+            throw InvalidPakFileException::unsupportedTypeVersion('tunnel', 0, self::MAX_SUPPORTED_VERSION);
         }
 
         $offset += 2;
@@ -45,7 +48,7 @@ class TunnelParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported tunnel version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('tunnel', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
 

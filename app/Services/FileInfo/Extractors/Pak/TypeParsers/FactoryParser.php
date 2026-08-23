@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
 /**
@@ -30,6 +32,12 @@ use RuntimeException;
  */
 class FactoryParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 6;
+
+    private const int MAX_SUPPORTED_FIELD_GROUP_VERSION = 3;
+
+    private const int MAX_SUPPORTED_FIELD_CLASS_VERSION = 1;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_FACTORY;
@@ -54,7 +62,7 @@ class FactoryParser implements TypeParserInterface
                 4 => $this->parseVersion4($binaryData, $offset),
                 5 => $this->parseVersion5($binaryData, $offset),
                 6 => $this->parseVersion6($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported factory version: '.$stamp->version),
+                default => throw InvalidPakFileException::unsupportedTypeVersion('factory', $stamp->version, self::MAX_SUPPORTED_VERSION),
             };
         } else {
             // Version 0 (legacy): firstUint16 is placement type
@@ -70,7 +78,20 @@ class FactoryParser implements TypeParserInterface
         // Extract field group data from FFIE (factory field) child nodes.
         // Note: 'fields' (from parseCommonFields) is the raw field-slot count;
         // 'field_groups' holds the parsed FFIE/FFCL structures.
-        $result['field_groups'] = $this->extractFieldsFromChildren($node);
+        //
+        // FFIE/FFCL are versioned independently of the main FACT version, so an
+        // unsupported field-group/class version is caught here rather than left
+        // to propagate out of parse() - otherwise it would wipe out the whole
+        // factory's data (productivity, price, input, output, ...) instead of
+        // just the field section.
+        try {
+            $result['field_groups'] = $this->extractFieldsFromChildren($node);
+        } catch (InvalidPakFileException $exception) {
+            Log::warning('Skipping unsupported factory field group', [
+                'exception' => $exception->getMessage(),
+            ]);
+            $result['field_groups'] = [];
+        }
 
         // Extract smoke position data from FSMO (factory smoke) child nodes
         $result['smoke'] = $this->extractSmokeFromChildren($node);
@@ -791,7 +812,7 @@ class FactoryParser implements TypeParserInterface
             ];
         }
 
-        throw new RuntimeException('Unsupported field group version: '.$version);
+        throw InvalidPakFileException::unsupportedTypeVersion('ffield', $version, self::MAX_SUPPORTED_FIELD_GROUP_VERSION);
     }
 
     /**
@@ -823,7 +844,7 @@ class FactoryParser implements TypeParserInterface
         $version = $reader->readUint16LE() & 0x7FFF;
 
         if ($version !== 1) {
-            throw new RuntimeException('Unsupported field class version: '.$version);
+            throw InvalidPakFileException::unsupportedTypeVersion('ffldclass', $version, self::MAX_SUPPORTED_FIELD_CLASS_VERSION);
         }
 
         return [

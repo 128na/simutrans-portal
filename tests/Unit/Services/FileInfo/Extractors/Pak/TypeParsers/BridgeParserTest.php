@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BridgeParser;
@@ -140,6 +141,18 @@ class BridgeParserTest extends TestCase
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
         $this->assertFalse($result['clip_below']);
+    }
+
+    /**
+     * v12 (未対応バージョン) は例外を投げる (回帰防止: 将来バージョンのサイレント無視を防ぐ)。
+     */
+    public function test_unsupported_version_throws(): void
+    {
+        $this->expectException(InvalidPakFileException::class);
+        $this->expectExceptionMessage('Unsupported bridge version: 12 (max known: 11)');
+
+        $data = pack('v', 0x8000 | 12);
+        $this->parser->parse($this->makeNode($data));
     }
 
     private function makeNode(string $data): Node

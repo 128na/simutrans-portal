@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Enums\SimutransClimate;
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Groundobj（地上オブジェクト）パーサー
@@ -31,6 +31,8 @@ use RuntimeException;
  */
 class GroundobjParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 2;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_GROUNDOBJ;
@@ -53,10 +55,10 @@ class GroundobjParser implements TypeParserInterface
         $stamp = VersionStamp::from($node->data);
 
         $result = match ($stamp->version) {
-            0 => throw new RuntimeException('Groundobj version 0 does not exist'),
+            0 => throw InvalidPakFileException::unsupportedTypeVersion('groundobj', 0, self::MAX_SUPPORTED_VERSION),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported groundobj version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('groundobj', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
 
         return $this->buildResult($result);

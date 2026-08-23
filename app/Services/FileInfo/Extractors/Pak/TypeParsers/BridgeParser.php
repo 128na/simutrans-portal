@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
@@ -13,10 +14,12 @@ use RuntimeException;
  * Parser for bridge (BRDG) nodes
  *
  * Bridges are infrastructure for crossing gaps and obstacles.
- * Supported versions: 0-10
+ * Supported versions: 0-11
  */
 class BridgeParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 11;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_BRIDGE;
@@ -47,7 +50,7 @@ class BridgeParser implements TypeParserInterface
                 9 => $this->parseVersion9($binaryData, $offset),
                 10 => $this->parseVersion10($binaryData, $offset),
                 11 => $this->parseVersion11($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported bridge version: '.$version),
+                default => throw InvalidPakFileException::unsupportedTypeVersion('bridge', $version, self::MAX_SUPPORTED_VERSION),
             };
         } else {
             // Version 0 (legacy format): firstUint16 is actually waytype

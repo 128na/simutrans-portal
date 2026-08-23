@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BuildingParser;
@@ -110,6 +111,19 @@ class BuildingParserTest extends TestCase
         $this->assertSame(500, $result['maintenance']);
         $this->assertSame(10000, $result['price']);
         $this->assertSame(1, $result['allow_underground']);
+    }
+
+    /**
+     * v12 (未対応バージョン) は例外を投げる。BuildingParser はもともと
+     * バージョン上限チェックが存在せず、未知の将来バージョンをv11と
+     * 同じレイアウトで無警告のまま誤読していた (回帰防止)。
+     */
+    public function test_unsupported_version_throws(): void
+    {
+        $this->expectException(InvalidPakFileException::class);
+        $this->expectExceptionMessage('Unsupported building version: 12 (max known: 11)');
+
+        $this->parser->parse($this->makeVersionedNode(12, ''));
     }
 
     private function makeNode(string $data): Node

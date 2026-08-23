@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\FactoryParser;
@@ -190,10 +191,44 @@ class FactoryParserTest extends TestCase
      */
     public function test_unsupported_version_throws(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('Unsupported factory version: 7');
+        $this->expectException(InvalidPakFileException::class);
+        $this->expectExceptionMessage('Unsupported factory version: 7 (max known: 6)');
 
         $this->parser->parse($this->makeFactoryNode(7, ''));
+    }
+
+    /**
+     * FFIE (field group) の未対応バージョン (4) はその他の工場データ
+     * (productivity 等) を巻き込まず、field_groups のみ空配列に縮退する
+     * (FFIE/FFCL は本体の FACT バージョンとは独立してバージョニングされるため)。
+     */
+    public function test_unsupported_field_group_version_degrades_gracefully(): void
+    {
+        $fieldGroupNode = $this->encodeNode('FFIE', pack('v', 0x8000 | 4));
+        $node = $this->makeFactoryNode(1, $this->minimalV1Payload(), [$fieldGroupNode]);
+
+        $result = $this->parser->parse($node);
+
+        $this->assertSame([], $result['field_groups']);
+        $this->assertSame(1000, $result['productivity']);
+    }
+
+    /**
+     * FFCL (field class) の未対応バージョン (2) も同様に factory 全体を
+     * 巻き込まず、field_groups のみ空配列に縮退する。
+     */
+    public function test_unsupported_field_class_version_degrades_gracefully(): void
+    {
+        $fieldClassNode = $this->encodeNode('FFCL', pack('v', 0x8000 | 2));
+        // v3 field group payload: probability, max_fields, min_fields, start_fields, field_classes count
+        $fieldGroupPayload = pack('v', 5000).pack('v', 10).pack('v', 2).pack('v', 1).pack('v', 1);
+        $fieldGroupNode = $this->encodeNode('FFIE', pack('v', 0x8003).$fieldGroupPayload, [$fieldClassNode]);
+        $node = $this->makeFactoryNode(1, $this->minimalV1Payload(), [$fieldGroupNode]);
+
+        $result = $this->parser->parse($node);
+
+        $this->assertSame([], $result['field_groups']);
+        $this->assertSame(1000, $result['productivity']);
     }
 
     /**

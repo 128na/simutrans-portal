@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
@@ -18,6 +19,8 @@ use RuntimeException;
  */
 class CitycarParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 2;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_CITYCAR;
@@ -38,7 +41,7 @@ class CitycarParser implements TypeParserInterface
             return match ($stamp->version) {
                 1 => $this->parseVersion1($binaryData, $offset),
                 2 => $this->parseVersion2($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported citycar version: '.$stamp->version),
+                default => throw InvalidPakFileException::unsupportedTypeVersion('citycar', $stamp->version, self::MAX_SUPPORTED_VERSION),
             };
         }
 

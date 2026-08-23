@@ -95,14 +95,8 @@ export function buildDetailRows(
 }
 
 /**
- * Unit conversions (based on Simutrans source code):
- * - intro_date/retire_date: stored as (year*12 + month-1) → display as "YYYY年M月"
- * - weight: stored in kg → display in tons (÷1000)
- * - price: stored in 1/100 Cr → display in Cr (×100)
- * - running_cost: stored in 1/100 Cr/km → display in Cr/km (÷100)
- * - maintenance: stored in 1/100 Cr/month → display in Cr/month (÷100)
- * - len: stored in 1/8 tile units → display as-is (raw value)
- * - gear: stored as gear*64 (64=1.00) → display as-is (raw value)
+ * 単位変換は formatter.ts の各format関数（および PAK_UNIT_SCALES）が一次情報。
+ * len (長さ) のみ 1/8 タイル単位の生値をそのまま表示する。
  */
 function buildVehicleRows(data: VehicleData): TableRow[] {
   return [

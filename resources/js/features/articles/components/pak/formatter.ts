@@ -3,6 +3,7 @@ import {
   ENGINE_TYPE_TRANSLATIONS,
   FREIGHT_TYPE_TRANSLATIONS,
   GOOD_CATEGORY_TRANSLATIONS,
+  PAK_UNIT_SCALES,
   WAYTYPE_TRANSLATIONS,
 } from "./pakConstants";
 
@@ -62,15 +63,14 @@ export const formatGear = (gear: number | undefined): string => {
   if (gear === undefined) {
     return "";
   }
-  // gear は 64 = 1.00 (等倍) として保存される (vehicle_desc.h)
-  return `${(gear / 64).toFixed(1)}`;
+  return `${(gear / PAK_UNIT_SCALES.GEAR).toFixed(1)}`;
 };
 
 export const formatWeight = (weight: number | undefined): string => {
   if (weight === undefined) {
     return "";
   }
-  return `${(weight / 1000).toFixed(1)} t`;
+  return `${(weight / PAK_UNIT_SCALES.WEIGHT).toFixed(1)} t`;
 };
 
 export const formatNum = (num: number | undefined): string => {
@@ -94,8 +94,7 @@ export const formatBuildPrice = (price: number | undefined): string => {
   if (price === undefined) {
     return "";
   }
-  // price は 1/100 Cr 単位で保存される (obj_base_desc.h)
-  return formatPrice(price / 100);
+  return formatPrice(price / PAK_UNIT_SCALES.PRICE);
 };
 
 export const formatRunningCost = (
@@ -105,7 +104,7 @@ export const formatRunningCost = (
   if (cost === undefined) {
     return "";
   }
-  return `${(cost / 100).toLocaleString(undefined, {
+  return `${(cost / PAK_UNIT_SCALES.PRICE).toLocaleString(undefined, {
     minimumFractionDigits: digit,
     maximumFractionDigits: digit,
   })} Cr/km`;
@@ -118,7 +117,7 @@ export const formatMaintenanceCost = (
   if (cost === undefined) {
     return "";
   }
-  return `${(cost / 100).toLocaleString(undefined, {
+  return `${(cost / PAK_UNIT_SCALES.PRICE).toLocaleString(undefined, {
     minimumFractionDigits: digit,
     maximumFractionDigits: digit,
   })} Cr/月`;
@@ -165,11 +164,11 @@ export const formatAxleLoad = (axle_load: number | undefined): string => {
 };
 
 /**
- * rescale_probability() 適用後の値 (0-10000 = 万分率) をパーセント表示する
+ * rescale_probability() 適用後の値 (PAK_UNIT_SCALES.PROBABILITY = 万分率) をパーセント表示する
  */
 export const formatProbability = (value: number | undefined): string => {
   if (value === undefined) return "";
-  return `${(value / 100).toFixed(1)}%`;
+  return `${((value / PAK_UNIT_SCALES.PROBABILITY) * 100).toFixed(1)}%`;
 };
 
 const CLIMATE_NAME_TRANSLATIONS: Record<string, string> = {

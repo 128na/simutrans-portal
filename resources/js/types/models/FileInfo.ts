@@ -22,7 +22,7 @@ export interface VehicleData extends BaseObj {
   price?: number;
   /** 最高速度 (km/h) */
   topspeed?: number;
-  /** 重量 (ton) */
+  /** 重量 (単位: kg。表示はformatWeight()でtonに変換) */
   weight?: number;
   /** 出力 (kW) */
   power?: number;
@@ -241,7 +241,7 @@ export interface GroundobjData extends BaseObj {
   speed: number;
   /** 移動可能地形タイプ / Waytype for movement */
   waytype: number;
-  /** 撤去コスト / Removal cost */
+  /** 撤去コスト / Removal cost (単位: 1/100 credits) */
   price: number;
 }
 

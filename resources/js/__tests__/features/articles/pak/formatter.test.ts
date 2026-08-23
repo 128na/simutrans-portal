@@ -7,6 +7,7 @@ import {
   formatDate,
   formatGear,
   formatMaintenanceCost,
+  formatProbability,
   formatRunningCost,
   formatSpeed,
   formatWeight,
@@ -112,6 +113,24 @@ describe("formatter", () => {
 
     it("undefinedは空文字を返す", () => {
       expect(formatAxleLoad(undefined)).toBe("");
+    });
+  });
+
+  describe("formatProbability", () => {
+    it("10000 (万分率の上限) を 100.0% に変換する", () => {
+      expect(formatProbability(10000)).toBe("100.0%");
+    });
+
+    it("2500 を 25.0% に変換する", () => {
+      expect(formatProbability(2500)).toBe("25.0%");
+    });
+
+    it("0 は 0.0% を返す", () => {
+      expect(formatProbability(0)).toBe("0.0%");
+    });
+
+    it("undefinedは空文字を返す", () => {
+      expect(formatProbability(undefined)).toBe("");
     });
   });
 

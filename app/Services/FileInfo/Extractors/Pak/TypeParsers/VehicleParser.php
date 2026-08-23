@@ -57,10 +57,12 @@ class VehicleParser implements TypeParserInterface
         // and need conversion to base-12 (year*12+month) (from vehicle_reader.cc)
         if ($version < 5) {
             if (isset($data['intro_date']) && is_int($data['intro_date'])) {
-                $data['intro_date'] = intdiv($data['intro_date'], 16) * 12 + ($data['intro_date'] % 16);
+                $data['intro_date'] = intdiv($data['intro_date'], SimutransDefaults::LEGACY_DATE_BASE) * SimutransDefaults::CURRENT_DATE_BASE
+                    + ($data['intro_date'] % SimutransDefaults::LEGACY_DATE_BASE);
             }
             if (isset($data['retire_date']) && is_int($data['retire_date'])) {
-                $data['retire_date'] = intdiv($data['retire_date'], 16) * 12 + ($data['retire_date'] % 16);
+                $data['retire_date'] = intdiv($data['retire_date'], SimutransDefaults::LEGACY_DATE_BASE) * SimutransDefaults::CURRENT_DATE_BASE
+                    + ($data['retire_date'] % SimutransDefaults::LEGACY_DATE_BASE);
             }
         }
 
@@ -87,13 +89,13 @@ class VehicleParser implements TypeParserInterface
             'capacity' => $reader->readUint16LE(),
             'price' => $reader->readUint32LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'power' => $reader->readUint16LE(),
             'running_cost' => $reader->readUint16LE(),
             // v0 は intro_date/retire_date を保持しないため、変換前の base-16
             // デフォルト値を設定する (vehicle_reader.cc: version==0 の分岐)
-            'intro_date' => SimutransDefaults::INTRO_YEAR * 16,
-            'retire_date' => SimutransDefaults::RETIRE_YEAR * 16,
+            'intro_date' => SimutransDefaults::INTRO_YEAR * SimutransDefaults::LEGACY_DATE_BASE,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * SimutransDefaults::LEGACY_DATE_BASE,
         ];
     }
 
@@ -106,13 +108,13 @@ class VehicleParser implements TypeParserInterface
             'price' => $reader->readUint32LE(),
             'capacity' => $reader->readUint16LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'power' => $reader->readUint16LE(),
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
             // v1/v2 は retire_date を保持しないため、変換前の base-16 デフォルト値を設定する
             // (vehicle_reader.cc: desc->retire_date = DEFAULT_RETIRE_YEAR*16)
-            'retire_date' => SimutransDefaults::RETIRE_YEAR * 16,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * SimutransDefaults::LEGACY_DATE_BASE,
             'gear' => $reader->readUint8(),
             'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),
@@ -136,7 +138,7 @@ class VehicleParser implements TypeParserInterface
             'price' => $reader->readUint32LE(),
             'capacity' => $reader->readUint16LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'power' => $reader->readUint16LE(),
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
@@ -159,7 +161,7 @@ class VehicleParser implements TypeParserInterface
             'price' => $reader->readUint32LE(),
             'capacity' => $reader->readUint16LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'power' => $reader->readUint32LE(),
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
@@ -182,7 +184,7 @@ class VehicleParser implements TypeParserInterface
             'price' => $reader->readUint32LE(),
             'capacity' => $reader->readUint16LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'power' => $reader->readUint32LE(),
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
@@ -206,7 +208,7 @@ class VehicleParser implements TypeParserInterface
             'price' => $reader->readUint32LE(),
             'capacity' => $reader->readUint16LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'power' => $reader->readUint32LE(),
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
@@ -232,7 +234,7 @@ class VehicleParser implements TypeParserInterface
             'capacity' => $reader->readUint16LE(),
             'loading_time' => $reader->readUint16LE(),
             'topspeed' => $reader->readUint16LE(),
-            'weight' => $reader->readUint16LE() * 1000,
+            'weight' => $reader->readUint16LE() * SimutransDefaults::WEIGHT_SCALE,
             'axle_load' => $reader->readUint16LE(),
             'power' => $reader->readUint32LE(),
             'running_cost' => $reader->readUint16LE(),

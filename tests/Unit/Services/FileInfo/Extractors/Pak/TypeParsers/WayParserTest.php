@@ -46,6 +46,7 @@ class WayParserTest extends TestCase
         $this->assertSame(100, $result['topspeed']);
         $this->assertSame(500, $result['max_weight']);
         $this->assertSame(23880, $result['intro_date']);
+        $this->assertSame(35988, $result['retire_date']); // v1 has no retire_date field: defaults to RETIRE_YEAR(2999)*12
         $this->assertSame(1, $result['waytype']);
     }
 

@@ -37,6 +37,7 @@ import {
   formatMaintenanceCost,
   formatNum,
   formatPower,
+  formatProbability,
   formatRunningCost,
   formatSignalAttribute,
   formatSignalType,
@@ -253,8 +254,45 @@ function buildFactoryRows(data: FactoryData): TableRow[] {
       label: `出力貨物名${index + 1}`,
       value: item.good,
     })),
+    ...(data.field_groups || []).flatMap((group, groupIndex) =>
+      buildFactoryFieldGroupRows(group, groupIndex)
+    ),
     { label: "登場年月", value: formatDate(data.intro_date) },
     { label: "引退年月", value: formatDate(data.retire_date) },
+  ];
+}
+
+function buildFactoryFieldGroupRows(
+  group: NonNullable<FactoryData["field_groups"]>[number],
+  groupIndex: number
+): TableRow[] {
+  const n = groupIndex + 1;
+
+  return [
+    {
+      label: `フィールド出現確率${n}`,
+      value: formatProbability(group.probability),
+    },
+    {
+      label: `フィールド数(最小-最大)${n}`,
+      value: `${group.min_fields}〜${group.max_fields}`,
+    },
+    ...(group.start_fields !== null
+      ? [{ label: `初期フィールド数${n}`, value: group.start_fields }]
+      : []),
+    ...group.classes.flatMap((cls, classIndex) => {
+      const label =
+        group.classes.length > 1 ? `${n}-${classIndex + 1}` : `${n}`;
+
+      return [
+        {
+          label: `生産量/フィールド${label}`,
+          value: cls.production_per_field,
+        },
+        { label: `貯蔵容量${label}`, value: cls.storage_capacity },
+        { label: `出現重み${label}`, value: cls.spawn_weight },
+      ];
+    }),
   ];
 }
 

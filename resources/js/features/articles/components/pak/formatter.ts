@@ -164,6 +164,14 @@ export const formatAxleLoad = (axle_load: number | undefined): string => {
   return `${axle_load} t`;
 };
 
+/**
+ * rescale_probability() 適用後の値 (0-10000 = 万分率) をパーセント表示する
+ */
+export const formatProbability = (value: number | undefined): string => {
+  if (value === undefined) return "";
+  return `${(value / 100).toFixed(1)}%`;
+};
+
 const CLIMATE_NAME_TRANSLATIONS: Record<string, string> = {
   water_climate: "水域",
   desert_climate: "砂漠",

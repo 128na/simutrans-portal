@@ -82,6 +82,13 @@ class BinaryReader
         return $result[1];
     }
 
+    public function readSint16LE(): int
+    {
+        $value = $this->readUint16LE();
+
+        return $value >= 0x8000 ? $value - 0x10000 : $value;
+    }
+
     public function readSint64LE(): int
     {
         if (! $this->hasMore(8)) {

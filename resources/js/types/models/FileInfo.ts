@@ -326,6 +326,32 @@ export interface FactoryData extends BaseObj {
   smokeuplift?: number;
   /** 煙寿命 (v5+) */
   smokelifetime?: number;
+  /** 発電施設か (v6+) */
+  electricity_producer?: number;
+  /** フィールドグループ (FFIE/FFCL, 油田・農地等) */
+  field_groups?: Array<{
+    /** フォーマットバージョン (1-3) */
+    version: number;
+    /** 出現確率 (rescale_probability 適用後、0-10000 = 万分率) */
+    probability: number;
+    /** 最大フィールド数 */
+    max_fields: number;
+    /** 最小フィールド数 */
+    min_fields: number;
+    /** 初期フィールド数 (v3のみ) */
+    start_fields: number | null;
+    /** フィールドクラス配列 */
+    classes: Array<{
+      /** 積雪時の画像有無 */
+      snow_image: number;
+      /** フィールド1つあたりの生産量 */
+      production_per_field: number;
+      /** 貯蔵容量 */
+      storage_capacity: number;
+      /** 出現重み */
+      spawn_weight: number;
+    }>;
+  }>;
   /** 入力品目配列 */
   input?: Array<{
     /** 品目名 */

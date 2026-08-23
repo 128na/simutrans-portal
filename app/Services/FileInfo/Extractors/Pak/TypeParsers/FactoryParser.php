@@ -20,6 +20,12 @@ use RuntimeException;
  * Child nodes: FSUP (supplier), FPRO (product), FFIE (field group, itself
  * containing FFCL field-class children), FSMO (smoke position).
  *
+ * Note: the FFIE/FFCL/FSMO parsing (field-node nesting, version-stamp values)
+ * is verified against the reader source below but not against a real
+ * field-producing pak binary (e.g. an oil derrick) - none of this repo's
+ * test fixtures contain field or smoke data. If a factory with known fields
+ * shows an empty field list, re-check this against a real sample.
+ *
  * @see https://github.com/aburch/simutrans/blob/master/src/simutrans/descriptor/reader/factory_reader.cc
  */
 class FactoryParser implements TypeParserInterface

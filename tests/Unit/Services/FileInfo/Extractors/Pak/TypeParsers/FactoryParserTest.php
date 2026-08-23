@@ -198,23 +198,26 @@ class FactoryParserTest extends TestCase
     }
 
     /**
-     * FFIE (field group) の未対応バージョン (4) は例外を投げる (回帰防止)。
+     * FFIE (field group) の未対応バージョン (4) はその他の工場データ
+     * (productivity 等) を巻き込まず、field_groups のみ空配列に縮退する
+     * (FFIE/FFCL は本体の FACT バージョンとは独立してバージョニングされるため)。
      */
-    public function test_unsupported_field_group_version_throws(): void
+    public function test_unsupported_field_group_version_degrades_gracefully(): void
     {
         $fieldGroupNode = $this->encodeNode('FFIE', pack('v', 0x8000 | 4));
         $node = $this->makeFactoryNode(1, $this->minimalV1Payload(), [$fieldGroupNode]);
 
-        $this->expectException(InvalidPakFileException::class);
-        $this->expectExceptionMessage('Unsupported ffield version: 4 (max known: 3)');
+        $result = $this->parser->parse($node);
 
-        $this->parser->parse($node);
+        $this->assertSame([], $result['field_groups']);
+        $this->assertSame(1000, $result['productivity']);
     }
 
     /**
-     * FFCL (field class) の未対応バージョン (2) は例外を投げる (回帰防止)。
+     * FFCL (field class) の未対応バージョン (2) も同様に factory 全体を
+     * 巻き込まず、field_groups のみ空配列に縮退する。
      */
-    public function test_unsupported_field_class_version_throws(): void
+    public function test_unsupported_field_class_version_degrades_gracefully(): void
     {
         $fieldClassNode = $this->encodeNode('FFCL', pack('v', 0x8000 | 2));
         // v3 field group payload: probability, max_fields, min_fields, start_fields, field_classes count
@@ -222,10 +225,10 @@ class FactoryParserTest extends TestCase
         $fieldGroupNode = $this->encodeNode('FFIE', pack('v', 0x8003).$fieldGroupPayload, [$fieldClassNode]);
         $node = $this->makeFactoryNode(1, $this->minimalV1Payload(), [$fieldGroupNode]);
 
-        $this->expectException(InvalidPakFileException::class);
-        $this->expectExceptionMessage('Unsupported ffldclass version: 2 (max known: 1)');
+        $result = $this->parser->parse($node);
 
-        $this->parser->parse($node);
+        $this->assertSame([], $result['field_groups']);
+        $this->assertSame(1000, $result['productivity']);
     }
 
     /**

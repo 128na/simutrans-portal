@@ -10,6 +10,7 @@ use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
+use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
 /**
@@ -77,7 +78,20 @@ class FactoryParser implements TypeParserInterface
         // Extract field group data from FFIE (factory field) child nodes.
         // Note: 'fields' (from parseCommonFields) is the raw field-slot count;
         // 'field_groups' holds the parsed FFIE/FFCL structures.
-        $result['field_groups'] = $this->extractFieldsFromChildren($node);
+        //
+        // FFIE/FFCL are versioned independently of the main FACT version, so an
+        // unsupported field-group/class version is caught here rather than left
+        // to propagate out of parse() - otherwise it would wipe out the whole
+        // factory's data (productivity, price, input, output, ...) instead of
+        // just the field section.
+        try {
+            $result['field_groups'] = $this->extractFieldsFromChildren($node);
+        } catch (InvalidPakFileException $exception) {
+            Log::warning('Skipping unsupported factory field group', [
+                'exception' => $exception->getMessage(),
+            ]);
+            $result['field_groups'] = [];
+        }
 
         // Extract smoke position data from FSMO (factory smoke) child nodes
         $result['smoke'] = $this->extractSmokeFromChildren($node);

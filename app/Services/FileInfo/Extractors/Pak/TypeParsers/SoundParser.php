@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 
@@ -48,10 +49,25 @@ class SoundParser implements TypeParserInterface
 
         return match ($stamp->version) {
             0 => throw InvalidPakFileException::unsupportedTypeVersion('sound', 0, self::MAX_SUPPORTED_VERSION),
-            1 => $this->parseVersion1($node->data),
-            2 => $this->parseVersion2($node->data),
+            1 => $this->parseVersion1($this->readerAfterStamp($node->data)),
+            2 => $this->parseVersion2($this->readerAfterStamp($node->data)),
             default => throw InvalidPakFileException::unsupportedTypeVersion('sound', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
+    }
+
+    /**
+     * Build a reader positioned just past the 2-byte version stamp.
+     *
+     * Only called for supported versions, so a too-short payload for the
+     * stamp itself is reported via the version-0 branch above instead of a
+     * generic EOF error.
+     */
+    private function readerAfterStamp(string $data): BinaryReader
+    {
+        $reader = new BinaryReader($data);
+        $reader->skip(2);
+
+        return $reader;
     }
 
     /**
@@ -59,16 +75,11 @@ class SoundParser implements TypeParserInterface
      *
      * @return array{version: int, sound_id: int}
      */
-    private function parseVersion1(string $data): array
+    private function parseVersion1(BinaryReader $reader): array
     {
-        $unpacked = unpack(
-            'vversion/vsound_id',
-            substr($data, 0, 4)
-        ) ?: [];
-
         return [
-            'version' => ($unpacked['version'] ?? 0) & 0x7FFF,
-            'sound_id' => $unpacked['sound_id'] ?? 0,
+            'version' => 1,
+            'sound_id' => $reader->readUint16LE(),
         ];
     }
 
@@ -77,27 +88,19 @@ class SoundParser implements TypeParserInterface
      *
      * @return array{version: int, sound_id: int, filename?: string}
      */
-    private function parseVersion2(string $data): array
+    private function parseVersion2(BinaryReader $reader): array
     {
-        $unpacked = unpack(
-            'vversion/vsound_id/vfilename_length',
-            substr($data, 0, 6)
-        ) ?: [];
-
-        $version = ($unpacked['version'] ?? 0) & 0x7FFF;
-        $soundId = $unpacked['sound_id'] ?? 0;
-        $filenameLength = $unpacked['filename_length'] ?? 0;
+        $soundId = $reader->readUint16LE();
+        $filenameLength = $reader->readUint16LE();
 
         $result = [
-            'version' => $version,
+            'version' => 2,
             'sound_id' => $soundId,
         ];
 
         // ファイル名が存在する場合
-        if ($filenameLength > 0 && strlen($data) >= 6 + $filenameLength) {
-            $filename = substr($data, 6, $filenameLength);
-            // null終端を削除
-            $filename = rtrim($filename, "\0");
+        if ($filenameLength > 0 && $reader->hasMore($filenameLength)) {
+            $filename = rtrim($reader->readString($filenameLength), "\0");
             if ($filename !== '') {
                 $result['filename'] = $filename;
             }

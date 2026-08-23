@@ -7,7 +7,6 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
-use RuntimeException;
 
 /**
  * Parser for way-object (WAYOBJ) nodes
@@ -31,26 +30,18 @@ class WayObjectParser implements TypeParserInterface
      */
     public function parse(Node $node): array
     {
-        $binaryData = $node->data;
-        $offset = 0;
+        $reader = new BinaryReader($node->data);
 
         // Read version (uint16 with high bit as version marker)
-        $versionData = unpack('v', substr($binaryData, $offset, 2));
-        if ($versionData === false) {
-            throw new RuntimeException('Failed to read way-object version');
-        }
-
-        $versionRaw = $versionData[1];
+        $versionRaw = $reader->readUint16LE();
         $version = $versionRaw & 0x7FFF; // Mask out high bit
 
-        $offset += 2;
-
         if ($version === 1) {
-            return $this->parseVersion1($binaryData, $offset);
+            return $this->parseVersion1($reader);
         }
 
         if ($version === 2) {
-            return $this->parseVersion2($binaryData, $offset);
+            return $this->parseVersion2($reader);
         }
 
         throw InvalidPakFileException::unsupportedTypeVersion('wayobj', $version, self::MAX_SUPPORTED_VERSION);
@@ -61,71 +52,17 @@ class WayObjectParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion1(string $binaryData, int $offset): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         $result = ['version' => 1];
 
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // maintenance (uint32)
-        $maintenanceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($maintenanceData === false) {
-            throw new RuntimeException('Failed to read maintenance');
-        }
-
-        $result['maintenance'] = $maintenanceData[1];
-        $offset += 4;
-
-        // topspeed (uint32)
-        $topspeedData = unpack('V', substr($binaryData, $offset, 4));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 4;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
-        $offset += 2;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // own_wtyp (uint8)
-        $ownWtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($ownWtypData === false) {
-            throw new RuntimeException('Failed to read own_wtyp');
-        }
-
-        $result['own_waytype'] = $ownWtypData[1];
+        $result['price'] = $reader->readUint32LE();
+        $result['maintenance'] = $reader->readUint32LE();
+        $result['topspeed'] = $reader->readUint32LE();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
+        $result['waytype'] = $reader->readUint8();
+        $result['own_waytype'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }
@@ -135,61 +72,17 @@ class WayObjectParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion2(string $binaryData, int $offset): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $result = ['version' => 2];
 
-        // price (sint64)
-        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // maintenance (sint64)
-        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // topspeed (uint32)
-        $topspeedData = unpack('V', substr($binaryData, $offset, 4));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 4;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
-        $offset += 2;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // own_wtyp (uint8)
-        $ownWtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($ownWtypData === false) {
-            throw new RuntimeException('Failed to read own_wtyp');
-        }
-
-        $result['own_waytype'] = $ownWtypData[1];
+        $result['price'] = $reader->readSint64LE();
+        $result['maintenance'] = $reader->readSint64LE();
+        $result['topspeed'] = $reader->readUint32LE();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
+        $result['waytype'] = $reader->readUint8();
+        $result['own_waytype'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }

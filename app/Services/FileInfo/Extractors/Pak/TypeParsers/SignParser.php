@@ -9,7 +9,6 @@ use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Parser for roadsign/signal (ROSG) nodes
@@ -49,23 +48,22 @@ class SignParser implements TypeParserInterface
     public function parse(Node $node): array
     {
         $binaryData = $node->data;
-        $offset = 0;
-
-        $stamp = VersionStamp::from($binaryData, $offset);
+        $stamp = VersionStamp::from($binaryData);
 
         if (! $stamp->isVersioned) {
             throw InvalidPakFileException::unsupportedTypeVersion('roadsign', 0, self::MAX_SUPPORTED_VERSION);
         }
 
-        $offset += 2;
+        $reader = new BinaryReader($binaryData);
+        $reader->skip(2);
 
         return match ($stamp->version) {
-            1 => $this->parseVersion1($binaryData, $offset),
-            2 => $this->parseVersion2($binaryData, $offset),
-            3 => $this->parseVersion3($binaryData, $offset),
-            4 => $this->parseVersion4($binaryData, $offset),
-            5 => $this->parseVersion5($binaryData, $offset),
-            6 => $this->parseVersion6($binaryData, $offset),
+            1 => $this->parseVersion1($reader),
+            2 => $this->parseVersion2($reader),
+            3 => $this->parseVersion3($reader),
+            4 => $this->parseVersion4($reader),
+            5 => $this->parseVersion5($reader),
+            6 => $this->parseVersion6($reader),
             default => throw InvalidPakFileException::unsupportedTypeVersion('roadsign', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
@@ -75,26 +73,12 @@ class SignParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion1(string $binaryData, int $offset): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         $result = ['version' => 1];
 
-        // min_speed (uint16) - kmh
-        $minSpeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($minSpeedData === false) {
-            throw new RuntimeException('Failed to read min_speed');
-        }
-
-        $result['min_speed'] = $minSpeedData[1];
-        $offset += 2;
-
-        // flags (uint8)
-        $flagsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($flagsData === false) {
-            throw new RuntimeException('Failed to read flags');
-        }
-
-        $result['flags'] = $flagsData[1];
+        $result['min_speed'] = $reader->readUint16LE();
+        $result['flags'] = $reader->readUint8();
 
         // Set defaults for missing fields
         $result['price'] = 50000;
@@ -112,35 +96,13 @@ class SignParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion2(string $binaryData, int $offset): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $result = ['version' => 2];
 
-        // min_speed (uint16)
-        $minSpeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($minSpeedData === false) {
-            throw new RuntimeException('Failed to read min_speed');
-        }
-
-        $result['min_speed'] = $minSpeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // flags (uint8)
-        $flagsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($flagsData === false) {
-            throw new RuntimeException('Failed to read flags');
-        }
-
-        $result['flags'] = $flagsData[1];
+        $result['min_speed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['flags'] = $reader->readUint8();
 
         // Set defaults
         $result['maintenance'] = 0;
@@ -157,62 +119,16 @@ class SignParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion3(string $binaryData, int $offset): array
+    private function parseVersion3(BinaryReader $reader): array
     {
         $result = ['version' => 3];
 
-        // min_speed (uint16)
-        $minSpeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($minSpeedData === false) {
-            throw new RuntimeException('Failed to read min_speed');
-        }
-
-        $result['min_speed'] = $minSpeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // flags (uint8)
-        $flagsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($flagsData === false) {
-            throw new RuntimeException('Failed to read flags');
-        }
-
-        $result['flags'] = $flagsData[1];
-        $offset += 1;
-
-        // wtyp (uint8) - NEW in version 3
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // intro_date (uint16) - NEW in version 3
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16) - NEW in version 3
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        $result['min_speed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['flags'] = $reader->readUint8();
+        $result['waytype'] = $reader->readUint8(); // NEW in version 3
+        $result['intro_date'] = $reader->readUint16LE(); // NEW in version 3
+        $result['retire_date'] = $reader->readUint16LE(); // NEW in version 3
 
         // Set defaults
         $result['maintenance'] = 0;
@@ -226,71 +142,17 @@ class SignParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion4(string $binaryData, int $offset): array
+    private function parseVersion4(BinaryReader $reader): array
     {
         $result = ['version' => 4];
 
-        // min_speed (uint16)
-        $minSpeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($minSpeedData === false) {
-            throw new RuntimeException('Failed to read min_speed');
-        }
-
-        $result['min_speed'] = $minSpeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // flags (uint8)
-        $flagsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($flagsData === false) {
-            throw new RuntimeException('Failed to read flags');
-        }
-
-        $result['flags'] = $flagsData[1];
-        $offset += 1;
-
-        // offset_left (sint8) - NEW in version 4
-        $offsetLeftData = unpack('c', substr($binaryData, $offset, 1));
-        if ($offsetLeftData === false) {
-            throw new RuntimeException('Failed to read offset_left');
-        }
-
-        $result['offset_left'] = $offsetLeftData[1];
-        $offset += 1;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        $result['min_speed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['flags'] = $reader->readUint8();
+        $result['offset_left'] = $reader->readSint8(); // NEW in version 4
+        $result['waytype'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
 
         // Set defaults
         $result['maintenance'] = 0;
@@ -303,71 +165,17 @@ class SignParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion5(string $binaryData, int $offset): array
+    private function parseVersion5(BinaryReader $reader): array
     {
         $result = ['version' => 5];
 
-        // min_speed (uint16)
-        $minSpeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($minSpeedData === false) {
-            throw new RuntimeException('Failed to read min_speed');
-        }
-
-        $result['min_speed'] = $minSpeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // flags (uint16) - CHANGED in version 5
-        $flagsData = unpack('v', substr($binaryData, $offset, 2));
-        if ($flagsData === false) {
-            throw new RuntimeException('Failed to read flags');
-        }
-
-        $result['flags'] = $flagsData[1];
-        $offset += 2;
-
-        // offset_left (sint8)
-        $offsetLeftData = unpack('c', substr($binaryData, $offset, 1));
-        if ($offsetLeftData === false) {
-            throw new RuntimeException('Failed to read offset_left');
-        }
-
-        $result['offset_left'] = $offsetLeftData[1];
-        $offset += 1;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        $result['min_speed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['flags'] = $reader->readUint16LE(); // CHANGED in version 5
+        $result['offset_left'] = $reader->readSint8();
+        $result['waytype'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
 
         // Set defaults
         $result['maintenance'] = 0;
@@ -380,70 +188,18 @@ class SignParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion6(string $binaryData, int $offset): array
+    private function parseVersion6(BinaryReader $reader): array
     {
         $result = ['version' => 6];
 
-        // min_speed (uint16)
-        $minSpeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($minSpeedData === false) {
-            throw new RuntimeException('Failed to read min_speed');
-        }
-
-        $result['min_speed'] = $minSpeedData[1];
-        $offset += 2;
-
-        // price (sint64) - CHANGED in version 6
-        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // maintenance (sint64) - NEW in version 6
-        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // flags (uint16)
-        $flagsData = unpack('v', substr($binaryData, $offset, 2));
-        if ($flagsData === false) {
-            throw new RuntimeException('Failed to read flags');
-        }
-
-        $result['flags'] = $flagsData[1];
-        $offset += 2;
-
-        // offset_left (sint8)
-        $offsetLeftData = unpack('c', substr($binaryData, $offset, 1));
-        if ($offsetLeftData === false) {
-            throw new RuntimeException('Failed to read offset_left');
-        }
-
-        $result['offset_left'] = $offsetLeftData[1];
-        $offset += 1;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        $result['min_speed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readSint64LE(); // CHANGED in version 6
+        $result['maintenance'] = $reader->readSint64LE(); // NEW in version 6
+        $result['flags'] = $reader->readUint16LE();
+        $result['offset_left'] = $reader->readSint8();
+        $result['waytype'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
 
         return $this->buildResult($result);
     }

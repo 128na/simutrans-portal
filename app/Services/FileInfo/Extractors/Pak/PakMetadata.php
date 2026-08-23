@@ -68,7 +68,7 @@ class PakMetadata
     {
         // Determine object type first
         $objectTypeEnum = ObjectTypeConverter::toEnum($node->type);
-        $objectType = ObjectTypeConverter::toString($node->type);
+        $objectType = $objectTypeEnum->value ?? sprintf('unknown_%s', $node->type);
 
         // Child node 0 is name (TEXT node)
         $nameNode = $node->getChild(0);

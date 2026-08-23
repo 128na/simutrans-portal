@@ -141,6 +141,26 @@ enum ImageFormat: string
 - `Jpeg`: 互換性重視
 - `Png`: 透過対応
 
+### PakObjectType（Pakオブジェクト種別）
+
+**ファイル**: `PakObjectType.php`
+
+```php
+enum PakObjectType: string
+{
+    case Vehicle = 'vehicle';
+    case Building = 'building';
+    // ... 他のトップレベル種別
+    case FactorySupplier = 'fsup';
+    // ... 他の内部（子ノード判別用）種別
+}
+```
+
+**用途**: Simutrans .pak ファイルのノード種別を表す（`ObjectTypeConverter::toEnum()`が生の4バイトノードコードから変換する）
+
+- `Vehicle`〜`MiscImages`: フロントエンドの`ObjectType`型にも現れるトップレベルのオブジェクト種別
+- `FactorySupplier`〜`ImageList2D`: パース処理内部でのみ子ノード判別に使われる種別
+
 ## 実装パターン
 
 ### Backed Enum

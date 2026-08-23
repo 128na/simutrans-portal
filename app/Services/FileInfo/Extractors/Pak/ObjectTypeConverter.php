@@ -33,7 +33,7 @@ class ObjectTypeConverter
             Node::OBJ_FACTORY_FIELD_CLASS => PakObjectType::FactoryFieldClass,
             Node::OBJ_FACTORY_SMOKE => PakObjectType::FactorySmoke,
             Node::OBJ_XREF => PakObjectType::Xref,
-            Node::OBJ_CITYCAR, 'CCAR' => PakObjectType::Citycar, // CCAR is used by makeobj 60.8+
+            Node::OBJ_CITYCAR => PakObjectType::Citycar, // Node::OBJ_CITYCAR is itself 'CCAR' (makeobj 60.8+)
             Node::OBJ_PEDESTRIAN => PakObjectType::Pedestrian,
             Node::OBJ_SOUND => PakObjectType::Sound,
             Node::OBJ_MENU => PakObjectType::Menu,

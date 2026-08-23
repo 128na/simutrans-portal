@@ -11,9 +11,11 @@ use App\Services\FileInfo\Extractors\Pak\ObjectTypeConverter;
  *
  * 値は既存の {@see ObjectTypeConverter::toString()}
  * が返してきた文字列と完全に一致させる（DB永続化・フロントエンドの ObjectType 型契約を
- * 変えないため）。Vehicle〜MiscImages はフロントの ObjectType 型にも現れるトップレベルの
- * オブジェクト種別、FactorySupplier〜ImageList2D はパース内部でのみ子ノード判別に使われる
- * 種別。
+ * 変えないため）。
+ *
+ * - Vehicle〜MiscImages: フロントの ObjectType 型にも現れるトップレベルのオブジェクト種別
+ * - FactorySupplier〜Xref: FACT（工場）ノードの子ノード判別専用（パース内部のみで使用）
+ * - Tile〜ImageList2D: 画像リソース系ノードの子ノード判別専用（パース内部のみで使用）
  */
 enum PakObjectType: string
 {
@@ -40,7 +42,6 @@ enum PakObjectType: string
     case Smoke = 'smoke';
     case MiscImages = 'miscimages';
 
-    // 内部の子ノード判別用（FACTの子）
     case FactorySupplier = 'fsup';
     case FactoryProduct = 'fpro';
     case FactoryFieldGroup = 'ffield';
@@ -48,7 +49,6 @@ enum PakObjectType: string
     case FactorySmoke = 'fsmoke';
     case Xref = 'xref';
 
-    // 内部の子ノード判別用（画像リソース系）
     case Tile = 'tile';
     case Image = 'image';
     case ImageList = 'imagelist';

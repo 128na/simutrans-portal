@@ -38,7 +38,6 @@ export type ObjectType =
 /**
  * Waytype enum
  * enum waytype_t: invalid=-1, ignore=0, road=1, track=2, water=3, overheadlines=4, monorail=5, maglev=6, tram=7, narrowgauge=8, air=16, powerline=128, any=255
- * @see app\Services\FileInfo\Extractors\Pak\WayTypeConverter.php
  */
 export type WayType = -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 16 | 128 | 255;
 
@@ -203,14 +202,14 @@ export const BUILDING_TYPE_TRANSLATIONS: Record<number, string> = {
 
 /**
  * System type translations
+ * enum systemtype_t: type_flat=0, type_elevated=1(=type_runway), type_tram=7, type_river=255(=type_all)
+ * モノレール/リニア/ナローゲージは systemtype ではなく waytype 側の区分 (WAYTYPE_TRANSLATIONS を参照)
  */
 export const SYSTEM_TYPE_TRANSLATIONS: Record<number, string> = {
   0: "地上", // flat
-  1: "高架", // elevated
-  2: "市電", // tram
-  3: "モノレール", // monorail
-  4: "リニア", // maglev
-  5: "ナローゲージ", // narrowgauge
+  1: "高架", // elevated / runway
+  7: "市電", // tram
+  255: "河川", // river / all
 };
 
 /**

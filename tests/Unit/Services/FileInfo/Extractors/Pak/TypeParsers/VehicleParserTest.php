@@ -195,6 +195,28 @@ class VehicleParserTest extends TestCase
         $this->assertSame(24240, $result['retire_date']);
     }
 
+    /**
+     * v0 (レガシー、バージョンスタンプなし) は intro_date/retire_date を保存しないため、
+     * SimutransDefaults にもとづくデフォルト値 (変換後) になる必要がある
+     * (vehicle_reader.cc: version==0 の分岐、および version<5 の共通変換)。
+     */
+    public function test_version0_defaults_to_simutrans_default_dates(): void
+    {
+        $data = pack('v', 1);      // waytype = 1 (road, 高位ビット未設定 = v0)
+        $data .= pack('v', 100);   // capacity
+        $data .= pack('V', 10000); // price
+        $data .= pack('v', 80);    // topspeed
+        $data .= pack('v', 10);    // weight
+        $data .= pack('v', 200);   // power
+        $data .= pack('v', 50);    // running_cost
+
+        $result = $this->parser->parse($this->makeNode($data));
+
+        $this->assertNotNull($result);
+        $this->assertSame(1900 * 12, $result['intro_date']);
+        $this->assertSame(2999 * 12, $result['retire_date']);
+    }
+
     private function makeNode(string $data): Node
     {
         $size = strlen($data);

@@ -91,6 +91,10 @@ class VehicleParser implements TypeParserInterface
             'weight' => $reader->readUint16LE() * 1000,
             'power' => $reader->readUint16LE(),
             'running_cost' => $reader->readUint16LE(),
+            // v0 は intro_date/retire_date を保持しないため、変換前の base-16
+            // デフォルト値を設定する (vehicle_reader.cc: version==0 の分岐)
+            'intro_date' => SimutransDefaults::INTRO_YEAR * 16,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * 16,
         ];
     }
 

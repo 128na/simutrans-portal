@@ -85,8 +85,8 @@ class SignParser implements TypeParserInterface
         $result['maintenance'] = 0;
         $result['offset_left'] = 14;
         $result['waytype'] = 1; // road_wt
-        $result['intro_date'] = SimutransDefaults::INTRO_YEAR * 12;
-        $result['retire_date'] = SimutransDefaults::RETIRE_YEAR * 12;
+        $result['intro_date'] = SimutransDefaults::INTRO_YEAR * SimutransDefaults::CURRENT_DATE_BASE;
+        $result['retire_date'] = SimutransDefaults::RETIRE_YEAR * SimutransDefaults::CURRENT_DATE_BASE;
 
         return $this->buildResult($result);
     }
@@ -108,8 +108,8 @@ class SignParser implements TypeParserInterface
         $result['maintenance'] = 0;
         $result['offset_left'] = 14;
         $result['waytype'] = 1; // road_wt
-        $result['intro_date'] = SimutransDefaults::INTRO_YEAR * 12;
-        $result['retire_date'] = SimutransDefaults::RETIRE_YEAR * 12;
+        $result['intro_date'] = SimutransDefaults::INTRO_YEAR * SimutransDefaults::CURRENT_DATE_BASE;
+        $result['retire_date'] = SimutransDefaults::RETIRE_YEAR * SimutransDefaults::CURRENT_DATE_BASE;
 
         return $this->buildResult($result);
     }

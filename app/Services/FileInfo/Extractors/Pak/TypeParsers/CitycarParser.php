@@ -60,8 +60,8 @@ class CitycarParser implements TypeParserInterface
             'version' => 0,
             'distribution_weight' => $distributionWeight,
             'topspeed' => 80, // Default 80 km/h
-            'intro_date' => SimutransDefaults::INTRO_YEAR * 12,
-            'retire_date' => SimutransDefaults::RETIRE_YEAR * 12,
+            'intro_date' => SimutransDefaults::INTRO_YEAR * SimutransDefaults::CURRENT_DATE_BASE,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * SimutransDefaults::CURRENT_DATE_BASE,
         ];
     }
 
@@ -80,13 +80,18 @@ class CitycarParser implements TypeParserInterface
         $topspeedRaw = $reader->readUint16LE();
         $result['topspeed'] = intdiv($topspeedRaw, 16);
 
-        // intro_date (uint16) - packed format (year*16 + month)
+        // intro_date/retire_date (uint16) - packed format (year*16 + month).
+        // NOTE: citycar_reader.cc uses "% 12" here, NOT "% 16" like
+        // vehicle_reader.cc/way_reader.cc's shared base-16->12 conversion
+        // (SimutransDefaults::LEGACY_DATE_BASE). This was verified directly
+        // against upstream citycar_reader_t::read_node() - it is upstream's
+        // own (quirky but real) formula, not a bug in this port. Do NOT
+        // "fix" this remainder to %16 to match the other parsers.
         $introDateRaw = $reader->readUint16LE();
-        $result['intro_date'] = intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 12);
+        $result['intro_date'] = intdiv($introDateRaw, SimutransDefaults::LEGACY_DATE_BASE) * SimutransDefaults::CURRENT_DATE_BASE + ($introDateRaw % 12);
 
-        // retire_date (uint16) - packed format (year*16 + month)
         $retireDateRaw = $reader->readUint16LE();
-        $result['retire_date'] = intdiv($retireDateRaw, 16) * 12 + ($retireDateRaw % 12);
+        $result['retire_date'] = intdiv($retireDateRaw, SimutransDefaults::LEGACY_DATE_BASE) * SimutransDefaults::CURRENT_DATE_BASE + ($retireDateRaw % 12);
 
         return $result;
     }

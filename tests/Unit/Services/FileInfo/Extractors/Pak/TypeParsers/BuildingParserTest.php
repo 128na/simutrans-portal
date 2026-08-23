@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BuildingParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class BuildingParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private BuildingParser $parser;
 
     protected function setUp(): void
@@ -37,7 +38,7 @@ class BuildingParserTest extends TestCase
         $payload .= pack('V', 1);     // layouts
         $payload .= pack('V', 0x2A);  // flags (直後に来るはず)
 
-        $result = $this->parser->parse($this->makeNode($payload));
+        $result = $this->parser->parse($this->makeNode('BUIL', $payload));
 
         $this->assertSame(0, $result['version']);
         $this->assertSame(39, $result['type']);
@@ -71,7 +72,7 @@ class BuildingParserTest extends TestCase
         $payload .= pack('v', 300);   // animation_time
         $payload .= pack('C', 2);     // allow_underground
 
-        $result = $this->parser->parse($this->makeVersionedNode(7, $payload));
+        $result = $this->parser->parse($this->makeVersionedNode('BUIL', 7, $payload));
 
         $this->assertSame(7, $result['version']);
         $this->assertArrayHasKey('allow_underground', $result);
@@ -104,7 +105,7 @@ class BuildingParserTest extends TestCase
         $payload .= pack('l', 10000); // price (int32)
         $payload .= pack('C', 1);     // allow_underground
 
-        $result = $this->parser->parse($this->makeVersionedNode(8, $payload));
+        $result = $this->parser->parse($this->makeVersionedNode('BUIL', 8, $payload));
 
         $this->assertSame(8, $result['version']);
         $this->assertSame(64, $result['capacity']);
@@ -123,21 +124,6 @@ class BuildingParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported building version: 12 (max known: 11)');
 
-        $this->parser->parse($this->makeVersionedNode(12, ''));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'BUIL'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
-    }
-
-    private function makeVersionedNode(int $version, string $payload): Node
-    {
-        $data = pack('v', 0x8000 | $version).$payload;
-
-        return $this->makeNode($data);
+        $this->parser->parse($this->makeVersionedNode('BUIL', 12, ''));
     }
 }

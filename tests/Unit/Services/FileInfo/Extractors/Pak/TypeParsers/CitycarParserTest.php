@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\CitycarParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class CitycarParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private CitycarParser $parser;
 
     protected function setUp(): void
@@ -30,7 +31,7 @@ class CitycarParserTest extends TestCase
         // firstUint16 (高位ビット未設定) = distribution_weight
         $data = pack('v', 50);
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('CCAR', $data));
 
         $this->assertSame(50, $result['distribution_weight']);
         $this->assertSame(1900 * 12, $result['intro_date']);
@@ -49,7 +50,7 @@ class CitycarParserTest extends TestCase
         $payload .= pack('v', 31840); // intro_date raw → (31840/16)*12+(31840%12) = 1990*12+4 = 23884
         $payload .= pack('v', 47984); // retire_date raw → (47984/16)*12+(47984%12) = 2999*12+8 = 35996
 
-        $result = $this->parser->parse($this->makeVersionedNode(1, $payload));
+        $result = $this->parser->parse($this->makeVersionedNode('CCAR', 1, $payload));
 
         $this->assertSame(100, $result['topspeed']);
         $this->assertSame(23884, $result['intro_date']);
@@ -66,7 +67,7 @@ class CitycarParserTest extends TestCase
         $payload .= pack('v', 23880); // intro_date (既に base-12)
         $payload .= pack('v', 24240); // retire_date (既に base-12)
 
-        $result = $this->parser->parse($this->makeVersionedNode(2, $payload));
+        $result = $this->parser->parse($this->makeVersionedNode('CCAR', 2, $payload));
 
         $this->assertSame(23880, $result['intro_date']);
         $this->assertSame(24240, $result['retire_date']);
@@ -80,22 +81,6 @@ class CitycarParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported citycar version: 3 (max known: 2)');
 
-        $this->parser->parse($this->makeVersionedNode(3, ''));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        // legacy (v0): 高位ビットを立てない生のfirstUint16をそのまま使う
-        $size = strlen($data);
-        $binary = 'CCAR'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
-    }
-
-    private function makeVersionedNode(int $version, string $payload): Node
-    {
-        $data = pack('v', 0x8000 | $version).$payload;
-
-        return $this->makeNode($data);
+        $this->parser->parse($this->makeVersionedNode('CCAR', 3, ''));
     }
 }

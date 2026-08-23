@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\GoodParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class GoodParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private GoodParser $parser;
 
     protected function setUp(): void
@@ -29,14 +30,6 @@ class GoodParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported good version: 5 (max known: 4)');
 
-        $this->parser->parse($this->makeNode(pack('v', 0x8000 | 5)));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'GOOD'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        $this->parser->parse($this->makeNode('GOOD', pack('v', 0x8000 | 5)));
     }
 }

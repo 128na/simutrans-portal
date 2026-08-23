@@ -8,7 +8,6 @@ use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Parser for bridge (BRDG) nodes
@@ -31,31 +30,30 @@ class BridgeParser implements TypeParserInterface
     public function parse(Node $node): array
     {
         $binaryData = $node->data;
-        $offset = 0;
-
-        $stamp = VersionStamp::from($binaryData, $offset);
+        $stamp = VersionStamp::from($binaryData);
+        $reader = new BinaryReader($binaryData);
 
         if ($stamp->isVersioned) {
-            $offset += 2;
+            $reader->skip(2);
             $version = $stamp->version;
 
             $data = match ($version) {
-                1 => $this->parseVersion1($binaryData, $offset),
-                2 => $this->parseVersion2($binaryData, $offset),
-                3 => $this->parseVersion3($binaryData, $offset),
-                4 => $this->parseVersion4($binaryData, $offset),
-                5 => $this->parseVersion5($binaryData, $offset),
-                6 => $this->parseVersion6($binaryData, $offset),
-                7, 8 => $this->parseVersion7And8($binaryData, $offset, $version),
-                9 => $this->parseVersion9($binaryData, $offset),
-                10 => $this->parseVersion10($binaryData, $offset),
-                11 => $this->parseVersion11($binaryData, $offset),
+                1 => $this->parseVersion1($reader),
+                2 => $this->parseVersion2($reader),
+                3 => $this->parseVersion3($reader),
+                4 => $this->parseVersion4($reader),
+                5 => $this->parseVersion5($reader),
+                6 => $this->parseVersion6($reader),
+                7, 8 => $this->parseVersion7And8($reader, $version),
+                9 => $this->parseVersion9($reader),
+                10 => $this->parseVersion10($reader),
+                11 => $this->parseVersion11($reader),
                 default => throw InvalidPakFileException::unsupportedTypeVersion('bridge', $version, self::MAX_SUPPORTED_VERSION),
             };
         } else {
             // Version 0 (legacy format): firstUint16 is actually waytype
             $version = 0;
-            $data = $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
+            $data = $this->parseVersion0($reader, $stamp->firstUint16);
         }
 
         // clip_below defaults based on waytype for versions < 11 (from bridge_reader.cc)
@@ -71,7 +69,7 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion0(string $binaryData, int $offset, int $wtyp): array
+    private function parseVersion0(BinaryReader $reader, int $wtyp): array
     {
         $result = [
             'version' => 0,
@@ -79,15 +77,9 @@ class BridgeParser implements TypeParserInterface
         ];
 
         // Skip menupos (uint16, deprecated)
-        $offset += 2;
+        $reader->skip(2);
 
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
+        $result['price'] = $reader->readUint32LE();
 
         // Set defaults for missing fields
         $result['maintenance'] = 0;
@@ -109,35 +101,14 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion1(string $binaryData, int $offset): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         $result = ['version' => 1];
 
         // wtyp (uint16, will be cast to uint8)
-        $wtypData = unpack('v', substr($binaryData, $offset, 2));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1] & 0xFF;
-        $offset += 2;
-
-        // topspeed (uint16)
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
+        $result['waytype'] = $reader->readUint16LE() & 0xFF;
+        $result['topspeed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
 
         // Set defaults
         $result['maintenance'] = 0;
@@ -158,44 +129,14 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion2(string $binaryData, int $offset): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $result = ['version' => 2];
 
-        // topspeed (uint16)
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // maintenance (uint32)
-        $maintenanceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($maintenanceData === false) {
-            throw new RuntimeException('Failed to read maintenance');
-        }
-
-        $result['maintenance'] = $maintenanceData[1];
-        $offset += 4;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
+        $result['topspeed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['maintenance'] = $reader->readUint32LE();
+        $result['waytype'] = $reader->readUint8();
 
         // Set defaults
         $result['axle_load'] = 9999;
@@ -215,18 +156,12 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion3(string $binaryData, int $offset): array
+    private function parseVersion3(BinaryReader $reader): array
     {
-        $result = $this->parseVersion2($binaryData, $offset);
+        $result = $this->parseVersion2($reader);
         $result['version'] = 3;
 
-        // pillars_every (uint8)
-        $pillarsData = unpack('C', substr($binaryData, $offset + 11, 1));
-        if ($pillarsData === false) {
-            throw new RuntimeException('Failed to read pillars_every');
-        }
-
-        $result['pillars_every'] = $pillarsData[1];
+        $result['pillars_every'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }
@@ -236,18 +171,12 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion4(string $binaryData, int $offset): array
+    private function parseVersion4(BinaryReader $reader): array
     {
-        $result = $this->parseVersion3($binaryData, $offset);
+        $result = $this->parseVersion3($reader);
         $result['version'] = 4;
 
-        // max_length (uint8)
-        $maxLengthData = unpack('C', substr($binaryData, $offset + 12, 1));
-        if ($maxLengthData === false) {
-            throw new RuntimeException('Failed to read max_length');
-        }
-
-        $result['max_length'] = $maxLengthData[1];
+        $result['max_length'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }
@@ -257,26 +186,13 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion5(string $binaryData, int $offset): array
+    private function parseVersion5(BinaryReader $reader): array
     {
-        $result = $this->parseVersion4($binaryData, $offset);
+        $result = $this->parseVersion4($reader);
         $result['version'] = 5;
 
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset + 13, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset + 15, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
 
         return $this->buildResult($result);
     }
@@ -286,18 +202,12 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion6(string $binaryData, int $offset): array
+    private function parseVersion6(BinaryReader $reader): array
     {
-        $result = $this->parseVersion5($binaryData, $offset);
+        $result = $this->parseVersion5($reader);
         $result['version'] = 6;
 
-        // number_of_seasons (uint8)
-        $seasonsData = unpack('C', substr($binaryData, $offset + 17, 1));
-        if ($seasonsData === false) {
-            throw new RuntimeException('Failed to read number_of_seasons');
-        }
-
-        $result['number_of_seasons'] = $seasonsData[1];
+        $result['number_of_seasons'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }
@@ -307,107 +217,21 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion7And8(string $binaryData, int $offset, int $version): array
+    private function parseVersion7And8(BinaryReader $reader, int $version): array
     {
         $result = ['version' => $version];
 
-        // topspeed (uint16)
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // maintenance (uint32)
-        $maintenanceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($maintenanceData === false) {
-            throw new RuntimeException('Failed to read maintenance');
-        }
-
-        $result['maintenance'] = $maintenanceData[1];
-        $offset += 4;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // pillars_every (uint8)
-        $pillarsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($pillarsData === false) {
-            throw new RuntimeException('Failed to read pillars_every');
-        }
-
-        $result['pillars_every'] = $pillarsData[1];
-        $offset += 1;
-
-        // max_length (uint8)
-        $maxLengthData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxLengthData === false) {
-            throw new RuntimeException('Failed to read max_length');
-        }
-
-        $result['max_length'] = $maxLengthData[1];
-        $offset += 1;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
-        $offset += 2;
-
-        // pillars_asymmetric (uint8 as bool)
-        $asymmetricData = unpack('C', substr($binaryData, $offset, 1));
-        if ($asymmetricData === false) {
-            throw new RuntimeException('Failed to read pillars_asymmetric');
-        }
-
-        $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
-        $offset += 1;
-
-        // max_height (uint8)
-        $maxHeightData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxHeightData === false) {
-            throw new RuntimeException('Failed to read max_height');
-        }
-
-        $result['max_height'] = $maxHeightData[1];
-        $offset += 1;
-
-        // number_of_seasons (uint8)
-        $seasonsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($seasonsData === false) {
-            throw new RuntimeException('Failed to read number_of_seasons');
-        }
-
-        $result['number_of_seasons'] = $seasonsData[1];
+        $result['topspeed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['maintenance'] = $reader->readUint32LE();
+        $result['waytype'] = $reader->readUint8();
+        $result['pillars_every'] = $reader->readUint8();
+        $result['max_length'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
+        $result['pillars_asymmetric'] = $reader->readUint8() !== 0;
+        $result['max_height'] = $reader->readUint8();
+        $result['number_of_seasons'] = $reader->readUint8();
 
         // Set defaults
         $result['axle_load'] = 9999;
@@ -420,116 +244,22 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion9(string $binaryData, int $offset): array
+    private function parseVersion9(BinaryReader $reader): array
     {
         $result = ['version' => 9];
 
-        // topspeed (uint16)
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 2;
-
-        // price (uint32)
-        $priceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($priceData === false) {
-            throw new RuntimeException('Failed to read price');
-        }
-
-        $result['price'] = $priceData[1];
-        $offset += 4;
-
-        // maintenance (uint32)
-        $maintenanceData = unpack('V', substr($binaryData, $offset, 4));
-        if ($maintenanceData === false) {
-            throw new RuntimeException('Failed to read maintenance');
-        }
-
-        $result['maintenance'] = $maintenanceData[1];
-        $offset += 4;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // pillars_every (uint8)
-        $pillarsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($pillarsData === false) {
-            throw new RuntimeException('Failed to read pillars_every');
-        }
-
-        $result['pillars_every'] = $pillarsData[1];
-        $offset += 1;
-
-        // max_length (uint8)
-        $maxLengthData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxLengthData === false) {
-            throw new RuntimeException('Failed to read max_length');
-        }
-
-        $result['max_length'] = $maxLengthData[1];
-        $offset += 1;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
-        $offset += 2;
-
-        // pillars_asymmetric (uint8 as bool)
-        $asymmetricData = unpack('C', substr($binaryData, $offset, 1));
-        if ($asymmetricData === false) {
-            throw new RuntimeException('Failed to read pillars_asymmetric');
-        }
-
-        $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
-        $offset += 1;
-
-        // axle_load (uint16) - NEW in version 9
-        $axleLoadData = unpack('v', substr($binaryData, $offset, 2));
-        if ($axleLoadData === false) {
-            throw new RuntimeException('Failed to read axle_load');
-        }
-
-        $result['axle_load'] = $axleLoadData[1];
-        $offset += 2;
-
-        // max_height (uint8)
-        $maxHeightData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxHeightData === false) {
-            throw new RuntimeException('Failed to read max_height');
-        }
-
-        $result['max_height'] = $maxHeightData[1];
-        $offset += 1;
-
-        // number_of_seasons (uint8)
-        $seasonsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($seasonsData === false) {
-            throw new RuntimeException('Failed to read number_of_seasons');
-        }
-
-        $result['number_of_seasons'] = $seasonsData[1];
+        $result['topspeed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readUint32LE();
+        $result['maintenance'] = $reader->readUint32LE();
+        $result['waytype'] = $reader->readUint8();
+        $result['pillars_every'] = $reader->readUint8();
+        $result['max_length'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
+        $result['pillars_asymmetric'] = $reader->readUint8() !== 0;
+        $result['axle_load'] = $reader->readUint16LE(); // NEW in version 9
+        $result['max_height'] = $reader->readUint8();
+        $result['number_of_seasons'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }
@@ -539,106 +269,22 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion10(string $binaryData, int $offset): array
+    private function parseVersion10(BinaryReader $reader): array
     {
         $result = ['version' => 10];
 
-        // topspeed (uint16)
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 2;
-
-        // price (sint64) - CHANGED in version 10
-        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // maintenance (sint64) - CHANGED in version 10
-        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // wtyp (uint8)
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        // pillars_every (uint8)
-        $pillarsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($pillarsData === false) {
-            throw new RuntimeException('Failed to read pillars_every');
-        }
-
-        $result['pillars_every'] = $pillarsData[1];
-        $offset += 1;
-
-        // max_length (uint8)
-        $maxLengthData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxLengthData === false) {
-            throw new RuntimeException('Failed to read max_length');
-        }
-
-        $result['max_length'] = $maxLengthData[1];
-        $offset += 1;
-
-        // intro_date (uint16)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
-        $offset += 2;
-
-        // pillars_asymmetric (uint8 as bool)
-        $asymmetricData = unpack('C', substr($binaryData, $offset, 1));
-        if ($asymmetricData === false) {
-            throw new RuntimeException('Failed to read pillars_asymmetric');
-        }
-
-        $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
-        $offset += 1;
-
-        // axle_load (uint16)
-        $axleLoadData = unpack('v', substr($binaryData, $offset, 2));
-        if ($axleLoadData === false) {
-            throw new RuntimeException('Failed to read axle_load');
-        }
-
-        $result['axle_load'] = $axleLoadData[1];
-        $offset += 2;
-
-        // max_height (uint8)
-        $maxHeightData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxHeightData === false) {
-            throw new RuntimeException('Failed to read max_height');
-        }
-
-        $result['max_height'] = $maxHeightData[1];
-        $offset += 1;
-
-        // number_of_seasons (uint8)
-        $seasonsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($seasonsData === false) {
-            throw new RuntimeException('Failed to read number_of_seasons');
-        }
-
-        $result['number_of_seasons'] = $seasonsData[1];
+        $result['topspeed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readSint64LE(); // CHANGED in version 10
+        $result['maintenance'] = $reader->readSint64LE(); // CHANGED in version 10
+        $result['waytype'] = $reader->readUint8();
+        $result['pillars_every'] = $reader->readUint8();
+        $result['max_length'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
+        $result['pillars_asymmetric'] = $reader->readUint8() !== 0;
+        $result['axle_load'] = $reader->readUint16LE();
+        $result['max_height'] = $reader->readUint8();
+        $result['number_of_seasons'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }
@@ -648,91 +294,23 @@ class BridgeParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion11(string $binaryData, int $offset): array
+    private function parseVersion11(BinaryReader $reader): array
     {
         $result = ['version' => 11];
 
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-        $result['topspeed'] = $topspeedData[1];
-        $offset += 2;
-
-        $result['price'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        $result['maintenance'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        $wtypData = unpack('C', substr($binaryData, $offset, 1));
-        if ($wtypData === false) {
-            throw new RuntimeException('Failed to read wtyp');
-        }
-        $result['waytype'] = $wtypData[1];
-        $offset += 1;
-
-        $pillarsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($pillarsData === false) {
-            throw new RuntimeException('Failed to read pillars_every');
-        }
-        $result['pillars_every'] = $pillarsData[1];
-        $offset += 1;
-
-        $maxLengthData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxLengthData === false) {
-            throw new RuntimeException('Failed to read max_length');
-        }
-        $result['max_length'] = $maxLengthData[1];
-        $offset += 1;
-
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-        $result['retire_date'] = $retireDateData[1];
-        $offset += 2;
-
-        $asymmetricData = unpack('C', substr($binaryData, $offset, 1));
-        if ($asymmetricData === false) {
-            throw new RuntimeException('Failed to read pillars_asymmetric');
-        }
-        $result['pillars_asymmetric'] = $asymmetricData[1] !== 0;
-        $offset += 1;
-
-        $axleLoadData = unpack('v', substr($binaryData, $offset, 2));
-        if ($axleLoadData === false) {
-            throw new RuntimeException('Failed to read axle_load');
-        }
-        $result['axle_load'] = $axleLoadData[1];
-        $offset += 2;
-
-        $maxHeightData = unpack('C', substr($binaryData, $offset, 1));
-        if ($maxHeightData === false) {
-            throw new RuntimeException('Failed to read max_height');
-        }
-        $result['max_height'] = $maxHeightData[1];
-        $offset += 1;
-
-        $clipBelowData = unpack('C', substr($binaryData, $offset, 1));
-        if ($clipBelowData === false) {
-            throw new RuntimeException('Failed to read clip_below');
-        }
-        $result['clip_below'] = $clipBelowData[1] !== 0;
-        $offset += 1;
-
-        $seasonsData = unpack('C', substr($binaryData, $offset, 1));
-        if ($seasonsData === false) {
-            throw new RuntimeException('Failed to read number_of_seasons');
-        }
-        $result['number_of_seasons'] = $seasonsData[1];
+        $result['topspeed'] = $reader->readUint16LE();
+        $result['price'] = $reader->readSint64LE();
+        $result['maintenance'] = $reader->readSint64LE();
+        $result['waytype'] = $reader->readUint8();
+        $result['pillars_every'] = $reader->readUint8();
+        $result['max_length'] = $reader->readUint8();
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
+        $result['pillars_asymmetric'] = $reader->readUint8() !== 0;
+        $result['axle_load'] = $reader->readUint16LE();
+        $result['max_height'] = $reader->readUint8();
+        $result['clip_below'] = $reader->readUint8() !== 0;
+        $result['number_of_seasons'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }

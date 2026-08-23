@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 
@@ -46,10 +47,13 @@ class SoundParser implements TypeParserInterface
     {
         $stamp = VersionStamp::from($node->data);
 
+        $reader = new BinaryReader($node->data);
+        $reader->skip(2);
+
         return match ($stamp->version) {
             0 => throw InvalidPakFileException::unsupportedTypeVersion('sound', 0, self::MAX_SUPPORTED_VERSION),
-            1 => $this->parseVersion1($node->data),
-            2 => $this->parseVersion2($node->data),
+            1 => $this->parseVersion1($reader, $stamp->version),
+            2 => $this->parseVersion2($reader, $stamp->version),
             default => throw InvalidPakFileException::unsupportedTypeVersion('sound', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
@@ -59,16 +63,11 @@ class SoundParser implements TypeParserInterface
      *
      * @return array{version: int, sound_id: int}
      */
-    private function parseVersion1(string $data): array
+    private function parseVersion1(BinaryReader $reader, int $version): array
     {
-        $unpacked = unpack(
-            'vversion/vsound_id',
-            substr($data, 0, 4)
-        ) ?: [];
-
         return [
-            'version' => ($unpacked['version'] ?? 0) & 0x7FFF,
-            'sound_id' => $unpacked['sound_id'] ?? 0,
+            'version' => $version,
+            'sound_id' => $reader->readUint16LE(),
         ];
     }
 
@@ -77,16 +76,10 @@ class SoundParser implements TypeParserInterface
      *
      * @return array{version: int, sound_id: int, filename?: string}
      */
-    private function parseVersion2(string $data): array
+    private function parseVersion2(BinaryReader $reader, int $version): array
     {
-        $unpacked = unpack(
-            'vversion/vsound_id/vfilename_length',
-            substr($data, 0, 6)
-        ) ?: [];
-
-        $version = ($unpacked['version'] ?? 0) & 0x7FFF;
-        $soundId = $unpacked['sound_id'] ?? 0;
-        $filenameLength = $unpacked['filename_length'] ?? 0;
+        $soundId = $reader->readUint16LE();
+        $filenameLength = $reader->readUint16LE();
 
         $result = [
             'version' => $version,
@@ -94,10 +87,8 @@ class SoundParser implements TypeParserInterface
         ];
 
         // ファイル名が存在する場合
-        if ($filenameLength > 0 && strlen($data) >= 6 + $filenameLength) {
-            $filename = substr($data, 6, $filenameLength);
-            // null終端を削除
-            $filename = rtrim($filename, "\0");
+        if ($filenameLength > 0 && $reader->hasMore($filenameLength)) {
+            $filename = rtrim($reader->readString($filenameLength), "\0");
             if ($filename !== '') {
                 $result['filename'] = $filename;
             }

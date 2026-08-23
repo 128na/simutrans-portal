@@ -9,7 +9,6 @@ use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Parser for goods/freight (GOOD) nodes
@@ -42,22 +41,21 @@ class GoodParser implements TypeParserInterface
         }
 
         $binaryData = $node->data;
-        $offset = 0;
-
-        $stamp = VersionStamp::from($binaryData, $offset);
+        $stamp = VersionStamp::from($binaryData);
+        $reader = new BinaryReader($binaryData);
 
         if ($stamp->isVersioned) {
-            $offset += 2;
+            $reader->skip(2);
             $result = match ($stamp->version) {
-                1 => $this->parseVersion1($binaryData, $offset),
-                2 => $this->parseVersion2($binaryData, $offset),
-                3 => $this->parseVersion3($binaryData, $offset),
-                4 => $this->parseVersion4($binaryData, $offset),
+                1 => $this->parseVersion1($reader),
+                2 => $this->parseVersion2($reader),
+                3 => $this->parseVersion3($reader),
+                4 => $this->parseVersion4($reader),
                 default => throw InvalidPakFileException::unsupportedTypeVersion('good', $stamp->version, self::MAX_SUPPORTED_VERSION),
             };
         } else {
             // Version 0 (legacy format): firstUint16 is actually base_value
-            $result = $this->parseVersion0($binaryData, $offset, $stamp->firstUint16);
+            $result = $this->parseVersion0($reader, $stamp->firstUint16);
         }
 
         // Add metric to result
@@ -73,20 +71,14 @@ class GoodParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion0(string $binaryData, int $offset, int $baseValue): array
+    private function parseVersion0(BinaryReader $reader, int $baseValue): array
     {
         $result = [
             'version' => 0,
             'base_value' => $baseValue,
         ];
 
-        // catg (uint16)
-        $catgData = unpack('v', substr($binaryData, $offset, 2));
-        if ($catgData === false) {
-            throw new RuntimeException('Failed to read catg');
-        }
-
-        $result['catg'] = $catgData[1] & 0xFF; // Cast to uint8
+        $result['catg'] = $reader->readUint16LE() & 0xFF; // Cast to uint8
 
         // Set defaults for missing fields
         $result['speed_bonus'] = 0;
@@ -101,35 +93,13 @@ class GoodParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion1(string $binaryData, int $offset): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         $result = ['version' => 1];
 
-        // base_value (uint16)
-        $baseValueData = unpack('v', substr($binaryData, $offset, 2));
-        if ($baseValueData === false) {
-            throw new RuntimeException('Failed to read base_value');
-        }
-
-        $result['base_value'] = $baseValueData[1];
-        $offset += 2;
-
-        // catg (uint16, cast to uint8)
-        $catgData = unpack('v', substr($binaryData, $offset, 2));
-        if ($catgData === false) {
-            throw new RuntimeException('Failed to read catg');
-        }
-
-        $result['catg'] = $catgData[1] & 0xFF;
-        $offset += 2;
-
-        // speed_bonus (uint16) - NEW in version 1
-        $speedBonusData = unpack('v', substr($binaryData, $offset, 2));
-        if ($speedBonusData === false) {
-            throw new RuntimeException('Failed to read speed_bonus');
-        }
-
-        $result['speed_bonus'] = $speedBonusData[1];
+        $result['base_value'] = $reader->readUint16LE();
+        $result['catg'] = $reader->readUint16LE() & 0xFF;
+        $result['speed_bonus'] = $reader->readUint16LE(); // NEW in version 1
 
         // Set defaults
         $result['weight_per_unit'] = 100;
@@ -143,44 +113,14 @@ class GoodParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion2(string $binaryData, int $offset): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $result = ['version' => 2];
 
-        // base_value (uint16)
-        $baseValueData = unpack('v', substr($binaryData, $offset, 2));
-        if ($baseValueData === false) {
-            throw new RuntimeException('Failed to read base_value');
-        }
-
-        $result['base_value'] = $baseValueData[1];
-        $offset += 2;
-
-        // catg (uint16, cast to uint8)
-        $catgData = unpack('v', substr($binaryData, $offset, 2));
-        if ($catgData === false) {
-            throw new RuntimeException('Failed to read catg');
-        }
-
-        $result['catg'] = $catgData[1] & 0xFF;
-        $offset += 2;
-
-        // speed_bonus (uint16)
-        $speedBonusData = unpack('v', substr($binaryData, $offset, 2));
-        if ($speedBonusData === false) {
-            throw new RuntimeException('Failed to read speed_bonus');
-        }
-
-        $result['speed_bonus'] = $speedBonusData[1];
-        $offset += 2;
-
-        // weight_per_unit (uint16) - NEW in version 2
-        $weightData = unpack('v', substr($binaryData, $offset, 2));
-        if ($weightData === false) {
-            throw new RuntimeException('Failed to read weight_per_unit');
-        }
-
-        $result['weight_per_unit'] = $weightData[1];
+        $result['base_value'] = $reader->readUint16LE();
+        $result['catg'] = $reader->readUint16LE() & 0xFF;
+        $result['speed_bonus'] = $reader->readUint16LE();
+        $result['weight_per_unit'] = $reader->readUint16LE(); // NEW in version 2
 
         // Set defaults
         $result['color'] = 255;
@@ -193,53 +133,15 @@ class GoodParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion3(string $binaryData, int $offset): array
+    private function parseVersion3(BinaryReader $reader): array
     {
         $result = ['version' => 3];
 
-        // base_value (uint16)
-        $baseValueData = unpack('v', substr($binaryData, $offset, 2));
-        if ($baseValueData === false) {
-            throw new RuntimeException('Failed to read base_value');
-        }
-
-        $result['base_value'] = $baseValueData[1];
-        $offset += 2;
-
-        // catg (uint8) - CHANGED in version 3
-        $catgData = unpack('C', substr($binaryData, $offset, 1));
-        if ($catgData === false) {
-            throw new RuntimeException('Failed to read catg');
-        }
-
-        $result['catg'] = $catgData[1];
-        $offset += 1;
-
-        // speed_bonus (uint16)
-        $speedBonusData = unpack('v', substr($binaryData, $offset, 2));
-        if ($speedBonusData === false) {
-            throw new RuntimeException('Failed to read speed_bonus');
-        }
-
-        $result['speed_bonus'] = $speedBonusData[1];
-        $offset += 2;
-
-        // weight_per_unit (uint16)
-        $weightData = unpack('v', substr($binaryData, $offset, 2));
-        if ($weightData === false) {
-            throw new RuntimeException('Failed to read weight_per_unit');
-        }
-
-        $result['weight_per_unit'] = $weightData[1];
-        $offset += 2;
-
-        // color (uint8) - NEW in version 3
-        $colorData = unpack('C', substr($binaryData, $offset, 1));
-        if ($colorData === false) {
-            throw new RuntimeException('Failed to read color');
-        }
-
-        $result['color'] = $colorData[1];
+        $result['base_value'] = $reader->readUint16LE();
+        $result['catg'] = $reader->readUint8(); // CHANGED in version 3
+        $result['speed_bonus'] = $reader->readUint16LE();
+        $result['weight_per_unit'] = $reader->readUint16LE();
+        $result['color'] = $reader->readUint8(); // NEW in version 3
 
         return $this->buildResult($result);
     }
@@ -249,48 +151,15 @@ class GoodParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion4(string $binaryData, int $offset): array
+    private function parseVersion4(BinaryReader $reader): array
     {
         $result = ['version' => 4];
 
-        // base_value (sint64) - CHANGED in version 4
-        $result['base_value'] = BinaryReader::unpackSint64($binaryData, $offset);
-        $offset += 8;
-
-        // catg (uint8)
-        $catgData = unpack('C', substr($binaryData, $offset, 1));
-        if ($catgData === false) {
-            throw new RuntimeException('Failed to read catg');
-        }
-
-        $result['catg'] = $catgData[1];
-        $offset += 1;
-
-        // speed_bonus (uint16)
-        $speedBonusData = unpack('v', substr($binaryData, $offset, 2));
-        if ($speedBonusData === false) {
-            throw new RuntimeException('Failed to read speed_bonus');
-        }
-
-        $result['speed_bonus'] = $speedBonusData[1];
-        $offset += 2;
-
-        // weight_per_unit (uint16)
-        $weightData = unpack('v', substr($binaryData, $offset, 2));
-        if ($weightData === false) {
-            throw new RuntimeException('Failed to read weight_per_unit');
-        }
-
-        $result['weight_per_unit'] = $weightData[1];
-        $offset += 2;
-
-        // color (uint8)
-        $colorData = unpack('C', substr($binaryData, $offset, 1));
-        if ($colorData === false) {
-            throw new RuntimeException('Failed to read color');
-        }
-
-        $result['color'] = $colorData[1];
+        $result['base_value'] = $reader->readSint64LE(); // CHANGED in version 4
+        $result['catg'] = $reader->readUint8();
+        $result['speed_bonus'] = $reader->readUint16LE();
+        $result['weight_per_unit'] = $reader->readUint16LE();
+        $result['color'] = $reader->readUint8();
 
         return $this->buildResult($result);
     }

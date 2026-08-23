@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Parser for citycar (private city car) nodes
@@ -32,15 +32,15 @@ class CitycarParser implements TypeParserInterface
     public function parse(Node $node): array
     {
         $binaryData = $node->data;
-        $offset = 0;
-
-        $stamp = VersionStamp::from($binaryData, $offset);
-        $offset += 2;
+        $stamp = VersionStamp::from($binaryData);
 
         if ($stamp->isVersioned) {
+            $reader = new BinaryReader($binaryData);
+            $reader->skip(2);
+
             return match ($stamp->version) {
-                1 => $this->parseVersion1($binaryData, $offset),
-                2 => $this->parseVersion2($binaryData, $offset),
+                1 => $this->parseVersion1($reader),
+                2 => $this->parseVersion2($reader),
                 default => throw InvalidPakFileException::unsupportedTypeVersion('citycar', $stamp->version, self::MAX_SUPPORTED_VERSION),
             };
         }
@@ -70,46 +70,22 @@ class CitycarParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion1(string $binaryData, int $offset): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         $result = ['version' => 1];
 
-        // distribution_weight (uint16)
-        $weightData = unpack('v', substr($binaryData, $offset, 2));
-        if ($weightData === false) {
-            throw new RuntimeException('Failed to read distribution_weight');
-        }
-
-        $result['distribution_weight'] = $weightData[1];
-        $offset += 2;
+        $result['distribution_weight'] = $reader->readUint16LE();
 
         // topspeed (uint16) - divided by 16 in source, stored as km/h here
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $topspeedRaw = $topspeedData[1];
+        $topspeedRaw = $reader->readUint16LE();
         $result['topspeed'] = intdiv($topspeedRaw, 16);
-        $offset += 2;
 
         // intro_date (uint16) - packed format (year*16 + month)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $introDateRaw = $introDateData[1];
+        $introDateRaw = $reader->readUint16LE();
         $result['intro_date'] = intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 12);
-        $offset += 2;
 
         // retire_date (uint16) - packed format (year*16 + month)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $retireDateRaw = $retireDateData[1];
+        $retireDateRaw = $reader->readUint16LE();
         $result['retire_date'] = intdiv($retireDateRaw, 16) * 12 + ($retireDateRaw % 12);
 
         return $result;
@@ -120,45 +96,19 @@ class CitycarParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion2(string $binaryData, int $offset): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $result = ['version' => 2];
 
-        // distribution_weight (uint16)
-        $weightData = unpack('v', substr($binaryData, $offset, 2));
-        if ($weightData === false) {
-            throw new RuntimeException('Failed to read distribution_weight');
-        }
-
-        $result['distribution_weight'] = $weightData[1];
-        $offset += 2;
+        $result['distribution_weight'] = $reader->readUint16LE();
 
         // topspeed (uint16) - divided by 16 in source
-        $topspeedData = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeedData === false) {
-            throw new RuntimeException('Failed to read topspeed');
-        }
-
-        $topspeedRaw = $topspeedData[1];
+        $topspeedRaw = $reader->readUint16LE();
         $result['topspeed'] = intdiv($topspeedRaw, 16);
-        $offset += 2;
 
-        // intro_date (uint16) - direct months format (CHANGED in version 2)
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16) - direct months format (CHANGED in version 2)
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        // intro_date / retire_date (uint16) - direct months format (CHANGED in version 2)
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
 
         return $result;
     }

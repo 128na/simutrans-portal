@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Enums\SimutransClimate;
 use App\Exceptions\InvalidPakFileException;
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 
@@ -54,10 +55,13 @@ class GroundobjParser implements TypeParserInterface
     {
         $stamp = VersionStamp::from($node->data);
 
+        $reader = new BinaryReader($node->data);
+        $reader->skip(2);
+
         $result = match ($stamp->version) {
             0 => throw InvalidPakFileException::unsupportedTypeVersion('groundobj', 0, self::MAX_SUPPORTED_VERSION),
-            1 => $this->parseVersion1($node->data),
-            2 => $this->parseVersion2($node->data),
+            1 => $this->parseVersion1($reader, $stamp->version),
+            2 => $this->parseVersion2($reader, $stamp->version),
             default => throw InvalidPakFileException::unsupportedTypeVersion('groundobj', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
 
@@ -78,22 +82,26 @@ class GroundobjParser implements TypeParserInterface
      *     price: int
      * }
      */
-    private function parseVersion1(string $data): array
+    private function parseVersion1(BinaryReader $reader, int $version): array
     {
-        $unpacked = unpack(
-            'vversion/vallowed_climates/vdistribution_weight/Cnumber_of_seasons/Ctrees_on_top/vspeed/vwaytype/lprice',
-            substr($data, 0, 16)
-        ) ?: [];
+        $allowedClimates = $reader->readUint16LE();
+        $distributionWeight = $reader->readUint16LE();
+        $numberOfSeasons = $reader->readUint8();
+        $treesOnTop = $reader->readUint8();
+        $speed = $reader->readUint16LE();
+        $waytype = $reader->readUint16LE();
+        $priceRaw = $reader->readUint32LE();
+        $price = $priceRaw >= 0x80000000 ? $priceRaw - 0x100000000 : $priceRaw;
 
         return [
-            'version' => $unpacked['version'] & 0x7FFF,
-            'allowed_climates' => $unpacked['allowed_climates'],
-            'distribution_weight' => $unpacked['distribution_weight'],
-            'number_of_seasons' => $unpacked['number_of_seasons'],
-            'trees_on_top' => $unpacked['trees_on_top'],
-            'speed' => $unpacked['speed'],
-            'waytype' => $unpacked['waytype'],
-            'price' => $unpacked['price'],
+            'version' => $version,
+            'allowed_climates' => $allowedClimates,
+            'distribution_weight' => $distributionWeight,
+            'number_of_seasons' => $numberOfSeasons,
+            'trees_on_top' => $treesOnTop,
+            'speed' => $speed,
+            'waytype' => $waytype,
+            'price' => $price,
         ];
     }
 
@@ -111,25 +119,24 @@ class GroundobjParser implements TypeParserInterface
      *     price: int
      * }
      */
-    private function parseVersion2(string $data): array
+    private function parseVersion2(BinaryReader $reader, int $version): array
     {
-        $unpacked = unpack(
-            'vversion/vallowed_climates/vdistribution_weight/Cnumber_of_seasons/Ctrees_on_top/vspeed/vwaytype',
-            substr($data, 0, 12)
-        ) ?: [];
-
-        // sint64 は P (64-bit little-endian)
-        $priceData = substr($data, 12, 8);
-        $price = (unpack('P', $priceData) ?: [])[1] ?? 0;
+        $allowedClimates = $reader->readUint16LE();
+        $distributionWeight = $reader->readUint16LE();
+        $numberOfSeasons = $reader->readUint8();
+        $treesOnTop = $reader->readUint8();
+        $speed = $reader->readUint16LE();
+        $waytype = $reader->readUint16LE();
+        $price = $reader->readSint64LE();
 
         return [
-            'version' => $unpacked['version'] & 0x7FFF,
-            'allowed_climates' => $unpacked['allowed_climates'],
-            'distribution_weight' => $unpacked['distribution_weight'],
-            'number_of_seasons' => $unpacked['number_of_seasons'],
-            'trees_on_top' => $unpacked['trees_on_top'],
-            'speed' => $unpacked['speed'],
-            'waytype' => $unpacked['waytype'],
+            'version' => $version,
+            'allowed_climates' => $allowedClimates,
+            'distribution_weight' => $distributionWeight,
+            'number_of_seasons' => $numberOfSeasons,
+            'trees_on_top' => $treesOnTop,
+            'speed' => $speed,
+            'waytype' => $waytype,
             'price' => $price,
         ];
     }

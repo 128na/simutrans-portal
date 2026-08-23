@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
+use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Parser for crossing (level crossing / railroad crossing) nodes
@@ -33,18 +33,18 @@ class CrossingParser implements TypeParserInterface
     public function parse(Node $node): array
     {
         $binaryData = $node->data;
-        $offset = 0;
-
-        $stamp = VersionStamp::from($binaryData, $offset);
-        $offset += 2;
+        $stamp = VersionStamp::from($binaryData);
 
         if (! $stamp->isVersioned) {
             throw InvalidPakFileException::unsupportedTypeVersion('crossing', 0, self::MAX_SUPPORTED_VERSION);
         }
 
+        $reader = new BinaryReader($binaryData);
+        $reader->skip(2);
+
         return match ($stamp->version) {
-            1 => $this->parseVersion1($binaryData, $offset),
-            2 => $this->parseVersion2($binaryData, $offset),
+            1 => $this->parseVersion1($reader),
+            2 => $this->parseVersion2($reader),
             default => throw InvalidPakFileException::unsupportedTypeVersion('crossing', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
@@ -54,78 +54,22 @@ class CrossingParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion1(string $binaryData, int $offset): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         $result = ['version' => 1];
 
-        // waytype1 (uint8)
-        $waytype1Data = unpack('C', substr($binaryData, $offset, 1));
-        if ($waytype1Data === false) {
-            throw new RuntimeException('Failed to read waytype1');
-        }
-
-        $result['waytype1'] = $waytype1Data[1];
-        $offset += 1;
-
-        // waytype2 (uint8)
-        $waytype2Data = unpack('C', substr($binaryData, $offset, 1));
-        if ($waytype2Data === false) {
-            throw new RuntimeException('Failed to read waytype2');
-        }
-
-        $result['waytype2'] = $waytype2Data[1];
-        $offset += 1;
-
-        // topspeed1 (uint16)
-        $topspeed1Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeed1Data === false) {
-            throw new RuntimeException('Failed to read topspeed1');
-        }
-
-        $result['topspeed1'] = $topspeed1Data[1];
-        $offset += 2;
-
-        // topspeed2 (uint16)
-        $topspeed2Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeed2Data === false) {
-            throw new RuntimeException('Failed to read topspeed2');
-        }
-
-        $result['topspeed2'] = $topspeed2Data[1];
-        $offset += 2;
-
-        // open_animation_time (uint32)
-        $openAnimData = unpack('V', substr($binaryData, $offset, 4));
-        if ($openAnimData === false) {
-            throw new RuntimeException('Failed to read open_animation_time');
-        }
-
-        $result['open_animation_time'] = $openAnimData[1];
-        $offset += 4;
-
-        // closed_animation_time (uint32)
-        $closedAnimData = unpack('V', substr($binaryData, $offset, 4));
-        if ($closedAnimData === false) {
-            throw new RuntimeException('Failed to read closed_animation_time');
-        }
-
-        $result['closed_animation_time'] = $closedAnimData[1];
-        $offset += 4;
-
-        // sound (sint8)
-        $soundData = unpack('c', substr($binaryData, $offset, 1));
-        if ($soundData === false) {
-            throw new RuntimeException('Failed to read sound');
-        }
-
-        $result['sound'] = $soundData[1];
-        $offset += 1;
+        $result['waytype1'] = $reader->readUint8();
+        $result['waytype2'] = $reader->readUint8();
+        $result['topspeed1'] = $reader->readUint16LE();
+        $result['topspeed2'] = $reader->readUint16LE();
+        $result['open_animation_time'] = $reader->readUint32LE();
+        $result['closed_animation_time'] = $reader->readUint32LE();
+        $result['sound'] = $reader->readSint8();
 
         // Handle LOAD_SOUND - embedded sound file name
-        // Note: offset is passed by reference but not used after this in version 1
-        // (intro_date and retire_date are defaults, not read from data)
+        // Note: intro_date and retire_date are defaults, not read from data in version 1
         if ($result['sound'] === self::LOAD_SOUND) {
-            $soundInfo = $this->readEmbeddedSoundName($binaryData, $offset);
+            $soundInfo = $this->readEmbeddedSoundName($reader);
             if ($soundInfo !== null) {
                 $result['sound_filename'] = $soundInfo;
             }
@@ -143,97 +87,29 @@ class CrossingParser implements TypeParserInterface
      *
      * @return array<string, mixed>
      */
-    private function parseVersion2(string $binaryData, int $offset): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $result = ['version' => 2];
 
-        // waytype1 (uint8)
-        $waytype1Data = unpack('C', substr($binaryData, $offset, 1));
-        if ($waytype1Data === false) {
-            throw new RuntimeException('Failed to read waytype1');
-        }
-
-        $result['waytype1'] = $waytype1Data[1];
-        $offset += 1;
-
-        // waytype2 (uint8)
-        $waytype2Data = unpack('C', substr($binaryData, $offset, 1));
-        if ($waytype2Data === false) {
-            throw new RuntimeException('Failed to read waytype2');
-        }
-
-        $result['waytype2'] = $waytype2Data[1];
-        $offset += 1;
-
-        // topspeed1 (uint16)
-        $topspeed1Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeed1Data === false) {
-            throw new RuntimeException('Failed to read topspeed1');
-        }
-
-        $result['topspeed1'] = $topspeed1Data[1];
-        $offset += 2;
-
-        // topspeed2 (uint16)
-        $topspeed2Data = unpack('v', substr($binaryData, $offset, 2));
-        if ($topspeed2Data === false) {
-            throw new RuntimeException('Failed to read topspeed2');
-        }
-
-        $result['topspeed2'] = $topspeed2Data[1];
-        $offset += 2;
-
-        // open_animation_time (uint32)
-        $openAnimData = unpack('V', substr($binaryData, $offset, 4));
-        if ($openAnimData === false) {
-            throw new RuntimeException('Failed to read open_animation_time');
-        }
-
-        $result['open_animation_time'] = $openAnimData[1];
-        $offset += 4;
-
-        // closed_animation_time (uint32)
-        $closedAnimData = unpack('V', substr($binaryData, $offset, 4));
-        if ($closedAnimData === false) {
-            throw new RuntimeException('Failed to read closed_animation_time');
-        }
-
-        $result['closed_animation_time'] = $closedAnimData[1];
-        $offset += 4;
-
-        // sound (sint8)
-        $soundData = unpack('c', substr($binaryData, $offset, 1));
-        if ($soundData === false) {
-            throw new RuntimeException('Failed to read sound');
-        }
-
-        $result['sound'] = $soundData[1];
-        $offset += 1;
+        $result['waytype1'] = $reader->readUint8();
+        $result['waytype2'] = $reader->readUint8();
+        $result['topspeed1'] = $reader->readUint16LE();
+        $result['topspeed2'] = $reader->readUint16LE();
+        $result['open_animation_time'] = $reader->readUint32LE();
+        $result['closed_animation_time'] = $reader->readUint32LE();
+        $result['sound'] = $reader->readSint8();
 
         // Handle LOAD_SOUND - embedded sound file name
         if ($result['sound'] === self::LOAD_SOUND) {
-            $soundInfo = $this->readEmbeddedSoundName($binaryData, $offset);
+            $soundInfo = $this->readEmbeddedSoundName($reader);
             if ($soundInfo !== null) {
                 $result['sound_filename'] = $soundInfo;
             }
         }
 
-        // intro_date (uint16) - NEW in version 2
-        $introDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($introDateData === false) {
-            throw new RuntimeException('Failed to read intro_date');
-        }
-
-        $result['intro_date'] = $introDateData[1];
-        $offset += 2;
-
-        // retire_date (uint16) - NEW in version 2
-        $retireDateData = unpack('v', substr($binaryData, $offset, 2));
-        if ($retireDateData === false) {
-            throw new RuntimeException('Failed to read retire_date');
-        }
-
-        $result['retire_date'] = $retireDateData[1];
+        // intro_date / retire_date - NEW in version 2
+        $result['intro_date'] = $reader->readUint16LE();
+        $result['retire_date'] = $reader->readUint16LE();
 
         return $this->buildResult($result);
     }
@@ -242,32 +118,20 @@ class CrossingParser implements TypeParserInterface
      * Read embedded sound file name (for LOAD_SOUND)
      *
      * Format: uint8 len, char[len] wavname
-     *
-     * @param  string  $binaryData  The binary data buffer
-     * @param  int  $offset  Current offset in the buffer (will be updated)
-     * @return string|null The sound filename or null if not present
      */
-    private function readEmbeddedSoundName(string $binaryData, int &$offset): ?string
+    private function readEmbeddedSoundName(BinaryReader $reader): ?string
     {
-        if (strlen($binaryData) <= $offset) {
+        if (! $reader->hasMore(1)) {
             return null;
         }
 
-        $lenData = unpack('C', substr($binaryData, $offset, 1));
-        if ($lenData === false) {
+        $len = $reader->readUint8();
+
+        if ($len === 0 || ! $reader->hasMore($len)) {
             return null;
         }
 
-        /** @var int $len */
-        $len = $lenData[1];
-        $offset += 1;
-
-        if ($len === 0 || strlen($binaryData) < $offset + $len) {
-            return null;
-        }
-
-        $wavname = substr($binaryData, $offset, $len);
-        $offset += $len;
+        $wavname = $reader->readString($len);
 
         // Remove null terminator if present
         return rtrim($wavname, "\0");

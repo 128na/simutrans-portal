@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
@@ -16,6 +17,8 @@ use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
  */
 class VehicleParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 13;
+
     #[\Override]
     public function canParse(Node $node): bool
     {
@@ -31,51 +34,47 @@ class VehicleParser implements TypeParserInterface
 
         $reader = new BinaryReader($node->data);
 
-        try {
-            // Read version stamp
-            $v = $reader->readUint16LE();
-            $version = (($v & 0x8000) !== 0) ? ($v & 0x7FFF) : 0;
+        // Read version stamp
+        $v = $reader->readUint16LE();
+        $version = (($v & 0x8000) !== 0) ? ($v & 0x7FFF) : 0;
 
-            $data = match ($version) {
-                0 => $this->parseVersion0($reader, $v),
-                1, 2 => $this->parseVersion1And2($reader, $version),
-                3, 4, 5 => $this->parseVersion3To5($reader),
-                6 => $this->parseVersion6($reader),
-                7 => $this->parseVersion7($reader),
-                8 => $this->parseVersion8($reader),
-                9 => $this->parseVersion9($reader),
-                10 => $this->parseVersion10($reader),
-                11 => $this->parseVersion11($reader),
-                12 => $this->parseVersion12($reader),
-                13 => $this->parseVersion13($reader),
-                default => [],
-            };
+        $data = match ($version) {
+            0 => $this->parseVersion0($reader, $v),
+            1, 2 => $this->parseVersion1And2($reader, $version),
+            3, 4, 5 => $this->parseVersion3To5($reader),
+            6 => $this->parseVersion6($reader),
+            7 => $this->parseVersion7($reader),
+            8 => $this->parseVersion8($reader),
+            9 => $this->parseVersion9($reader),
+            10 => $this->parseVersion10($reader),
+            11 => $this->parseVersion11($reader),
+            12 => $this->parseVersion12($reader),
+            13 => $this->parseVersion13($reader),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('vehicle', $version, self::MAX_SUPPORTED_VERSION),
+        };
 
-            // Before version 5, intro/retire dates were base-16 encoded (year*16+month)
-            // and need conversion to base-12 (year*12+month) (from vehicle_reader.cc)
-            if ($version < 5) {
-                if (isset($data['intro_date']) && is_int($data['intro_date'])) {
-                    $data['intro_date'] = intdiv($data['intro_date'], 16) * 12 + ($data['intro_date'] % 16);
-                }
-                if (isset($data['retire_date']) && is_int($data['retire_date'])) {
-                    $data['retire_date'] = intdiv($data['retire_date'], 16) * 12 + ($data['retire_date'] % 16);
-                }
+        // Before version 5, intro/retire dates were base-16 encoded (year*16+month)
+        // and need conversion to base-12 (year*12+month) (from vehicle_reader.cc)
+        if ($version < 5) {
+            if (isset($data['intro_date']) && is_int($data['intro_date'])) {
+                $data['intro_date'] = intdiv($data['intro_date'], 16) * 12 + ($data['intro_date'] % 16);
             }
-
-            if (isset($data['engine_type'])) {
-                assert(is_int($data['engine_type']));
+            if (isset($data['retire_date']) && is_int($data['retire_date'])) {
+                $data['retire_date'] = intdiv($data['retire_date'], 16) * 12 + ($data['retire_date'] % 16);
             }
-
-            // Get freight type from child node 2 if exists
-            $freightType = $this->extractFreightType($node);
-            if ($freightType !== null) {
-                $data['freight_type'] = $freightType;
-            }
-
-            return $data;
-        } catch (\Throwable) {
-            return null;
         }
+
+        if (isset($data['engine_type'])) {
+            assert(is_int($data['engine_type']));
+        }
+
+        // Get freight type from child node 2 if exists
+        $freightType = $this->extractFreightType($node);
+        if ($freightType !== null) {
+            $data['freight_type'] = $freightType;
+        }
+
+        return $data;
     }
 
     /**

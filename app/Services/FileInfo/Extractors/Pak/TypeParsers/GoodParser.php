@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
@@ -18,6 +19,8 @@ use RuntimeException;
  */
 class GoodParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 4;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_GOOD;
@@ -50,7 +53,7 @@ class GoodParser implements TypeParserInterface
                 2 => $this->parseVersion2($binaryData, $offset),
                 3 => $this->parseVersion3($binaryData, $offset),
                 4 => $this->parseVersion4($binaryData, $offset),
-                default => throw new RuntimeException('Unsupported goods version: '.$stamp->version),
+                default => throw InvalidPakFileException::unsupportedTypeVersion('good', $stamp->version, self::MAX_SUPPORTED_VERSION),
             };
         } else {
             // Version 0 (legacy format): firstUint16 is actually base_value

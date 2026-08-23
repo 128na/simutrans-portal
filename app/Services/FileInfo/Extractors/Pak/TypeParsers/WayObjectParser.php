@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use RuntimeException;
@@ -18,6 +19,8 @@ use RuntimeException;
  */
 class WayObjectParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 2;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_WAYOBJ;
@@ -50,7 +53,7 @@ class WayObjectParser implements TypeParserInterface
             return $this->parseVersion2($binaryData, $offset);
         }
 
-        throw new RuntimeException('Unsupported way-object version: '.$version);
+        throw InvalidPakFileException::unsupportedTypeVersion('wayobj', $version, self::MAX_SUPPORTED_VERSION);
     }
 
     /**

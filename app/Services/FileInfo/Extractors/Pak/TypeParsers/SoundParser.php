@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Sound（効果音）パーサー
@@ -28,6 +28,8 @@ use RuntimeException;
  */
 class SoundParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 2;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_SOUND;
@@ -45,10 +47,10 @@ class SoundParser implements TypeParserInterface
         $stamp = VersionStamp::from($node->data);
 
         return match ($stamp->version) {
-            0 => throw new RuntimeException('Sound version 0 does not exist'),
+            0 => throw InvalidPakFileException::unsupportedTypeVersion('sound', 0, self::MAX_SUPPORTED_VERSION),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported sound version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('sound', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
 

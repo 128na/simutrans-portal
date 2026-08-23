@@ -50,4 +50,15 @@ class InvalidPakFileExceptionTest extends TestCase
         $this->assertInstanceOf(InvalidPakFileException::class, $exception);
         $this->assertEquals('Unsupported pak file version: 999', $exception->getMessage());
     }
+
+    public function test_unsupported_type_version_returns_correct_message(): void
+    {
+        $exception = InvalidPakFileException::unsupportedTypeVersion('bridge', 12, 11);
+
+        $this->assertInstanceOf(InvalidPakFileException::class, $exception);
+        $this->assertEquals(
+            'Unsupported bridge version: 12 (max known: 11). The pak compiler may be newer than this tool supports.',
+            $exception->getMessage()
+        );
+    }
 }

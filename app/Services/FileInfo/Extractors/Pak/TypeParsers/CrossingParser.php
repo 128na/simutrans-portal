@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
 use RuntimeException;
@@ -18,6 +19,8 @@ class CrossingParser implements TypeParserInterface
 {
     // LOAD_SOUND marker - indicates embedded sound file name (sint8)(0xFFFE) = -2
     private const int LOAD_SOUND = -2;
+
+    private const int MAX_SUPPORTED_VERSION = 2;
 
     public function canParse(Node $node): bool
     {
@@ -36,13 +39,13 @@ class CrossingParser implements TypeParserInterface
         $offset += 2;
 
         if (! $stamp->isVersioned) {
-            throw new RuntimeException('Crossing version 0 (legacy) is not supported');
+            throw InvalidPakFileException::unsupportedTypeVersion('crossing', 0, self::MAX_SUPPORTED_VERSION);
         }
 
         return match ($stamp->version) {
             1 => $this->parseVersion1($binaryData, $offset),
             2 => $this->parseVersion2($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported crossing version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('crossing', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
 

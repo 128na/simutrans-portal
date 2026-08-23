@@ -606,4 +606,82 @@ class PakParserTest extends TestCase
 
     // Note: skin object test is removed because the object doesn't compile with makeobj
     // The skin object requires additional properties that are not yet supported in test.dat
+
+    /**
+     * 1オブジェクトのバージョンが未対応でも、同じファイル内の他の正常なオブジェクトの
+     * 抽出には影響しないことを検証する (fail-fastの安全性: ファイル全体を巻き込まない)。
+     * 未対応バージョンのオブジェクトは name/copyright/objectType のみを保持し、
+     * 型固有データ (bridgeData) は持たない。
+     */
+    public function test_unsupported_object_version_does_not_break_sibling_extraction(): void
+    {
+        $vehiclePayload = pack('v', 0x800D);   // version = 13
+        $vehiclePayload .= pack('V', 50000).pack('V', 0); // price (sint64)
+        $vehiclePayload .= pack('v', 10);      // capacity
+        $vehiclePayload .= pack('V', 500);     // loading_time
+        $vehiclePayload .= pack('v', 80);      // topspeed
+        $vehiclePayload .= pack('V', 5000);    // weight
+        $vehiclePayload .= pack('v', 12);      // axle_load
+        $vehiclePayload .= pack('V', 150);     // power
+        $vehiclePayload .= pack('V', 100).pack('V', 0); // running_cost (sint64)
+        $vehiclePayload .= pack('V', 200).pack('V', 0); // maintenance (sint64)
+        $vehiclePayload .= pack('v', 23880);   // intro_date
+        $vehiclePayload .= pack('v', 24240);   // retire_date
+        $vehiclePayload .= pack('v', 64);      // gear
+        $vehiclePayload .= pack('C', 1);       // waytype
+        $vehiclePayload .= pack('C', 254);     // sound
+        $vehiclePayload .= pack('C', 1);       // engine_type
+        $vehiclePayload .= pack('C', 8);       // len
+        $vehiclePayload .= pack('C', 2);       // leader_count
+        $vehiclePayload .= pack('C', 3);       // trailer_count
+        $vehiclePayload .= pack('C', 1);       // freight_image_type
+
+        $vehicleNode = $this->encodeNode('VHCL', $vehiclePayload, [
+            $this->encodeTextNode('sibling_vehicle'),
+            $this->encodeTextNode('TestAuthor'),
+        ]);
+
+        // BRDG version 12 does not exist (max known: 11) - should be skipped gracefully
+        $bridgeNode = $this->encodeNode('BRDG', pack('v', 0x8000 | 12), [
+            $this->encodeTextNode('broken_bridge'),
+            $this->encodeTextNode('TestAuthor'),
+        ]);
+
+        $root = $this->encodeNode('ROOT', '', [$vehicleNode, $bridgeNode]);
+        $binary = "Simutrans object file\n".'Compiled with SimObjects 0.1.3'."\x1A".pack('V', 1003).$root;
+
+        $parser = new PakParser;
+        $result = $parser->parse($binary);
+
+        $byName = [];
+        foreach ($result as $item) {
+            $byName[$item['name']] = $item;
+        }
+
+        $this->assertArrayHasKey('sibling_vehicle', $byName);
+        $this->assertSame('vehicle', $byName['sibling_vehicle']['objectType']);
+        $this->assertArrayHasKey('vehicleData', $byName['sibling_vehicle']);
+        $this->assertSame(50000, $byName['sibling_vehicle']['vehicleData']['price']);
+
+        $this->assertArrayHasKey('broken_bridge', $byName);
+        $this->assertSame('bridge', $byName['broken_bridge']['objectType']);
+        $this->assertSame('TestAuthor', $byName['broken_bridge']['copyright']);
+        $this->assertArrayNotHasKey('bridgeData', $byName['broken_bridge']);
+    }
+
+    private function encodeTextNode(string $text): string
+    {
+        return $this->encodeNode('TEXT', $text."\0");
+    }
+
+    /**
+     * @param  array<string>  $children
+     */
+    private function encodeNode(string $type, string $data, array $children = []): string
+    {
+        $type = str_pad($type, 4, "\x00");
+        $childrenBinary = implode('', $children);
+
+        return $type.pack('v', count($children)).pack('v', strlen($data)).$data.$childrenBinary;
+    }
 }

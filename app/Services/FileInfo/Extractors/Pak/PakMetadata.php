@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BridgeParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BuildingParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\CitycarParser;
@@ -22,6 +23,7 @@ use App\Services\FileInfo\Extractors\Pak\TypeParsers\TypeParserInterface;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\VehicleParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\WayObjectParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\WayParser;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Pak metadata information
@@ -99,13 +101,25 @@ class PakMetadata
             }
         }
 
-        // Parse type-specific data using appropriate parser
+        // Parse type-specific data using appropriate parser.
+        // An InvalidPakFileException here means this specific object's version
+        // isn't supported (too new or a rejected legacy format) - skip only its
+        // type-specific data rather than losing name/copyright/objectType too,
+        // and rather than letting it abort extraction of the whole file.
         $typeSpecificData = [];
-        foreach (self::getTypeParsers() as $typeParser) {
-            if ($typeParser->canParse($node)) {
-                $typeSpecificData = $typeParser->parse($node) ?? [];
-                break;
+        try {
+            foreach (self::getTypeParsers() as $typeParser) {
+                if ($typeParser->canParse($node)) {
+                    $typeSpecificData = $typeParser->parse($node) ?? [];
+                    break;
+                }
             }
+        } catch (InvalidPakFileException $exception) {
+            Log::warning('Skipping unsupported pak object version', [
+                'objectType' => $objectType,
+                'name' => $name,
+                'exception' => $exception->getMessage(),
+            ]);
         }
 
         return new self($name, $copyright, $objectType, $versionCode, $typeSpecificData);

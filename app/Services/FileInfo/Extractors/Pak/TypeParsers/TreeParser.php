@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Enums\SimutransClimate;
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Tree（木）パーサー
@@ -39,6 +39,8 @@ class TreeParser implements TypeParserInterface
 
     private const int ALL_BUT_ARCTIC_CLIMATE = 0x7F; // 北極以外すべて (0b01111111)
 
+    private const int MAX_SUPPORTED_VERSION = 2;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_TREE;
@@ -60,7 +62,7 @@ class TreeParser implements TypeParserInterface
             0 => $this->parseVersion0(),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported tree version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('tree', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
 
         return $this->buildResult($result);

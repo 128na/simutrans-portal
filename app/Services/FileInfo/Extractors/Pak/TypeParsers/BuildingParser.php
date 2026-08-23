@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Enums\SimutransClimate;
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BuildingTypeConverter;
 use App\Services\FileInfo\Extractors\Pak\Node;
 
@@ -13,6 +14,8 @@ use App\Services\FileInfo\Extractors\Pak\Node;
  */
 class BuildingParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 11;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_BUILDING;
@@ -30,6 +33,10 @@ class BuildingParser implements TypeParserInterface
         if ($version === 0) {
             // Version 0 format (old format)
             return $this->parseVersion0($data);
+        }
+
+        if ($version > self::MAX_SUPPORTED_VERSION) {
+            throw InvalidPakFileException::unsupportedTypeVersion('building', $version, self::MAX_SUPPORTED_VERSION);
         }
 
         // Version 1-11 format

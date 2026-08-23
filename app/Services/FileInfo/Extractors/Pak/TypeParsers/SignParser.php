@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
@@ -18,6 +19,8 @@ use RuntimeException;
  */
 class SignParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 6;
+
     // Signal type flags (from roadsign_desc.h)
     private const FLAG_ONE_WAY = 1 << 0;
 
@@ -51,7 +54,7 @@ class SignParser implements TypeParserInterface
         $stamp = VersionStamp::from($binaryData, $offset);
 
         if (! $stamp->isVersioned) {
-            throw new RuntimeException('Roadsign version 0 (legacy) is not supported');
+            throw InvalidPakFileException::unsupportedTypeVersion('roadsign', 0, self::MAX_SUPPORTED_VERSION);
         }
 
         $offset += 2;
@@ -63,7 +66,7 @@ class SignParser implements TypeParserInterface
             4 => $this->parseVersion4($binaryData, $offset),
             5 => $this->parseVersion5($binaryData, $offset),
             6 => $this->parseVersion6($binaryData, $offset),
-            default => throw new RuntimeException('Unsupported roadsign version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('roadsign', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\CitycarParser;
@@ -69,6 +70,17 @@ class CitycarParserTest extends TestCase
 
         $this->assertSame(23880, $result['intro_date']);
         $this->assertSame(24240, $result['retire_date']);
+    }
+
+    /**
+     * v3 (未対応バージョン) は例外を投げる (回帰防止)。
+     */
+    public function test_unsupported_version_throws(): void
+    {
+        $this->expectException(InvalidPakFileException::class);
+        $this->expectExceptionMessage('Unsupported citycar version: 3 (max known: 2)');
+
+        $this->parser->parse($this->makeVersionedNode(3, ''));
     }
 
     private function makeNode(string $data): Node

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\WayParser;
@@ -197,6 +198,19 @@ class WayParserTest extends TestCase
         $this->assertNotNull($result);
         $this->assertSame(5, $result['waytype']); // monorail_wt
         $this->assertSame(0, $result['styp']);    // type_flat
+    }
+
+    /**
+     * v9 (未対応バージョン) は例外を投げる (回帰防止: 将来バージョンのサイレント無視を防ぐ)。
+     * 修正前は default => [] で無警告のまま空データを返していた。
+     */
+    public function test_unsupported_version_throws(): void
+    {
+        $this->expectException(InvalidPakFileException::class);
+        $this->expectExceptionMessage('Unsupported way version: 9 (max known: 8)');
+
+        $data = pack('v', 0x8000 | 9);
+        $this->parser->parse($this->makeNode($data));
     }
 
     private function makeNode(string $data): Node

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\VersionStamp;
-use RuntimeException;
 
 /**
  * Pedestrian（歩行者）パーサー
@@ -24,6 +24,8 @@ use RuntimeException;
  */
 class PedestrianParser implements TypeParserInterface
 {
+    private const int MAX_SUPPORTED_VERSION = 2;
+
     public function canParse(Node $node): bool
     {
         return $node->type === Node::OBJ_PEDESTRIAN;
@@ -47,7 +49,7 @@ class PedestrianParser implements TypeParserInterface
             0 => $this->parseVersion0($stamp->firstUint16),
             1 => $this->parseVersion1($node->data),
             2 => $this->parseVersion2($node->data),
-            default => throw new RuntimeException('Unsupported pedestrian version: '.$stamp->version),
+            default => throw InvalidPakFileException::unsupportedTypeVersion('pedestrian', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
     }
 

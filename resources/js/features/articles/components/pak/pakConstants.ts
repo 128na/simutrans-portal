@@ -204,12 +204,13 @@ export const BUILDING_TYPE_TRANSLATIONS: Record<number, string> = {
  * System type translations
  * enum systemtype_t: type_flat=0, type_elevated=1(=type_runway), type_tram=7, type_river=255(=type_all)
  * モノレール/リニア/ナローゲージは systemtype ではなく waytype 側の区分 (WAYTYPE_TRANSLATIONS を参照)
+ * 255 (type_river/type_all) は実際に .pak の styp バイトとして出現するか未検証のため、
+ * ラベル化はせず未知の値として生の数値を表示する (getSystemTypeName のフォールバック)
  */
 export const SYSTEM_TYPE_TRANSLATIONS: Record<number, string> = {
   0: "地上", // flat
   1: "高架", // elevated / runway
   7: "市電", // tram
-  255: "河川", // river / all
 };
 
 /**

@@ -89,6 +89,13 @@ class BinaryReader
         return $value >= 0x8000 ? $value - 0x10000 : $value;
     }
 
+    public function readSint32LE(): int
+    {
+        $value = $this->readUint32LE();
+
+        return $value >= 0x80000000 ? $value - 0x100000000 : $value;
+    }
+
     public function readSint64LE(): int
     {
         if (! $this->hasMore(8)) {
@@ -101,19 +108,6 @@ class BinaryReader
         }
 
         $this->position += 8;
-
-        return $result[1];
-    }
-
-    /**
-     * Read a signed 64-bit integer at a fixed offset (for non-sequential parsers).
-     */
-    public static function unpackSint64(string $data, int $offset): int
-    {
-        $result = unpack('P', substr($data, $offset, 8));
-        if ($result === false) {
-            throw new OutOfBoundsException('Failed to read sint64 at offset '.$offset);
-        }
 
         return $result[1];
     }

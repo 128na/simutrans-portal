@@ -47,15 +47,27 @@ class SoundParser implements TypeParserInterface
     {
         $stamp = VersionStamp::from($node->data);
 
-        $reader = new BinaryReader($node->data);
-        $reader->skip(2);
-
         return match ($stamp->version) {
             0 => throw InvalidPakFileException::unsupportedTypeVersion('sound', 0, self::MAX_SUPPORTED_VERSION),
-            1 => $this->parseVersion1($reader, $stamp->version),
-            2 => $this->parseVersion2($reader, $stamp->version),
+            1 => $this->parseVersion1($this->readerAfterStamp($node->data)),
+            2 => $this->parseVersion2($this->readerAfterStamp($node->data)),
             default => throw InvalidPakFileException::unsupportedTypeVersion('sound', $stamp->version, self::MAX_SUPPORTED_VERSION),
         };
+    }
+
+    /**
+     * Build a reader positioned just past the 2-byte version stamp.
+     *
+     * Only called for supported versions, so a too-short payload for the
+     * stamp itself is reported via the version-0 branch above instead of a
+     * generic EOF error.
+     */
+    private function readerAfterStamp(string $data): BinaryReader
+    {
+        $reader = new BinaryReader($data);
+        $reader->skip(2);
+
+        return $reader;
     }
 
     /**
@@ -63,10 +75,10 @@ class SoundParser implements TypeParserInterface
      *
      * @return array{version: int, sound_id: int}
      */
-    private function parseVersion1(BinaryReader $reader, int $version): array
+    private function parseVersion1(BinaryReader $reader): array
     {
         return [
-            'version' => $version,
+            'version' => 1,
             'sound_id' => $reader->readUint16LE(),
         ];
     }
@@ -76,13 +88,13 @@ class SoundParser implements TypeParserInterface
      *
      * @return array{version: int, sound_id: int, filename?: string}
      */
-    private function parseVersion2(BinaryReader $reader, int $version): array
+    private function parseVersion2(BinaryReader $reader): array
     {
         $soundId = $reader->readUint16LE();
         $filenameLength = $reader->readUint16LE();
 
         $result = [
-            'version' => $version,
+            'version' => 2,
             'sound_id' => $soundId,
         ];
 

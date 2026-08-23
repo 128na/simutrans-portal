@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak;
 
+use App\Enums\PakObjectType;
+
 /**
  * Simutrans .pak ファイルパーサー
  *
@@ -59,11 +61,11 @@ class PakParser
                 // This is a named object
                 $pakMetadata = PakMetadata::fromNode($node, $versionCode);
                 $metadata[] = $pakMetadata->toArray();
-            } elseif (ObjectTypeConverter::toString($firstChild->type) === 'building') {
+            } elseif (ObjectTypeConverter::toEnum($firstChild->type) === PakObjectType::Building) {
                 // Special case: FACT node has BUIL as first child
                 // Check if this is a factory (FACT node containing BUIL node)
-                $objectType = ObjectTypeConverter::toString($node->type);
-                if ($objectType === 'factory' && $firstChild->hasChildren()) {
+                $objectType = ObjectTypeConverter::toEnum($node->type);
+                if ($objectType === PakObjectType::Factory && $firstChild->hasChildren()) {
                     $buildingFirstChild = $firstChild->getChild(0);
                     if ($buildingFirstChild instanceof Node && $buildingFirstChild->isType(Node::OBJ_TEXT)) {
                         // This is a factory node - process it

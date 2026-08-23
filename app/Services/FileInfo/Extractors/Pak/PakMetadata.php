@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak;
 
+use App\Enums\PakObjectType;
 use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BridgeParser;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BuildingParser;
@@ -66,6 +67,7 @@ class PakMetadata
     public static function fromNode(Node $node, int $versionCode): self
     {
         // Determine object type first
+        $objectTypeEnum = ObjectTypeConverter::toEnum($node->type);
         $objectType = ObjectTypeConverter::toString($node->type);
 
         // Child node 0 is name (TEXT node)
@@ -73,7 +75,7 @@ class PakMetadata
         $name = '';
         if ($nameNode instanceof Node && $nameNode->isType(Node::OBJ_TEXT)) {
             $name = TextNodeExtractor::extract($nameNode);
-        } elseif ($objectType === 'factory' && $nameNode instanceof Node) {
+        } elseif ($objectTypeEnum === PakObjectType::Factory && $nameNode instanceof Node) {
             // Special case: Factory (FACT) node has BUIL node as first child
             // Extract name from BUIL node's first child (TEXT node)
             $buildingTextNode = $nameNode->getChild(0);
@@ -90,7 +92,7 @@ class PakMetadata
             if ($copyright === '') {
                 $copyright = null;
             }
-        } elseif ($objectType === 'factory' && $nameNode instanceof Node) {
+        } elseif ($objectTypeEnum === PakObjectType::Factory && $nameNode instanceof Node) {
             // Special case: Factory (FACT) node - get copyright from BUIL node's second child
             $buildingCopyrightNode = $nameNode->getChild(1);
             if ($buildingCopyrightNode instanceof Node && $buildingCopyrightNode->isType(Node::OBJ_TEXT)) {

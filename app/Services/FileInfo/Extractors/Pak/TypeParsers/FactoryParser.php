@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
+use App\Enums\PakObjectType;
 use App\Exceptions\InvalidPakFileException;
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
@@ -639,17 +640,17 @@ class FactoryParser implements TypeParserInterface
         $inputs = [];
 
         foreach ($node->getChildren() as $child) {
-            $childType = ObjectTypeConverter::toString($child->type);
+            $childType = ObjectTypeConverter::toEnum($child->type);
 
-            if ($childType !== 'fsup') {
+            if ($childType !== PakObjectType::FactorySupplier) {
                 continue;
             }
 
             // Extract good name from XREF child node
             $goodName = null;
             foreach ($child->getChildren() as $xrefNode) {
-                $xrefType = ObjectTypeConverter::toString($xrefNode->type);
-                if ($xrefType === 'xref') {
+                $xrefType = ObjectTypeConverter::toEnum($xrefNode->type);
+                if ($xrefType === PakObjectType::Xref) {
                     $goodName = TextNodeExtractor::extract($xrefNode);
                     if ($goodName !== '' && strlen($goodName) > 5) {
                         $goodName = substr($goodName, 5); // Remove "GOOD:" prefix
@@ -691,17 +692,17 @@ class FactoryParser implements TypeParserInterface
         $outputs = [];
 
         foreach ($node->getChildren() as $child) {
-            $childType = ObjectTypeConverter::toString($child->type);
+            $childType = ObjectTypeConverter::toEnum($child->type);
 
-            if ($childType !== 'fpro') {
+            if ($childType !== PakObjectType::FactoryProduct) {
                 continue;
             }
 
             // Extract good name from XREF child node
             $goodName = null;
             foreach ($child->getChildren() as $xrefNode) {
-                $xrefType = ObjectTypeConverter::toString($xrefNode->type);
-                if ($xrefType === 'xref') {
+                $xrefType = ObjectTypeConverter::toEnum($xrefNode->type);
+                if ($xrefType === PakObjectType::Xref) {
                     $goodName = TextNodeExtractor::extract($xrefNode);
                     if ($goodName !== '' && strlen($goodName) > 5) {
                         $goodName = substr($goodName, 5); // Remove "GOOD:" prefix
@@ -749,7 +750,7 @@ class FactoryParser implements TypeParserInterface
         $groups = [];
 
         foreach ($node->getChildren() as $child) {
-            if (ObjectTypeConverter::toString($child->type) === 'ffield') {
+            if (ObjectTypeConverter::toEnum($child->type) === PakObjectType::FactoryFieldGroup) {
                 $groups[] = $this->parseFieldGroup($child);
             }
         }
@@ -825,7 +826,7 @@ class FactoryParser implements TypeParserInterface
         $classes = [];
 
         foreach ($node->getChildren() as $child) {
-            if (ObjectTypeConverter::toString($child->type) === 'ffldclass') {
+            if (ObjectTypeConverter::toEnum($child->type) === PakObjectType::FactoryFieldClass) {
                 $classes[] = $this->parseFieldClass($child);
             }
         }
@@ -865,7 +866,7 @@ class FactoryParser implements TypeParserInterface
         $smoke = [];
 
         foreach ($node->getChildren() as $child) {
-            if (ObjectTypeConverter::toString($child->type) === 'fsmoke') {
+            if (ObjectTypeConverter::toEnum($child->type) === PakObjectType::FactorySmoke) {
                 $smoke[] = $this->parseSmoke($child);
             }
         }

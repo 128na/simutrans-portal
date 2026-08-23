@@ -6,6 +6,7 @@ namespace App\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
+use App\Services\FileInfo\Extractors\Pak\SimutransDefaults;
 use App\Services\FileInfo\Extractors\Pak\TextNodeExtractor;
 
 /**
@@ -50,6 +51,17 @@ class VehicleParser implements TypeParserInterface
                 default => [],
             };
 
+            // Before version 5, intro/retire dates were base-16 encoded (year*16+month)
+            // and need conversion to base-12 (year*12+month) (from vehicle_reader.cc)
+            if ($version < 5) {
+                if (isset($data['intro_date']) && is_int($data['intro_date'])) {
+                    $data['intro_date'] = intdiv($data['intro_date'], 16) * 12 + ($data['intro_date'] % 16);
+                }
+                if (isset($data['retire_date']) && is_int($data['retire_date'])) {
+                    $data['retire_date'] = intdiv($data['retire_date'], 16) * 12 + ($data['retire_date'] % 16);
+                }
+            }
+
             if (isset($data['engine_type'])) {
                 assert(is_int($data['engine_type']));
             }
@@ -79,6 +91,10 @@ class VehicleParser implements TypeParserInterface
             'weight' => $reader->readUint16LE() * 1000,
             'power' => $reader->readUint16LE(),
             'running_cost' => $reader->readUint16LE(),
+            // v0 は intro_date/retire_date を保持しないため、変換前の base-16
+            // デフォルト値を設定する (vehicle_reader.cc: version==0 の分岐)
+            'intro_date' => SimutransDefaults::INTRO_YEAR * 16,
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * 16,
         ];
     }
 
@@ -95,6 +111,9 @@ class VehicleParser implements TypeParserInterface
             'power' => $reader->readUint16LE(),
             'running_cost' => $reader->readUint16LE(),
             'intro_date' => $reader->readUint16LE(),
+            // v1/v2 は retire_date を保持しないため、変換前の base-16 デフォルト値を設定する
+            // (vehicle_reader.cc: desc->retire_date = DEFAULT_RETIRE_YEAR*16)
+            'retire_date' => SimutransDefaults::RETIRE_YEAR * 16,
             'gear' => $reader->readUint8(),
             'waytype' => $reader->readUint8(),
             'sound' => $reader->readUint8(),

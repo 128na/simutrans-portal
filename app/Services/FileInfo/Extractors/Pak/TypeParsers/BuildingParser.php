@@ -52,8 +52,7 @@ class BuildingParser implements TypeParserInterface
         $sizeX = $this->readUint16($data, $offset);
         $sizeY = $this->readUint16($data, $offset);
         $layouts = $this->readUint32($data, $offset);
-        $offset += 4; // skip climates
-        $offset += 4; // skip enables
+        // v0 は climates/enables を保存しない (building_reader.cc: layouts の直後に flags を読む)
         $flags = $this->readUint32($data, $offset);
 
         return $this->buildResult(
@@ -120,22 +119,24 @@ class BuildingParser implements TypeParserInterface
         // Animation time
         $animationTime = $version >= 5 ? $this->readUint16($data, $offset) : 300;
 
-        // Capacity, maintenance, price (version 8+)
+        // Capacity, maintenance, price (version 8+); allow_underground (version 7+)
         $capacity = null;
         $maintenance = null;
         $price = null;
         $allowUnderground = null;
 
-        if ($version >= 8) {
-            $capacity = $this->readUint16($data, $offset);
+        if ($version >= 7) {
+            if ($version >= 8) {
+                $capacity = $this->readUint16($data, $offset);
 
-            if ($version >= 11) {
-                $maintenance = $this->readInt64($data, $offset);
-                $price = $this->readInt64($data, $offset);
-            } else {
-                // version 8-10
-                $maintenance = $this->readInt32($data, $offset);
-                $price = $this->readInt32($data, $offset);
+                if ($version >= 11) {
+                    $maintenance = $this->readInt64($data, $offset);
+                    $price = $this->readInt64($data, $offset);
+                } else {
+                    // version 8-10
+                    $maintenance = $this->readInt32($data, $offset);
+                    $price = $this->readInt32($data, $offset);
+                }
             }
 
             $allowUnderground = $this->readUint8($data, $offset);

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\BridgeParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class BridgeParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private BridgeParser $parser;
 
     protected function setUp(): void
@@ -43,7 +44,7 @@ class BridgeParserTest extends TestCase
         $data .= pack('C', 1);      // clip_below = true
         $data .= pack('C', 2);      // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('BRDG', $data));
 
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
@@ -70,7 +71,7 @@ class BridgeParserTest extends TestCase
         $data .= pack('C', 0);      // clip_below = false
         $data .= pack('C', 1);      // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('BRDG', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(11, $result['version']);
@@ -110,7 +111,7 @@ class BridgeParserTest extends TestCase
         $data .= pack('C', 3);      // max_height
         $data .= pack('C', 1);      // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('BRDG', $data));
 
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
@@ -136,7 +137,7 @@ class BridgeParserTest extends TestCase
         $data .= pack('C', 0);      // max_height
         $data .= pack('C', 1);      // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('BRDG', $data));
 
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
@@ -152,14 +153,6 @@ class BridgeParserTest extends TestCase
         $this->expectExceptionMessage('Unsupported bridge version: 12 (max known: 11)');
 
         $data = pack('v', 0x8000 | 12);
-        $this->parser->parse($this->makeNode($data));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'BRDG'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        $this->parser->parse($this->makeNode('BRDG', $data));
     }
 }

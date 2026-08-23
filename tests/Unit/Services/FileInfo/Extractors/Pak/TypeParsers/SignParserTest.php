@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\SignParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class SignParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private SignParser $parser;
 
     protected function setUp(): void
@@ -33,7 +35,7 @@ class SignParserTest extends TestCase
         $payload = pack('v', 100);   // min_speed
         $payload .= pack('C', 0);    // flags
 
-        $result = $this->parser->parse($this->makeNode(1, $payload));
+        $result = $this->parser->parse($this->makeSignNode(1, $payload));
 
         $this->assertSame(1900 * 12, $result['intro_date']);
         $this->assertSame(2999 * 12, $result['retire_date']);
@@ -50,7 +52,7 @@ class SignParserTest extends TestCase
         $payload .= pack('V', 30000); // price
         $payload .= pack('C', 0);     // flags
 
-        $result = $this->parser->parse($this->makeNode(2, $payload));
+        $result = $this->parser->parse($this->makeSignNode(2, $payload));
 
         $this->assertSame(1900 * 12, $result['intro_date']);
         $this->assertSame(2999 * 12, $result['retire_date']);
@@ -70,7 +72,7 @@ class SignParserTest extends TestCase
         $payload .= pack('v', 23880); // intro_date
         $payload .= pack('v', 24240); // retire_date
 
-        $result = $this->parser->parse($this->makeNode(3, $payload));
+        $result = $this->parser->parse($this->makeSignNode(3, $payload));
 
         $this->assertSame(23880, $result['intro_date']);
         $this->assertSame(24240, $result['retire_date']);
@@ -85,7 +87,7 @@ class SignParserTest extends TestCase
         $this->expectExceptionMessage('Unsupported roadsign version: 0 (max known: 6)');
 
         // 高位ビット未設定の生データ (legacy v0 相当)
-        $this->parser->parse($this->makeNode(0, pack('v', 100)));
+        $this->parser->parse($this->makeSignNode(0, pack('v', 100)));
     }
 
     /**
@@ -96,15 +98,13 @@ class SignParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported roadsign version: 7 (max known: 6)');
 
-        $this->parser->parse($this->makeNode(7, ''));
+        $this->parser->parse($this->makeSignNode(7, ''));
     }
 
-    private function makeNode(int $version, string $payload): Node
+    private function makeSignNode(int $version, string $payload): Node
     {
-        $data = $version === 0 ? $payload : pack('v', 0x8000 | $version).$payload;
-        $size = strlen($data);
-        $binary = 'SIGN'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        return $version === 0
+            ? $this->makeNode('SIGN', $payload)
+            : $this->makeVersionedNode('SIGN', $version, $payload);
     }
 }

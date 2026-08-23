@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\WayParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class WayParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private WayParser $parser;
 
     protected function setUp(): void
@@ -37,7 +38,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 1);       // waytype (road)
         $data .= pack('C', 0);       // styp (flat)
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(10000, $result['price']);
@@ -69,7 +70,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 1);       // clip_below = true
         $data .= pack('c', 0);       // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
@@ -97,7 +98,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 0);       // draw_as_obj
         $data .= pack('c', 0);       // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertArrayHasKey('clip_below', $result);
@@ -123,7 +124,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 0);       // draw_as_obj
         $data .= pack('c', 0);       // number_of_seasons
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(128, $result['waytype']);
@@ -147,7 +148,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 7);       // waytype = 7 (tram_wt raw)
         $data .= pack('C', 0);       // styp
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(2, $result['waytype']); // track_wt
@@ -170,7 +171,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 5);       // waytype = 5 (monorail_wt raw)
         $data .= pack('C', 0);       // styp (flat)
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(5, $result['waytype']); // monorail_wt のまま
@@ -193,7 +194,7 @@ class WayParserTest extends TestCase
         $data .= pack('C', 2);       // waytype = 2 (track_wt)
         $data .= pack('C', 5);       // styp = 5 (旧モノレール表現)
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('WAY', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(5, $result['waytype']); // monorail_wt
@@ -210,14 +211,6 @@ class WayParserTest extends TestCase
         $this->expectExceptionMessage('Unsupported way version: 9 (max known: 8)');
 
         $data = pack('v', 0x8000 | 9);
-        $this->parser->parse($this->makeNode($data));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = "WAY\x00".pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        $this->parser->parse($this->makeNode('WAY', $data));
     }
 }

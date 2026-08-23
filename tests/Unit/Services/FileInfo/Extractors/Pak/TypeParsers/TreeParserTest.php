@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\TreeParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class TreeParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private TreeParser $parser;
 
     protected function setUp(): void
@@ -29,14 +30,6 @@ class TreeParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported tree version: 3 (max known: 2)');
 
-        $this->parser->parse($this->makeNode(pack('v', 0x8000 | 3)));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'TREE'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        $this->parser->parse($this->makeNode('TREE', pack('v', 0x8000 | 3)));
     }
 }

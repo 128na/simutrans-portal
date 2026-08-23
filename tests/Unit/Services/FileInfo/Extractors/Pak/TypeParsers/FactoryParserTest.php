@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
 use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\FactoryParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class FactoryParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private FactoryParser $parser;
 
     protected function setUp(): void
@@ -255,23 +257,6 @@ class FactoryParserTest extends TestCase
     {
         $versionedPayload = $version === 0 ? $payload : pack('v', 0x8000 | $version).$payload;
 
-        return $this->decodeNode($this->encodeNode('FACT', $versionedPayload, $children));
-    }
-
-    /**
-     * ノード1つをバイナリにエンコードする (type[4] + children[2] + size[2] + data + 子ノード群)。
-     *
-     * @param  array<string>  $children  encodeNode() で作った子ノードのバイナリ列
-     */
-    private function encodeNode(string $type, string $data, array $children = []): string
-    {
-        $type = str_pad($type, 4, "\x00");
-
-        return $type.pack('v', count($children)).pack('v', strlen($data)).$data.implode('', $children);
-    }
-
-    private function decodeNode(string $binary): Node
-    {
-        return Node::parse(new BinaryReader($binary));
+        return $this->makeNode('FACT', $versionedPayload, $children);
     }
 }

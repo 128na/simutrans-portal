@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\VehicleParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class VehicleParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private VehicleParser $parser;
 
     protected function setUp(): void
@@ -53,7 +54,7 @@ class VehicleParserTest extends TestCase
         $data .= pack('C', 0);      // trailer_count
         $data .= pack('C', 0);      // freight_image_type
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('VHCL', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(70000, $result['loading_time']);
@@ -88,7 +89,7 @@ class VehicleParserTest extends TestCase
         $data .= pack('C', 3);      // trailer_count
         $data .= pack('C', 1);      // freight_image_type
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('VHCL', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(50000, $result['price']);
@@ -133,7 +134,7 @@ class VehicleParserTest extends TestCase
         $data .= pack('C', 1);      // leader_count
         $data .= pack('C', 1);      // trailer_count
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('VHCL', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(23880, $result['intro_date']);
@@ -161,7 +162,7 @@ class VehicleParserTest extends TestCase
         $data .= pack('C', 1);      // trailer_count
         $data .= pack('C', 1);      // engine_type
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('VHCL', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(23880, $result['intro_date']);
@@ -189,7 +190,7 @@ class VehicleParserTest extends TestCase
         $data .= pack('C', 1);      // trailer_count
         $data .= pack('C', 1);      // engine_type
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('VHCL', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(23880, $result['intro_date']);
@@ -211,7 +212,7 @@ class VehicleParserTest extends TestCase
         $data .= pack('v', 200);   // power
         $data .= pack('v', 50);    // running_cost
 
-        $result = $this->parser->parse($this->makeNode($data));
+        $result = $this->parser->parse($this->makeNode('VHCL', $data));
 
         $this->assertNotNull($result);
         $this->assertSame(1900 * 12, $result['intro_date']);
@@ -228,14 +229,6 @@ class VehicleParserTest extends TestCase
         $this->expectExceptionMessage('Unsupported vehicle version: 14 (max known: 13)');
 
         $data = pack('v', 0x8000 | 14);
-        $this->parser->parse($this->makeNode($data));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'VHCL'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        $this->parser->parse($this->makeNode('VHCL', $data));
     }
 }

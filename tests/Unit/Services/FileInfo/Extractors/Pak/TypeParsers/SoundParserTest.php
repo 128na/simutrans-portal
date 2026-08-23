@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo\Extractors\Pak\TypeParsers;
 
 use App\Exceptions\InvalidPakFileException;
-use App\Services\FileInfo\Extractors\Pak\BinaryReader;
-use App\Services\FileInfo\Extractors\Pak\Node;
 use App\Services\FileInfo\Extractors\Pak\TypeParsers\SoundParser;
+use Tests\Unit\Services\FileInfo\Extractors\Pak\MakesTestNodes;
 use Tests\Unit\TestCase;
 
 class SoundParserTest extends TestCase
 {
+    use MakesTestNodes;
+
     private SoundParser $parser;
 
     protected function setUp(): void
@@ -28,7 +29,7 @@ class SoundParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported sound version: 0 (max known: 2)');
 
-        $this->parser->parse($this->makeNode(pack('v', 100)));
+        $this->parser->parse($this->makeNode('SOUN', pack('v', 100)));
     }
 
     /**
@@ -39,14 +40,6 @@ class SoundParserTest extends TestCase
         $this->expectException(InvalidPakFileException::class);
         $this->expectExceptionMessage('Unsupported sound version: 3 (max known: 2)');
 
-        $this->parser->parse($this->makeNode(pack('v', 0x8000 | 3)));
-    }
-
-    private function makeNode(string $data): Node
-    {
-        $size = strlen($data);
-        $binary = 'SOUN'.pack('v', 0).pack('v', $size).$data;
-
-        return Node::parse(new BinaryReader($binary));
+        $this->parser->parse($this->makeNode('SOUN', pack('v', 0x8000 | 3)));
     }
 }

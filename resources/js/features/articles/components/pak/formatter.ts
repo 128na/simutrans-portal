@@ -168,7 +168,7 @@ export const formatAxleLoad = (axle_load: number | undefined): string => {
  */
 export const formatProbability = (value: number | undefined): string => {
   if (value === undefined) return "";
-  return `${(value / (PAK_UNIT_SCALES.PROBABILITY / 100)).toFixed(1)}%`;
+  return `${((value / PAK_UNIT_SCALES.PROBABILITY) * 100).toFixed(1)}%`;
 };
 
 const CLIMATE_NAME_TRANSLATIONS: Record<string, string> = {

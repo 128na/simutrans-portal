@@ -595,6 +595,12 @@ class FactoryParser implements TypeParserInterface
     /**
      * Combine 256 independent rounds of a p/10000 chance into a single probability.
      *
+     * The 10000 (万分率) scale here is ported bit-for-bit from upstream's
+     * fixed-point algorithm and intentionally left as a literal rather than
+     * a named constant. The same value is mirrored (for display purposes
+     * only) as PAK_UNIT_SCALES.PROBABILITY in
+     * resources/js/features/articles/components/pak/pakConstants.ts.
+     *
      * @see https://github.com/aburch/simutrans/blob/master/src/simutrans/descriptor/reader/factory_reader.cc rescale_probability()
      */
     private function rescaleProbability(int $p): int

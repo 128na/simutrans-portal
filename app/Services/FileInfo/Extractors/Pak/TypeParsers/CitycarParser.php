@@ -68,6 +68,18 @@ class CitycarParser implements TypeParserInterface
     /**
      * Parse version 1
      *
+     * intro_date/retire_date is packed as (year*16 + month), but unlike
+     * vehicle_reader.cc/way_reader.cc's shared base-16->12 conversion
+     * (SimutransDefaults::LEGACY_DATE_BASE/CURRENT_DATE_BASE, remainder
+     * taken mod 16), citycar_reader_t::read_node() takes the remainder
+     * mod 12. This is upstream's own formula, confirmed against the
+     * source below, not a bug in this port - do not "fix" it to mod 16
+     * to match the other parsers, and do not partially replace its
+     * literals with SimutransDefaults constants (16 and 12 here are
+     * citycar's own packing base, not the shared one).
+     *
+     * @see https://github.com/128na/simutrans/blob/master/src/simutrans/descriptor/reader/citycar_reader.cc
+     *
      * @return array<string, mixed>
      */
     private function parseVersion1(BinaryReader $reader): array
@@ -80,18 +92,11 @@ class CitycarParser implements TypeParserInterface
         $topspeedRaw = $reader->readUint16LE();
         $result['topspeed'] = intdiv($topspeedRaw, 16);
 
-        // intro_date/retire_date (uint16) - packed format (year*16 + month).
-        // NOTE: citycar_reader.cc uses "% 12" here, NOT "% 16" like
-        // vehicle_reader.cc/way_reader.cc's shared base-16->12 conversion
-        // (SimutransDefaults::LEGACY_DATE_BASE). This was verified directly
-        // against upstream citycar_reader_t::read_node() - it is upstream's
-        // own (quirky but real) formula, not a bug in this port. Do NOT
-        // "fix" this remainder to %16 to match the other parsers.
         $introDateRaw = $reader->readUint16LE();
-        $result['intro_date'] = intdiv($introDateRaw, SimutransDefaults::LEGACY_DATE_BASE) * SimutransDefaults::CURRENT_DATE_BASE + ($introDateRaw % 12);
+        $result['intro_date'] = intdiv($introDateRaw, 16) * 12 + ($introDateRaw % 12);
 
         $retireDateRaw = $reader->readUint16LE();
-        $result['retire_date'] = intdiv($retireDateRaw, SimutransDefaults::LEGACY_DATE_BASE) * SimutransDefaults::CURRENT_DATE_BASE + ($retireDateRaw % 12);
+        $result['retire_date'] = intdiv($retireDateRaw, 16) * 12 + ($retireDateRaw % 12);
 
         return $result;
     }

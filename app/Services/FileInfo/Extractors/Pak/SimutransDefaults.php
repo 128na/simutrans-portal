@@ -34,6 +34,10 @@ final class SimutransDefaults
     /**
      * vehicle_reader.cc: 重量はuint16のtonをkgへ換算するためraw*1000として
      * 保存する（v10以降はuint32でkgを直接保存するためこの換算は不要）。
+     *
+     * 同じ値がフロント側 resources/js/features/articles/components/pak/pakConstants.ts
+     * の PAK_UNIT_SCALES.WEIGHT にも存在する（表示時にkg→tonへ逆変換するため）。
+     * 値を変更する場合は両方を更新すること。
      */
     public const int WEIGHT_SCALE = 1000;
 }

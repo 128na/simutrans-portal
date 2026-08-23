@@ -85,18 +85,23 @@ export type CategorySlug =
 // ============================================================================
 
 /**
- * Pakデータの単位変換係数（Simutrans本家ソースが根拠）。
- * ここに定義した値だけが一次情報であり、他ファイルでのコメントは
- * この定義を参照する形にする（formatter.ts の各format関数を参照）。
+ * Pakデータの表示時の単位変換係数（Simutrans本家ソースが根拠）。
+ * フロント側でのこの種の値はここに集約し、formatter.ts の各format関数から
+ * 参照する。バックエンド側（パース時に生値へ変換する係数）は
+ * app/Services/FileInfo/Extractors/Pak/SimutransDefaults.php に相当するものが
+ * ある場合がある（例: WEIGHT）。同じ値を両方で持つ場合、変更時は両方を
+ * 更新すること。
  */
 export const PAK_UNIT_SCALES = {
   /** obj_base_desc.h: price/running_cost/maintenance は 1/100 Cr 単位で保存される */
   PRICE: 100,
-  /** vehicle_desc.h: weight は raw値*1000 (kg換算) で保存される。t表示は /1000 */
+  /** vehicle_desc.h: weight は raw値*1000 (kg換算) で保存される。t表示は /1000
+   *  (PHP側: SimutransDefaults::WEIGHT_SCALE と同じ値) */
   WEIGHT: 1000,
   /** vehicle_desc.h: gear は 64 = 1.00 (等倍) として保存される */
   GEAR: 64,
-  /** factory_reader.cc rescale_probability(): 0-10000 (万分率) で保存される */
+  /** factory_reader.cc rescale_probability(): 0-10000 (万分率) で保存される
+   *  (PHP側: FactoryParser::rescaleProbability() の10000と同じ値) */
   PROBABILITY: 10000,
 } as const;
 

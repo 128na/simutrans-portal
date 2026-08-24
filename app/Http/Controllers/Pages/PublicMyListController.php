@@ -6,12 +6,12 @@ namespace App\Http\Controllers\Pages;
 
 use App\Actions\FrontMyList\PublicListAction;
 use App\Actions\FrontMyList\PublicShowAction;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Mypage\MyListItem as MyListItemResource;
 use App\Http\Resources\Mypage\MyListShow as MyListShowResource;
 use App\Services\MyListService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Routing\Controller;
 
 class PublicMyListController extends Controller
 {

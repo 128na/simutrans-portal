@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\Article\FrontArticleRepository;
 use Illuminate\Contracts\View\View;
-use Illuminate\Routing\Controller;
 
 class TopController extends Controller
 {

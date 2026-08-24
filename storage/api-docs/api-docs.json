@@ -2,20 +2,24 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Simutrans Portal API",
-        "description": "Simutrans Addon Portal API Documentation",
+        "description": "Simutrans アドオン投稿サイトのAPI仕様",
         "contact": {
-            "name": "128na",
-            "url": "https://github.com/128na"
+            "email": "support@128-bit.net"
         },
         "license": {
-            "name": "MIT"
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
         },
-        "version": "1.0.0"
+        "version": "2.0.0"
     },
     "servers": [
         {
-            "url": "http://localhost",
-            "description": "API Server"
+            "url": "http://localhost:8000",
+            "description": "ローカル開発環境"
+        },
+        {
+            "url": "https://simutrans-portal.128-bit.net",
+            "description": "本番環境"
         }
     ],
     "paths": {

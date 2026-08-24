@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Frontend\ArticleList;
 use App\Http\Resources\Frontend\UserShow;
 use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
-use Illuminate\Routing\Controller;
 
 class UserController extends Controller
 {

@@ -67,6 +67,10 @@ Actions は機能テスト（`tests/Feature/Actions/`、DBを使いビジネス�
 - Service と Action の両方に当てはまる場合 → ユースケースを表現する側面が強ければ Action。
   Action 内部から Service を呼ぶ構成にする。
 - Controller に直接ロジックを書いてよいか → 不可。薄いコントローラーを維持し Action に委譲する。
+- Service から別の Service を呼んでもよいか → 可能。ただし依存が深くなりすぎないよう注意し、
+  循環参照は避ける。多数の Service を組み合わせる必要が出てきた場合は Action への切り出しを検討する。
+- Action から別の Action を呼んでもよいか → 可能。既存コードでも実例がある
+  （例: `StoreArticle` 内から `SyncRelatedModels` を呼び出す構成）。
 - 既存コードの移動要否 → 2025-11-24 時点の分析では概ね適切に配置されており、
   大規模な移動は不要と判断した（`Services/Front/MetaOgpService` のみ要検討として保留）。
 

@@ -1,5 +1,5 @@
 {
-  "$comment": "E:/chore/template_repo/docs/migration.md Phase 1 完了時点。禁止名検査を有効化済み。",
+  "$comment": "E:/chore/template_repo/docs/migration.md Phase 0〜3 完了（旧5分類は解消済み、禁止名検査・CI連携とも有効）。livingDocs の追加理由は docs/adr/0004 以降を参照。",
   "scanRoots": {
     "recursive": ["docs"],
     "flat": ["."]

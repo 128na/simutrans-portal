@@ -14,6 +14,11 @@ const warns = [];
 const rel = (p) => path.relative(repoRoot, p).replaceAll("\\", "/");
 const error = (file, msg) => errors.push(`ERROR ${rel(file)}: ${msg}`);
 const warn = (file, msg) => warns.push(`WARN  ${rel(file)}: ${msg}`);
+const bodyCache = new Map();
+const readBody = (abs) => {
+  if (!bodyCache.has(abs)) bodyCache.set(abs, fs.readFileSync(abs, "utf8"));
+  return bodyCache.get(abs);
+};
 
 // ---- 走査 -------------------------------------------------------------
 const SKIP_DIRS = new Set([".git", "node_modules", ".github", ".claude", ".idea", ".vscode"]);
@@ -97,19 +102,21 @@ for (const f of mdFiles.filter((x) => x.kind === "adr")) {
   } else {
     adrNumbers.set(m[1], f.relPath);
   }
-  const body = fs.readFileSync(f.abs, "utf8");
+  const body = readBody(f.abs);
   if (!/^> ステータス: /m.test(body)) {
     error(f.abs, "「> ステータス: Accepted (YYYY-MM-DD)」形式のステータス行が必要です");
   }
 }
 
 // ---- リンク検査 -------------------------------------------------------
-const LINK = /\[[^\]]*\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
+// target はスペースを含むパスにも対応（<...> 形式、または引用符付きタイトルの手前まで）
+const LINK = /\[[^\]]*\]\(\s*(?:<([^>]*)>|([^()\s][^()]*?))\s*(?:"[^"]*")?\)/g;
 for (const f of mdFiles) {
   if (f.kind === "template" || f.kind === "forbidden") continue;
-  const body = fs.readFileSync(f.abs, "utf8");
+  const body = readBody(f.abs);
   for (const m of body.matchAll(LINK)) {
-    const target = m[1];
+    const target = m[1] ?? m[2];
+    if (!target) continue;
     if (/^(https?|mailto):/.test(target) || target.startsWith("#")) continue;
     if (target.startsWith("~") || /^[A-Za-z]:[\\/]/.test(target) || target.startsWith("file://") || target.startsWith("/")) {
       error(f.abs, `リポジトリ外への絶対パスリンクは禁止（${target}）。リポジトリ内の相対リンクにするか、経緯なら records に書く`);
@@ -156,7 +163,7 @@ if (fs.existsSync(consDebt)) {
 // ---- 生きた文書のパス参照検査（warn） --------------------------------
 const PATHLIKE = /`((?:docs|tools|src|scripts|tests)\/[^`\s]+)`/g;
 for (const f of mdFiles.filter((x) => x.kind === "living")) {
-  const body = fs.readFileSync(f.abs, "utf8");
+  const body = readBody(f.abs);
   for (const m of body.matchAll(PATHLIKE)) {
     const token = m[1];
     if (/[*{}<>()?$]|YYYY|NNNN|\.\.\./.test(token)) continue; // プレースホルダはスキップ
@@ -169,7 +176,7 @@ for (const f of mdFiles.filter((x) => x.kind === "living")) {
 // ---- テンプレマーカー残存（warn） ------------------------------------
 for (const f of mdFiles) {
   if (f.kind === "template") continue;
-  const body = fs.readFileSync(f.abs, "utf8");
+  const body = readBody(f.abs);
   const count = (body.match(/TODO\(template\):/g) || []).length;
   if (count > 0) warn(f.abs, `TODO(template) マーカーが ${count} 件残っています`);
 }

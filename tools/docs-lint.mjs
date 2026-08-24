@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
+/* eslint-disable no-undef */
 // docs-lint: ドキュメント規約（docs/README.md）の機械検証。依存ゼロ・Node 標準モジュールのみ。
 // 使い方: node tools/docs-lint.mjs   （リポジトリルートで実行。exit 0 = green / 1 = error あり）
 import fs from "node:fs";
@@ -70,9 +72,13 @@ for (const f of mdFiles) {
 
 // ---- records 命名 -----------------------------------------------------
 const RECORD_NAME = /^(\d{4})-(\d{2})-(\d{2})_[a-z0-9-]+\.md$/;
+// UTC日付 + 1日を許容上限にする（実行環境のタイムゾーンに関わらず、UTC-12〜UTC+14の
+// どのローカル日付で作成された記録も「未来」と誤判定しないため。author のローカル日付でも
+// CI(通常UTC)のローカル日付でも、どちらか一方だけを基準にすると他方でズレが生じる）
 const now = new Date();
-const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-// ローカル日付で判定する（UTCだとJST等UTC+では日付が変わる前0〜9時台に today 扱いの記録が「未来」誤判定される）
+const maxAllowedDate = new Date(now);
+maxAllowedDate.setUTCDate(maxAllowedDate.getUTCDate() + 1);
+const maxAllowed = maxAllowedDate.toISOString().slice(0, 10);
 for (const f of mdFiles.filter((x) => x.kind === "record")) {
   const m = path.basename(f.relPath).match(RECORD_NAME);
   if (!m) {
@@ -83,7 +89,7 @@ for (const f of mdFiles.filter((x) => x.kind === "record")) {
   const dt = new Date(`${y}-${mo}-${d}T00:00:00Z`);
   if (Number.isNaN(dt.getTime()) || dt.toISOString().slice(0, 10) !== `${y}-${mo}-${d}`) {
     error(f.abs, `実在しない日付です（${y}-${mo}-${d}）`);
-  } else if (`${y}-${mo}-${d}` > today) {
+  } else if (`${y}-${mo}-${d}` > maxAllowed) {
     error(f.abs, `未来の日付です（${y}-${mo}-${d}）`);
   }
 }

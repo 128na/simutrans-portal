@@ -371,5 +371,5 @@ describe("FormField", () => {
 
 ## 関連ドキュメント
 
-- [コード重複パターン分析](../knowledge/code-duplication-patterns-20260111-knowledge.md)
-- [リファクタリング実装ログ](../log/refactoring-priority1-2-20260111-log.md)
+- [コード重複パターン分析](../records/2026-01-11_code-duplication-patterns.md)
+- [リファクタリング実装ログ](../records/2026-01-11_refactoring-priority1-2.md)

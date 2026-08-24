@@ -15,4 +15,4 @@
 
 - プロジェクト前提: `/README.md`
 - ドキュメント運用: `/docs/README.md`
-- コーディング規約: `/docs/knowledge/project-coding-standards-20260101-knowledge.md`
+- コーディング規約: `/docs/coding-standards.md`

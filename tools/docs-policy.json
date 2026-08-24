@@ -10,9 +10,7 @@
     "AGENTS.md",
     "CODE_OF_CONDUCT.md",
     "docs/README.md",
-    "docs/coding-standards.md",
-    "docs/spec/api-contract-typescript-types-spec.md",
-    "docs/spec/form-field-component-spec.md"
+    "docs/coding-standards.md"
   ],
   "ledgers": [
     "docs/dependency-debt.md",

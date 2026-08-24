@@ -43,6 +43,7 @@ return [
                     base_path('app/Http/Controllers/Controller.php'),
                     base_path('app/Http/Controllers/Api'),
                     base_path('app/Http/Controllers/Mypage'),
+                    base_path('app/OpenApi/OpenApiSpec.php'),
                     base_path('app/OpenApi/Schemas'),
                     base_path('app/OpenApi/Paths'),
                 ],

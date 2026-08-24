@@ -6,11 +6,11 @@ namespace App\Http\Controllers\Pages\Article;
 
 use App\Actions\FrontArticle\ConversionAction;
 use App\Actions\FrontArticle\DownloadAction;
+use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;

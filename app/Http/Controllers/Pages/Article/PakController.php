@@ -6,11 +6,11 @@ namespace App\Http\Controllers\Pages\Article;
 
 use App\Actions\FrontArticle\LatestAction;
 use App\Enums\CategoryType;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Frontend\ArticleList;
 use App\Repositories\CategoryRepository;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
-use Illuminate\Routing\Controller;
 
 class PakController extends Controller
 {

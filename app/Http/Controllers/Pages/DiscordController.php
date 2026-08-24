@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Pages;
 
 use App\Actions\DiscordInvite\GenerateInviteCodeAction;
+use App\Http\Controllers\Controller;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Throwable;
 
 class DiscordController extends Controller

@@ -19,7 +19,8 @@
     "format:check": "prettier --check resources/",
     "lint": "eslint . --fix",
     "types": "tsc --noEmit",
-    "check": "node scripts/run-parallel.js \"types:npm run types\" \"format:npm run format\" \"lint:npm run lint\" \"pint:composer run pint\" \"phpstan:composer run phpstan\"",
+    "docs": "node tools/docs-lint.mjs",
+    "check": "node scripts/run-parallel.js \"types:npm run types\" \"format:npm run format\" \"lint:npm run lint\" \"pint:composer run pint\" \"phpstan:composer run phpstan\" \"docs:npm run docs\"",
     "all": "npm run check && npm run test"
   },
   "devDependencies": {

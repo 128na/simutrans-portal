@@ -277,8 +277,7 @@ php artisan cache:clear
 ### 参考資料
 
 - **OpenAPI README**: [app/OpenApi/README.md](../../app/OpenApi/README.md)
-- **API 型定義仕様**: [docs/spec/api-contract-typescript-types-spec.md](./api-contract-typescript-types-spec.md)
-- **コントローラー実装**: [app/Http/Controllers/README.md](../../app/Http/Controllers/README.md)
+- **API 型定義仕様**: [docs/adr/0003](../adr/0003-typescript-types-manual-sync.md)（元 spec ファイルは移行時に統合・削除。リンク先パスのみ追従）
 - **フロントエンド実装**: [resources/js/README.md](../../resources/js/README.md)
 
 ---

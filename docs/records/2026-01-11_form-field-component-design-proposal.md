@@ -1,8 +1,8 @@
-# FormField コンポーネント設計仕様
+# FormField コンポーネント設計仕様（設計提案・未実装）
 
-キーワード: コンポーネント設計, フォーム, 再利用性, TypeScript
-最終更新日：2026-01-11
-ステータス：設計フェーズ
+（2026-01-11 時点の設計提案。`resources/js` 全体を検索したが対応する `FormField`
+コンポーネントの実装は確認できなかった。実装されていない設計は不変記録として
+凍結する。実装する場合はこの提案を参照しつつ、決定した設計判断のみ ADR へ）
 
 ## 概要
 
@@ -371,5 +371,5 @@ describe("FormField", () => {
 
 ## 関連ドキュメント
 
-- [コード重複パターン分析](../knowledge/code-duplication-patterns-20260111-knowledge.md)
-- [リファクタリング実装ログ](../log/refactoring-priority1-2-20260111-log.md)
+- [コード重複パターン分析](../records/2026-01-11_code-duplication-patterns.md)
+- [リファクタリング実装ログ](../records/2026-01-11_refactoring-priority1-2.md)

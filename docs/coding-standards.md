@@ -1,9 +1,5 @@
 # コーディング・運用規約
 
-キーワード: コーディング規約, テスト, デプロイ, セキュリティ, Git, API, DB, ドキュメント
-最終更新日：2026-01-03
-ステータス：完了
-
 ## 概要
 
 バックエンド (Laravel/PHP) とフロントエンド (TypeScript/React) のコーディング規約、DB/API設計方針、テスト・セキュリティ・デプロイ・Git運用・ドキュメント管理のルールをまとめた。日常の開発判断で迷ったときの参照用。なお、作業フローの指示は `.github/copilot-instructions.md` を参照。
@@ -74,8 +70,9 @@
 
 ## 11. ドキュメント管理
 
-- 必須ドキュメント: README, API仕様, DBスキーマ, デプロイ手順, トラブルシュート。
-- 運用: docs/README.md に従う。`docs/spec` `docs/manual` `docs/knowledge` `docs/log` は指示がない限り直接編集しない。作業メモは `docs/temp` に置き、完了後整理。
+- 運用: [docs/README.md](../README.md) に従う。ドキュメントは「意思決定の理由」（`docs/adr/`）と
+  「過去時点の記録」（`docs/records/`、不変）に限定し、現在形の md は allowlist 制。
+  変化する事実は `docs/dependency-debt.md` 等の台帳に集約する。
 
 ## 12. 開発時の注意事項
 

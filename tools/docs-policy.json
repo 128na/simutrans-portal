@@ -1,0 +1,26 @@
+{
+  "$comment": "E:/chore/template_repo/docs/migration.md Phase 0〜3 完了（旧5分類は解消済み、禁止名検査・CI連携とも有効）。livingDocs の追加理由は docs/adr/0004 以降を参照。",
+  "scanRoots": {
+    "recursive": ["docs"],
+    "flat": ["."]
+  },
+  "livingDocs": [
+    "README.md",
+    "CLAUDE.md",
+    "AGENTS.md",
+    "CODE_OF_CONDUCT.md",
+    "docs/README.md",
+    "docs/coding-standards.md"
+  ],
+  "ledgers": [
+    "docs/dependency-debt.md",
+    "docs/security-audit-debt.md"
+  ],
+  "recordDirs": ["docs/records"],
+  "adrDir": "docs/adr",
+  "templateDir": "docs/templates",
+  "forbiddenFileNames": ["INDEX.md", "index.md", "TODO.md"],
+  "forbiddenDirNames": ["temp", "tmp", "draft", "wip"],
+  "dependencyDebtHeader": "| Package | Current | Target | Blocker | Type | Revisit condition | Recorded |",
+  "dependencyDebtTypes": ["temporary", "infra", "behavior-change"]
+}

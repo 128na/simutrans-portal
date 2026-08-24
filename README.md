@@ -243,10 +243,8 @@ app/Http/Controllers/
 
 `Services/` と `Actions/` の責務分離については、以下のドキュメントを参照してください：
 
-- **[Services と Actions の役割分担ガイドライン](docs/architecture-services-and-actions.md)** - 詳細なアーキテクチャ説明
-- **[配置判断フローチャート](docs/decision-flowchart-services-actions.md)** - 新しいクラスの配置を判断するガイド
+- **[Services と Actions の責務分離](docs/adr/0001-services-actions-separation.md)** - 配置判断基準・命名規則
 - **[Actions README](app/Actions/README.md)** - Actionsの実装パターン
-- **[Services README](docs/architecture-services-and-actions.md)** - Servicesの詳細
 
 **要約:**
 

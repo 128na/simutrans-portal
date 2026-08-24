@@ -377,7 +377,7 @@ class UpdateArticle
 - `Manager` は複数の責務を示唆するため避ける
 - 動詞を先頭にすることで、実行アクションが明確になる
 
-参考: [Services/Actions ガイドライン](../docs/architecture-services-actions-20260103-knowledge.md)
+参考: [Services/Actions ガイドライン](./architecture-services-actions-20260103-knowledge.md)
 ````
 
 ### テストの不足
@@ -393,7 +393,7 @@ class UpdateArticle
 - [ ] エラー系: △△の場合は例外を投げる
 - [ ] 副作用: イベント `UserRegistered` が発火する
 
-参考: [テスト実装例](../tests/Unit/Services/Twitter/README.md)
+参考: [テスト実装例](../../tests/Unit/Services/Twitter/README.md)
 ```
 
 ---

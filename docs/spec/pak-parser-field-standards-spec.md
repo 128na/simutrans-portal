@@ -379,8 +379,8 @@ enum ClimaticZone: int {
 
 ## 参考リンク
 
-- **使用方法**: [PAK Parser Usage](./pak-parser-usage-20260103-knowledge.md)
-- **実装詳細**: [PAK Parser Implementation](./pak-parser-implementation-20260103-knowledge.md)
+- **使用方法**: [PAK Parser Usage](../knowledge/pak-parser-usage-20260103-knowledge.md)
+- **実装詳細**: [PAK Parser Implementation](../knowledge/pak-parser-implementation-20260103-knowledge.md)
 - **バイナリフォーマット**: [PAK Tunnel Format](./pak-tunnel-format-spec.md)
 - **Simutrans公式**: https://wiki.simutrans.com/
 

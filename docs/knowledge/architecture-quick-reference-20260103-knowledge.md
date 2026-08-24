@@ -298,7 +298,7 @@ find app/Actions -name "*Article*"
 
 - **完全ガイド**: [docs/architecture-services-and-actions.md](./architecture-services-actions-20260103-knowledge.md)
 - **判断フローチャート**: [docs/decision-flowchart-services-actions.md](./architecture-decision-flowchart-20260103-knowledge.md)
-- **Copilot向け指示**: [.github/copilot-instructions.md](../.github/copilot-instructions.md)
+- **Copilot向け指示**: [.github/copilot-instructions.md](../../.github/copilot-instructions.md)
 
 ---
 

@@ -487,7 +487,7 @@ describe("ArticleApi types", () => {
 ## 関連ドキュメント
 
 - **API ドキュメント**: [OpenAPI README](../../app/OpenApi/README.md)
-- **OpenAPI 実装概要**: [OpenAPI Implementation](./openapi-implementation-summary-20260103-log.md)
+- **OpenAPI 実装概要**: [OpenAPI Implementation](../log/api-openapi-implementation-20260103-log.md)
 - **フロントエンド構成**: [resources/js/README.md](../../resources/js/README.md)
 
 ---

@@ -224,7 +224,7 @@ $fileInfo = $fileInfoService->extract($file);
 **対応**:
 
 - PAK ファイルを最新バージョンで再パッケージ化
-- 互換性ドキュメント: [PAK Tunnel Format](./pak-tunnel-format-20260103-knowledge.md)
+- 互換性ドキュメント: [PAK Tunnel Format](../spec/pak-tunnel-format-spec.md)
 
 ### メモリ不足エラー
 

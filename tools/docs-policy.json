@@ -11,13 +11,8 @@
     "CODE_OF_CONDUCT.md",
     "docs/README.md",
     "docs/coding-standards.md",
-    "docs/knowledge/error-handling-20260103-knowledge.md",
-    "docs/knowledge/pak-parser-implementation-20260103-knowledge.md",
-    "docs/knowledge/pak-parser-usage-20260103-knowledge.md",
     "docs/spec/api-contract-typescript-types-spec.md",
-    "docs/spec/form-field-component-spec.md",
-    "docs/spec/pak-parser-field-standards-spec.md",
-    "docs/spec/pak-tunnel-format-spec.md"
+    "docs/spec/form-field-component-spec.md"
   ],
   "ledgers": [
     "docs/dependency-debt.md",

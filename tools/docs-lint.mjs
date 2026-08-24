@@ -65,7 +65,9 @@ for (const f of mdFiles) {
 
 // ---- records 命名 -----------------------------------------------------
 const RECORD_NAME = /^(\d{4})-(\d{2})-(\d{2})_[a-z0-9-]+\.md$/;
-const today = new Date().toISOString().slice(0, 10);
+const now = new Date();
+const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+// ローカル日付で判定する（UTCだとJST等UTC+では日付が変わる前0〜9時台に today 扱いの記録が「未来」誤判定される）
 for (const f of mdFiles.filter((x) => x.kind === "record")) {
   const m = path.basename(f.relPath).match(RECORD_NAME);
   if (!m) {

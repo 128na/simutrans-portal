@@ -17,14 +17,16 @@
         </li>
       </ul>
     </li>
-    <li>
-      ドキュメント
-      <ul class="ml-3 space-y-2">
-        <li>
-          <x-ui.link :url="route('l5-swagger.default.api')" :title="'APIドキュメント'" />
-        </li>
-      </ul>
-    </li>
+    @if (Illuminate\Support\Facades\Route::has('l5-swagger.default.api'))
+      <li>
+        ドキュメント
+        <ul class="ml-3 space-y-2">
+          <li>
+            <x-ui.link :url="route('l5-swagger.default.api')" :title="'APIドキュメント'" />
+          </li>
+        </ul>
+      </li>
+    @endif
     <li>
       その他
       <ul class="ml-3 space-y-2">

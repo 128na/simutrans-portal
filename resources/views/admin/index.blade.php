@@ -14,10 +14,12 @@
         <x-ui.link :url="route('admin.oauth.twitter.revoke')" :title="'トークン削除'" />
         <br />
       </div>
-      <div>
-        <x-ui.link :url="route('l5-swagger.default.api')" :title="'APIドキュメント'" />
-        <br />
-      </div>
+      @if (Illuminate\Support\Facades\Route::has('l5-swagger.default.api'))
+        <div>
+          <x-ui.link :url="route('l5-swagger.default.api')" :title="'APIドキュメント'" />
+          <br />
+        </div>
+      @endif
     </div>
   </div>
 @endsection

@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 [docs/README.md](docs/README.md) に従う。実装とテストが SSOT。md に書くのは
 「意思決定の理由」（`docs/adr/`）と「過去時点の記録」（`docs/records/`、不変）のみで、
-現在形の md は allowlist 制（`tools/docs-policy.json`）。検証: `node tools/docs-lint.mjs`。
+現在形の md は allowlist 制（`tools/docs-policy.json`）。検証: `npx docs-lint`。
 
 ## Repository層の設計方針
 

@@ -1,8 +1,8 @@
 # ドキュメント規約
 
 このリポジトリのドキュメントは「実装とテストが SSOT（唯一の真実）」を前提に、
-md として残すものを次の3種類に限定する。この規約は `tools/docs-lint.mjs` で機械検証される
-（`node tools/docs-lint.mjs`）。
+md として残すものを次の3種類に限定する。この規約は `docs-lint` パッケージ
+（[128na/docs-lint](https://github.com/128na/docs-lint)）で機械検証される（`npx docs-lint`）。
 
 ## 原則
 
@@ -74,7 +74,7 @@ PAK関連4ファイルと API 契約仕様1ファイルが**対応する実装�
 ## 検証
 
 ```bash
-node tools/docs-lint.mjs
+npx docs-lint
 ```
 
 CI（`.github/workflows/docs-lint.yml`）でも同じものが走る。

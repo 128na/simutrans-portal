@@ -19,7 +19,7 @@
     "format:check": "prettier --check resources/",
     "lint": "eslint . --fix",
     "types": "tsc --noEmit",
-    "docs": "node tools/docs-lint.mjs",
+    "docs": "docs-lint",
     "check": "node scripts/run-parallel.js \"types:npm run types\" \"format:npm run format\" \"lint:npm run lint\" \"pint:composer run pint\" \"phpstan:composer run phpstan\" \"docs:npm run docs\"",
     "all": "npm run check && npm run test"
   },
@@ -39,6 +39,7 @@
     "@vitest/ui": "^4",
     "babel-plugin-react-compiler": "^1.0.0",
     "cross-env": "^10.1.0",
+    "docs-lint": "github:128na/docs-lint#v1.0.0",
     "eslint": "^10.5.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",

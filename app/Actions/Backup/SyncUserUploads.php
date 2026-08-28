@@ -29,11 +29,15 @@ class SyncUserUploads
      */
     private const int EXIT_CODE_DURATION_EXCEEDED = 10;
 
-    public function __invoke(): void
+    public function __invoke(): int
     {
+        $transferred = 0;
+
         foreach ($this->destinations() as $destination) {
-            $this->copyTo($destination);
+            $transferred += $this->copyTo($destination);
         }
+
+        return $transferred;
     }
 
     /**
@@ -57,7 +61,7 @@ class SyncUserUploads
         return $destinations;
     }
 
-    private function copyTo(string $destination): void
+    private function copyTo(string $destination): int
     {
         $result = Process::timeout(self::TIMEOUT_SECONDS)->run([
             config('rclone.binary_path'),
@@ -66,10 +70,27 @@ class SyncUserUploads
             $destination,
             '--max-duration', self::MAX_DURATION,
             '--cutoff-mode', 'SOFT',
+            '-v',
         ]);
 
         if ($result->failed() && $result->exitCode() !== self::EXIT_CODE_DURATION_EXCEEDED) {
             throw new RuntimeException("rclone copy to {$destination} failed: ".$result->errorOutput());
         }
+
+        return $this->parseTransferredCount($result->output().$result->errorOutput());
+    }
+
+    /**
+     * rcloneの統計行(例: "Transferred:           24 / 2542, 1%")から転送ファイル数を読み取る。
+     * バイト数の統計行("Transferred:   3.652 MiB / 2.322 GiB, ...")と区別するため、
+     * 数字のみが続く行だけにマッチさせる。形式が変わり読み取れない場合は0を返す(安全側)。
+     */
+    private function parseTransferredCount(string $output): int
+    {
+        if (preg_match('/^Transferred:\s+(\d+) \/ \d+,\s*\d+%/m', $output, $matches) === 1) {
+            return (int) $matches[1];
+        }
+
+        return 0;
     }
 }

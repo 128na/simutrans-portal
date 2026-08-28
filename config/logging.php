@@ -91,6 +91,13 @@ return [
             'url' => env('DISCORD_WEBHOOK_INVITE'),
         ],
 
+        'discord_backup' => [
+            'driver' => 'custom',
+            'via' => Logger::class,
+            'level' => 'info',
+            'url' => env('DISCORD_WEBHOOK_BACKUP'),
+        ],
+
         'file_daily' => [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),

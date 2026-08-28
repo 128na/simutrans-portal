@@ -15,7 +15,7 @@ class SyncUserUploadsCommandTest extends TestCase
     public function test_command_runs_successfully(): void
     {
         $this->mock(SyncUserUploads::class, function (MockInterface $mock): void {
-            $mock->expects('__invoke')->once();
+            $mock->expects('__invoke')->once()->andReturn(5);
         });
 
         $exitCode = $this->artisan('backup:sync-uploads');

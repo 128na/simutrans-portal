@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('backup:run')->dailyAt('3:00')
             ->appendOutputTo($output);
-        $schedule->command('backup:report-sync-uploads-digest')->dailyAt('23:55')
+        $schedule->command('backup:report-sync-uploads-digest')->dailyAt('0:05')
             ->appendOutputTo($output);
 
         // 毎時

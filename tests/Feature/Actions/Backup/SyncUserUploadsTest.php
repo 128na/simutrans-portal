@@ -4,24 +4,31 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Actions\Backup;
 
-use App\Actions\Backup\SyncUserUploadsToDropbox;
+use App\Actions\Backup\SyncUserUploads;
 use Illuminate\Support\Facades\Process;
 use RuntimeException;
 use Tests\Feature\TestCase;
 
-class SyncUserUploadsToDropboxTest extends TestCase
+class SyncUserUploadsTest extends TestCase
 {
-    public function test_runs_rclone_copy_with_configured_paths(): void
+    public function test_runs_rclone_copy_to_dropbox_and_local_backup(): void
     {
         Process::fake();
 
-        (new SyncUserUploadsToDropbox)();
+        (new SyncUserUploads)();
 
         Process::assertRan(fn ($process) => $process->command === [
             config('rclone.binary_path'),
             'copy',
             config('rclone.uploads_source'),
             config('rclone.uploads_remote'),
+        ]);
+
+        Process::assertRan(fn ($process) => $process->command === [
+            config('rclone.binary_path'),
+            'copy',
+            config('rclone.uploads_source'),
+            config('rclone.uploads_local_backup'),
         ]);
     }
 
@@ -33,6 +40,6 @@ class SyncUserUploadsToDropboxTest extends TestCase
 
         $this->expectException(RuntimeException::class);
 
-        (new SyncUserUploadsToDropbox)();
+        (new SyncUserUploads)();
     }
 }

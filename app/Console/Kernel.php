@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run')->dailyAt('3:00')
             ->appendOutputTo($output);
         $schedule->command('backup:sync-uploads')->dailyAt('3:15')
+            ->withoutOverlapping()
             ->appendOutputTo($output);
 
         // 毎時

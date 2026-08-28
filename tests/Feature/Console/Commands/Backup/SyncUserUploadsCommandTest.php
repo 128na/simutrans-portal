@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Commands\Backup;
 
-use App\Actions\Backup\SyncUserUploadsToDropbox;
+use App\Actions\Backup\SyncUserUploads;
 use App\Console\Commands\Backup\SyncUserUploadsCommand;
 use Mockery\MockInterface;
 use RuntimeException;
@@ -14,7 +14,7 @@ class SyncUserUploadsCommandTest extends TestCase
 {
     public function test_command_runs_successfully(): void
     {
-        $this->mock(SyncUserUploadsToDropbox::class, function (MockInterface $mock): void {
+        $this->mock(SyncUserUploads::class, function (MockInterface $mock): void {
             $mock->expects('__invoke')->once();
         });
 
@@ -25,7 +25,7 @@ class SyncUserUploadsCommandTest extends TestCase
 
     public function test_command_fails_when_exception_thrown(): void
     {
-        $this->mock(SyncUserUploadsToDropbox::class, function (MockInterface $mock): void {
+        $this->mock(SyncUserUploads::class, function (MockInterface $mock): void {
             $mock->expects('__invoke')
                 ->once()
                 ->andThrow(new RuntimeException('rclone copy failed'));

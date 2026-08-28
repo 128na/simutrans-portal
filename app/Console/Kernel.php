@@ -41,9 +41,11 @@ class Kernel extends ConsoleKernel
         $schedule->command('article:publish-reservation')->everyMinute()
             ->appendOutputTo($output);
 
-        // 共有レンタルサーバーで長時間プロセスが強制終了されるため、1回を短く区切り高頻度実行で追いつかせる
+        // 共有レンタルサーバーで長時間プロセスが強制終了されるため、1回を短く区切り高頻度実行で追いつかせる。
+        // runInBackground()で同一schedule:run内のarticle:publish-reservation/queue:workを待たせない
         $schedule->command('backup:sync-uploads')->everyMinute()
             ->withoutOverlapping()
+            ->runInBackground()
             ->appendOutputTo($output);
 
         $schedule->command('queue:work', [

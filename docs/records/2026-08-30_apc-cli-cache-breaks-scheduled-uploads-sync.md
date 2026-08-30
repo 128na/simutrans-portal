@@ -1,6 +1,6 @@
 # 本番の CACHE_DRIVER=apc が CLI プロセス間で永続化されず、増分バックアップ集計が機能していなかった件
 
-さくらインターネット不正アクセス事案を受けた認証情報ローテーション（`chore/records/2026-08-25_credential-rotation-sakura-incident.md`）の過程で、Dropboxバックアップの動作確認をしていたところ、`backup:sync-uploads`（ユーザーアップロードファイルのrclone差分同期、`app/Actions/Backup/SyncUserUploads.php`）が2026-08-28のデプロイ以降、cron経由では一切進捗していないことが判明した。
+さくらインターネット不正アクセス事案を受けた認証情報ローテーション作業（この作業自体の記録はリポジトリ外の個人ローカル環境にのみ存在するため、本リポジトリからは参照不可）の過程で、Dropboxバックアップの動作確認をしていたところ、`backup:sync-uploads`（ユーザーアップロードファイルのrclone差分同期、`app/Actions/Backup/SyncUserUploads.php`）が2026-08-28のデプロイ以降、cron経由では一切進捗していないことが判明した。
 
 ## 症状
 

@@ -18,11 +18,11 @@ class SyncUserUploads
 
     /**
      * --max-duration+SOFTは実行中のファイル転送を完了させてから打ち切るため、
-     * 大きいファイル(最大300MB超)は25秒を超えて転送が続くことがある。
+     * 大きいファイル(最大300MB超)は25秒を大幅に超えて転送が続くことがある。
      * ここで先に強制終了すると--max-durationの意図(安全な自己終了)を潰してしまうため、
      * 明らかにハングした場合のみ止める保険として十分大きい値にする。
      */
-    private const int TIMEOUT_SECONDS = 120;
+    private const int TIMEOUT_SECONDS = 600;
 
     /**
      * rcloneが--max-durationで打ち切った際の終了コード。時間切れによる想定内の中断であり、失敗として扱わない。

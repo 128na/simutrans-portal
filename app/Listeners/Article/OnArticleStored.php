@@ -24,5 +24,10 @@ class OnArticleStored
         }
 
         $articleStored->article->notify(new SendArticlePublished);
+
+        // Xデイリー集約投稿(sns:x-daily-digest)の対象判定に使う。
+        // ここに到達した時点でis_publish/shouldNotifyの両ゲートを通過済みのため、
+        // この日時のみを「通知確定した新規公開」として扱える。
+        $articleStored->article->forceFill(['sns_digest_published_at' => now()])->saveQuietly();
     }
 }

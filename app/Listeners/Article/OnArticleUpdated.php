@@ -28,10 +28,14 @@ class OnArticleUpdated
         }
 
         // published_atがnullから初めて変わった場合は新規投稿扱い
+        // Xデイリー集約投稿(sns:x-daily-digest)の対象判定に使う日時も、
+        // is_publish/shouldNotifyの両ゲートを通過した通知確定時点でのみ刻む。
         if ($articleUpdated->notYetPublished) {
             $articleUpdated->article->notify(new SendArticlePublished);
+            $articleUpdated->article->forceFill(['sns_digest_published_at' => now()])->saveQuietly();
         } else {
             $articleUpdated->article->notify(new SendArticleUpdated);
+            $articleUpdated->article->forceFill(['sns_digest_updated_at' => now()])->saveQuietly();
         }
     }
 }

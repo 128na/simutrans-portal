@@ -51,6 +51,8 @@ use Spatie\Feed\FeedItem;
  * @property bool $pr PR記事
  * @property CarbonImmutable|null $published_at 投稿日時
  * @property CarbonImmutable|null $modified_at 更新日時
+ * @property CarbonImmutable|null $sns_digest_published_at Xデイリー集約投稿(sns:x-daily-digest)向けに新規公開として通知確定した日時
+ * @property CarbonImmutable|null $sns_digest_updated_at Xデイリー集約投稿(sns:x-daily-digest)向けに更新として通知確定した日時
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
@@ -551,6 +553,8 @@ class Article extends Model implements Feedable
             'post_type' => ArticlePostType::class,
             'published_at' => 'immutable_datetime',
             'modified_at' => 'immutable_datetime',
+            'sns_digest_published_at' => 'immutable_datetime',
+            'sns_digest_updated_at' => 'immutable_datetime',
             'pr' => 'boolean',
         ];
     }

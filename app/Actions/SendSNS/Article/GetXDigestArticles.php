@@ -15,11 +15,16 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Xデイリー集約投稿(sns:x-daily-digest)の対象記事を取得する。
  *
- * 対象: status=publish かつ (published_at が cutoff より後 または modified_at が cutoff より後)、
- * いずれも until 以下。
+ * 対象: status=publish かつ (sns_digest_published_at が cutoff より後 または
+ * sns_digest_updated_at が cutoff より後)、いずれも until 以下。
+ * これらの日時は OnArticleStored/OnArticleUpdated リスナーが、is_publish かつ
+ * shouldNotify(著者の通知希望)を満たし実際に通知した瞬間にのみ刻むため、
+ * 通知対象外の更新（shouldNotify=false や、ステータスのみのAPI/MCPツール経由の
+ * 更新）は published_at/modified_at が変化してもここには現れない。
  *
  * ADR-0005の方針により、新規公開と更新を型でグルーピングせず、イベント時刻
- * (新規はpublished_at、更新はmodified_at)で単純に降順マージしてから上位3件を返す。
+ * (新規はsns_digest_published_at、更新はsns_digest_updated_at)で単純に降順
+ * マージしてから上位3件を返す。
  */
 class GetXDigestArticles
 {
@@ -30,14 +35,15 @@ class GetXDigestArticles
     public function __invoke(CarbonImmutable $cutoff, CarbonImmutable $until): XDigestArticles
     {
         $articles = $this->article->newQuery()
+            ->with('user')
             ->where('status', ArticleStatus::Publish)
             ->where(function (Builder $query) use ($cutoff, $until): void {
                 $query->where(function (Builder $query) use ($cutoff, $until): void {
-                    $query->where('published_at', '>', $cutoff)
-                        ->where('published_at', '<=', $until);
+                    $query->where('sns_digest_published_at', '>', $cutoff)
+                        ->where('sns_digest_published_at', '<=', $until);
                 })->orWhere(function (Builder $query) use ($cutoff, $until): void {
-                    $query->where('modified_at', '>', $cutoff)
-                        ->where('modified_at', '<=', $until);
+                    $query->where('sns_digest_updated_at', '>', $cutoff)
+                        ->where('sns_digest_updated_at', '<=', $until);
                 });
             })
             ->get();
@@ -52,15 +58,15 @@ class GetXDigestArticles
 
     private function classify(Article $article, CarbonImmutable $cutoff): XDigestArticle
     {
-        /** @var CarbonImmutable|null $publishedAt */
-        $publishedAt = $article->published_at;
-        /** @var CarbonImmutable|null $modifiedAt */
-        $modifiedAt = $article->modified_at;
+        /** @var CarbonImmutable|null $snsDigestPublishedAt */
+        $snsDigestPublishedAt = $article->sns_digest_published_at;
+        /** @var CarbonImmutable|null $snsDigestUpdatedAt */
+        $snsDigestUpdatedAt = $article->sns_digest_updated_at;
 
-        if ($publishedAt !== null && $publishedAt->gt($cutoff)) {
-            return new XDigestArticle($article, XDigestArticleType::Publish, $publishedAt);
+        if ($snsDigestPublishedAt !== null && $snsDigestPublishedAt->gt($cutoff)) {
+            return new XDigestArticle($article, XDigestArticleType::Publish, $snsDigestPublishedAt);
         }
 
-        return new XDigestArticle($article, XDigestArticleType::Update, $modifiedAt ?? $cutoff);
+        return new XDigestArticle($article, XDigestArticleType::Update, $snsDigestUpdatedAt ?? $cutoff);
     }
 }

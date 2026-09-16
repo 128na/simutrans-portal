@@ -23,8 +23,14 @@ class OnArticleStoredTest extends TestCase
             $mock->allows()->getInfoLogging()->andReturn([]);
             if ($expectNotify) {
                 $mock->expects()->notify(SendArticlePublished::class)->once();
+                $mock->expects()->forceFill(\Mockery::on(fn (array $attributes): bool => array_key_exists('sns_digest_published_at', $attributes)))
+                    ->once()
+                    ->andReturnSelf();
+                $mock->expects()->saveQuietly()->once()->andReturnTrue();
             } else {
                 $mock->expects()->notify(SendArticlePublished::class)->never();
+                $mock->expects()->forceFill(\Mockery::any())->never();
+                $mock->expects()->saveQuietly()->never();
             }
         });
 

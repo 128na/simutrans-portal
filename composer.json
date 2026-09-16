@@ -21,6 +21,7 @@
     "laravel/sanctum": ">=4.3.3",
     "laravel/tinker": "^3.0.2",
     "marvinlabs/laravel-discord-logger": "^1.4.4",
+    "nojimage/twitter-text-php": "^3.4",
     "potibm/phluesky": ">=0.6.1",
     "spatie/flysystem-dropbox": "^3.1.0",
     "spatie/laravel-backup": ">=10.2.0",

@@ -29,14 +29,27 @@ class OnArticleUpdatedTest extends TestCase
             $mock->allows()->getInfoLogging()->andReturn([]);
             if ($expectPublishNotify) {
                 $mock->expects()->notify(SendArticlePublished::class)->once();
+                $mock->expects()->forceFill(\Mockery::on(fn (array $attributes): bool => array_key_exists('sns_digest_published_at', $attributes)))
+                    ->once()
+                    ->andReturnSelf();
             } else {
                 $mock->expects()->notify(SendArticlePublished::class)->never();
             }
 
             if ($expectUpdateNotify) {
                 $mock->expects()->notify(SendArticleUpdated::class)->once();
+                $mock->expects()->forceFill(\Mockery::on(fn (array $attributes): bool => array_key_exists('sns_digest_updated_at', $attributes)))
+                    ->once()
+                    ->andReturnSelf();
             } else {
                 $mock->expects()->notify(SendArticleUpdated::class)->never();
+            }
+
+            if ($expectPublishNotify || $expectUpdateNotify) {
+                $mock->expects()->saveQuietly()->once()->andReturnTrue();
+            } else {
+                $mock->expects()->forceFill(\Mockery::any())->never();
+                $mock->expects()->saveQuietly()->never();
             }
         });
 

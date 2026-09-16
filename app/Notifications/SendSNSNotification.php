@@ -8,7 +8,6 @@ use App\Channels\BaseChannel;
 use App\Channels\BlueSkyChannel;
 use App\Channels\MisskeyChannel;
 use App\Channels\OneSignalChannel;
-use App\Channels\TwitterChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -32,7 +31,6 @@ abstract class SendSNSNotification extends Notification implements ShouldQueue
 
         return array_filter([
             MisskeyChannel::class,
-            TwitterChannel::class,
             OneSignalChannel::class,
             BlueSkyChannel::class,
         ], $enabledFilter);

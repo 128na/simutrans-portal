@@ -6,7 +6,6 @@ namespace App\Actions\SendSNS\Article;
 
 use App\Actions\SendSNS\Article\Data\XDigestArticle;
 use App\Actions\SendSNS\Article\Data\XDigestArticles;
-use App\Models\Article;
 use Twitter\Text\Parser;
 
 /**
@@ -25,7 +24,7 @@ class BuildXDigestText
 
     private const int TITLE_MAX_WEIGHTED_LENGTH_STEP = 2;
 
-    public function __construct(private Parser $parser) {}
+    public function __construct(private Parser $parser, private GetArticleParam $getArticleParam) {}
 
     public function __invoke(XDigestArticles $digest): string
     {
@@ -48,7 +47,7 @@ class BuildXDigestText
         $items = $digest->items
             ->map(fn (XDigestArticle $item): string => __('notification.digest.item', [
                 'title' => $this->truncateTitle($item->article->title, $titleMaxWeightedLength),
-                'url' => $this->url($item->article),
+                'url' => ($this->getArticleParam)($item->article)['url'],
             ]))
             ->implode("\n\n");
 
@@ -61,11 +60,6 @@ class BuildXDigestText
         }
 
         return $text;
-    }
-
-    private function url(Article $article): string
-    {
-        return route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
     }
 
     private function truncateTitle(string $title, int $maxWeightedLength): string

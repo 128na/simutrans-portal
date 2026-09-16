@@ -96,6 +96,11 @@ class BuildXDigestTextTest extends TestCase
             'slug' => $slug.'-'.$id,
         ]);
         $article->setRelation('user', $user);
+        // BuildXDigestTextはGetArticleParam経由でURLを組み立てる(fix5)。GetArticleParamは
+        // categoryPaks(内部でcategoriesを参照)も読むため、未persistモデルでの実クエリを避けるために
+        // 空のリレーションを明示しておく。
+        $article->setRelation('categories', new Collection);
+        $article->setRelation('categoryPaks', new Collection);
 
         return new XDigestArticle($article, XDigestArticleType::Publish, CarbonImmutable::now());
     }

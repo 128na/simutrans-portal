@@ -18,9 +18,7 @@ class SyncUserUploadsCommandTest extends TestCase
             $mock->expects('__invoke')->once()->andReturn(5);
         });
 
-        $exitCode = $this->artisan('backup:sync-uploads');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('backup:sync-uploads')->assertSuccessful();
     }
 
     public function test_command_fails_when_exception_thrown(): void
@@ -31,9 +29,7 @@ class SyncUserUploadsCommandTest extends TestCase
                 ->andThrow(new RuntimeException('rclone copy failed'));
         });
 
-        $exitCode = $this->artisan('backup:sync-uploads');
-
-        $exitCode->assertFailed();
+        $this->artisan('backup:sync-uploads')->assertFailed();
     }
 
     public function test_command_signature_is_correct(): void

@@ -20,9 +20,7 @@ class CheckDeadLinkTest extends TestCase
                 ->with(\Mockery::type(OnDead::class));
         });
 
-        $exitCode = $this->artisan('check:deadlink');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('check:deadlink')->assertSuccessful();
     }
 
     public function test_command_fails_when_exception_thrown(): void
@@ -33,9 +31,7 @@ class CheckDeadLinkTest extends TestCase
                 ->andThrow(new \Exception('Test exception'));
         });
 
-        $exitCode = $this->artisan('check:deadlink');
-
-        $exitCode->assertFailed();
+        $this->artisan('check:deadlink')->assertFailed();
     }
 
     public function test_command_signature_is_correct(): void

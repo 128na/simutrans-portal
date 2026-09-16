@@ -10,8 +10,10 @@ use App\Actions\SendSNS\Article\Data\XDigestArticles;
 use App\Actions\SendSNS\Article\GetXDigestArticles;
 use App\Console\Commands\Sns\XDailyDigestCommand;
 use App\Enums\XDigestArticleType;
+use App\Enums\XDigestLogStatus;
 use App\Models\Article;
 use App\Models\XDigestLog;
+use App\Repositories\XDigestLogRepository;
 use App\Services\Twitter\TwitterV2Api;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
@@ -20,17 +22,21 @@ use Tests\Feature\TestCase;
 
 class XDailyDigestCommandTest extends TestCase
 {
-    public function test_bootstrap_run_initializes_cutoff_without_posting_when_no_log_exists(): void
+    public function test_bootstrap_run_records_a_success_log_without_posting_when_no_log_exists(): void
     {
-        $this->mock(GetXDigestArticles::class, function (MockInterface $mock): void {
-            $mock->shouldNotReceive('__invoke');
+        $now = CarbonImmutable::parse('2026-09-16 12:00:00');
+        $this->travelTo($now);
+
+        $this->mock(GetXDigestArticles::class, function (MockInterface $mock) use ($now): void {
+            // cutoffが無い(初回実行)場合、cutoff===untilで呼ばれ、自然に対象0件へ合流する。
+            $mock->expects('__invoke')
+                ->once()
+                ->with(\Mockery::on(fn (CarbonImmutable $cutoff): bool => $cutoff->equalTo($now)), \Mockery::on(fn (CarbonImmutable $until): bool => $until->equalTo($now)))
+                ->andReturn(new XDigestArticles(new Collection, 0));
         });
         $this->mock(TwitterV2Api::class, function (MockInterface $mock): void {
             $mock->shouldNotReceive('post');
         });
-
-        $now = CarbonImmutable::parse('2026-09-16 12:00:00');
-        $this->travelTo($now);
 
         $exitCode = $this->artisan('sns:x-daily-digest');
 
@@ -38,6 +44,7 @@ class XDailyDigestCommandTest extends TestCase
         $this->assertDatabaseCount('x_digest_logs', 1);
         $this->assertDatabaseHas('x_digest_logs', [
             'article_count' => 0,
+            'status' => XDigestLogStatus::Success->value,
             'cutoff_at' => $now->toDateTimeString(),
         ]);
     }
@@ -66,11 +73,12 @@ class XDailyDigestCommandTest extends TestCase
         $this->assertDatabaseCount('x_digest_logs', 2);
         $this->assertDatabaseHas('x_digest_logs', [
             'article_count' => 0,
+            'status' => XDigestLogStatus::Success->value,
             'cutoff_at' => $now->toDateTimeString(),
         ]);
     }
 
-    public function test_posts_digest_and_advances_cutoff_on_success(): void
+    public function test_writes_a_pending_log_before_calling_the_api_and_resolves_twitter_v2_api_lazily(): void
     {
         $previousCutoff = CarbonImmutable::parse('2026-09-16 00:00:00');
         XDigestLog::factory()->create(['cutoff_at' => $previousCutoff]);
@@ -79,8 +87,8 @@ class XDailyDigestCommandTest extends TestCase
         $this->travelTo($now);
 
         $article = Article::factory()->publish()->create([
-            'published_at' => $now->subHour(),
-            'modified_at' => $now->subHour(),
+            'sns_digest_published_at' => $now->subHour(),
+            'sns_digest_updated_at' => null,
         ]);
         $digestArticle = new XDigestArticle($article, XDigestArticleType::Publish, $now->subHour());
         $digest = new XDigestArticles(Collection::make([$digestArticle]), 4);
@@ -91,11 +99,21 @@ class XDailyDigestCommandTest extends TestCase
         $this->mock(BuildXDigestText::class, function (MockInterface $mock) use ($digest): void {
             $mock->expects('__invoke')->once()->with($digest)->andReturn('digest text');
         });
-        $this->mock(TwitterV2Api::class, function (MockInterface $mock): void {
+
+        $this->mock(TwitterV2Api::class, function (MockInterface $mock) use ($now): void {
             $mock->expects('post')
                 ->once()
                 ->with('tweets', ['text' => 'digest text'])
-                ->andReturn(['data' => ['id' => '123']]);
+                ->andReturnUsing(function () use ($now) {
+                    // fix3: postが呼ばれる時点で、既にstatus=pendingのログ行が書き込まれているはず。
+                    $this->assertDatabaseHas('x_digest_logs', [
+                        'status' => XDigestLogStatus::Pending->value,
+                        'article_count' => 4,
+                        'cutoff_at' => $now->toDateTimeString(),
+                    ]);
+
+                    return ['data' => ['id' => '123']];
+                });
             $mock->expects('getLastHttpCode')->once()->andReturn(201);
         });
 
@@ -105,11 +123,33 @@ class XDailyDigestCommandTest extends TestCase
         $this->assertDatabaseCount('x_digest_logs', 2);
         $this->assertDatabaseHas('x_digest_logs', [
             'article_count' => 4,
+            'status' => XDigestLogStatus::Success->value,
             'cutoff_at' => $now->toDateTimeString(),
         ]);
     }
 
-    public function test_does_not_advance_cutoff_and_reports_exception_on_non_2xx_response(): void
+    public function test_does_not_resolve_twitter_v2_api_when_there_is_nothing_to_post(): void
+    {
+        // fix2: TwitterV2Apiはhandle()の引数ではなく使用直前でのみ解決されるべきなので、
+        // 早期returnする分岐(対象0件)ではコンテナ解決(PKCEトークン参照等)が一切発生しない。
+        // これを、解決されると必ず例外を投げるバインディングに差し替えて証明する。
+        $this->app->bind(TwitterV2Api::class, function (): TwitterV2Api {
+            throw new \RuntimeException('TwitterV2Api must not be resolved when there is nothing to post');
+        });
+
+        $now = CarbonImmutable::parse('2026-09-16 12:00:00');
+        $this->travelTo($now);
+
+        $this->mock(GetXDigestArticles::class, function (MockInterface $mock): void {
+            $mock->expects('__invoke')->once()->andReturn(new XDigestArticles(new Collection, 0));
+        });
+
+        $exitCode = $this->artisan('sns:x-daily-digest');
+
+        $exitCode->assertSuccessful();
+    }
+
+    public function test_updates_log_status_to_failed_and_does_not_advance_cutoff_on_non_2xx_response(): void
     {
         $previousCutoff = CarbonImmutable::parse('2026-09-16 00:00:00');
         XDigestLog::factory()->create(['cutoff_at' => $previousCutoff]);
@@ -118,8 +158,8 @@ class XDailyDigestCommandTest extends TestCase
         $this->travelTo($now);
 
         $article = Article::factory()->publish()->create([
-            'published_at' => $now->subHour(),
-            'modified_at' => $now->subHour(),
+            'sns_digest_published_at' => $now->subHour(),
+            'sns_digest_updated_at' => null,
         ]);
         $digestArticle = new XDigestArticle($article, XDigestArticleType::Publish, $now->subHour());
         $digest = new XDigestArticles(Collection::make([$digestArticle]), 1);
@@ -138,12 +178,19 @@ class XDailyDigestCommandTest extends TestCase
         $exitCode = $this->artisan('sns:x-daily-digest');
 
         $exitCode->assertFailed();
-        // cutoffは進まない(前回の1件のみ)。次回実行で同じ範囲を再試行できる。
-        $this->assertDatabaseCount('x_digest_logs', 1);
-        $this->assertDatabaseHas('x_digest_logs', ['cutoff_at' => $previousCutoff->toDateTimeString()]);
+        // cutoffは進まない(前回の成功行のみがlatestCutoff()に数えられる)。次回実行で同じ範囲を再試行できる。
+        $this->assertDatabaseCount('x_digest_logs', 2);
+        $this->assertDatabaseHas('x_digest_logs', [
+            'cutoff_at' => $now->toDateTimeString(),
+            'status' => XDigestLogStatus::Failed->value,
+        ]);
+        $this->assertDatabaseHas('x_digest_logs', [
+            'cutoff_at' => $previousCutoff->toDateTimeString(),
+            'status' => XDigestLogStatus::Success->value,
+        ]);
     }
 
-    public function test_does_not_advance_cutoff_when_the_api_call_throws(): void
+    public function test_updates_log_status_to_failed_and_does_not_advance_cutoff_when_the_api_call_throws(): void
     {
         $previousCutoff = CarbonImmutable::parse('2026-09-16 00:00:00');
         XDigestLog::factory()->create(['cutoff_at' => $previousCutoff]);
@@ -152,8 +199,8 @@ class XDailyDigestCommandTest extends TestCase
         $this->travelTo($now);
 
         $article = Article::factory()->publish()->create([
-            'published_at' => $now->subHour(),
-            'modified_at' => $now->subHour(),
+            'sns_digest_published_at' => $now->subHour(),
+            'sns_digest_updated_at' => null,
         ]);
         $digestArticle = new XDigestArticle($article, XDigestArticleType::Publish, $now->subHour());
         $digest = new XDigestArticles(Collection::make([$digestArticle]), 1);
@@ -171,7 +218,17 @@ class XDailyDigestCommandTest extends TestCase
         $exitCode = $this->artisan('sns:x-daily-digest');
 
         $exitCode->assertFailed();
-        $this->assertDatabaseCount('x_digest_logs', 1);
+        $this->assertDatabaseCount('x_digest_logs', 2);
+        $this->assertDatabaseHas('x_digest_logs', [
+            'cutoff_at' => $now->toDateTimeString(),
+            'status' => XDigestLogStatus::Failed->value,
+        ]);
+
+        // 失敗行はlatestCutoff()に数えられないため、次回実行のcutoffは前回成功時のまま。
+        $repository = app(XDigestLogRepository::class);
+        $latestCutoff = $repository->latestCutoff();
+        $this->assertNotNull($latestCutoff);
+        $this->assertTrue($latestCutoff->equalTo($previousCutoff));
     }
 
     public function test_command_signature_is_correct(): void

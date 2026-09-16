@@ -12,7 +12,7 @@ return [
         'update' => "「:title」更新\nby :name",
     ],
     'digest' => [
-        'header' => '本日の新着・更新記事',
+        'header' => '新着・更新記事のお知らせ',
         'item' => ":title\n:url",
         'more' => 'ほか:count件',
     ],

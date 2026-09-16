@@ -59,6 +59,9 @@
           <x-ui.link :url="route('latest')" :title="'新着アドオン'" />
         </li>
         <li>
+          <x-ui.link :url="route('support')" :title="'サイトを応援する'" />
+        </li>
+        <li>
           <x-ui.link :url="config('app.support_site_url')" :title="'サイトの使い方'" />
         </li>
       </ul>

@@ -27,6 +27,7 @@ use App\Http\Controllers\Pages\CategoryController;
 use App\Http\Controllers\Pages\DiscordController;
 use App\Http\Controllers\Pages\PublicMyListController;
 use App\Http\Controllers\Pages\SocialController;
+use App\Http\Controllers\Pages\SupportController;
 use App\Http\Controllers\Pages\TagController;
 use App\Http\Controllers\Pages\TopController;
 use App\Http\Controllers\Pages\UserController;
@@ -69,6 +70,7 @@ Route::get('/categories/pak/{pak}/{addon}', [CategoryController::class, 'categor
 // 特殊ページ
 Route::get('/', [TopController::class, 'top'])->name('index');
 Route::get('/social', [SocialController::class, 'social'])->name('social');
+Route::get('/support', [SupportController::class, 'support'])->name('support');
 Route::get('/invite-simutrans-interact-meeting', [DiscordController::class, 'index'])->name('discord.index');
 Route::post('/invite-simutrans-interact-meeting', [DiscordController::class, 'generate'])->name('discord.generate');
 

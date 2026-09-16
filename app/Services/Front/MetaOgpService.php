@@ -171,6 +171,17 @@ class MetaOgpService
     }
 
     /**
+     * @return array{title:string,description:string}
+     */
+    public function frontSupport(): array
+    {
+        return [
+            'title' => 'サイトを応援する'.' - '.Config::string('app.name'),
+            'description' => 'OFUSEやGitHub Sponsorsを通じてサイトの運営を支援する方法を紹介しています。',
+        ];
+    }
+
+    /**
      * @return array{title:string}
      */
     public function frontDiscord(): array

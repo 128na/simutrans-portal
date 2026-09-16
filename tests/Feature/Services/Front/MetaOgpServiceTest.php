@@ -73,4 +73,16 @@ class MetaOgpServiceTest extends TestCase
         $this->assertArrayHasKey('title', $ann);
         $this->assertStringContainsString(config('app.name'), $ann['title']);
     }
+
+    public function test_front_support_returns_expected_structure(): void
+    {
+        config(['app.name' => 'SimuPortal']);
+
+        $sut = new MetaOgpService;
+
+        $support = $sut->frontSupport();
+        $this->assertArrayHasKey('title', $support);
+        $this->assertArrayHasKey('description', $support);
+        $this->assertStringContainsString(config('app.name'), $support['title']);
+    }
 }

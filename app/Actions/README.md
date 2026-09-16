@@ -48,12 +48,14 @@ Actions/
 ├── Redirect/            # リダイレクト管理
 │   ├── GetForIndex.php
 │   └── Store.php
-├── SendSNS/             # SNS投稿
+├── SendSNS/             # SNS投稿（BlueSky, Misskey, OneSignal / Xは日次集約投稿コマンド）
 │   └── Article/
-│       ├── ToTwitter.php
-│       ├── ToDiscord.php
-│       ├── ToBlueSky.php
-│       └── ToMisskey.php
+│       ├── ToBluesky.php
+│       ├── ToMisskey.php
+│       ├── ToOneSignal.php
+│       ├── GetArticleParam.php
+│       ├── GetXDigestArticles.php
+│       └── BuildXDigestText.php
 ├── StoreAttachment/     # 添付ファイル保存
 │   └── StoreFromUpload.php
 └── User/                # ユーザー関連

@@ -7,10 +7,9 @@
 ```
 Events/
 ├── Article/
-│   ├── ArticleCreated.php        # 記事作成イベント
+│   ├── ArticleStored.php         # 記事保存イベント（公開時はSNS通知）
 │   ├── ArticleDeleted.php        # 記事削除イベント
-│   ├── ArticlePublished.php      # 記事公開イベント
-│   └── ArticleUpdated.php        # 記事更新イベント
+│   └── ArticleUpdated.php        # 記事更新イベント（公開時はSNS通知）
 ├── Discord/
 │   └── DiscordInvited.php        # Discord招待イベント
 ├── Tag/
@@ -24,10 +23,9 @@ Events/
 
 Listeners/
 ├── Article/
-│   ├── OnArticleCreated.php      # 記事作成リスナー
+│   ├── OnArticleStored.php       # 記事保存リスナー（公開時はSNS通知）
 │   ├── OnArticleDeleted.php      # 記事削除リスナー
-│   ├── OnArticlePublished.php    # 記事公開リスナー
-│   └── OnArticleUpdated.php      # 記事更新リスナー
+│   └── OnArticleUpdated.php      # 記事更新リスナー（公開時はSNS通知）
 ├── Discord/
 │   └── OnDiscordInvited.php      # Discord招待リスナー
 ├── Tag/
@@ -58,16 +56,16 @@ Controller
   ↓ Action実行
 StoreArticle (Action)
   ↓ event()
-ArticlePublished (Event)
+ArticleStored (Event)
   ↓
-├─ OnArticlePublished (Listener)
-│   ├─ Discord通知
-│   ├─ Twitter投稿
-│   ├─ BlueSky投稿
-│   └─ Misskey投稿
-└─ JobUpdateSearchIndex (Job)
-    └─ 検索インデックス更新
+OnArticleStored (Listener)
+  └─ Article::notify(SendArticlePublished)
+      ├─ BlueSky投稿（BlueSkyChannel）
+      ├─ Misskey投稿（MisskeyChannel）
+      └─ OneSignal通知（OneSignalChannel）
 ```
+
+（Xへの投稿は記事ごとの通知ではなく、`sns:x-daily-digest` コマンドによる日次集約投稿。[docs/adr/0005-x-daily-digest-notifications.md](../../docs/adr/0005-x-daily-digest-notifications.md) 参照）
 
 ### ユーザー登録フロー
 
@@ -107,21 +105,17 @@ declare(strict_types=1);
 namespace App\Events\Article;
 
 use App\Models\Article;
-use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ArticlePublished
+class ArticleStored
 {
     use Dispatchable;
-    use InteractsWithSockets;
     use SerializesModels;
 
-    /**
-     * コンストラクタ
-     */
     public function __construct(
         public Article $article,
+        public bool $shouldNotify = false,
     ) {}
 }
 ```
@@ -135,42 +129,22 @@ declare(strict_types=1);
 
 namespace App\Listeners\Article;
 
-use App\Events\Article\ArticlePublished;
-use App\Actions\SendSNS\Article\ToTwitter;
-use App\Actions\SendSNS\Article\ToDiscord;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Events\Article\ArticleStored;
+use App\Notifications\SendArticlePublished;
 
-class OnArticlePublished implements ShouldQueue
+class OnArticleStored
 {
-    /**
-     * キュー名
-     */
-    public string $queue = 'notifications';
-
     /**
      * リスナーを実行
      */
-    public function handle(
-        ArticlePublished $event,
-        ToTwitter $toTwitter,
-        ToDiscord $toDiscord,
-    ): void {
-        // Twitter投稿
-        ($toTwitter)($event->article);
-
-        // Discord通知
-        ($toDiscord)($event->article);
-    }
-
-    /**
-     * 失敗時の処理
-     */
-    public function failed(ArticlePublished $event, Throwable $exception): void
+    public function handle(ArticleStored $articleStored): void
     {
-        Log::error('Failed to send SNS notification', [
-            'article_id' => $event->article->id,
-            'exception' => $exception->getMessage(),
-        ]);
+        if (! $articleStored->article->is_publish || ! $articleStored->shouldNotify) {
+            return;
+        }
+
+        // SendSNSNotification::via() で有効な通知先（BlueSky, Misskey, OneSignal）に配信される
+        $articleStored->article->notify(new SendArticlePublished);
     }
 }
 ```
@@ -181,9 +155,9 @@ class OnArticlePublished implements ShouldQueue
 
 ```php
 protected $listen = [
-    // 記事公開
-    ArticlePublished::class => [
-        OnArticlePublished::class,
+    // 記事保存（公開時はSNS通知）
+    ArticleStored::class => [
+        OnArticleStored::class,
     ],
 
     // 記事作成
@@ -347,22 +321,13 @@ Echo.channel("articles").listen("ArticlePublished", (e) => {
 
 ## 主要イベント・リスナー
 
-### Article/ArticlePublished
+### Article/ArticleStored
 
-**トリガー**: 記事が公開されたとき
-
-**リスナー**:
-
-- `OnArticlePublished` - SNS通知（Twitter, Discord, BlueSky, Misskey）
-- `JobUpdateSearchIndex` - 検索インデックス更新
-
-### Article/ArticleCreated
-
-**トリガー**: 記事が作成されたとき
+**トリガー**: 記事が保存されたとき
 
 **リスナー**:
 
-- `OnArticleCreated` - 初期設定（閲覧数カウンター作成等）
+- `OnArticleStored` - 監査ログ記録。公開かつ通知対象なら `SendArticlePublished` 通知（BlueSky, Misskey, OneSignal）を送信
 
 ### Article/ArticleUpdated
 
@@ -370,7 +335,7 @@ Echo.channel("articles").listen("ArticlePublished", (e) => {
 
 **リスナー**:
 
-- `OnArticleUpdated` - 検索インデックス更新、キャッシュクリア
+- `OnArticleUpdated` - 監査ログ記録。公開かつ通知対象なら `SendArticlePublished`（初公開時）または `SendArticleUpdated`（更新時）通知（BlueSky, Misskey, OneSignal）を送信
 
 ### Article/ArticleDeleted
 
@@ -419,7 +384,7 @@ Echo.channel("articles").listen("ArticlePublished", (e) => {
 ```php
 use Illuminate\Support\Facades\Event;
 
-class ArticlePublishedTest extends TestCase
+class ArticleStoredTest extends TestCase
 {
     public function test_event_is_dispatched(): void
     {
@@ -427,9 +392,9 @@ class ArticlePublishedTest extends TestCase
 
         $article = Article::factory()->create();
 
-        event(new ArticlePublished($article));
+        event(new ArticleStored($article, shouldNotify: true));
 
-        Event::assertDispatched(ArticlePublished::class, function ($event) use ($article) {
+        Event::assertDispatched(ArticleStored::class, function ($event) use ($article) {
             return $event->article->id === $article->id;
         });
     }
@@ -441,19 +406,19 @@ class ArticlePublishedTest extends TestCase
 ```php
 use Illuminate\Support\Facades\Notification;
 
-class OnArticlePublishedTest extends TestCase
+class OnArticleStoredTest extends TestCase
 {
     public function test_listener_sends_notifications(): void
     {
         Notification::fake();
 
-        $article = Article::factory()->create();
-        $event = new ArticlePublished($article);
-        $listener = new OnArticlePublished();
+        $article = Article::factory()->create(['is_publish' => true]);
+        $event = new ArticleStored($article, shouldNotify: true);
+        $listener = app(OnArticleStored::class);
 
-        $listener->handle($event, app(ToDiscord::class));
+        $listener->handle($event);
 
-        // Discord通知が送信されたことを検証
+        Notification::assertSentTo($article, SendArticlePublished::class);
     }
 }
 ```

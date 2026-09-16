@@ -36,6 +36,7 @@ class SitemapControllerTest extends TestCase
         $this->assertStringContainsString('<loc>'.$baseUrl.'/users</loc>', $xml);
         $this->assertStringContainsString('<loc>'.$baseUrl.'/tags</loc>', $xml);
         $this->assertStringContainsString('<loc>'.$baseUrl.'/categories</loc>', $xml);
+        $this->assertStringContainsString('<loc>'.$baseUrl.'/support</loc>', $xml);
 
         // 動的URL
         $userIdentifier = $user->nickname ?? $user->id;

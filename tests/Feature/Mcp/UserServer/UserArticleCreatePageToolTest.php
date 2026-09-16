@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\MCP\UserServer;
+namespace Tests\Feature\Mcp\UserServer;
 
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;

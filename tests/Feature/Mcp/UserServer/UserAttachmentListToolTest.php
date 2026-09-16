@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\MCP\UserServer;
+namespace Tests\Feature\Mcp\UserServer;
 
 use App\Mcp\Servers\SimutransAddonPortalUserServer;
 use App\Mcp\Tools\UserAttachmentListTool;

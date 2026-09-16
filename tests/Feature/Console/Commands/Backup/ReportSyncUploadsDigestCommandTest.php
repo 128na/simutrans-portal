@@ -21,9 +21,7 @@ class ReportSyncUploadsDigestCommandTest extends TestCase
 
         Log::shouldReceive('channel')->never();
 
-        $exitCode = $this->artisan('backup:report-sync-uploads-digest');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('backup:report-sync-uploads-digest')->assertSuccessful();
     }
 
     public function test_notifies_when_files_were_transferred(): void
@@ -38,9 +36,7 @@ class ReportSyncUploadsDigestCommandTest extends TestCase
         Log::shouldReceive('channel')->once()->with('discord_backup')->andReturnSelf();
         Log::shouldReceive('info')->once()->with("ユーザーアップロード同期({$expectedDate}分): 12件転送, 0エラー");
 
-        $exitCode = $this->artisan('backup:report-sync-uploads-digest');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('backup:report-sync-uploads-digest')->assertSuccessful();
     }
 
     public function test_notifies_when_there_were_errors_even_with_zero_transfers(): void
@@ -55,9 +51,7 @@ class ReportSyncUploadsDigestCommandTest extends TestCase
         Log::shouldReceive('channel')->once()->with('discord_backup')->andReturnSelf();
         Log::shouldReceive('info')->once()->with("ユーザーアップロード同期({$expectedDate}分): 0件転送, 3エラー");
 
-        $exitCode = $this->artisan('backup:report-sync-uploads-digest');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('backup:report-sync-uploads-digest')->assertSuccessful();
     }
 
     public function test_reads_yesterdays_date_not_today(): void
@@ -69,9 +63,7 @@ class ReportSyncUploadsDigestCommandTest extends TestCase
             $mock->expects('errorsOn')->with($expectedDate)->andReturn(0);
         });
 
-        $exitCode = $this->artisan('backup:report-sync-uploads-digest');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('backup:report-sync-uploads-digest')->assertSuccessful();
     }
 
     public function test_command_signature_is_correct(): void

@@ -21,19 +21,19 @@
               <tr>
                 <th>単発で支援する</th>
                 <td>
-                  <x-ui.link :url="'https://ofuse.me/128na/letter'" :title="'OFUSEで単発のお便り・支援を送る'" />
+                  <x-ui.link :url="config('support.ofuse.once')" :title="'OFUSEで単発のお便り・支援を送る'" />
                 </td>
               </tr>
               <tr>
                 <th>毎月支援する</th>
                 <td>
-                  <x-ui.link :url="'https://ofuse.me/memberships/4980'" :title="'OFUSEで毎月の継続支援をする'" />
+                  <x-ui.link :url="config('support.ofuse.monthly')" :title="'OFUSEで毎月の継続支援をする'" />
                 </td>
               </tr>
               <tr>
                 <th>OFUSEページ</th>
                 <td>
-                  <x-ui.link :url="'https://ofuse.me/128na'" :title="'OFUSE 128naのページ'" />
+                  <x-ui.link :url="config('support.ofuse.top')" :title="'OFUSE 128naのページ'" />
                 </td>
               </tr>
             </tbody>
@@ -57,7 +57,7 @@
               <tr>
                 <th>GitHub Sponsors</th>
                 <td>
-                  <x-ui.link :url="'https://github.com/sponsors/128na'" :title="'Sponsor 128na on GitHub'" />
+                  <x-ui.link :url="config('support.github.top')" :title="'Sponsor 128na on GitHub'" />
                 </td>
               </tr>
             </tbody>

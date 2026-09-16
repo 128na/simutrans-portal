@@ -38,9 +38,12 @@ class XDailyDigestCommandTest extends TestCase
             $mock->shouldNotReceive('post');
         });
 
-        $exitCode = $this->artisan('sns:x-daily-digest');
+        // $this->artisan()はPendingCommandを返し、実際の実行はassertSuccessful()等の
+        // チェーン呼び出し完了時点(オブジェクト破棄のタイミング)まで遅延される。変数に
+        // 保持したまま後続のDBアサーションを書くと、コマンドがまだ実行されていない状態を
+        // 検査してしまうため、必ず1文でチェーンする。
+        $this->artisan('sns:x-daily-digest')->assertSuccessful();
 
-        $exitCode->assertSuccessful();
         $this->assertDatabaseCount('x_digest_logs', 1);
         $this->assertDatabaseHas('x_digest_logs', [
             'article_count' => 0,
@@ -67,9 +70,8 @@ class XDailyDigestCommandTest extends TestCase
             $mock->shouldNotReceive('post');
         });
 
-        $exitCode = $this->artisan('sns:x-daily-digest');
+        $this->artisan('sns:x-daily-digest')->assertSuccessful();
 
-        $exitCode->assertSuccessful();
         $this->assertDatabaseCount('x_digest_logs', 2);
         $this->assertDatabaseHas('x_digest_logs', [
             'article_count' => 0,
@@ -117,9 +119,8 @@ class XDailyDigestCommandTest extends TestCase
             $mock->expects('getLastHttpCode')->once()->andReturn(201);
         });
 
-        $exitCode = $this->artisan('sns:x-daily-digest');
+        $this->artisan('sns:x-daily-digest')->assertSuccessful();
 
-        $exitCode->assertSuccessful();
         $this->assertDatabaseCount('x_digest_logs', 2);
         $this->assertDatabaseHas('x_digest_logs', [
             'article_count' => 4,
@@ -144,9 +145,7 @@ class XDailyDigestCommandTest extends TestCase
             $mock->expects('__invoke')->once()->andReturn(new XDigestArticles(new Collection, 0));
         });
 
-        $exitCode = $this->artisan('sns:x-daily-digest');
-
-        $exitCode->assertSuccessful();
+        $this->artisan('sns:x-daily-digest')->assertSuccessful();
     }
 
     public function test_updates_log_status_to_failed_and_does_not_advance_cutoff_on_non_2xx_response(): void
@@ -175,9 +174,8 @@ class XDailyDigestCommandTest extends TestCase
             $mock->expects('getLastHttpCode')->once()->andReturn(401);
         });
 
-        $exitCode = $this->artisan('sns:x-daily-digest');
+        $this->artisan('sns:x-daily-digest')->assertFailed();
 
-        $exitCode->assertFailed();
         // cutoffは進まない(前回の成功行のみがlatestCutoff()に数えられる)。次回実行で同じ範囲を再試行できる。
         $this->assertDatabaseCount('x_digest_logs', 2);
         $this->assertDatabaseHas('x_digest_logs', [
@@ -215,9 +213,8 @@ class XDailyDigestCommandTest extends TestCase
             $mock->expects('post')->once()->andThrow(new \Exception('network error'));
         });
 
-        $exitCode = $this->artisan('sns:x-daily-digest');
+        $this->artisan('sns:x-daily-digest')->assertFailed();
 
-        $exitCode->assertFailed();
         $this->assertDatabaseCount('x_digest_logs', 2);
         $this->assertDatabaseHas('x_digest_logs', [
             'cutoff_at' => $now->toDateTimeString(),

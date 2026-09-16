@@ -59,6 +59,7 @@
           <x-ui.link :url="route('latest')" :title="'新着アドオン'" />
         </li>
         <li>
+          {{-- 運営費支援ページ(route('support'))。下のsupport_site_urlはサイトの使い方ガイドで別物 --}}
           <x-ui.link :url="route('support')" :title="'サイトを応援する'" />
         </li>
         <li>

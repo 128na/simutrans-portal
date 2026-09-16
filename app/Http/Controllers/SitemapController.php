@@ -32,7 +32,8 @@ class SitemapController extends Controller
             ->add(Url::create('/mylist')->setPriority(0.6))
             ->add(Url::create('/announces')->setPriority(0.6))
             ->add(Url::create('/search')->setPriority(0.6))
-            ->add(Url::create('/social')->setPriority(0.5));
+            ->add(Url::create('/social')->setPriority(0.5))
+            ->add(Url::create('/support')->setPriority(0.5));
 
         // 記事を1つ以上投稿しているユーザーすべて
         User::has('articles')->latest()->take(1000)->get()->each(function (User $user) use ($sitemap) {

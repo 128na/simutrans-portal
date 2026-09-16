@@ -78,6 +78,7 @@
           <x-ui.link :url="route('social')" :title="'各種ツール（SNS, RSS, API, MCP）'" />
         </li>
         <li>
+          {{-- 運営費支援ページ(route('support'))。下のsupport_site_urlはサイトの使い方ガイドで別物 --}}
           <x-ui.link :url="route('support')" :title="'サイトを応援する'" />
         </li>
         <li>

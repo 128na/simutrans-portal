@@ -27,7 +27,7 @@ class ToOneSignal
                     $sendSNSNotification instanceof SendArticleUpdated => $this->update($article),
                     default => throw new Exception(sprintf('unsupport notification "%s" provided', $sendSNSNotification::class)),
                 },
-                route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]),
+                $article->showUrl(),
             );
         } catch (Throwable $throwable) {
             report($throwable);

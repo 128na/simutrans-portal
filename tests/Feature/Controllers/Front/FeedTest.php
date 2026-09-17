@@ -24,6 +24,18 @@ class FeedTest extends TestCase
         $testResponse->assertOk();
     }
 
+    public function test_feedの記事linkは日本語スラッグでも二重エンコードされない(): void
+    {
+        $article = $this->createAddonPost();
+        $article->update(['title' => '日本語フィード記事', 'slug' => '日本語フィード記事']);
+
+        $testResponse = $this->get('/feed');
+
+        $testResponse->assertOk();
+        $testResponse->assertDontSee('%25', false);
+        $testResponse->assertSee($article->showUrl(), false);
+    }
+
     public static function dataFeed(): \Generator
     {
         yield 'アドオン一覧' => ['/feed'];

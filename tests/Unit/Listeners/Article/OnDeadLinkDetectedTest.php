@@ -67,6 +67,34 @@ class OnDeadLinkDetectedTest extends TestCase
     }
 
     #[Test]
+    public function it_handles_article_with_non_ascii_slug(): void
+    {
+        $user = User::factory()->make(['id' => 500, 'nickname' => 'jpuser']);
+
+        $article = new Article;
+        $article->id = 400;
+        $article->title = '日本語のアドオン紹介記事';
+        $article->slug = '日本語のアドオン紹介記事';
+        $article->user_id = 500;
+        $article->post_type = ArticlePostType::AddonIntroduction;
+        $article->setRelation('user', $user);
+        $article->contents = new AddonIntroductionContent([
+            'link' => 'https://example.com/deadlink-jp',
+        ]);
+
+        // showUrl() が二重エンコードなどで例外を投げずにURLを生成できること
+        $this->assertStringNotContainsString('%25', $article->showUrl());
+
+        $listener = app(OnDeadLinkDetected::class);
+        $event = new DeadLinkDetected($article);
+
+        // エラーが発生しないことを確認
+        $listener->handle($event);
+
+        $this->assertTrue(true);
+    }
+
+    #[Test]
     public function it_handles_article_with_null_nickname(): void
     {
         $user = User::factory()->make(['id' => 999, 'nickname' => null]);

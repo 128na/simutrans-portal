@@ -266,6 +266,20 @@ class Article extends Model implements Feedable
         ];
     }
 
+    /**
+     * 記事詳細ページのURLを生成
+     *
+     * `slug` カラムは {@see Slugable::setSlugAttribute()} により urlencode() 済みの状態で
+     * 保存されているため、route() に渡す前に urldecode() して二重エンコードを防ぐ。
+     */
+    public function showUrl(): string
+    {
+        return route('articles.show', [
+            'userIdOrNickname' => $this->user->nickname ?? $this->user_id,
+            'articleSlug' => urldecode($this->slug),
+        ]);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RSS
@@ -282,7 +296,7 @@ class Article extends Model implements Feedable
             'title' => $this->title,
             'summary' => $this->contents->getDescription(),
             'updated' => $modifiedAt?->toMutable(), // CarbonImmutableは未対応
-            'link' => route('articles.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user_id, 'articleSlug' => $this->slug]),
+            'link' => $this->showUrl(),
             'authorName' => $this->user->name ?? '',
         ]);
     }

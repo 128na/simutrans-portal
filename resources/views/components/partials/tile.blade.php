@@ -1,10 +1,5 @@
 <a
-  href="{{
-    route('articles.show', [
-        'userIdOrNickname' => $article->user->nickname ?? $article->user->id,
-        'articleSlug' => $article->slug,
-    ])
-  }}"
+  href="{{ $article->showUrl() }}"
   class="group rounded-lg border border-c-sub/10 bg-white shadow-sm transition hover:shadow-md"
 >
   <div class="aspect-video w-full overflow-hidden rounded-t-md bg-gray-100">

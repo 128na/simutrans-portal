@@ -59,6 +59,24 @@ class MetaOgpServiceTest extends TestCase
         $this->assertStringContainsString($attachment->path, $meta2['image']);
     }
 
+    public function test_canonicalは日本語スラッグでも二重エンコードされない(): void
+    {
+        config(['app.name' => 'SimuPortal', 'app.url' => 'http://localhost']);
+
+        $user = User::factory()->create(['nickname' => uniqid('dora_')]);
+        $article = Article::factory()->create([
+            'user_id' => $user->id,
+            'title' => '日本語タイトルのOGP記事',
+            'slug' => '日本語タイトルのOGP記事',
+        ]);
+
+        $sut = new MetaOgpService;
+        $meta = $sut->frontArticleShow($user, $article);
+
+        $this->assertStringNotContainsString('%25', $meta['canonical']);
+        $this->assertSame($article->showUrl(), $meta['canonical']);
+    }
+
     public function test_pak_and_announces_return_titles_with_app_name(): void
     {
         config(['app.name' => 'SimuPortal']);

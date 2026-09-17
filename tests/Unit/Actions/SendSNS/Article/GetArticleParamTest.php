@@ -117,6 +117,29 @@ class GetArticleParamTest extends TestCase
         $this->assertIsString($result['tags']);
     }
 
+    public function test_urlは日本語スラッグでも二重エンコードされない(): void
+    {
+        $carbon = Carbon::parse('2024-04-01 09:00:00');
+        $action = new GetArticleParam($carbon);
+
+        $user = User::factory()->make(['id' => 5, 'name' => 'Japanese User', 'nickname' => 'jpuser', 'email' => 'test5@example.com']);
+
+        $article = Article::factory()->make([
+            'id' => 5,
+            'user_id' => 5,
+            'title' => '日本語の記事タイトル',
+            'slug' => '日本語の記事タイトル',
+        ]);
+        $article->setRelation('user', $user);
+        $article->setRelation('categories', collect());
+        $article->setRelation('categoryPaks', collect());
+
+        $result = $action($article);
+
+        $this->assertStringNotContainsString('%25', $result['url']);
+        $this->assertSame($article->showUrl(), $result['url']);
+    }
+
     public function test_translates_hash_tags(): void
     {
         $carbon = Carbon::now();

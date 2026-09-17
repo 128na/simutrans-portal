@@ -6,6 +6,7 @@ namespace App\Actions\Redirect;
 
 use App\Models\User;
 use App\Repositories\RedirectRepository;
+use App\Traits\Slugable;
 use Illuminate\Support\Facades\Config;
 
 class AddRedirect
@@ -14,10 +15,14 @@ class AddRedirect
         private RedirectRepository $redirectRepository,
     ) {}
 
+    /**
+     * @param  string  $oldSlug  保存済み記事から取得した、urlencode()済みのスラッグ（{@see Slugable}）
+     * @param  string  $newSlug  リクエスト入力由来の、まだエンコードされていない生のスラッグ
+     */
     public function __invoke(User $user, string $oldSlug, string $newSlug): void
     {
         $base = Config::string('app.url', '');
-        $from = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $oldSlug]);
+        $from = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => urldecode($oldSlug)]);
         $to = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $newSlug]);
 
         $this->redirectRepository->store([

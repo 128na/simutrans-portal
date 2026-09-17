@@ -18,7 +18,7 @@ class GetArticleParam
      */
     public function __invoke(Article $article): array
     {
-        $url = route('articles.show', ['userIdOrNickname' => $article->user->nickname ?? $article->user_id, 'articleSlug' => $article->slug]);
+        $url = $article->showUrl();
         $now = $this->carbon->format('Y/m/d H:i');
         $name = $article->user->name ?? 'Unknown';
         /** @var array<int, string> $pakSlugs */

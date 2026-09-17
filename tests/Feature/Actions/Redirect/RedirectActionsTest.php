@@ -46,6 +46,40 @@ class RedirectActionsTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function test_add_redirect_urlは日本語スラッグを二重エンコードしない(): void
+    {
+        $user = User::factory()->create(['nickname' => uniqid('yuki_')]);
+        // 保存済み記事の slug カラムを模した urlencode() 済みの値（Slugable::setSlugAttribute参照）
+        $oldSlug = urlencode('旧スラッグ');
+        // リクエスト入力由来の、まだエンコードされていない生の値
+        $newSlug = '新スラッグ';
+
+        $this->mock(RedirectRepository::class, function (MockInterface $mock) use ($user): void {
+            $mock->shouldReceive('store')->once()->withArgs(function (array $arg) use ($user): bool {
+                if (! isset($arg['user_id'], $arg['from'], $arg['to']) || $arg['user_id'] !== $user->id) {
+                    return false;
+                }
+
+                // 二重エンコードの痕跡（%25）が含まれないこと
+                if (str_contains((string) $arg['from'], '%25') || str_contains((string) $arg['to'], '%25')) {
+                    return false;
+                }
+
+                $fromSlug = urldecode((string) basename((string) $arg['from']));
+                $toSlug = urldecode((string) basename((string) $arg['to']));
+
+                return $fromSlug === '旧スラッグ' && $toSlug === '新スラッグ';
+            });
+        });
+
+        config(['app.url' => 'http://localhost']);
+
+        $sut = app(AddRedirect::class);
+        ($sut)($user, $oldSlug, $newSlug);
+
+        $this->assertTrue(true);
+    }
+
     public function test_delete_redirect_deletes_model(): void
     {
         $redirect = Redirect::factory()->create();

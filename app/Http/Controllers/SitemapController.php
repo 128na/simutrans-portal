@@ -52,10 +52,7 @@ class SitemapController extends Controller
 
         // 公開記事一覧すべて
         Article::where('status', ArticleStatus::Publish)->with('user')->latest()->take(1000)->get()->each(function (Article $article) use ($sitemap) {
-            $sitemap->add(Url::create(route('articles.show', [
-                'userIdOrNickname' => $article->user->nickname ?? $article->user->id,
-                'articleSlug' => $article->slug,
-            ]))->setPriority(0.9));
+            $sitemap->add(Url::create($article->showUrl())->setPriority(0.9));
         });
 
         return $sitemap->toResponse(request());

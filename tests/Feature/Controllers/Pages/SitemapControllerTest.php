@@ -46,6 +46,24 @@ class SitemapControllerTest extends TestCase
         $this->assertStringContainsString('<loc>'.$baseUrl.'/users/'.$userIdentifier.'/'.$article->slug.'</loc>', $xml);
     }
 
+    public function test_sitemap_記事urlは日本語スラッグでも二重エンコードされない(): void
+    {
+        $user = User::factory()->create();
+        $article = Article::factory()->publish()->create([
+            'user_id' => $user->id,
+            'title' => '日本語タイトルのサイトマップ記事',
+            'slug' => '日本語タイトルのサイトマップ記事',
+        ]);
+
+        $response = $this->get('/sitemap.xml');
+        $response->assertStatus(200);
+
+        $xml = (string) $response->getContent();
+
+        $this->assertStringNotContainsString('%25', $xml);
+        $this->assertStringContainsString('<loc>'.$article->showUrl().'</loc>', $xml);
+    }
+
     public function test_sitemap_excludes_unwanted_items(): void
     {
         // 含まれるべきでないデータ作成

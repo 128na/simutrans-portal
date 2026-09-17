@@ -46,10 +46,7 @@ class MyListItem extends JsonResource
         return [
             'id' => $article->id,
             'title' => $article->title,
-            'url' => route('articles.show', [
-                'userIdOrNickname' => $article->user->nickname ?? $article->user_id,
-                'articleSlug' => $article->slug,
-            ]),
+            'url' => $article->showUrl(),
             'download_url' => $this->when($article->post_type === ArticlePostType::AddonPost, route('articles.download', ['article' => $article->id])),
             'addon_page_url' => $this->when($article->post_type === ArticlePostType::AddonIntroduction, route('articles.conversion', ['article' => $article->id])),
             'thumbnail' => $article->thumbnail_url ?? Storage::url(DefaultThumbnail::NO_THUMBNAIL),

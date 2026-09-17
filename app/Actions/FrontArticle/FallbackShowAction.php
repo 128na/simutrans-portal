@@ -15,9 +15,6 @@ class FallbackShowAction
             ? Article::findOrFail($slugOrId)
             : Article::slug($slugOrId)->orderBy('id', 'asc')->firstOrFail();
 
-        return redirect(route('articles.show', [
-            'userIdOrNickname' => $article->user->nickname ?? $article->user_id,
-            'articleSlug' => $article->slug,
-        ]), 302);
+        return redirect($article->showUrl(), 302);
     }
 }

@@ -25,7 +25,7 @@ class MetaOgpService
             'title' => $article->title.' - '.Config::string('app.name'),
             'description' => $this->trimDescription($article->contents->getDescription()),
             'image' => $imageUrl,
-            'canonical' => route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $article->slug]),
+            'canonical' => $article->showUrl(),
             'card_type' => 'summary_large_image',
         ];
     }

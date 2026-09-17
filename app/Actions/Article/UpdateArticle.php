@@ -52,8 +52,10 @@ class UpdateArticle
 
         ($this->syncRelatedModels)($article, $updateArticleData->article);
 
-        if ($followRedirect && $oldSlug !== $updateArticleData->article->slug && $article->user) {
-            ($this->addRedirect)($article->user, $oldSlug, $updateArticleData->article->slug);
+        // $article->slugはarticleRepository->update()による保存後、Slugable::setSlugAttribute()で
+        // urlencode()済みの値に更新されている。AddRedirectは両方の引数にこの形式を期待する。
+        if ($followRedirect && $oldSlug !== $article->slug && $article->user) {
+            ($this->addRedirect)($article->user, $oldSlug, $article->slug);
         }
 
         dispatch(new JobUpdateRelated($article->id));

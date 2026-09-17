@@ -16,14 +16,14 @@ class AddRedirect
     ) {}
 
     /**
-     * @param  string  $oldSlug  保存済み記事から取得した、urlencode()済みのスラッグ（{@see Slugable}）
-     * @param  string  $newSlug  リクエスト入力由来の、まだエンコードされていない生のスラッグ
+     * @param  string  $oldSlug  更新前の記事から取得した、urlencode()済みのスラッグ（{@see Slugable}）
+     * @param  string  $newSlug  更新後（保存済み）の記事から取得した、urlencode()済みのスラッグ（{@see Slugable}）
      */
     public function __invoke(User $user, string $oldSlug, string $newSlug): void
     {
         $base = Config::string('app.url', '');
         $from = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => urldecode($oldSlug)]);
-        $to = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => $newSlug]);
+        $to = route('articles.show', ['userIdOrNickname' => $user->nickname ?? $user->id, 'articleSlug' => urldecode($newSlug)]);
 
         $this->redirectRepository->store([
             'user_id' => $user->id,

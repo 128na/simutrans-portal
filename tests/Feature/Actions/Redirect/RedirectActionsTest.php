@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Actions\Redirect;
 
+use App\Actions\Article\Data\UpdateArticleData;
+use App\Actions\Article\UpdateArticle;
 use App\Actions\Redirect\AddRedirect;
 use App\Actions\Redirect\DeleteRedirect;
 use App\Actions\Redirect\DoRedirectIfExists;
 use App\Actions\Redirect\FindMyRedirects;
+use App\Enums\ArticlePostType;
+use App\Enums\ArticleStatus;
+use App\Models\Article;
 use App\Models\Redirect;
 use App\Models\User;
 use App\Repositories\RedirectRepository;
@@ -49,10 +54,10 @@ class RedirectActionsTest extends TestCase
     public function test_add_redirect_urlは日本語スラッグを二重エンコードしない(): void
     {
         $user = User::factory()->create(['nickname' => uniqid('yuki_')]);
-        // 保存済み記事の slug カラムを模した urlencode() 済みの値（Slugable::setSlugAttribute参照）
+        // 更新前・更新後どちらも、保存済み記事の slug カラムを模した urlencode() 済みの値
+        // （Slugable::setSlugAttribute参照）。UpdateArticleは両方ともArticle::slug属性から渡す。
         $oldSlug = urlencode('旧スラッグ');
-        // リクエスト入力由来の、まだエンコードされていない生の値
-        $newSlug = '新スラッグ';
+        $newSlug = urlencode('新スラッグ');
 
         $this->mock(RedirectRepository::class, function (MockInterface $mock) use ($user): void {
             $mock->shouldReceive('store')->once()->withArgs(function (array $arg) use ($user): bool {
@@ -78,6 +83,49 @@ class RedirectActionsTest extends TestCase
         ($sut)($user, $oldSlug, $newSlug);
 
         $this->assertTrue(true);
+    }
+
+    public function test_update_article_with_non_ascii_slug_rename_stores_a_singly_encoded_redirect(): void
+    {
+        // UpdateArticle→AddRedirectの実結線を、実DB保存を通して検証する回帰テスト。
+        // $newSlugはUpdateArticleData(リクエスト入力由来の生値)ではなく、
+        // articleRepository->update()保存後のArticle::slug(urlencode済み)から渡される必要がある。
+        $user = User::factory()->create(['nickname' => uniqid('taro_')]);
+        $article = Article::factory()->publish()->addonIntroduction()->create([
+            'user_id' => $user->id,
+            'title' => '旧タイトル',
+            'slug' => '旧スラッグ',
+        ]);
+
+        $data = UpdateArticleData::fromArray([
+            'article' => [
+                'post_type' => ArticlePostType::AddonIntroduction->value,
+                'title' => '新タイトル',
+                'slug' => '新スラッグ',
+                'status' => ArticleStatus::Publish->value,
+                'contents' => [
+                    'description' => 'dummy',
+                    'license' => 'dummy',
+                    'thanks' => 'dummy',
+                    'author' => 'dummy',
+                    'link' => 'https://example.com',
+                    'agreement' => true,
+                    'exclude_link_check' => false,
+                ],
+                'articles' => [],
+            ],
+            'follow_redirect' => true,
+            'without_update_modified_at' => false,
+        ]);
+
+        app(UpdateArticle::class)($article, $data);
+
+        $redirect = Redirect::where('user_id', $user->id)->firstOrFail();
+
+        $this->assertStringNotContainsString('%25', $redirect->from);
+        $this->assertStringNotContainsString('%25', $redirect->to);
+        $this->assertStringContainsString(urlencode('旧スラッグ'), $redirect->from);
+        $this->assertStringContainsString(urlencode('新スラッグ'), $redirect->to);
     }
 
     public function test_delete_redirect_deletes_model(): void

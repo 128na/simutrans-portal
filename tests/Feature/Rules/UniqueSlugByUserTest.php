@@ -114,6 +114,38 @@ class UniqueSlugByUserTest extends TestCase
         $this->assertTrue($this->failCalled);
     }
 
+    /**
+     * DBのslugカラムはurlencode()済みで保存されるため、バリデーション時に渡される
+     * 「リクエスト入力そのもの（未エンコード）」で正しく重複検知できるかを確認する。
+     * 既存記事のslug属性（エンコード済み値）ではなく、生のタイトル文字列を渡す。
+     */
+    public function test_一般投稿、日本語スラッグで自身の既存記事と重複_ng(): void
+    {
+        Article::factory()->create(['user_id' => $this->user->id, 'slug' => '日本語スラッグ']);
+        $this->actingAs($this->user);
+        $this->getSUT()
+            ->validate('dummy', '日本語スラッグ', $this->failClosure);
+        $this->assertTrue($this->failCalled);
+    }
+
+    public function test_一般投稿、日本語スラッグで管理者の記事と重複_ng(): void
+    {
+        Article::factory()->create(['user_id' => User::factory()->admin()->create()->id, 'slug' => '日本語スラッグ']);
+        $this->actingAs($this->user);
+        $this->getSUT()
+            ->validate('dummy', '日本語スラッグ', $this->failClosure);
+        $this->assertTrue($this->failCalled);
+    }
+
+    public function test_一般投稿、日本語スラッグで他者の記事とは重複しない_ok(): void
+    {
+        Article::factory()->create(['user_id' => User::factory()->create()->id, 'slug' => '日本語スラッグ']);
+        $this->actingAs($this->user);
+        $this->getSUT()
+            ->validate('dummy', '日本語スラッグ', $this->failClosure);
+        $this->assertFalse($this->failCalled);
+    }
+
     private function getSUT(): UniqueSlugByUser
     {
         return new UniqueSlugByUser;

@@ -28,6 +28,24 @@ trait Slugable
     }
 
     /**
+     * 生のスラッグ入力値を、DBに保存される形式（正規化 + urlencode()済み）に変換する。
+     *
+     * {@see setSlugAttribute()}が保存時に使うのと全く同じ変換を公開しており、
+     * 保存前に「最終的にどのスラッグ値になるか」を知る必要がある呼び出し元
+     * （例: 重複チェックのバリデーション）はこのメソッドを使うこと。
+     */
+    public static function normalizeSlug(string $value): string
+    {
+        $value = urldecode($value);
+        $value = mb_strtolower($value);
+
+        $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
+        $value = str_replace($replaces, '-', $value);
+
+        return urlencode($value);
+    }
+
+    /**
      * @param  Builder<T>  $builder
      * @return Builder<T>
      */
@@ -38,12 +56,6 @@ trait Slugable
 
     protected function setSlugAttribute(string $value): void
     {
-        $value = urldecode($value);
-        $value = mb_strtolower($value);
-
-        $replaces = ['!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '`', '{', '|', '}', ' ', '　', '.'];
-        $value = str_replace($replaces, '-', $value);
-        $value = urlencode($value);
-        $this->attributes['slug'] = $value;
+        $this->attributes['slug'] = self::normalizeSlug($value);
     }
 }

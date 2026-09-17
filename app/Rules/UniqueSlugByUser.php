@@ -45,10 +45,16 @@ class UniqueSlugByUser implements DataAwareRule, ValidationRule
             return;
         }
 
+        // $valueはリクエスト入力由来の生のスラッグ。DBのslugカラムは
+        // Slugable::setSlugAttribute()により正規化+urlencode()済みで保存されるため、
+        // 同じ変換を通してから比較しないと、非ASCII文字を含むスラッグの重複を
+        // 検出できない（{@see \App\Traits\Slugable::normalizeSlug()}）。
+        $normalizedSlug = Article::normalizeSlug((string) $value);
+
         if ($user->isAdmin()) {
-            $this->passedForAdmin($value, $fail);
+            $this->passedForAdmin($normalizedSlug, $fail);
         } else {
-            $this->passedForUser($user, $value, $fail);
+            $this->passedForUser($user, $normalizedSlug, $fail);
         }
     }
 

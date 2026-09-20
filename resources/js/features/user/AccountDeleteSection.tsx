@@ -19,9 +19,7 @@ export const AccountDeleteSection = () => {
         退会する
       </Button>
 
-      {showModal && (
-        <AccountDeleteModal onClose={() => setShowModal(false)} />
-      )}
+      {showModal && <AccountDeleteModal onClose={() => setShowModal(false)} />}
     </div>
   );
 };

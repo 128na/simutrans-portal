@@ -70,7 +70,9 @@ describe("AccountDeleteModal コンポーネント", () => {
       isAxiosError: true,
       response: {
         status: 422,
-        data: { errors: { current_password: ["パスワードが正しくありません"] } },
+        data: {
+          errors: { current_password: ["パスワードが正しくありません"] },
+        },
       },
     });
     const user = userEvent.setup();

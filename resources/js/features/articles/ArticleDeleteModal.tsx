@@ -37,9 +37,7 @@ export const ArticleDeleteModal = ({
       <p className="v2-text-body mb-4">
         「<strong>{article.title}</strong>」を削除してもよろしいですか？
       </p>
-      <p className="text-sm v2-text-sub mb-6">
-        この操作は取り消せません。
-      </p>
+      <p className="text-sm v2-text-sub mb-6">この操作は取り消せません。</p>
 
       <div className="flex gap-2 justify-end">
         <Button onClick={onClose} variant="subOutline" disabled={isLoading}>

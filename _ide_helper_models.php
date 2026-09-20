@@ -447,3 +447,20 @@ namespace App\Models\User{
 	class IdeHelperProfile {}
 }
 
+namespace App\Models{
+/**
+ * X (Twitter) 日次集約投稿(sns:x-daily-digest)の実行履歴。
+ * 投稿前に status=pending で作成し、投稿結果に応じて success/failed へ更新する。
+ * status=success の cutoff_at のみが次回実行の対象期間の起点として利用される。
+ *
+ * @property \App\Enums\XDigestLogStatus $status
+ * @method static \Database\Factories\XDigestLogFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|XDigestLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|XDigestLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|XDigestLog query()
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperXDigestLog {}
+}
+

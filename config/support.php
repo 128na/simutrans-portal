@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'ofuse' => [
         'top' => 'https://ofuse.me/128na',
@@ -8,5 +10,5 @@ return [
     ],
     'github' => [
         'top' => 'https://github.com/sponsors/128na',
-    ]
+    ],
 ];

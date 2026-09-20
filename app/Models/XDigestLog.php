@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder<static> query()
  *
  * @mixin \Eloquent
+ * @mixin IdeHelperXDigestLog
  */
 class XDigestLog extends Model
 {

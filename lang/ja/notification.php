@@ -12,7 +12,7 @@ return [
         'update' => "「:title」更新\nby :name",
     ],
     'digest' => [
-        'header' => '新着・更新記事のお知らせ',
+        'header' => '#simutrans 新着・更新記事のお知らせ',
         'item' => ":title\n:url",
         'more' => 'ほか:count件',
     ],

@@ -113,14 +113,6 @@ class PublishReservationTest extends TestCase
         $this->assertEquals($publishedAt->toDateTimeString(), $article->modified_at->toDateTimeString());
     }
 
-    public function test_command_signature_is_correct(): void
-    {
-        $this->markTestSkipped('RefreshDatabase実行してもレコードが残るのでスキップ');
-        // $command = $this->app->make(\App\Console\Commands\Article\PublishReservation::class);
-
-        // $this->assertEquals('article:publish-reservation', $command->getName());
-    }
-
     public function test_one_bad_reservation_does_not_block_others(): void
     {
         $now = CarbonImmutable::parse('2024-01-15 12:00:00');

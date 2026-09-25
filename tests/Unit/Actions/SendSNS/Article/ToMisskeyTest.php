@@ -106,12 +106,6 @@ class ToMisskeyTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_throws_exception_for_unsupported_notification(): void
-    {
-        // SendSNSNotificationは抽象クラスなので、実際の例外処理テストは他のテストで十分
-        $this->markTestSkipped('Cannot instantiate abstract SendSNSNotification');
-    }
-
     public function test_handles_api_request_failure_gracefully(): void
     {
         $article = Article::factory()->make(['id' => 4, 'user_id' => 1]);

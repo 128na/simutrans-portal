@@ -17,7 +17,7 @@
     "guzzlehttp/guzzle": ">=7.15.5",
     "laravel/fortify": "^1.39.0",
     "laravel/framework": "^12.69.2",
-    "laravel/mcp": "^0.9.5",
+    "laravel/mcp": "^1.0.0",
     "laravel/sanctum": ">=4.3.3",
     "laravel/tinker": "^3.0.2",
     "marvinlabs/laravel-discord-logger": "^1.4.4",

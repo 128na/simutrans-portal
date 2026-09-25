@@ -33,12 +33,6 @@ class UpdateTest extends TestCase
         ]);
     }
 
-    public function test_generates_slug_when_changing_to_public(): void
-    {
-        // リストは作成時に常に slug を生成するため、このテストはスキップ
-        $this->markTestSkipped('Slug is generated at list creation, not at update');
-    }
-
     public function test_returns_401_when_unauthenticated(): void
     {
         /** @var MyList $list */

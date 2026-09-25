@@ -86,18 +86,6 @@ class MyListServiceTest extends TestCase
         $this->assertSame($list, $result);
     }
 
-    public function test_update_list_generates_slug_when_changing_to_public(): void
-    {
-        // updateList does not generate slug; slug is generated at creation
-        $this->markTestSkipped('Slug is generated at list creation, not at update');
-    }
-
-    public function test_update_list_clears_slug_when_changing_to_private(): void
-    {
-        // updateList does not clear slug; slug management happens at creation
-        $this->markTestSkipped('Slug is generated at list creation');
-    }
-
     public function test_add_item_to_list_assigns_correct_position(): void
     {
         $list = Mockery::mock(MyList::class)->makePartial();

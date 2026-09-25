@@ -214,3 +214,8 @@ finalizing. - To run all tests:
 (recommended after making a change to a related file).
 
 </laravel-boost-guidelines>
+
+## テストの再発防止（テスト棚卸し 2026-09-25、[docs/records/2026-09-25_test-inventory.md](docs/records/2026-09-25_test-inventory.md)）
+
+- 仕様変更でテストが意味を失ったら `markTestSkipped` で残さず、同じ変更で削除する（skip は一時的な措置に限り、理由と期限/Issue を書く）。
+- 技術的理由で Unit にできない重要な振る舞いは、skip ではなく Feature テストで守る。

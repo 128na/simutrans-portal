@@ -57,12 +57,6 @@
   update 専用フラグ）、各エンドポイントが実際にルールを強制することの検証としては重複に意味がある。
 - 共通ルールを `BaseRequest` へ寄せる本体リファクタをする時に、共通 DataProvider（trait）へ統合する。単独では着手しない。
 
-**決定・実施**: `BaseRequest` への集約は既に完了済みと判明したため、単独でも着手可能と判断。
-`UpdateRequestTest` から投稿種別ごとのルール検証（35ケース）を削除し、Update 固有差分
-（`post_type` 必須の有無・`title` unique の自記事除外・`without_update_modified_at`/
-`follow_redirect`）と代表ケース1件に絞った。投稿種別ルールの網羅は `StoreRequestTest` に残す。
-[#584](https://github.com/128na/simutrans-portal/pull/584)
-
 ## Keep と判断した主なもの
 
 - 上記以外の 1103 件は今回のシグナルでは問題なし（ファイル別の最長 3.5s、他の skip なし）。

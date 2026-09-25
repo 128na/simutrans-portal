@@ -19,13 +19,6 @@ class OnLoginTest extends TestCase
         Notification::fake();
     }
 
-    public function test_creates_login_history_and_sends_notification_on_new_login(): void
-    {
-        // OnLoginのisNewLogin()はバックトレースを確認するため、
-        // Unitテストでは常にfalseになるため、このテストはスキップ
-        $this->markTestSkipped('isNewLogin() requires specific controller backtrace');
-    }
-
     public function test_does_not_process_when_user_is_not_user_instance(): void
     {
         /** @var Logger */
@@ -39,12 +32,5 @@ class OnLoginTest extends TestCase
         $result = $listener->handle($event);
 
         $this->assertNull($result);
-    }
-
-    public function test_logs_login_to_audit_channel(): void
-    {
-        // OnLoginのisNewLogin()はバックトレースを確認するため、
-        // Unitテストでは常にfalseになるため、このテストはスキップ
-        $this->markTestSkipped('isNewLogin() requires specific controller backtrace');
     }
 }

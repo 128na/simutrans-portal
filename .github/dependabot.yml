@@ -17,6 +17,14 @@ updates:
       npm:
         patterns:
           - "*"
+    # TypeScript 7 は typescript-eslint 未対応で Lint (Frontend) が落ち、group 全体が止まる（docs/dependency-debt.md 参照）。
+    # markdown-it 15 は linkify の fuzzy link 既定 off でユーザー投稿記事の表示が無言で変わりうる（同上）。
+    # 解除条件: typescript-eslint が TS 7.0 系対応したら / Markdown 描画テスト追加後に、それぞれ ignore を外す。
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "markdown-it"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "composer"
     directory: "/"

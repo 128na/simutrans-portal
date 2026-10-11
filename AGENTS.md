@@ -1,3 +1,29 @@
+# 開発エージェント共通指示
+
+Claude Code と Codex の共通指示はこのファイルを正本とする。CLAUDE.md はここを読み込む入口。
+Laravel Boost の生成先も config/boost.php でこのファイルと .agents/skills に統一する。
+
+## 共通環境
+
+- プロジェクト固有スキルの正本は .agents/skills。Claudeでは `pwsh -File scripts/setup-agent-links.ps1` で .claude/skills をそこへのジャンクションにする。
+- ユーザー共通スキル・エージェントは各クライアントのユーザー設定から利用し、プロジェクトへコピーしない。
+- Boost MCP はClaudeの .mcp.json、Codexの .codex/config.toml に設定済み。APP_ENV=local はMCPプロセスにだけ適用し、アプリ全体の .env は変更しない。
+- MCPやスキルは現在のクライアントで利用できる機能を確認する。Boostが未接続なら、接続を直してからBoost必須の作業を進める。
+- 指示・スキルを変更するときは正本を編集する。Claude専用の指示コピーは増やさない。
+
+## 検証とドキュメント
+
+- PHP変更は対象の `php artisan test --compact` とPint、必要に応じてPHPStan。フロントエンドは `npm run types`、対象の `npm run test:front -- ファイル`、UI変更時は `npm run build`。
+- `npm run lint`・`npm run format`・`npm run check` はファイルを自動修正する。検証だけなら `npx eslint .`・`npm run format:check` を使う。
+- 文書は docs/README.md と tools/docs-policy.json に従い、`npm run docs` で確認する。
+- Boost更新は `php artisan boost:update --env=local --no-interaction`。更新後もCLAUDE.mdの参照入口、共有スキルのリンク、両クライアントのMCP環境設定を確認する。
+
+## Repository層の設計方針
+
+このプロジェクトの `app/Repositories/` はインターフェースを挟まない具象クラス直接DIを採用する。Repositoryをコンストラクタで直接型指定し、コンテナに自動解決させる。共通のCRUD操作は `App\Repositories\Concerns\HasCrud` トレイトで再利用し、新しいRepositoryもこの方針に従う。
+
+採用理由は [docs/adr/0002-repository-no-inheritance.md](docs/adr/0002-repository-no-inheritance.md) を参照。
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

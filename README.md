@@ -8,6 +8,14 @@ Simutrans のアドオン投稿サイト「Simutrans Addon Portal」のアプリ
 
 ## Setup
 
+### Claude Code / Codex
+
+開発指示は [AGENTS.md](AGENTS.md)、プロジェクト固有スキルは .agents/skills を正本として共通利用します。Claude Code は CLAUDE.md 経由で指示を読みます。Windowsでは `pwsh -File scripts/setup-agent-links.ps1` を実行して、Claude用スキルの読込先を共通フォルダーへのジャンクションにします（`-Check` で検証）。既存のコピーは .claude/skill-backups に退避します。
+
+Laravel BoostのMCPは .mcp.json と .codex/config.toml に設定しています。接続先はこのチェックアウトです。Codexでは信頼済みのプロジェクトとして開き、両クライアントでMCP接続を確認してください。ユーザー共通スキル・エージェントは共通設定から利用し、リポジトリには複製しません。
+
+Boost更新は `php artisan boost:update --env=local --no-interaction`。config/boost.php により生成先は共通のAGENTS.mdと .agents/skills になります。
+
 一般的な LAMP 環境や docker コンテナなどをご用意ください。
 バックエンドは PHP (Laravel)、フロントエンドは React + TypeScript + Vite で作成しています（フロントエンドのルートは `resources/js/`）。
 

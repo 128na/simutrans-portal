@@ -5,7 +5,10 @@
             "args": [
                 "artisan",
                 "boost:mcp"
-            ]
+            ],
+            "env": {
+                "APP_ENV": "local"
+            }
         }
     }
 }

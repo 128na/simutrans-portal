@@ -1,6 +1,7 @@
 {
     "agents": [
         "claude_code",
+        "codex",
         "copilot"
     ],
     "guidelines": true,

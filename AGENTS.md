@@ -18,6 +18,12 @@ Laravel Boost の生成先も config/boost.php でこのファイルと .agents/
 - 文書は docs/README.md と tools/docs-policy.json に従い、`npm run docs` で確認する。
 - Boost更新は `php artisan boost:update --env=local --no-interaction`。更新後もCLAUDE.mdの参照入口、共有スキルのリンク、両クライアントのMCP環境設定を確認する。
 
+## Repository層の設計方針
+
+このプロジェクトの `app/Repositories/` はインターフェースを挟まない具象クラス直接DIを採用する。Repositoryをコンストラクタで直接型指定し、コンテナに自動解決させる。共通のCRUD操作は `App\Repositories\Concerns\HasCrud` トレイトで再利用し、新しいRepositoryもこの方針に従う。
+
+採用理由は [docs/adr/0002-repository-no-inheritance.md](docs/adr/0002-repository-no-inheritance.md) を参照。
+
 <laravel-boost-guidelines>
 === foundation rules ===
 

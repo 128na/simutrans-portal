@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "183e654e150934b3cc8906763e15b9d6",
+    "content-hash": "e440be0d14173c6e7cfca3b30471eda0",
     "packages": [
         {
             "name": "abordage/html-min",
@@ -2511,16 +2511,16 @@
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.9.6",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "57767d61fac5963bc90cffdaf371d1c687331ac5"
+                "reference": "92987a9d03847801299ff4abe909ba7686147dde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/57767d61fac5963bc90cffdaf371d1c687331ac5",
-                "reference": "57767d61fac5963bc90cffdaf371d1c687331ac5",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/92987a9d03847801299ff4abe909ba7686147dde",
+                "reference": "92987a9d03847801299ff4abe909ba7686147dde",
                 "shasum": ""
             },
             "require": {
@@ -2581,7 +2581,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-09-24T10:45:24+00:00"
+            "time": "2026-09-24T10:45:09+00:00"
         },
         {
             "name": "laravel/passkeys",

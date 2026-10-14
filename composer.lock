@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "183e654e150934b3cc8906763e15b9d6",
+    "content-hash": "e440be0d14173c6e7cfca3b30471eda0",
     "packages": [
         {
             "name": "abordage/html-min",
@@ -2289,16 +2289,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.69.3",
+            "version": "v12.70.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "58ea544a2a80dc03c168e13a5dc9a1d176a88717"
+                "reference": "4a4554f4d81f4095c8ff1911ec8a58144b0ed71b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/58ea544a2a80dc03c168e13a5dc9a1d176a88717",
-                "reference": "58ea544a2a80dc03c168e13a5dc9a1d176a88717",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4a4554f4d81f4095c8ff1911ec8a58144b0ed71b",
+                "reference": "4a4554f4d81f4095c8ff1911ec8a58144b0ed71b",
                 "shasum": ""
             },
             "require": {
@@ -2411,10 +2411,10 @@
                 "league/flysystem-sftp-v3": "^3.25.1",
                 "mockery/mockery": "^1.6.10",
                 "opis/json-schema": "^2.4.1",
-                "orchestra/testbench-core": "^10.9.0",
+                "orchestra/testbench-core": "^10.15.0",
                 "pda/pheanstalk": "^5.0.6|^7.0.0",
                 "php-http/discovery": "^1.15",
-                "phpstan/phpstan": "^2.1.41",
+                "phpstan/phpstan": "2.2.13",
                 "phpunit/phpunit": "^10.5.35|^11.5.3|^12.0.1",
                 "predis/predis": "^2.3|^3.0",
                 "resend/resend-php": "^0.10.0|^1.0",
@@ -2507,20 +2507,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-09-29T12:53:25+00:00"
+            "time": "2026-10-13T13:24:10+00:00"
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.9.6",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "57767d61fac5963bc90cffdaf371d1c687331ac5"
+                "reference": "92987a9d03847801299ff4abe909ba7686147dde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/57767d61fac5963bc90cffdaf371d1c687331ac5",
-                "reference": "57767d61fac5963bc90cffdaf371d1c687331ac5",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/92987a9d03847801299ff4abe909ba7686147dde",
+                "reference": "92987a9d03847801299ff4abe909ba7686147dde",
                 "shasum": ""
             },
             "require": {
@@ -2581,7 +2581,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-09-24T10:45:24+00:00"
+            "time": "2026-09-24T10:45:09+00:00"
         },
         {
             "name": "laravel/passkeys",
@@ -2653,16 +2653,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.25",
+            "version": "v0.3.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "21b7b49d60fcb700016dd27b582ae739c75de816"
+                "reference": "2d1e9bf6bab8d3f383c254db7f2b4ea8816d55e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/21b7b49d60fcb700016dd27b582ae739c75de816",
-                "reference": "21b7b49d60fcb700016dd27b582ae739c75de816",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/2d1e9bf6bab8d3f383c254db7f2b4ea8816d55e0",
+                "reference": "2d1e9bf6bab8d3f383c254db7f2b4ea8816d55e0",
                 "shasum": ""
             },
             "require": {
@@ -2705,9 +2705,9 @@
             ],
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
-                "source": "https://github.com/laravel/prompts/tree/v0.3.25"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.26"
             },
-            "time": "2026-10-06T02:25:49+00:00"
+            "time": "2026-10-09T14:45:13+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -11426,16 +11426,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v8.7.1",
+            "version": "v8.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "c1a7b7a215fc250bfec19f1105aca54ff654f24d"
+                "reference": "a12cbd9d33d44006ba08e36407cb9f19ac73e944"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/c1a7b7a215fc250bfec19f1105aca54ff654f24d",
-                "reference": "c1a7b7a215fc250bfec19f1105aca54ff654f24d",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/a12cbd9d33d44006ba08e36407cb9f19ac73e944",
+                "reference": "a12cbd9d33d44006ba08e36407cb9f19ac73e944",
                 "shasum": ""
             },
             "require": {
@@ -11493,9 +11493,9 @@
                 "webdriver"
             ],
             "support": {
-                "source": "https://github.com/laravel/dusk/tree/v8.7.1"
+                "source": "https://github.com/laravel/dusk/tree/v8.7.2"
             },
-            "time": "2026-09-24T18:49:29+00:00"
+            "time": "2026-10-07T21:51:28+00:00"
         },
         {
             "name": "laravel/pint",

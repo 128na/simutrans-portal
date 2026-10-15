@@ -35,11 +35,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:report-sync-uploads-digest')->dailyAt('0:05')
             ->appendOutputTo($output);
 
-        // 1日2回 X (Twitter) への新規・更新記事デイリー集約投稿(ADR-0005)
-        $schedule->command('sns:x-daily-digest')->dailyAt('12:00')
-            ->withoutOverlapping()
-            ->appendOutputTo($output);
-        $schedule->command('sns:x-daily-digest')->dailyAt('21:30')
+        // 毎週月・木21:30(JST)に X への新規・更新記事を集約投稿
+        $schedule->command('sns:x-daily-digest')->days([Schedule::MONDAY, Schedule::THURSDAY])->at('21:30')
+            ->timezone('Asia/Tokyo')
             ->withoutOverlapping()
             ->appendOutputTo($output);
 

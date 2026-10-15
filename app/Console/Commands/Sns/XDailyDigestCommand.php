@@ -15,7 +15,7 @@ use Illuminate\Console\Command;
 use Throwable;
 
 /**
- * X (Twitter) への新規・更新記事の通知を、1日2回(12:00/21:30 JST)の集約投稿へまとめて送る。
+ * X (Twitter) への新規・更新記事の通知を、毎週月・木21:30(JST)の集約投稿へまとめて送る。
  * 前回の成功実行(x_digest_logs.status=success の cutoff_at)以降の公開・更新記事を対象とし、
  * 成功時のみ cutoff を進める。対象0件または投稿失敗時はXへ投稿しない(ADR-0005)。
  *
@@ -29,7 +29,7 @@ class XDailyDigestCommand extends Command
 {
     protected $signature = 'sns:x-daily-digest';
 
-    protected $description = '前回の成功配信以降の新規・更新記事をXへ1日2回集約投稿する';
+    protected $description = '前回の成功配信以降の新規・更新記事をXへ毎週月・木21:30(JST)に集約投稿する';
 
     public function handle(
         XDigestLogRepository $xDigestLogRepository,

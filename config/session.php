@@ -1,7 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
 use Illuminate\Support\Str;
 
 return [
@@ -125,10 +124,9 @@ return [
     |
      */
 
-    'cookie' => env(
-        'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
-    ),
+    'cookie' => env('SESSION_SECURE_COOKIE', true)
+        ? '__Host-simutrans_portal_session'
+        : 'simutrans_portal_local_session',
 
     /*
     |--------------------------------------------------------------------------
@@ -154,7 +152,15 @@ return [
     |
      */
 
-    'domain' => env('SESSION_DOMAIN') ? '.'.env('SESSION_DOMAIN') : null,
+    'domain' => null,
+
+    // Retain the old scope only to expire cookies issued before host isolation.
+    'legacy_domain' => env('SESSION_DOMAIN'),
+
+    'legacy_cookie' => env(
+        'SESSION_COOKIE',
+        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
+    ),
 
     /*
     |--------------------------------------------------------------------------

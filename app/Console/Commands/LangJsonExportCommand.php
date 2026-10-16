@@ -22,7 +22,14 @@ class LangJsonExportCommand extends Command
 
     public function handle(): int
     {
-        $locales = explode(',', (string) $this->option('locales'));
+        $localesOption = $this->option('locales');
+        if (! is_string($localesOption)) {
+            $this->error('The locales option must be a comma-separated string.');
+
+            return Command::FAILURE;
+        }
+
+        $locales = explode(',', $localesOption);
 
         foreach ($locales as $locale) {
             App::setLocale($locale);

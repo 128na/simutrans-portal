@@ -7,8 +7,7 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.3|~8.4",
-    "abordage/laravel-html-min": "^1.0.0",
+    "php": "^8.3",
     "abraham/twitteroauth": "^8.2.0",
     "berkayk/onesignal-laravel": ">=2.5.0",
     "cebe/markdown": "^1.2.1",
@@ -16,7 +15,7 @@
     "google/cloud-recaptcha-enterprise": ">=2.5.3",
     "guzzlehttp/guzzle": ">=7.15.5",
     "laravel/fortify": "^1.41.0",
-    "laravel/framework": "^12.69.3",
+    "laravel/framework": "^13.37",
     "laravel/mcp": "^0.9.6",
     "laravel/sanctum": ">=4.3.3",
     "laravel/tinker": "^3.0.2",

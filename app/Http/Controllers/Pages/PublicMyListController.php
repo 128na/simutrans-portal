@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Pages;
 use App\Actions\FrontMyList\PublicListAction;
 use App\Actions\FrontMyList\PublicShowAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MyList\ListPublicMyListsRequest;
+use App\Http\Requests\MyList\ShowPublicMyListRequest;
 use App\Http\Resources\Mypage\MyListItem as MyListItemResource;
 use App\Http\Resources\Mypage\MyListShow as MyListShowResource;
 use App\Services\MyListService;
@@ -38,11 +40,11 @@ class PublicMyListController extends Controller
     /**
      * 公開リスト一覧を取得（認証不要）
      */
-    public function listPublic(): ResourceCollection
+    public function listPublic(ListPublicMyListsRequest $request): ResourceCollection
     {
-        $page = (int) request()->query('page', 1);
-        $perPage = (int) request()->query('per_page', 20);
-        $sort = (string) request()->query('sort', 'updated_at:desc');
+        $page = (int) $request->validated('page', 1);
+        $perPage = (int) $request->validated('per_page', 20);
+        $sort = (string) $request->validated('sort', 'updated_at:desc');
 
         $paginator = ($this->publicListAction)($page, $perPage, $sort);
 
@@ -52,11 +54,11 @@ class PublicMyListController extends Controller
     /**
      * 公開リストを表示（認証不要）
      */
-    public function showPublic(string $slug): ResourceCollection
+    public function showPublic(ShowPublicMyListRequest $request, string $slug): ResourceCollection
     {
-        $page = (int) request()->query('page', 1);
-        $perPage = (int) request()->query('per_page', 20);
-        $sort = (string) request()->query('sort', 'position');
+        $page = (int) $request->validated('page', 1);
+        $perPage = (int) $request->validated('per_page', 20);
+        $sort = (string) $request->validated('sort', 'position');
 
         $result = ($this->publicShowAction)($slug, $page, $perPage, $sort);
         $list = $result['list'];

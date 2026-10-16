@@ -9,9 +9,15 @@
       <div>
         <x-ui.link :url="route('admin.oauth.twitter.authorize')" :title="'認証'" />
         <br />
-        <x-ui.link :url="route('admin.oauth.twitter.refresh')" :title="'トークンリフレッシュ'" />
+        <form action="{{ route('admin.oauth.twitter.refresh') }}" method="POST">
+          @csrf
+          <button type="submit" class="v2-button v2-button-md v2-button-sub">トークンリフレッシュ</button>
+        </form>
         <br />
-        <x-ui.link :url="route('admin.oauth.twitter.revoke')" :title="'トークン削除'" />
+        <form action="{{ route('admin.oauth.twitter.revoke') }}" method="POST" class="js-confirm" data-text="トークンを削除しますか？">
+          @csrf
+          <button type="submit" class="v2-button v2-button-md v2-button-danger">トークン削除</button>
+        </form>
         <br />
       </div>
       @if (Illuminate\Support\Facades\Route::has('l5-swagger.default.api'))

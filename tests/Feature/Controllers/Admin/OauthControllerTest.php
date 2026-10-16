@@ -104,7 +104,7 @@ class OauthControllerTest extends TestCase
 
     public function test_refresh_guest(): void
     {
-        $testResponse = $this->get(route('admin.oauth.twitter.refresh'));
+        $testResponse = $this->post(route('admin.oauth.twitter.refresh'));
 
         $testResponse->assertRedirect(route('login'));
     }
@@ -113,7 +113,7 @@ class OauthControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $testResponse = $this->get(route('admin.oauth.twitter.refresh'));
+        $testResponse = $this->post(route('admin.oauth.twitter.refresh'));
 
         $testResponse->assertUnauthorized();
     }
@@ -121,7 +121,7 @@ class OauthControllerTest extends TestCase
     public function test_refresh_admin_no_token(): void
     {
         $this->actingAs($this->adminUser);
-        $testResponse = $this->get(route('admin.oauth.twitter.refresh'));
+        $testResponse = $this->post(route('admin.oauth.twitter.refresh'));
 
         $testResponse->assertRedirect(route('admin.index'));
         $testResponse->assertSessionHas('error', 'token not found');
@@ -146,7 +146,7 @@ class OauthControllerTest extends TestCase
         });
 
         $this->actingAs($this->adminUser);
-        $testResponse = $this->get(route('admin.oauth.twitter.refresh'));
+        $testResponse = $this->post(route('admin.oauth.twitter.refresh'));
 
         $testResponse->assertRedirect(route('admin.index'));
         $testResponse->assertSessionHas('success', 'access token refreshed');
@@ -154,7 +154,7 @@ class OauthControllerTest extends TestCase
 
     public function test_revoke_guest(): void
     {
-        $testResponse = $this->get(route('admin.oauth.twitter.revoke'));
+        $testResponse = $this->post(route('admin.oauth.twitter.revoke'));
 
         $testResponse->assertRedirect(route('login'));
     }
@@ -163,7 +163,7 @@ class OauthControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $testResponse = $this->get(route('admin.oauth.twitter.revoke'));
+        $testResponse = $this->post(route('admin.oauth.twitter.revoke'));
 
         $testResponse->assertUnauthorized();
     }
@@ -171,7 +171,7 @@ class OauthControllerTest extends TestCase
     public function test_revoke_admin_no_token(): void
     {
         $this->actingAs($this->adminUser);
-        $testResponse = $this->get(route('admin.oauth.twitter.revoke'));
+        $testResponse = $this->post(route('admin.oauth.twitter.revoke'));
 
         $testResponse->assertRedirect(route('admin.index'));
         $testResponse->assertSessionHas('error', 'token not found');
@@ -195,10 +195,36 @@ class OauthControllerTest extends TestCase
         });
 
         $this->actingAs($this->adminUser);
-        $testResponse = $this->get(route('admin.oauth.twitter.revoke'));
+        $testResponse = $this->post(route('admin.oauth.twitter.revoke'));
 
         $testResponse->assertRedirect(route('admin.index'));
         $testResponse->assertSessionHas('success', 'access token revoked');
+    }
+
+    public function test_get_cannot_refresh_or_revoke_tokens(): void
+    {
+        $this->mock(PKCEService::class, function (MockInterface $mock): void {
+            $mock->shouldNotReceive('refreshToken');
+            $mock->shouldNotReceive('revokeToken');
+        });
+
+        $this->actingAs($this->adminUser);
+        $this->get(route('admin.oauth.twitter.refresh'))->assertNotFound();
+        $this->get(route('admin.oauth.twitter.revoke'))->assertNotFound();
+    }
+
+    public function test_token_operations_require_csrf_token(): void
+    {
+        $this->mock(PKCEService::class, function (MockInterface $mock): void {
+            $mock->shouldNotReceive('refreshToken');
+            $mock->shouldNotReceive('revokeToken');
+        });
+
+        $this->actingAs($this->adminUser);
+        $this->app['env'] = 'local';
+
+        $this->post(route('admin.oauth.twitter.refresh'))->assertStatus(419);
+        $this->post(route('admin.oauth.twitter.revoke'))->assertStatus(419);
     }
 
     public function test_callback_admin_success(): void

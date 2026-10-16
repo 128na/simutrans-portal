@@ -100,7 +100,7 @@ Route::GET('/login/2fa', [TwoFactorController::class, 'showTwoFactor'])->name('t
 Route::GET('/forgot-password', [PasswordController::class, 'showForgotPassword'])->name('forgot-password');
 Route::GET('/reset-password/{token}', [PasswordController::class, 'showResetPassword'])->name('reset-password');
 
-Route::middleware(['auth'])->group(function (): void {
+Route::middleware(['auth:web'])->group(function (): void {
     Route::get('/mypage/', [DashboardController::class, 'index'])->name('mypage.index');
     Route::get('/mypage/verify-email', [DashboardController::class, 'verifyEmail'])->name('mypage.verify-email');
     Route::get('/mypage/verify-required', [DashboardController::class, 'verifyNotice'])->name('verification.notice');
@@ -117,7 +117,6 @@ Route::middleware(['auth'])->group(function (): void {
         Route::delete('/mypage/invite', [InviteController::class, 'revoke']);
 
         Route::get('/mypage/tokens', [TokenController::class, 'index'])->name('mypage.tokens.index');
-        Route::post('/mypage/tokens', [TokenController::class, 'store'])->name('mypage.tokens.store');
         Route::delete('/mypage/tokens/{tokenId}', [TokenController::class, 'destroy'])->name('mypage.tokens.destroy');
 
         Route::get('/mypage/tags', [MypageTagController::class, 'index'])->name('mypage.tags');
@@ -143,12 +142,12 @@ Route::middleware(['auth'])->group(function (): void {
     });
 });
 
-Route::middleware(['auth:sanctum', 'admin', 'verified'])->group(function (): void {
+Route::middleware(['auth:web', 'admin', 'verified'])->group(function (): void {
     Route::get('/admin', [OauthController::class, 'index'])->name('admin.index');
     Route::get('/admin/oauth/twitter/authorize', [OauthController::class, 'authoroize'])->name('admin.oauth.twitter.authorize');
     Route::get('/admin/oauth/twitter/callback', [OauthController::class, 'callback'])->name('admin.oauth.twitter.callback');
-    Route::get('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
-    Route::get('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
+    Route::post('/admin/oauth/twitter/refresh', [OauthController::class, 'refresh'])->name('admin.oauth.twitter.refresh');
+    Route::post('/admin/oauth/twitter/revoke', [OauthController::class, 'revoke'])->name('admin.oauth.twitter.revoke');
 });
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');

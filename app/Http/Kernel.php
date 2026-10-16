@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use Abordage\LaravelHtmlMin\Middleware\HtmlMinify;
 use App\Http\Middleware\AdminCheck;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CorsHeader;
@@ -63,7 +62,6 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-            HtmlMinify::class,
         ],
 
         'internal_api' => [

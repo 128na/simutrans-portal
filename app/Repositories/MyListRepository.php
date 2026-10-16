@@ -9,6 +9,7 @@ use App\Models\MyList;
 use App\Models\User;
 use App\Repositories\Concerns\HasCrud;
 use Illuminate\Contracts\Pagination\Paginator;
+use InvalidArgumentException;
 
 class MyListRepository
 {
@@ -28,7 +29,11 @@ class MyListRepository
         $query = $this->model
             ->where('user_id', $user->id)
             ->withCount('items')
-            ->orderBy($sortField, $sortDirection);
+            ->orderBy($sortField, match (strtolower($sortDirection)) {
+                'asc' => 'asc',
+                'desc' => 'desc',
+                default => throw new InvalidArgumentException('Order direction must be a SortDirection, "asc" or "desc".'),
+            });
 
         /** @var Paginator<int, MyList> $result */
         $result = $query->simplePaginate($perPage, ['*'], 'page', $page);
@@ -53,7 +58,11 @@ class MyListRepository
                     });
                 },
             ])
-            ->orderBy($sortField, $sortDirection);
+            ->orderBy($sortField, match (strtolower($sortDirection)) {
+                'asc' => 'asc',
+                'desc' => 'desc',
+                default => throw new InvalidArgumentException('Order direction must be a SortDirection, "asc" or "desc".'),
+            });
 
         /** @var Paginator<int, MyList> $result */
         $result = $query->simplePaginate($perPage, ['*'], 'page', $page);

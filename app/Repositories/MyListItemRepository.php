@@ -10,6 +10,7 @@ use App\Models\MyListItem;
 use App\Repositories\Concerns\HasCrud;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
 class MyListItemRepository
 {
@@ -31,7 +32,11 @@ class MyListItemRepository
                 'article.user.profile.attachments',
                 'article.attachments',
             ])
-            ->orderBy($sortField, $sortDirection);
+            ->orderBy($sortField, match (strtolower($sortDirection)) {
+                'asc' => 'asc',
+                'desc' => 'desc',
+                default => throw new InvalidArgumentException('Order direction must be a SortDirection, "asc" or "desc".'),
+            });
 
         /** @var Paginator<int, MyListItem> $result */
         $result = $query->simplePaginate($perPage, ['*'], 'page', $page);
@@ -56,7 +61,11 @@ class MyListItemRepository
                 $q->where('status', ArticleStatus::Publish)
                     ->whereNull('deleted_at');
             })
-            ->orderBy($sortField, $sortDirection);
+            ->orderBy($sortField, match (strtolower($sortDirection)) {
+                'asc' => 'asc',
+                'desc' => 'desc',
+                default => throw new InvalidArgumentException('Order direction must be a SortDirection, "asc" or "desc".'),
+            });
 
         /** @var Paginator<int, MyListItem> $result */
         $result = $query->simplePaginate($perPage, ['*'], 'page', $page);

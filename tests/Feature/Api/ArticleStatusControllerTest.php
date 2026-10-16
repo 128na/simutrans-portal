@@ -7,87 +7,34 @@ namespace Tests\Feature\Api;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
 class ArticleStatusControllerTest extends TestCase
 {
-    public function test_update_requires_auth(): void
-    {
-        $this->patchJson('/api/v1/articles/1/status', ['status' => 'draft'])->assertUnauthorized();
-    }
-
-    public function test_update_changes_status_to_draft(): void
+    #[DataProvider('authenticationModes')]
+    public function test_external_status_update_is_unavailable(string $authentication): void
     {
         $user = User::factory()->create();
         $article = Article::factory()->for($user)->publish()->create();
+        $original = $article->fresh()->getRawOriginal();
 
-        $response = $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => ArticleStatus::Draft->value]);
+        if ($authentication === 'session') {
+            $this->actingAs($user, 'web');
+        } elseif ($authentication === 'token') {
+            $this->withToken($user->createToken('Legacy API')->plainTextToken);
+        }
 
-        $response->assertOk();
-        $response->assertJsonFragment(['status' => ArticleStatus::Draft->value]);
-        $this->assertDatabaseHas('articles', ['id' => $article->id, 'status' => ArticleStatus::Draft->value]);
+        $this->patchJson('/api/v1/articles/'.$article->id.'/status', [
+            'status' => ArticleStatus::Draft->value,
+        ])->assertStatus(405);
+
+        $this->assertSame($original, $article->fresh()->getRawOriginal());
     }
 
-    public function test_update_sets_published_at_on_first_publish(): void
+    /** @return array<string, array{string}> */
+    public static function authenticationModes(): array
     {
-        $user = User::factory()->create();
-        $article = Article::factory()->for($user)->draft()->create(['published_at' => null]);
-
-        $response = $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => ArticleStatus::Publish->value]);
-
-        $response->assertOk();
-        $this->assertNotNull($article->fresh()->published_at);
-    }
-
-    public function test_update_does_not_overwrite_published_at_on_republish(): void
-    {
-        $user = User::factory()->create();
-        $article = Article::factory()->for($user)->publish()->create();
-        $originalPublishedAt = $article->published_at;
-
-        $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => ArticleStatus::Draft->value]);
-
-        $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => ArticleStatus::Publish->value]);
-
-        $this->assertEquals($originalPublishedAt->toDateTimeString(), $article->fresh()->published_at->toDateTimeString());
-    }
-
-    public function test_update_returns_404_for_other_users_article(): void
-    {
-        $user = User::factory()->create();
-        $other = User::factory()->create();
-        $article = Article::factory()->for($other)->publish()->create();
-
-        $response = $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => ArticleStatus::Draft->value]);
-
-        $response->assertNotFound();
-    }
-
-    public function test_update_rejects_invalid_status(): void
-    {
-        $user = User::factory()->create();
-        $article = Article::factory()->for($user)->draft()->create();
-
-        $response = $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => 'invalid']);
-
-        $response->assertUnprocessable();
-    }
-
-    public function test_update_allows_trash_status(): void
-    {
-        $user = User::factory()->create();
-        $article = Article::factory()->for($user)->publish()->create();
-
-        $response = $this->actingAs($user, 'sanctum')
-            ->patchJson("/api/v1/articles/{$article->id}/status", ['status' => ArticleStatus::Trash->value]);
-
-        $response->assertOk();
-        $response->assertJsonFragment(['status' => ArticleStatus::Trash->value]);
+        return ['guest' => ['guest'], 'session' => ['session'], 'token' => ['token']];
     }
 }

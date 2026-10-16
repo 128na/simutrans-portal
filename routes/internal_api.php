@@ -12,7 +12,7 @@ use App\Http\Controllers\Mypage\ProfileController;
 use App\Http\Controllers\Mypage\TagController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
+Route::middleware(['auth:web', 'verified'])->group(function (): void {
     // マイリスト API
     Route::prefix('v1/mylist')->group(function (): void {
         Route::get('/', [MyListController::class, 'index']);

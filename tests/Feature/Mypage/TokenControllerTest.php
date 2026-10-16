@@ -38,49 +38,26 @@ class TokenControllerTest extends TestCase
         $response->assertDontSee('Other Token');
     }
 
-    public function test_store_creates_token(): void
+    public function test_token_issuance_is_unavailable(): void
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('mypage.tokens.store'), [
-            'name' => 'Claude Code MCP',
-        ]);
+        $this->actingAs($user)->post('/mypage/tokens', ['name' => 'Disabled Token'])
+            ->assertStatus(405);
 
-        $response->assertRedirect(route('mypage.tokens.index'));
-        $response->assertSessionHas('new_token');
-        $response->assertSessionHas('status', 'APIトークンを発行しました');
-
-        $this->assertDatabaseHas('personal_access_tokens', [
-            'tokenable_id' => $user->id,
-            'name' => 'Claude Code MCP',
-        ]);
+        $this->assertDatabaseCount('personal_access_tokens', 0);
     }
 
-    public function test_store_requires_name(): void
+    public function test_index_has_no_token_issuance_or_mcp_instructions(): void
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post(route('mypage.tokens.store'), [
-            'name' => '',
-        ]);
-
-        $response->assertSessionHasErrors('name');
-    }
-
-    public function test_new_token_is_shown_on_index_after_store(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('mypage.tokens.store'), [
-            'name' => 'Test Token',
-        ]);
-
-        $response = $this->actingAs($user)->followingRedirects()->post(route('mypage.tokens.store'), [
-            'name' => 'Test Token 2',
-        ]);
-
-        $response->assertOk();
-        $response->assertSee('一度しか表示されません');
+        $this->actingAs($user)->get(route('mypage.tokens.index'))
+            ->assertOk()
+            ->assertSee('APIトークンの新規発行は終了しました')
+            ->assertDontSee('新しいトークンを発行')
+            ->assertDontSee('/mcp/user')
+            ->assertDontSee('name="name"', false);
     }
 
     public function test_destroy_deletes_own_token(): void
@@ -107,19 +84,18 @@ class TokenControllerTest extends TestCase
         $this->assertModelExists($token);
     }
 
-    public function test_mcp_does_not_reject_valid_token(): void
+    public function test_mcp_is_unavailable_with_valid_token(): void
     {
         $user = User::factory()->create();
         $tokenResult = $user->createToken('MCP Token');
 
-        // MCP endpoint accepts POST only; verify the token is not rejected with 401
         $response = $this->withToken($tokenResult->plainTextToken)
             ->postJson('/mcp/user', []);
 
-        $this->assertNotEquals(401, $response->getStatusCode());
+        $response->assertStatus(405);
     }
 
-    public function test_mcp_rejects_unverified_user(): void
+    public function test_mcp_is_unavailable_with_unverified_users_token(): void
     {
         $user = User::factory()->create(['email_verified_at' => null]);
         $tokenResult = $user->createToken('MCP Token');
@@ -127,6 +103,6 @@ class TokenControllerTest extends TestCase
         $response = $this->withToken($tokenResult->plainTextToken)
             ->postJson('/mcp/user', []);
 
-        $response->assertForbidden();
+        $response->assertStatus(405);
     }
 }

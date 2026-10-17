@@ -120,7 +120,8 @@ class RcloneDiagnosticsTest extends TestCase
             usleep(10000);
         }
         $this->assertSame(99, $diagnostics->snapshot()['stats']['bytes'] ?? null);
-        $process->signal(9);
+        $this->assertIsInt($pid);
+        $this->assertTrue(Process::run(['/bin/kill', '-9', (string) $pid])->successful());
         try {
             $process->wait();
             $this->fail('Expected signal termination.');

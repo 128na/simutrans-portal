@@ -11,6 +11,16 @@ use Tests\Feature\TestCase;
 
 class ArticleControllerTest extends TestCase
 {
+    public function test_swagger_documentation_routes_are_not_registered(): void
+    {
+        foreach ($this->app['router']->getRoutes() as $route) {
+            $this->assertStringNotContainsString('L5Swagger\\', $route->getActionName());
+        }
+
+        $this->get('/api/documentation')->assertNotFound();
+        $this->get('/docs')->assertNotFound();
+    }
+
     public function test_no_external_article_or_attachment_routes_are_registered_for_any_method(): void
     {
         foreach ($this->app['router']->getRoutes() as $route) {

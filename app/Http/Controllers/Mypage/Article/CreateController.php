@@ -46,8 +46,6 @@ class CreateController extends Controller
 
     /**
      * 新しい記事を作成
-     *
-     * OpenAPI定義は App\OpenApi\Paths\ArticleCreatePath を参照。
      */
     public function store(StoreRequest $storeRequest, StoreArticle $storeArticle): JsonResponse
     {

@@ -325,5 +325,5 @@ php artisan route:list --json
 ## 関連ドキュメント
 
 - **[Controllers](../app/Http/Controllers/README.md)** - コントローラー構造
-- **[API Documentation](../app/OpenApi/README.md)** - OpenAPI仕様
+- **[API](../README.md#api)** - 現在のAPIとルート定義
 - **[README.md](../README.md)** - プロジェクト概要

@@ -1,6 +1,7 @@
 # ADR: OpenAPI を SSOT とし、TypeScript 型定義は自動生成せず手動で追従させる
 
 > ステータス: Accepted (2025-11-24)
+> 廃止注記 (2026-10-17): Swagger実装の削除に伴い、OpenAPIをSSOTとする決定は廃止。以下は採用当時の記録として保持する。
 > 由来: `docs/spec/api-contract-typescript-types-spec.md` の決定部分を抽出
 
 ## 背景と問題

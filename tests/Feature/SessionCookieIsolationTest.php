@@ -139,6 +139,22 @@ class SessionCookieIsolationTest extends TestCase
         }
     }
 
+    public function test_session_secure_cookie_defaults_to_true_when_environment_is_unset(): void
+    {
+        $repository = Env::getRepository();
+        $original = $repository->get('SESSION_SECURE_COOKIE');
+        $repository->clear('SESSION_SECURE_COOKIE');
+        try {
+            $session = require config_path('session.php');
+            $this->assertTrue($session['secure']);
+            $this->assertSame('__Host-simutrans_portal_session', $session['cookie']);
+        } finally {
+            if ($original !== null) {
+                $repository->set('SESSION_SECURE_COOKIE', $original);
+            }
+        }
+    }
+
     /** @param array<Cookie> $cookies */
     private function findCookie(array $cookies, string $name, ?string $domain): Cookie
     {

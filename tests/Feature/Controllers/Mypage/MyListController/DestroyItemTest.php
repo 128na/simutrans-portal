@@ -70,4 +70,16 @@ class DestroyItemTest extends TestCase
             ->deleteJson("/api/v1/mylist/{$list->id}/items/9999")
             ->assertNotFound();
     }
+
+    public function test_item_from_another_owned_list_is_not_found_and_unchanged(): void
+    {
+        $user = User::factory()->create();
+        $list = MyList::factory()->for($user)->create();
+        $otherList = MyList::factory()->for($user)->create();
+        $item = MyListItem::factory()->create(['list_id' => $otherList->id, 'note' => 'Original']);
+        $original = $item->fresh()->getRawOriginal();
+        $this->actingAs($user)->deleteJson("/api/v1/mylist/{$list->id}/items/{$item->id}")->assertNotFound();
+        $this->assertSame($original, $item->fresh()->getRawOriginal());
+        $this->assertDatabaseCount('mylist_items', 1);
+    }
 }

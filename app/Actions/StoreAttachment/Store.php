@@ -9,8 +9,11 @@ use App\Jobs\Attachments\JobGenerateThumbnail;
 use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Models\User;
+use App\Rules\SafeAttachment;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Throwable;
 
 class Store
@@ -21,6 +24,8 @@ class Store
 
     public function __invoke(User $user, UploadedFile $uploadedFile): Attachment
     {
+        Validator::make(['file' => $uploadedFile], ['file' => ['required', new SafeAttachment]])->validate();
+
         $attachment = $this->isImage($uploadedFile)
             ? $this->storeAsImage($user, $uploadedFile)
             : $this->storeAsFile($user, $uploadedFile);
@@ -55,7 +60,11 @@ class Store
     private function storeAsImage(User $user, UploadedFile $uploadedFile): Attachment
     {
         try {
-            $filepath = $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile);
+            $filepath = $this->filesystemAdapter->putFileAs(
+                'user/'.$user->id,
+                $uploadedFile,
+                Str::random(40).'.'.strtolower($uploadedFile->getClientOriginalExtension()),
+            );
 
             $attachment = Attachment::create([
                 'user_id' => $user->id,
@@ -79,7 +88,11 @@ class Store
     {
         return Attachment::create([
             'user_id' => $user->id,
-            'path' => $this->filesystemAdapter->put('user/'.$user->id, $uploadedFile),
+            'path' => $this->filesystemAdapter->putFileAs(
+                'user/'.$user->id,
+                $uploadedFile,
+                Str::random(40).'.'.strtolower($uploadedFile->getClientOriginalExtension()),
+            ),
             'original_name' => $uploadedFile->getClientOriginalName(),
             'size' => $uploadedFile->getSize(),
         ]);

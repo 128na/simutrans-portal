@@ -5,13 +5,183 @@ declare(strict_types=1);
 namespace Tests\Unit\Services\FileInfo;
 
 use App\Models\Attachment;
+use App\Repositories\Attachment\FileInfoRepository;
+use App\Services\FileInfo\FileInfoService;
+use App\Services\FileInfo\TextService;
 use App\Services\FileInfo\ZipArchiveParser;
+use App\Services\FileInfo\ZipResourceLimitException;
 use Mockery\MockInterface;
 use Tests\Unit\TestCase;
 use ZipArchive;
 
 class ZipArchiveParserTest extends TestCase
 {
+    public function test_zip_budgets_accept_exact_boundaries(): void
+    {
+        config(['fileinfo.zip.max_entry_bytes' => 4, 'fileinfo.zip.max_total_bytes' => 8, 'fileinfo.zip.max_entries' => 2]);
+        $path = $this->createTempZip(['a.txt' => 'aaaa', 'b.txt' => 'bbbb']);
+        try {
+            $attachment = \Mockery::mock(Attachment::class);
+            $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn($path);
+            $this->assertCount(2, $this->getSUT()->parseContent($attachment)->all());
+        } finally {
+            unlink($path);
+        }
+    }
+
+    public function test_zip_budgets_reject_one_byte_or_entry_over_limits(): void
+    {
+        foreach ([
+            ['max_entry_bytes', 3, ['a.txt' => 'aaaa']],
+            ['max_total_bytes', 7, ['a.txt' => 'aaaa', 'b.txt' => 'bbbb']],
+            ['max_entries', 1, ['a.txt' => '', 'b.txt' => '']],
+        ] as [$key, $limit, $files]) {
+            config(['fileinfo.zip.max_entry_bytes' => 64, 'fileinfo.zip.max_total_bytes' => 256, 'fileinfo.zip.max_entries' => 10]);
+            config(['fileinfo.zip.'.$key => $limit]);
+            $path = $this->createTempZip($files);
+            try {
+                $attachment = \Mockery::mock(Attachment::class);
+                $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn($path);
+                try {
+                    $this->getSUT()->parseContent($attachment)->all();
+                    $this->fail('Expected ZIP resource rejection: '.$key);
+                } catch (ZipResourceLimitException) {
+                    $this->assertTrue(true);
+                }
+            } finally {
+                unlink($path);
+            }
+        }
+    }
+
+    public function test_oversized_declared_size_is_rejected_before_read_and_closes_archive(): void
+    {
+        config(['fileinfo.zip.max_entry_bytes' => 4]);
+        $zip = $this->mockArchiveWithEntries(1);
+        $zip->shouldReceive('open')->once()->andReturn(true);
+        $zip->shouldReceive('statIndex')->once()->andReturn(['name' => 'a.txt', 'size' => 5]);
+        $zip->shouldNotReceive('getFromIndex');
+        $zip->shouldReceive('close')->once()->passthru();
+        $attachment = \Mockery::mock(Attachment::class);
+        $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+        $this->expectException(ZipResourceLimitException::class);
+        (new ZipArchiveParser($zip))->parseContent($attachment)->all();
+    }
+
+    public function test_understated_size_uses_bounded_read_and_closes_archive(): void
+    {
+        config(['fileinfo.zip.max_entry_bytes' => 4]);
+        $zip = $this->mockArchiveWithEntries(1);
+        $zip->shouldReceive('open')->once()->andReturn(true);
+        $zip->shouldReceive('statIndex')->twice()->andReturn(['name' => 'a.txt', 'size' => 1]);
+        $zip->shouldReceive('getFromIndex')->once()->with(0, 5)->andReturn('aaaaa');
+        $zip->shouldReceive('close')->once()->passthru();
+        $attachment = \Mockery::mock(Attachment::class);
+        $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+        $this->expectException(ZipResourceLimitException::class);
+        (new ZipArchiveParser($zip))->parseContent($attachment)->all();
+    }
+
+    public function test_actual_total_budget_bounds_subsequent_reads(): void
+    {
+        config(['fileinfo.zip.max_entry_bytes' => 4, 'fileinfo.zip.max_total_bytes' => 7]);
+        $zip = $this->mockArchiveWithEntries(2);
+        $zip->shouldReceive('open')->once()->andReturn(true);
+        $zip->shouldReceive('statIndex')->with(0, ZipArchive::FL_ENC_RAW)->twice()->andReturn(['name' => 'a.txt', 'size' => 1]);
+        $zip->shouldReceive('statIndex')->with(1, ZipArchive::FL_ENC_RAW)->twice()->andReturn(['name' => 'b.txt', 'size' => 1]);
+        $zip->shouldReceive('getFromIndex')->once()->with(0, 5)->andReturn('aaaa');
+        $zip->shouldReceive('getFromIndex')->once()->with(1, 4)->andReturn('bbbb');
+        $zip->shouldReceive('close')->once()->passthru();
+        $attachment = \Mockery::mock(Attachment::class);
+        $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+        $repository = \Mockery::mock(FileInfoRepository::class);
+        $repository->shouldNotReceive('updateOrCreate');
+        $service = new FileInfoService($repository, new ZipArchiveParser($zip), new TextService, []);
+
+        $this->expectException(ZipResourceLimitException::class);
+        $service->updateOrCreateFromZip($attachment);
+    }
+
+    public function test_declared_total_is_checked_before_any_content_read(): void
+    {
+        config(['fileinfo.zip.max_entry_bytes' => 4, 'fileinfo.zip.max_total_bytes' => 7]);
+        $zip = $this->mockArchiveWithEntries(2);
+        $zip->shouldReceive('open')->once()->andReturn(true);
+        $zip->shouldReceive('statIndex')->with(0, ZipArchive::FL_ENC_RAW)->once()->andReturn(['name' => 'a.txt', 'size' => 4]);
+        $zip->shouldReceive('statIndex')->with(1, ZipArchive::FL_ENC_RAW)->once()->andReturn(['name' => 'b.txt', 'size' => 4]);
+        $zip->shouldNotReceive('getFromIndex');
+        $zip->shouldReceive('close')->once()->passthru();
+        $attachment = \Mockery::mock(Attachment::class);
+        $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+        $this->expectException(ZipResourceLimitException::class);
+        (new ZipArchiveParser($zip))->parseContent($attachment)->all();
+    }
+
+    public function test_read_failure_after_valid_entry_does_not_save_partial_metadata(): void
+    {
+        $zip = $this->mockArchiveWithEntries(2);
+        $zip->shouldReceive('open')->once()->andReturn(true);
+        $zip->shouldReceive('getFromIndex')->with(0, \Mockery::type('int'))->once()->andReturn('valid');
+        $zip->shouldReceive('getFromIndex')->with(1, \Mockery::type('int'))->once()->andReturn(false);
+        $zip->shouldReceive('close')->once()->passthru();
+        $attachment = \Mockery::mock(Attachment::class);
+        $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+        $repository = \Mockery::mock(FileInfoRepository::class);
+        $repository->shouldNotReceive('updateOrCreate');
+        $service = new FileInfoService($repository, new ZipArchiveParser($zip), new TextService, []);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to read ZIP entry.');
+        $service->updateOrCreateFromZip($attachment);
+    }
+
+    public function test_invalid_config_uses_finite_default_budgets(): void
+    {
+        foreach ([0, -1, PHP_INT_MAX, 'unlimited', null, INF] as $invalid) {
+            config(['fileinfo.zip.max_entry_bytes' => $invalid, 'fileinfo.zip.max_total_bytes' => $invalid, 'fileinfo.zip.max_entries' => $invalid]);
+            $zip = $this->mockArchiveWithEntries(1);
+            $zip->shouldReceive('open')->once()->andReturn(true);
+            $zip->shouldReceive('getFromIndex')->with(0, 64 * 1024 * 1024 + 1)->once()->andReturn('a');
+            $zip->shouldReceive('close')->once()->passthru();
+            $attachment = \Mockery::mock(Attachment::class);
+            $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+            $this->assertCount(1, (new ZipArchiveParser($zip))->parseContent($attachment)->all());
+        }
+    }
+
+    public function test_invalid_declared_sizes_are_rejected_before_read(): void
+    {
+        foreach ([false, ['name' => 'a.txt', 'size' => -1], ['name' => 'a.txt']] as $stat) {
+            $zip = $this->mockArchiveWithEntries(1);
+            $zip->shouldReceive('open')->once()->andReturn(true);
+            $zip->shouldReceive('statIndex')->once()->andReturn($stat);
+            $zip->shouldNotReceive('getFromIndex');
+            $zip->shouldReceive('close')->once()->passthru();
+            $attachment = \Mockery::mock(Attachment::class);
+            $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+            try {
+                (new ZipArchiveParser($zip))->parseContent($attachment)->all();
+                $this->fail('Expected invalid ZIP metadata to be rejected.');
+            } catch (ZipResourceLimitException) {
+                $this->assertTrue(true);
+            }
+        }
+    }
+
+    public function test_stat_failure_on_second_pass_rejects_archive(): void
+    {
+        $zip = $this->mockArchiveWithEntries(1);
+        $zip->shouldReceive('open')->once()->andReturn(true);
+        $zip->shouldReceive('statIndex')->twice()->andReturn(['name' => 'a.txt', 'size' => 1], false);
+        $zip->shouldNotReceive('getFromIndex');
+        $zip->shouldReceive('close')->once()->passthru();
+        $attachment = \Mockery::mock(Attachment::class);
+        $attachment->shouldReceive('getAttribute')->with('full_path')->andReturn('unused.zip');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to inspect ZIP entry.');
+        (new ZipArchiveParser($zip))->parseContent($attachment)->all();
+    }
+
     public function test_parse_text_content_with_empty_zip(): void
     {
         $zipPath = $this->createTempZip(['dummy.txt' => '']);  // Add at least one file to make it valid
@@ -205,6 +375,22 @@ class ZipArchiveParserTest extends TestCase
         $zip->close();
 
         return $tempFile;
+    }
+
+    private function mockArchiveWithEntries(int $count): ZipArchive
+    {
+        $files = [];
+        for ($i = 0; $i < $count; $i++) {
+            $files[$i.'.txt'] = 'a';
+        }
+        $path = $this->createTempZip($files);
+        $zip = \Mockery::mock(ZipArchive::class)->makePartial();
+        $zip->open($path);
+        $this->beforeApplicationDestroyed(function () use ($path): void {
+            unlink($path);
+        });
+
+        return $zip;
     }
 
     private function getSUT(): ZipArchiveParser

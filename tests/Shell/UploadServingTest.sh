@@ -23,7 +23,7 @@ EOF
 docker restart "$container" >/dev/null
 port=$(docker port "$container" 80/tcp | sed 's/.*://')
 base="http://127.0.0.1:$port"
-curl --retry 10 --retry-connrefused --retry-delay 1 -fsS "$base/health.txt" >/dev/null
+curl --retry 10 --retry-all-errors --retry-delay 1 --max-time 5 -fsS "$base/health.txt" >/dev/null
 
 for path in script.php script.PHP script.php.txt script.phtml script.php/path script.%70hp; do
     status=$(curl -sS -o /dev/null -w '%{http_code}' "$base/storage/$path")

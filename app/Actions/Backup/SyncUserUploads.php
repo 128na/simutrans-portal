@@ -6,6 +6,7 @@ namespace App\Actions\Backup;
 
 use Illuminate\Support\Facades\Process;
 use RuntimeException;
+use Throwable;
 
 class SyncUserUploads
 {
@@ -32,9 +33,23 @@ class SyncUserUploads
     public function __invoke(): int
     {
         $transferred = 0;
+        $failures = [];
 
         foreach ($this->destinations() as $destination) {
-            $transferred += $this->copyTo($destination);
+            try {
+                $transferred += $this->copyTo($destination);
+            } catch (Throwable $throwable) {
+                $failures[$destination] = $throwable;
+            }
+        }
+
+        if ($failures !== []) {
+            $messages = [];
+            foreach ($failures as $destination => $failure) {
+                $messages[] = $destination.': '.$failure->getMessage();
+            }
+
+            throw new RuntimeException('Upload backup synchronization failed: '.implode('; ', $messages), previous: reset($failures));
         }
 
         return $transferred;

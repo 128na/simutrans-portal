@@ -21,7 +21,6 @@ database/
 ├── seeders/            # シーダー（初期データ投入）
 │   ├── DatabaseSeeder.php
 │   ├── ProdSeeder.php
-│   ├── DuskSeeder.php
 │   └── ...
 └── .gitignore
 ```
@@ -141,14 +140,6 @@ class DatabaseSeeder extends Seeder
 - システム設定（ControllOptionsSeeder）
 - カテゴリ（pak, addon-type, license）
 - 固定ページ
-
-### DuskSeeder
-
-E2Eテスト（Laravel Dusk）用のテストデータを投入します。
-
-- テストユーザー
-- テスト記事
-- テストカテゴリ
 
 ### ControllOptionsSeeder
 
@@ -318,7 +309,7 @@ php artisan schema:dump --prune
 
 ✅ **推奨**:
 
-- 環境別に分離（ProdSeeder, DuskSeeder）
+- 環境に応じたデータ投入をProdSeederなどへ分離
 - `updateOrCreate()` で冪等性を確保
 - 依存関係を明確に
 

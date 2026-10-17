@@ -6,7 +6,9 @@ namespace Tests\Feature\Controllers\Mypage\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
+use App\Enums\ControllOptionKey;
 use App\Models\Article;
+use App\Models\ControllOption;
 use App\Models\User;
 use App\Notifications\SendArticlePublished;
 use App\Notifications\SendArticleUpdated;
@@ -49,6 +51,19 @@ class UpdateTest extends TestCase
 
         $this->article->refresh();
         $this->assertSame($originalTitle, $this->article->title);
+    }
+
+    public function test_article_update_restriction_prevents_changes_and_notifications(): void
+    {
+        ControllOption::updateOrCreate(['key' => ControllOptionKey::ArticleUpdate], ['value' => false]);
+        $original = $this->article->fresh()->getRawOriginal();
+        Notification::fake();
+        $this->actingAs($this->article->user)
+            ->postJson('/api/v2/articles/'.$this->article->id, [
+                'article' => $this->createArticle(), 'should_notify' => true,
+            ])->assertForbidden();
+        $this->assertSame($original, $this->article->fresh()->getRawOriginal());
+        Notification::assertNothingSent();
     }
 
     public function test_更新通知する(): void

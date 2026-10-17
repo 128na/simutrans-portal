@@ -16,7 +16,6 @@
     "guzzlehttp/guzzle": ">=7.15.5",
     "laravel/fortify": "^1.41.0",
     "laravel/framework": "^13.37",
-    "laravel/mcp": "^0.9.6",
     "laravel/sanctum": ">=4.3.3",
     "laravel/tinker": "^3.0.2",
     "marvinlabs/laravel-discord-logger": "^1.4.4",
@@ -30,7 +29,6 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^4.4.4",
     "barryvdh/laravel-ide-helper": "^3.7.0",
-    "darkaonline/l5-swagger": "^11.1",
     "driftingly/rector-laravel": "^2.6.2",
     "fakerphp/faker": "^1.24.1",
     "filp/whoops": "^2.18.6",

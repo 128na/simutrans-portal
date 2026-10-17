@@ -166,35 +166,10 @@ php artisan test --testsuite=Feature
 composer run all
 ```
 
-## API Documentation
+## API
 
-このプロジェクトは OpenAPI (Swagger) を使用して API ドキュメントを自動生成します。
-
-### ドキュメントの生成
-
-```bash
-php artisan l5-swagger:generate
-```
-
-### ドキュメントの閲覧
-
-- **開発環境**: http://localhost:8000/api/documentation
-- **本番環境**: https://simutrans-portal.128-bit.net/api/documentation （要認証）
-
-詳細は [app/OpenApi/README.md](app/OpenApi/README.md) を参照してください。
-
-### API エンドポイント
-
-すべての API エンドポイントは Laravel Sanctum による認証が必要です。
-
-- `POST /v2/tags` - タグの作成
-- `POST /v2/tags/{tag}` - タグの更新
-- `POST /v2/attachments` - 添付ファイルのアップロード
-- `DELETE /v2/attachments/{attachment}` - 添付ファイルの削除
-- `POST /v2/articles` - 記事の作成
-- `POST /v2/articles/{article}` - 記事の更新
-- `POST /v2/profile` - プロフィールの更新
-- `POST /v2/analytics` - アナリティクスデータの取得
+画面用の内部APIはセッション認証を使用します。公開マイリストの閲覧APIは認証不要です。
+ルート定義は [routes/internal_api.php](routes/internal_api.php)、[routes/api.php](routes/api.php)、[routes/web.php](routes/web.php) を参照してください。
 
 ## Directory Structure
 

@@ -105,7 +105,7 @@
       >
         <div
           id="app-search-users"
-          data-user-ids="@json($condition['userIds'] ?? [])"
+          data-user-ids="{{ json_encode($condition['userIds'] ?? []) }}"
         >
           Loading...
         </div>
@@ -133,7 +133,7 @@
       >
         <div
           id="app-search-tags"
-          data-tag-ids="@json($condition['tagIds'] ?? [])"
+          data-tag-ids="{{ json_encode($condition['tagIds'] ?? []) }}"
         >
           Loading...
         </div>

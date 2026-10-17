@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Actions\Backup;
 
+use Illuminate\Process\Exceptions\ProcessTimedOutException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Str;
 use RuntimeException;
+use Symfony\Component\Process\Exception\ProcessSignaledException;
 use Throwable;
 
 class SyncUserUploads
@@ -34,22 +38,18 @@ class SyncUserUploads
     {
         $transferred = 0;
         $failures = [];
+        $runId = (string) Str::uuid();
 
-        foreach ($this->destinations() as $destination) {
+        foreach ($this->destinations() as $label => $destination) {
             try {
-                $transferred += $this->copyTo($destination);
+                $transferred += $this->copyTo($destination, $label, $runId);
             } catch (Throwable $throwable) {
-                $failures[$destination] = $throwable;
+                $failures[] = $label;
             }
         }
 
         if ($failures !== []) {
-            $messages = [];
-            foreach ($failures as $destination => $failure) {
-                $messages[] = $destination.': '.$failure->getMessage();
-            }
-
-            throw new RuntimeException('Upload backup synchronization failed: '.implode('; ', $messages), previous: reset($failures));
+            throw new RuntimeException('Upload backup synchronization failed [run_id='.$runId.']: '.implode(', ', $failures));
         }
 
         return $transferred;
@@ -60,52 +60,92 @@ class SyncUserUploads
      * 後者に一切進捗が回らなくなる。実行のたびに順序を入れ替え、両宛先に
      * 交互に転送機会を与える。
      *
-     * @return array<int, string>
+     * @return array<string, string>
      */
     private function destinations(): array
     {
         $destinations = [
-            config('rclone.uploads_remote'),
-            config('rclone.uploads_local_backup'),
+            'dropbox' => config('rclone.uploads_remote'),
+            'local_backup' => config('rclone.uploads_local_backup'),
         ];
 
         if (now()->second % 2 === 1) {
-            $destinations = array_reverse($destinations);
+            $destinations = array_reverse($destinations, true);
         }
 
         return $destinations;
     }
 
-    private function copyTo(string $destination): int
+    private function copyTo(string $destination, string $label, string $runId): int
     {
-        $result = Process::timeout(self::TIMEOUT_SECONDS)->run([
-            config('rclone.binary_path'),
-            'copy',
-            config('rclone.uploads_source'),
-            $destination,
-            '--max-duration', self::MAX_DURATION,
-            '--cutoff-mode', 'SOFT',
-            '-v',
-        ]);
+        $diagnostics = new RcloneDiagnostics;
+        $started = hrtime(true);
+        $context = ['run_id' => $runId, 'destination' => $label, 'started_at' => now()->toIso8601String(), 'pid' => null];
+        $status = 'start_failed';
+        $exitCode = null;
+        $signal = null;
+        $exceptionClass = null;
+        $startedLogged = false;
+        try {
+            $process = Process::timeout(self::TIMEOUT_SECONDS)->quietly()->start([
+                config('rclone.binary_path'),
+                'copy',
+                config('rclone.uploads_source'),
+                $destination,
+                '--max-duration', self::MAX_DURATION,
+                '--cutoff-mode', 'SOFT',
+                '-v',
+                '--use-json-log',
+                '--stats', '10s',
+            ], $diagnostics->collect(...));
+            $context['pid'] = $process->id();
+            $this->log('started', $context);
+            $startedLogged = true;
+            $result = $process->wait();
+            $exitCode = $result->exitCode();
+            $status = $exitCode === 0 ? 'success' : ($exitCode === self::EXIT_CODE_DURATION_EXCEEDED ? 'duration_limit' : 'failed');
+            if ($status === 'failed') {
+                throw new RuntimeException('Backup destination failed.');
+            }
 
-        if ($result->failed() && $result->exitCode() !== self::EXIT_CODE_DURATION_EXCEEDED) {
-            throw new RuntimeException("rclone copy to {$destination} failed: ".$result->errorOutput());
+            return $diagnostics->transferred();
+        } catch (ProcessTimedOutException $exception) {
+            $exceptionClass = $exception::class;
+            $exitCode = $exception->result->exitCode();
+            $status = 'timeout';
+            throw new RuntimeException('Backup destination timed out.');
+        } catch (ProcessSignaledException $exception) {
+            $exceptionClass = $exception::class;
+            $signal = $exception->getSignal();
+            $status = $signal === 9 ? 'sigkill' : 'signaled';
+            throw new RuntimeException('Backup destination was signaled.');
+        } catch (Throwable $exception) {
+            $exceptionClass = $exception::class;
+            if ($startedLogged && $status === 'start_failed') {
+                $status = 'failed';
+            }
+            throw new RuntimeException('Backup destination failed.');
+        } finally {
+            if (! $startedLogged) {
+                $this->log('started', $context);
+            }
+            $this->log('finished', $context + [
+                'elapsed_seconds' => (hrtime(true) - $started) / 1e9,
+                'exit_code' => $exitCode,
+                'signal' => $signal,
+                'status' => $status,
+                'exception_class' => $exceptionClass,
+                'diagnostics' => $diagnostics->snapshot(),
+            ]);
         }
-
-        return $this->parseTransferredCount($result->output().$result->errorOutput());
     }
 
-    /**
-     * rcloneの統計行(例: "Transferred:           24 / 2542, 1%")から転送ファイル数を読み取る。
-     * バイト数の統計行("Transferred:   3.652 MiB / 2.322 GiB, ...")と区別するため、
-     * 数字のみが続く行だけにマッチさせる。形式が変わり読み取れない場合は0を返す(安全側)。
-     */
-    private function parseTransferredCount(string $output): int
+    /** @param array<string, mixed> $context */
+    private function log(string $event, array $context): void
     {
-        if (preg_match('/^Transferred:\s+(\d+) \/ \d+,\s*\d+%/m', $output, $matches) === 1) {
-            return (int) $matches[1];
+        try {
+            Log::channel('backup-sync')->info($event, $context);
+        } catch (Throwable) {
         }
-
-        return 0;
     }
 }

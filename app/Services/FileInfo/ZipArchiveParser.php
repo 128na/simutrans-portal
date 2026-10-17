@@ -33,18 +33,46 @@ class ZipArchiveParser
 
                 $opened = true;
 
+                $maxEntryBytes = $this->limit('max_entry_bytes', 64 * 1024 * 1024);
+                $maxTotalBytes = $this->limit('max_total_bytes', 256 * 1024 * 1024);
+                $maxEntries = $this->limit('max_entries', 10000);
+                if ($this->zipArchive->numFiles > $maxEntries) {
+                    throw new ZipResourceLimitException('ZIP entry count exceeds metadata budget.');
+                }
+
+                $declaredTotal = 0;
                 for ($i = 0; $i < $this->zipArchive->numFiles; $i++) {
                     $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
-                    if ($stat) {
-                        $name = $stat['name'];
-                        $content = $this->zipArchive->getFromIndex($stat['index']);
-                        if ($name && $content !== false && $content !== '') {
-                            $isBinary = $this->isBinaryFile($name);
-                            yield $this->convert($name) => [
-                                'content' => $isBinary ? $content : $this->convert($content),
-                                'is_binary' => $isBinary,
-                            ];
-                        }
+                    if (! $stat || ! isset($stat['size']) || ! is_int($stat['size']) || $stat['size'] < 0 || $stat['size'] > $maxEntryBytes || $stat['size'] > $maxTotalBytes - $declaredTotal) {
+                        throw new ZipResourceLimitException('ZIP declared size exceeds metadata budget.');
+                    }
+                    $declaredTotal += $stat['size'];
+                }
+
+                $actualTotal = 0;
+
+                for ($i = 0; $i < $this->zipArchive->numFiles; $i++) {
+                    $stat = $this->zipArchive->statIndex($i, ZipArchive::FL_ENC_RAW);
+                    if (! $stat) {
+                        throw new \RuntimeException('Failed to inspect ZIP entry.');
+                    }
+                    $name = $stat['name'];
+                    $remainingBytes = min($maxEntryBytes, $maxTotalBytes - $actualTotal);
+                    $content = $this->zipArchive->getFromIndex($i, $remainingBytes + 1);
+                    if ($content === false) {
+                        throw new \RuntimeException('Failed to read ZIP entry.');
+                    }
+                    $actualBytes = strlen($content);
+                    if ($actualBytes > $remainingBytes) {
+                        throw new ZipResourceLimitException('ZIP expanded size exceeds metadata budget.');
+                    }
+                    $actualTotal += $actualBytes;
+                    if ($name && $content !== '') {
+                        $isBinary = $this->isBinaryFile($name);
+                        yield $this->convert($name) => [
+                            'content' => $isBinary ? $content : $this->convert($content),
+                            'is_binary' => $isBinary,
+                        ];
                     }
                 }
             } finally {
@@ -62,6 +90,13 @@ class ZipArchiveParser
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
         return ! in_array($ext, ['dat', 'txt', 'tab', 'md'], true);
+    }
+
+    private function limit(string $key, int $default): int
+    {
+        $value = config('fileinfo.zip.'.$key, $default);
+
+        return is_int($value) && $value > 0 && $value <= $default ? $value : $default;
     }
 
     private function convert(string $str): string

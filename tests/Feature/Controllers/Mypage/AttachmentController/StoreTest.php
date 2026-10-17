@@ -14,7 +14,9 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Mockery;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\TestCase;
 
 class StoreTest extends TestCase
@@ -70,8 +72,8 @@ class StoreTest extends TestCase
         $fallbackPath = 'user/'.$this->user->id.'/fallback.jpg';
 
         $mockDisk = Mockery::mock(FilesystemAdapter::class);
-        $mockDisk->shouldReceive('put')->once()->andThrow(new ConvertFailedException('convert failed'));
-        $mockDisk->shouldReceive('put')->once()->andReturn($fallbackPath);
+        $mockDisk->shouldReceive('putFileAs')->once()->andThrow(new ConvertFailedException('convert failed'));
+        $mockDisk->shouldReceive('putFileAs')->once()->andReturn($fallbackPath);
         $this->app->instance(Store::class, new Store($mockDisk));
 
         Queue::fake();
@@ -103,5 +105,81 @@ class StoreTest extends TestCase
         $testResponse = $this->postJson($url, ['file' => UploadedFile::fake()->create('shell.php', 1)]);
         $testResponse->assertUnprocessable();
         $testResponse->assertJsonValidationErrors('file');
+    }
+
+    #[DataProvider('unsafeContent')]
+    public function test_disguised_active_content_is_rejected_without_side_effects(string $content): void
+    {
+        Storage::fake('public');
+        Queue::fake();
+        $this->actingAs($this->user)
+            ->postJson('/api/v2/attachments', ['file' => $this->realUpload('notes.txt', $content)])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('file');
+
+        $this->assertDatabaseCount('attachments', 0);
+        $this->assertSame([], Storage::disk('public')->allFiles());
+        Queue::assertNothingPushed();
+    }
+
+    public static function unsafeContent(): array
+    {
+        return [
+            'html' => ['<!DOCTYPE html><html><body><script>alert(1)</script></body></html>'],
+            'php' => ['<?php echo "unsafe";'],
+            'svg' => ['<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)"></svg>'],
+        ];
+    }
+
+    #[DataProvider('safeFiles')]
+    public function test_files_keep_safe_original_extension_and_random_basename(string $name, string $content, string $extension): void
+    {
+        Storage::fake('public');
+        Queue::fake();
+        $this->actingAs($this->user)
+            ->postJson('/api/v2/attachments', ['file' => $this->realUpload($name, $content)])
+            ->assertCreated();
+
+        $attachment = Attachment::sole();
+        $this->assertMatchesRegularExpression('/^[a-zA-Z0-9]{40}\\.'.$extension.'$/', basename($attachment->path));
+        $this->assertSame($name, $attachment->original_name);
+        $this->assertSame($content, Storage::disk('public')->get($attachment->path));
+    }
+
+    public static function safeFiles(): array
+    {
+        return [
+            'pak' => ['addon.pak', "Simutrans object file\n\x00\x01", 'pak'],
+            'tab' => ['simuconf.tab', "# configuration\nframes_per_second = 25\n", 'tab'],
+            'uppercase zip' => ['addon.ZIP', "PK\x03\x04", 'zip'],
+            'plain text' => ['readme.txt', 'Read this before installation.', 'txt'],
+        ];
+    }
+
+    public function test_action_rejects_dangerous_upload_without_form_request(): void
+    {
+        Storage::fake('public');
+        $store = new Store(Storage::disk('public'));
+        try {
+            $store($this->user, $this->realUpload('readme.txt', '<html><body>unsafe</body></html>'));
+            $this->fail('Unsafe content was stored.');
+        } catch (ValidationException $exception) {
+            $this->assertArrayHasKey('file', $exception->errors());
+        }
+
+        $this->assertDatabaseCount('attachments', 0);
+        $this->assertSame([], Storage::disk('public')->allFiles());
+    }
+
+    private function realUpload(string $name, string $content): UploadedFile
+    {
+        $fake = UploadedFile::fake()->createWithContent($name, $content);
+        $path = tempnam(sys_get_temp_dir(), 'attachment-test-');
+        copy($fake->getPathname(), $path);
+        $this->beforeApplicationDestroyed(static function () use ($path): void {
+            unlink($path);
+        });
+
+        return new UploadedFile($path, $name, 'application/octet-stream', null, true);
     }
 }

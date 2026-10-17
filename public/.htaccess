@@ -10,6 +10,9 @@
 
     RewriteEngine On
 
+    # Uploaded files must never be dispatched to executable handlers.
+    RewriteRule ^storage/.*\.(?:php[0-9]*|phtml|pht|phar|cgi|pl|py|sh|shtml)(?:[./]|$) - [F,L,NC]
+
     # 旧URL互換リダイレクト設定
 	RewriteBase /
 	# category/pak/{size}/none    -> categories/pak/{size}/none
@@ -34,4 +37,10 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff" "expr=%{REQUEST_URI} =~ m#(?i)^/storage/#"
+    Header always set Content-Security-Policy "sandbox; default-src 'none'" "expr=%{REQUEST_URI} =~ m#(?i)^/storage/#"
+    Header always set Content-Disposition "attachment" "expr=%{REQUEST_URI} =~ m#(?i)^/storage/# && %{REQUEST_URI} !~ m#(?i)\.(?:avif|bmp|gif|jpe?g|jfif|png|webp)$#"
 </IfModule>

@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/php
       - run: sh tests/Shell/DeployPermissionsTest.sh
+      - run: sh tests/Shell/UploadServingTest.sh
       - run: composer run pint
 
   lint-frontend:

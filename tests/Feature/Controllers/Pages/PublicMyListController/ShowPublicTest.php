@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Pages\PublicMyListController;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\MyList;
 use App\Models\MyListItem;
@@ -52,5 +53,35 @@ class ShowPublicTest extends TestCase
         $res = $this->getJson("/api/v1/mylist/public/{$mylist->slug}");
 
         $res->assertNotFound();
+    }
+
+    public function test_public_list_excludes_every_nonpublic_article_status(): void
+    {
+        $mylist = MyList::factory()->public()->create();
+        $published = null;
+        foreach (ArticleStatus::cases() as $status) {
+            $article = Article::factory()->create(['status' => $status]);
+            MyListItem::factory()->create(['list_id' => $mylist->id, 'article_id' => $article->id]);
+            if ($status === ArticleStatus::Publish) {
+                $published = $article;
+            }
+        }
+        $response = $this->getJson("/api/v1/mylist/public/{$mylist->slug}")->assertOk()->assertJsonCount(1, 'data');
+        $response->assertJsonPath('data.0.article.id', $published->id);
+    }
+
+    public function test_public_list_removes_articles_after_unpublishing_or_soft_deletion(): void
+    {
+        $mylist = MyList::factory()->public()->create();
+        $drafted = Article::factory()->publish()->create();
+        $deleted = Article::factory()->publish()->create();
+        foreach ([$drafted, $deleted] as $article) {
+            MyListItem::factory()->create(['list_id' => $mylist->id, 'article_id' => $article->id]);
+        }
+        $url = "/api/v1/mylist/public/{$mylist->slug}";
+        $this->getJson($url)->assertOk()->assertJsonCount(2, 'data');
+        $drafted->update(['status' => ArticleStatus::Draft]);
+        $deleted->delete();
+        $this->getJson($url)->assertOk()->assertJsonCount(0, 'data');
     }
 }

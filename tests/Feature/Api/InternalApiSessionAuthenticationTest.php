@@ -102,4 +102,33 @@ class InternalApiSessionAuthenticationTest extends TestCase
 
         return $cases;
     }
+
+    public function test_unverified_session_cannot_access_internal_api(): void
+    {
+        $user = User::factory()->create(['email_verified_at' => null]);
+        $this->actingAs($user)->getJson('/api/v1/mylist')->assertForbidden();
+        $this->postJson('/api/v1/mylist', ['title' => 'Unverified list'])->assertForbidden();
+        $this->assertSame(0, MyList::count());
+    }
+
+    #[DataProvider('csrfTokens')]
+    public function test_stateful_internal_api_enforces_csrf(?string $token, int $status): void
+    {
+        $this->app->instance('env', 'production');
+        config(['sanctum.stateful' => ['portal.test']]);
+        $user = User::factory()->create();
+        $this->withSession([Auth::guard('web')->getName() => $user->id, '_token' => 'valid-token'])
+            ->withHeaders(['Origin' => 'https://portal.test', 'Sec-Fetch-Site' => 'same-site']);
+        if ($token !== null) {
+            $this->withHeader('X-CSRF-TOKEN', $token);
+        }
+        $this->postJson('https://portal.test/api/v1/mylist', ['title' => 'CSRF protected list'])->assertStatus($status);
+        $this->assertSame($status === 201 ? 1 : 0, MyList::count());
+    }
+
+    /** @return array<string, array{?string, int}> */
+    public static function csrfTokens(): array
+    {
+        return ['missing' => [null, 419], 'invalid' => ['incorrect-token', 419], 'valid' => ['valid-token', 201]];
+    }
 }

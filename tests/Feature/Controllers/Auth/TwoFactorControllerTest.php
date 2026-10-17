@@ -11,6 +11,20 @@ use Tests\Feature\TestCase;
 
 class TwoFactorControllerTest extends TestCase
 {
+    public function test_valid_otp_cannot_authenticate_without_a_password_challenge(): void
+    {
+        $google2fa = app(Google2FA::class);
+        $secret = $google2fa->generateSecretKey();
+        User::factory()->create([
+            'two_factor_secret' => encrypt($secret),
+            'two_factor_confirmed_at' => now(),
+        ]);
+        $this->postJson(route('two-factor.login.store'), ['code' => $google2fa->getCurrentOtp($secret)])
+            ->assertUnprocessable();
+        $this->assertGuest();
+        $this->assertNull(session('login.id'));
+    }
+
     public function test_invalid_otp_is_rejected_and_sixth_attempt_is_throttled(): void
     {
         $google2fa = app(Google2FA::class);

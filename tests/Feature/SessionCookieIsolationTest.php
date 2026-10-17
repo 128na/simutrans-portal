@@ -155,6 +155,75 @@ class SessionCookieIsolationTest extends TestCase
         }
     }
 
+    #[DataProvider('legacyDomainHosts')]
+    public function test_legacy_cookie_cleanup_respects_hostname_boundary(?string $domain, string $host, bool $shouldClear): void
+    {
+        config([
+            'session.legacy_domain' => $domain,
+            'session.legacy_cookie' => 'legacy_session',
+            'session.driver' => 'array',
+        ]);
+        $response = $this->get('https://'.$host.'/sanctum/csrf-cookie')->assertNoContent();
+        $parentCookies = array_values(array_filter(
+            $response->headers->getCookies(),
+            fn (Cookie $cookie): bool => $cookie->getDomain() === '.example.test',
+        ));
+        if ($shouldClear) {
+            $this->assertCount(3, $parentCookies);
+            foreach ($parentCookies as $cookie) {
+                $this->assertTrue($cookie->isCleared());
+            }
+        } else {
+            $this->assertSame([], $parentCookies);
+        }
+    }
+
+    /** @return array<string, array{?string, string, bool}> */
+    public static function legacyDomainHosts(): array
+    {
+        return [
+            'exact domain' => ['example.test', 'example.test', true],
+            'subdomain' => ['example.test', 'portal.example.test', true],
+            'nested subdomain' => ['example.test', 'nested.portal.example.test', true],
+            'suffix without separator' => ['example.test', 'notexample.test', false],
+            'attacker suffix' => ['example.test', 'example.test.evil.test', false],
+            'leading dot' => ['.example.test', 'portal.example.test', true],
+            'unset domain' => [null, 'portal.example.test', false],
+            'empty domain' => ['', 'portal.example.test', false],
+        ];
+    }
+
+    public function test_valid_session_id_is_accepted_only_under_the_current_cookie_name(): void
+    {
+        config(['session.driver' => 'database', 'session.connection' => 'testing', 'session.legacy_cookie' => 'legacy_session']);
+        $user = User::factory()->create();
+        $this->app['session']->forgetDrivers();
+        $this->app->forgetInstance('session.store');
+        $this->app->forgetInstance('auth.driver');
+        Auth::forgetGuards();
+        $session = $this->app['session.store'];
+        $session->start();
+        Auth::guard('web')->login($user);
+        $session->save();
+        $sessionId = $session->getId();
+
+        foreach (['legacy_session' => false, config('session.cookie') => true] as $cookieName => $accepted) {
+            $this->app['session']->forgetDrivers();
+            $this->app->forgetInstance('session.store');
+            $this->app->forgetInstance('auth.driver');
+            Auth::forgetGuards();
+            $this->defaultCookies = [$cookieName => $sessionId];
+            $response = $this->get('https://portal.test/mypage');
+            if ($accepted) {
+                $response->assertOk();
+                $this->assertAuthenticatedAs($user, 'web');
+            } else {
+                $response->assertRedirectToRoute('login');
+                $this->assertGuest('web');
+            }
+        }
+    }
+
     /** @param array<Cookie> $cookies */
     private function findCookie(array $cookies, string $name, ?string $domain): Cookie
     {

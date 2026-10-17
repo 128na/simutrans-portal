@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Mypage\AttachmentController;
 
 use App\Models\Attachment;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Tests\Feature\TestCase;
 
 class DestroyTest extends TestCase
@@ -36,14 +37,22 @@ class DestroyTest extends TestCase
 
     public function test_他人のファイルは削除されずに残る(): void
     {
+        Storage::fake('public');
         $othersUser = User::factory()->create();
         $attachment = $this->createAttachment($othersUser);
+        $disk = Storage::disk('public');
+        $disk->put($attachment->path, 'Owner attachment contents');
+        $original = $attachment->fresh()->getRawOriginal();
+        $files = $disk->allFiles();
+        $contents = $disk->get($attachment->path);
         $url = '/api/v2/attachments/'.$attachment->id;
 
         $this->actingAs($this->user);
-        $this->deleteJson($url);
+        $this->deleteJson($url)->assertForbidden();
 
-        $this->assertNotNull(Attachment::find($attachment->id));
+        $this->assertSame($original, $attachment->fresh()->getRawOriginal());
+        $this->assertSame($files, $disk->allFiles());
+        $this->assertSame($contents, $disk->get($attachment->path));
     }
 
     public function test(): void

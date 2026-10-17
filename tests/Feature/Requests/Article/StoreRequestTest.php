@@ -246,7 +246,7 @@ class StoreRequestTest extends TestCase
         ];
         yield 'Page 画像セクションが他人の投稿したID' => [
             ArticlePostType::Page,
-            fn (self $self): array => ['contents' => ['sections' => [['type' => 'image', 'id' => $self->createAttachment(User::factory()->create())->id]]]],
+            fn (self $self): array => ['contents' => ['sections' => [['type' => 'image', 'id' => $self->createImageAttachment(User::factory()->create())->id]]]],
             'article.contents.sections.0.id',
         ];
     }

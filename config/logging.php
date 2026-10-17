@@ -35,6 +35,12 @@ return [
     */
 
     'channels' => [
+        'backup-sync' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/backup-sync.log'),
+            'level' => 'info',
+            'days' => 7,
+        ],
         'slowquery' => [
             'driver' => 'daily',
             'path' => storage_path('logs/slowquery.log'),

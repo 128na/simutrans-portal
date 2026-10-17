@@ -54,4 +54,32 @@ class IndexControllerTest extends TestCase
             $this->assertSame($expectedIds, json_decode($element->getAttribute($attribute), true, 512, JSON_THROW_ON_ERROR));
         }
     }
+
+    public function test_search_selected_ids_cannot_inject_html_attributes_or_elements(): void
+    {
+        $ids = ['" autofocus onfocus="alert(1)" data-injected="yes', '</script><script id="injected-search-script">alert(1)</script>&\''];
+        $response = $this->get('/search?'.http_build_query(['userIds' => $ids, 'tagIds' => $ids]));
+
+        $response->assertOk();
+
+        $document = new DOMDocument;
+        $previous = libxml_use_internal_errors(true);
+        try {
+            $document->loadHTML($response->getContent());
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+        }
+
+        foreach (['users' => 'data-user-ids', 'tags' => 'data-tag-ids'] as $kind => $attribute) {
+            $element = $document->getElementById('app-search-'.$kind);
+            $this->assertNotNull($element);
+            $this->assertSame($ids, json_decode($element->getAttribute($attribute), true, 512, JSON_THROW_ON_ERROR));
+            $this->assertFalse($element->hasAttribute('autofocus'));
+            $this->assertFalse($element->hasAttribute('onfocus'));
+            $this->assertFalse($element->hasAttribute('data-injected'));
+        }
+
+        $this->assertNull($document->getElementById('injected-search-script'));
+    }
 }

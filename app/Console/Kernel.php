@@ -42,6 +42,10 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
 
         // 毎時
+        $schedule->command('backup:monitor-uploads')->hourly()
+            ->withoutOverlapping()
+            ->appendOutputTo($output);
+
         $schedule->command('app:mfa-setup-auto-recovery')->hourly()
             ->appendOutputTo($output);
 

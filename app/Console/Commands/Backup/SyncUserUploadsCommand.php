@@ -6,6 +6,7 @@ namespace App\Console\Commands\Backup;
 
 use App\Actions\Backup\SyncUploadsDigestTracker;
 use App\Actions\Backup\SyncUserUploads;
+use App\Exceptions\UploadBackupInterruptedException;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -21,7 +22,9 @@ class SyncUserUploadsCommand extends Command
             $digest->recordTransferred($syncUserUploads());
         } catch (Throwable $throwable) {
             $digest->recordError();
-            report($throwable);
+            if (! $throwable instanceof UploadBackupInterruptedException) {
+                report($throwable);
+            }
             $this->error($throwable->getMessage());
 
             return Command::FAILURE;

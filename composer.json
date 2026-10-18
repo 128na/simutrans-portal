@@ -12,7 +12,7 @@
     "berkayk/onesignal-laravel": ">=2.5.0",
     "cebe/markdown": "^1.2.1",
     "ezyang/htmlpurifier": "^4.19.1",
-    "google/cloud-recaptcha-enterprise": ">=2.5.3",
+    "google/cloud-recaptcha-enterprise": ">=2.5.4",
     "guzzlehttp/guzzle": ">=7.15.5",
     "laravel/fortify": "^1.41.0",
     "laravel/framework": "^13.37",
@@ -38,7 +38,7 @@
     "laravel/pint": "^1.32.1",
     "mockery/mockery": "^1.6.15",
     "nunomaduro/collision": "^8.9.5",
-    "phpunit/phpunit": "^12.5.38",
+    "phpunit/phpunit": "^12.5.40",
     "rector/rector": "^2.7.0",
     "spatie/laravel-ignition": "^2.12.0"
   },

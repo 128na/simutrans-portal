@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Backup;
 
+use App\Exceptions\UploadBackupInterruptedException;
 use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
@@ -38,6 +39,7 @@ class SyncUserUploads
     {
         $transferred = 0;
         $failures = [];
+        $onlyInterrupted = true;
         $runId = (string) Str::uuid();
 
         foreach ($this->destinations() as $label => $destination) {
@@ -45,11 +47,13 @@ class SyncUserUploads
                 $transferred += $this->copyTo($destination, $label, $runId);
             } catch (Throwable $throwable) {
                 $failures[] = $label;
+                $onlyInterrupted = $onlyInterrupted && $throwable instanceof UploadBackupInterruptedException;
             }
         }
 
         if ($failures !== []) {
-            throw new RuntimeException('Upload backup synchronization failed [run_id='.$runId.']: '.implode(', ', $failures));
+            $message = 'Upload backup synchronization failed [run_id='.$runId.']: '.implode(', ', $failures);
+            throw $onlyInterrupted ? new UploadBackupInterruptedException($message) : new RuntimeException($message);
         }
 
         return $transferred;
@@ -108,6 +112,10 @@ class SyncUserUploads
                 throw new RuntimeException('Backup destination failed.');
             }
 
+            if ($status === 'success') {
+                app(UploadBackupHealth::class)->recordSuccess($label);
+            }
+
             return $diagnostics->transferred();
         } catch (ProcessTimedOutException $exception) {
             $exceptionClass = $exception::class;
@@ -118,6 +126,10 @@ class SyncUserUploads
             $exceptionClass = $exception::class;
             $signal = $exception->getSignal();
             $status = $signal === 9 ? 'sigkill' : 'signaled';
+            if ($signal === 9) {
+                throw new UploadBackupInterruptedException('Backup destination was interrupted.');
+            }
+
             throw new RuntimeException('Backup destination was signaled.');
         } catch (Throwable $exception) {
             $exceptionClass = $exception::class;

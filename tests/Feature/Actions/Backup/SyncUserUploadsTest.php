@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Actions\Backup;
 
 use App\Actions\Backup\SyncUserUploads;
+use App\Actions\Backup\UploadBackupHealth;
+use App\Exceptions\UploadBackupInterruptedException;
 use Illuminate\Contracts\Process\InvokedProcess;
 use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Illuminate\Process\FakeProcessDescription;
@@ -22,9 +24,15 @@ class SyncUserUploadsTest extends TestCase
     /** @var list<array{event:string, context:array<string,mixed>}> */
     private array $records = [];
 
+    /** @var list<string> */
+    private array $successfulDestinations = [];
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->mock(UploadBackupHealth::class)->shouldReceive('recordSuccess')->andReturnUsing(function (string $label): void {
+            $this->successfulDestinations[] = $label;
+        });
         $this->travelTo(now()->setSecond(0));
         config(['rclone.uploads_remote' => 'secret-remote:path', 'rclone.uploads_local_backup' => 'secret-local-path']);
         $logger = Mockery::mock(LoggerInterface::class);
@@ -38,6 +46,7 @@ class SyncUserUploadsTest extends TestCase
     {
         Process::fake(['*' => Process::describe()->id(456)->errorOutput('{"level":"info","msg":"secret-token","stats":{"transfers":16,"bytes":123}}')]);
         $this->assertSame(32, (new SyncUserUploads)());
+        $this->assertSame(['dropbox', 'local_backup'], $this->successfulDestinations);
         $this->assertCount(4, $this->records);
         $this->assertSame(['started', 'finished', 'started', 'finished'], array_column($this->records, 'event'));
         $runIds = array_unique(array_column(array_column($this->records, 'context'), 'run_id'));
@@ -61,6 +70,7 @@ class SyncUserUploadsTest extends TestCase
     {
         Process::fake(['*' => Process::describe()->errorOutput("{\"stats\":{\"transfers\":2}}\n{\"stats\":{\"transfers\":3}}\ninvalid")->exitCode(10)]);
         $this->assertSame(6, (new SyncUserUploads)());
+        $this->assertSame([], $this->successfulDestinations);
         $this->assertSame('duration_limit', $this->records[1]['context']['status']);
         $this->assertSame(10, $this->records[1]['context']['exit_code']);
     }
@@ -117,7 +127,7 @@ class SyncUserUploadsTest extends TestCase
         $native = Mockery::mock(\Symfony\Component\Process\Process::class);
         $native->shouldReceive('getTermSignal')->andReturn(9);
         $this->fakeWaitFailure(new ProcessSignaledException($native));
-        $this->assertSafeFailure();
+        $this->assertInstanceOf(UploadBackupInterruptedException::class, $this->assertSafeFailure());
         $this->assertSame('sigkill', $this->records[1]['context']['status']);
         $this->assertSame(9, $this->records[1]['context']['signal']);
         $this->assertFailedCallbackDiagnostics();
@@ -152,6 +162,19 @@ class SyncUserUploadsTest extends TestCase
         $this->assertSafeRecords();
     }
 
+    public function test_health_recording_failure_is_not_suppressed_and_other_destination_is_attempted(): void
+    {
+        $this->mock(UploadBackupHealth::class)->shouldReceive('recordSuccess')->twice()->andThrow(new RuntimeException('secret-token'));
+        Process::fake();
+
+        $this->assertNotInstanceOf(UploadBackupInterruptedException::class, $this->assertSafeFailure());
+
+        Process::assertRanTimes(fn () => true, 2);
+        $this->assertSame('success', $this->records[1]['context']['status']);
+        $this->assertSame('success', $this->records[3]['context']['status']);
+        $this->assertSafeRecords();
+    }
+
     public function test_daily_diagnostics_retention_is_seven_days(): void
     {
         $this->assertSame('daily', config('logging.channels.backup-sync.driver'));
@@ -159,22 +182,56 @@ class SyncUserUploadsTest extends TestCase
         $this->assertSame(storage_path('logs/backup-sync.log'), config('logging.channels.backup-sync.path'));
     }
 
-    private function fakeWaitFailure(\Throwable $exception): void
+    public function test_other_signals_are_not_classified_as_expected_interruptions(): void
+    {
+        $native = Mockery::mock(\Symfony\Component\Process\Process::class);
+        $native->shouldReceive('getTermSignal')->andReturn(15);
+        $this->fakeWaitFailure(new ProcessSignaledException($native));
+        $this->assertNotInstanceOf(UploadBackupInterruptedException::class, $this->assertSafeFailure());
+        $this->assertSame('signaled', $this->records[1]['context']['status']);
+    }
+
+    public function test_sigkill_mixed_with_another_failure_is_not_suppressed(): void
+    {
+        $native = Mockery::mock(\Symfony\Component\Process\Process::class);
+        $native->shouldReceive('getTermSignal')->andReturn(9);
+        $this->fakeWaitFailure(new ProcessSignaledException($native), new RuntimeException('secret-token'));
+        $this->assertNotInstanceOf(UploadBackupInterruptedException::class, $this->assertSafeFailure());
+        $this->assertSame('sigkill', $this->records[1]['context']['status']);
+        $this->assertSame('failed', $this->records[3]['context']['status']);
+        $this->assertSame([], $this->successfulDestinations);
+    }
+
+    public function test_both_sigkills_are_classified_as_expected_interruption(): void
+    {
+        $native = Mockery::mock(\Symfony\Component\Process\Process::class);
+        $native->shouldReceive('getTermSignal')->andReturn(9);
+        $exception = new ProcessSignaledException($native);
+        $this->fakeWaitFailure($exception, $exception);
+        $this->assertInstanceOf(UploadBackupInterruptedException::class, $this->assertSafeFailure());
+        $this->assertSame([], $this->successfulDestinations);
+    }
+
+    private function fakeWaitFailure(\Throwable $exception, ?\Throwable $secondException = null): void
     {
         $success = Process::result();
         $pending = Mockery::mock(PendingProcess::class);
         Process::shouldReceive('timeout')->with(600)->twice()->andReturn($pending);
         $pending->shouldReceive('quietly')->twice()->andReturnSelf();
         $attempt = 0;
-        $pending->shouldReceive('start')->twice()->andReturnUsing(function (array $command, callable $output) use (&$attempt, $exception, $success): InvokedProcess {
+        $pending->shouldReceive('start')->twice()->andReturnUsing(function (array $command, callable $output) use (&$attempt, $exception, $success, $secondException): InvokedProcess {
             $attempt++;
             $process = Mockery::mock(InvokedProcess::class);
             $process->shouldReceive('id')->once()->andReturn(789);
-            $process->shouldReceive('wait')->once()->andReturnUsing(function () use ($output, $exception, $attempt, $success) {
+            $process->shouldReceive('wait')->once()->andReturnUsing(function () use ($output, $exception, $attempt, $success, $secondException) {
                 $output('err', '{"level":"error","msg":"secret-token","stats":{"transfers":2,"bytes":');
                 $output('err', "99}}\n");
                 if ($attempt === 1) {
                     throw $exception;
+                }
+
+                if ($secondException !== null) {
+                    throw $secondException;
                 }
 
                 return $success;
@@ -184,7 +241,7 @@ class SyncUserUploadsTest extends TestCase
         });
     }
 
-    private function assertSafeFailure(): void
+    private function assertSafeFailure(): RuntimeException
     {
         try {
             (new SyncUserUploads)();
@@ -193,6 +250,8 @@ class SyncUserUploadsTest extends TestCase
             $this->assertStringNotContainsString('secret', $exception->getMessage());
             $this->assertNull($exception->getPrevious());
             $this->assertStringContainsString('[run_id='.$this->records[0]['context']['run_id'].']', $exception->getMessage());
+
+            return $exception;
         }
     }
 

@@ -32,7 +32,8 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('backup:run')->dailyAt('3:00')
             ->appendOutputTo($output);
-        $schedule->command('backup:report-sync-uploads-digest')->dailyAt('0:05')
+        // 本番cronは2分周期のため、偶数分に合わせる。
+        $schedule->command('backup:report-sync-uploads-digest')->dailyAt('0:06')
             ->appendOutputTo($output);
 
         // 毎週月・木21:30(JST)に X への新規・更新記事を集約投稿

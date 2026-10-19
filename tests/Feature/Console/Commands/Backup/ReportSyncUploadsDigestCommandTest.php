@@ -6,12 +6,30 @@ namespace Tests\Feature\Console\Commands\Backup;
 
 use App\Actions\Backup\SyncUploadsDigestTracker;
 use App\Console\Commands\Backup\ReportSyncUploadsDigestCommand;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Log;
 use Mockery\MockInterface;
 use Tests\Feature\TestCase;
 
 class ReportSyncUploadsDigestCommandTest extends TestCase
 {
+    public function test_digest_runs_once_a_day_on_the_production_two_minute_cron(): void
+    {
+        $events = collect(app(Schedule::class)->events())->filter(fn ($event): bool => str_contains($event->command ?? '', 'backup:report-sync-uploads-digest'));
+        $this->assertCount(1, $events);
+        $event = $events->first();
+        $midnight = now()->startOfDay();
+        $due = [];
+        for ($minute = 0; $minute < 1440; $minute += 2) {
+            $this->travelTo($midnight->copy()->addMinutes($minute));
+            if ($event->isDue($this->app)) {
+                $due[] = now()->format('H:i');
+            }
+        }
+
+        $this->assertSame(['00:06'], $due);
+    }
+
     public function test_does_not_notify_when_nothing_happened_yesterday(): void
     {
         $this->mock(SyncUploadsDigestTracker::class, function (MockInterface $mock): void {

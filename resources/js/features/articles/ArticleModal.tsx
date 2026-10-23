@@ -29,15 +29,6 @@ export const ArticleModal = ({
   return (
     <Modal title={article.title} onClose={onClose}>
       <div className="grid gap-x-4 mb-4">
-        {article.post_type === "addon-introduction" &&
-          article.status !== "trash" && (
-            <button
-              className="p-4 text-left font-semibold hover:bg-gray-50"
-              onClick={() => onConvertRequest?.(article)}
-            >
-              投稿記事へ変換
-            </button>
-          )}
         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
           <div className="flex-auto">
             <a href={editUrl} className="block font-semibold v2-text-main">
@@ -70,6 +61,20 @@ export const ArticleModal = ({
             </button>
           </div>
         </div>
+        {article.post_type === "addon-introduction" &&
+          article.status !== "trash" && (
+            <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+              <div className="flex-auto">
+                <button
+                  className="block font-semibold cursor-pointer"
+                  onClick={() => onConvertRequest?.(article)}
+                >
+                  投稿記事へ変換
+                  <span className="absolute inset-0"></span>
+                </button>
+              </div>
+            </div>
+          )}
         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
           <div className="flex-auto">
             <button

@@ -11,15 +11,20 @@ use App\Enums\ControllOptionKey;
 use App\Events\Article\ArticleUpdated;
 use App\Jobs\Article\JobUpdateRelated;
 use App\Models\Article;
+use App\Models\ArticleLinkCheckHistory;
 use App\Models\Attachment;
 use App\Models\Category;
 use App\Models\Contents\AddonPostContent;
 use App\Models\ControllOption;
+use App\Models\MyListItem;
 use App\Models\Tag;
 use App\Models\User;
+use App\Repositories\Article\ConversionCountRepository;
+use App\Repositories\Article\ViewCountRepository;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
-use App\Repositories\ArticleRepository;
+use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -100,6 +105,7 @@ class ConvertToPostTest extends TestCase
             $this->actingAs($article->user)->postJson('/api/v2/articles/'.$article->id.'/convert-to-post', ['file' => $file->id])->assertOk();
             $this->assertSame($status, $article->fresh()->status);
             $this->assertEquals($publishedAt, $article->fresh()->published_at);
+            $this->get(route('articles.download', ['article' => $article]))->assertNotFound();
         }
     }
 
@@ -155,10 +161,36 @@ class ConvertToPostTest extends TestCase
 
     public function test_failure_rolls_back_article_and_attachment_changes(): void
     {
+        $thumbnail = $this->createImageAttachment($this->article->user);
+        $this->article->attachments()->save($thumbnail);
+        $contents = (array) $this->article->contents;
+        $contents['thumbnail'] = $thumbnail->id;
+        $this->article->update(['contents' => $contents]);
+        $thumbnailBefore = $thumbnail->fresh()->getRawOriginal();
+        $oldAttachment = $this->createAttachment($this->article->user);
+        $this->article->attachments()->save($oldAttachment);
+        $category = Category::firstOrFail();
+        $tag = Tag::factory()->create();
+        $related = Article::factory()->publish()->create();
+        $this->article->categories()->attach($category);
+        $this->article->tags()->attach($tag);
+        $this->article->articles()->attach($related);
+        $history = ArticleLinkCheckHistory::factory()->create(['article_id' => $this->article->id]);
+        $historyBefore = $history->fresh()->getRawOriginal();
+        $oldAttachmentBefore = $oldAttachment->fresh()->getRawOriginal();
+        $fileBefore = $this->file->fresh()->getRawOriginal();
         $before = $this->article->fresh()->getRawOriginal();
-        $repository = Mockery::mock(ArticleRepository::class)->makePartial();
-        $repository->shouldReceive('syncAttachments')->once()->andThrow(new RuntimeException('failure'));
-        $this->app->instance(ArticleRepository::class, $repository);
+        $repository = Mockery::mock(ArticleLinkCheckHistoryRepository::class)->makePartial();
+        $repository->shouldReceive('clear')->once()->andReturnUsing(function (Article $article) use ($oldAttachment): void {
+            $this->assertNull($oldAttachment->fresh()->attachmentable_id);
+            $this->assertSame($article->id, $this->file->fresh()->attachmentable_id);
+            ArticleLinkCheckHistory::where('article_id', $article->id)->delete();
+            throw new RuntimeException('failure');
+        });
+        $this->app->instance(ArticleLinkCheckHistoryRepository::class, $repository);
+        Bus::fake();
+        Event::fake([ArticleUpdated::class]);
+        Notification::fake();
         try {
             app(ConvertIntroductionToPost::class)($this->article, $this->article->user_id, $this->file->id);
             $this->fail('Expected failure');
@@ -166,7 +198,92 @@ class ConvertToPostTest extends TestCase
             $this->assertSame('failure', $exception->getMessage());
         }
         $this->assertSame($before, $this->article->fresh()->getRawOriginal());
-        $this->assertNull($this->file->fresh()->attachmentable_id);
+        $this->assertSame($oldAttachmentBefore, $oldAttachment->fresh()->getRawOriginal());
+        $this->assertSame($thumbnailBefore, $thumbnail->fresh()->getRawOriginal());
+        $this->assertSame($fileBefore, $this->file->fresh()->getRawOriginal());
+        $this->assertSame($historyBefore, $history->fresh()->getRawOriginal());
+        $after = $this->article->fresh();
+        $this->assertSame([$category->id], $after->categories->modelKeys());
+        $this->assertSame([$tag->id], $after->tags->modelKeys());
+        $this->assertSame([$related->id], $after->articles->modelKeys());
+        Bus::assertNothingDispatched();
+        Event::assertNotDispatched(ArticleUpdated::class);
+        Notification::assertNothingSent();
+    }
+
+    public function test_mylist_and_analytics_history_survive_and_original_public_url_serves_exact_file(): void
+    {
+        $item = MyListItem::factory()->create(['article_id' => $this->article->id]);
+        $itemBefore = $item->fresh()->getRawOriginal();
+        $referringArticle = Article::factory()->publish()->create();
+        $referringArticle->articles()->attach($this->article);
+        $inboundBefore = $this->article->relatedArticles()->get()->modelKeys();
+        foreach ([ViewCountRepository::class, ConversionCountRepository::class] as $repository) {
+            app($repository)->countUp($this->article);
+            app($repository)->countUp($this->article);
+        }
+        $viewsBefore = $this->article->viewCounts()->get()->map->getRawOriginal()->all();
+        $conversionsBefore = $this->article->conversionCounts()->get()->map->getRawOriginal()->all();
+        $pageUrl = route('articles.show', ['userIdOrNickname' => $this->article->user_id, 'articleSlug' => $this->article->slug]);
+        $bytes = "PK\x03\x04portal-addon-preservation\x00\xFF";
+        Storage::disk('public')->put($this->file->path, $bytes);
+        $this->actingAs($this->article->user)->postJson($this->url, ['file' => $this->file->id])->assertOk();
+
+        $this->assertSame($itemBefore, $item->fresh()->getRawOriginal());
+        $this->assertSame($inboundBefore, $this->article->relatedArticles()->get()->modelKeys());
+        $this->assertSame($viewsBefore, $this->article->viewCounts()->get()->map->getRawOriginal()->all());
+        $this->assertSame($conversionsBefore, $this->article->conversionCounts()->get()->map->getRawOriginal()->all());
+        $this->get($pageUrl)->assertOk()->assertSee($this->article->title);
+        $response = $this->get(route('articles.download', ['article' => $this->article]));
+        $response->assertOk()->assertDownload($this->file->original_name);
+        $this->assertSame($bytes, $response->streamedContent());
+    }
+
+    public function test_real_update_listener_audits_only_after_commit_without_sending_notifications(): void
+    {
+        Bus::fake();
+        Notification::fake();
+        $audit = Mockery::mock(Logger::class);
+        $audit->shouldReceive('info')->once()->with('記事更新', Mockery::on(fn (array $context): bool => $context['articleId'] === $this->article->id));
+        $logger = Mockery::mock(Logger::class)->makePartial();
+        $logger->shouldReceive('channel')->with('audit')->once()->andReturn($audit);
+        $this->app->instance(Logger::class, $logger);
+        DB::beginTransaction();
+        app(ConvertIntroductionToPost::class)($this->article, $this->article->user_id, $this->file->id);
+        Bus::assertNothingDispatched();
+        Notification::assertNothingSent();
+        $logger->shouldNotHaveReceived('channel');
+        DB::commit();
+        Bus::assertDispatched(JobUpdateRelated::class);
+        Notification::assertNothingSent();
+        $this->assertNull($this->article->fresh()->sns_digest_published_at);
+        $this->assertNull($this->article->fresh()->sns_digest_updated_at);
+    }
+
+    public function test_deleted_attachment_and_unverified_user_are_rejected(): void
+    {
+        $deleted = $this->createAttachment($this->article->user);
+        $deletedId = $deleted->id;
+        $deleted->delete();
+        $this->actingAs($this->article->user)->postJson($this->url, ['file' => $deletedId])->assertUnprocessable()->assertJsonValidationErrors('file');
+        $this->article->user->update(['email_verified_at' => null]);
+        $this->getJson($this->url)->assertForbidden();
+        $this->postJson($this->url, ['file' => $this->file->id])->assertForbidden();
+    }
+
+    public function test_normal_update_cannot_change_article_type(): void
+    {
+        $before = $this->article->fresh()->getRawOriginal();
+        $this->actingAs($this->article->user)->postJson('/api/v2/articles/'.$this->article->id, ['article' => [
+            'id' => $this->article->id,
+            'post_type' => 'addon-post',
+            'title' => $this->article->title,
+            'slug' => $this->article->slug,
+            'status' => 'publish',
+            'contents' => ['description' => '変更しない', 'file' => $this->file->id],
+            'articles' => [], 'tags' => [], 'categories' => [],
+        ]])->assertConflict();
+        $this->assertSame($before, $this->article->fresh()->getRawOriginal());
     }
 
     public function test_existing_file_on_same_article_is_available_and_null_common_fields_are_preserved(): void

@@ -5,6 +5,7 @@ type Props = {
   article: Article.MypageShow | null;
   onClose?: () => void;
   onDeleteRequest?: (article: Article.MypageShow) => void;
+  onConvertRequest?: (article: Article.MypageShow) => void;
 };
 
 export const ArticleModal = ({
@@ -12,6 +13,7 @@ export const ArticleModal = ({
   article,
   onClose,
   onDeleteRequest,
+  onConvertRequest,
 }: Props) => {
   // article が null の場合はモーダルを非表示にする
   if (!article) return null;
@@ -27,6 +29,15 @@ export const ArticleModal = ({
   return (
     <Modal title={article.title} onClose={onClose}>
       <div className="grid gap-x-4 mb-4">
+        {article.post_type === "addon-introduction" &&
+          article.status !== "trash" && (
+            <button
+              className="p-4 text-left font-semibold hover:bg-gray-50"
+              onClick={() => onConvertRequest?.(article)}
+            >
+              投稿記事へ変換
+            </button>
+          )}
         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
           <div className="flex-auto">
             <a href={editUrl} className="block font-semibold v2-text-main">

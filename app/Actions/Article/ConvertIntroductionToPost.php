@@ -24,9 +24,9 @@ class ConvertIntroductionToPost
         private ArticleLinkCheckHistoryRepository $historyRepository,
     ) {}
 
-    public function __invoke(Article $article, int $userId, int $fileId): Article
+    public function __invoke(Article $article, int $userId, int $fileId, bool $withoutUpdateModifiedAt = false): Article
     {
-        return DB::transaction(function () use ($article, $userId, $fileId): Article {
+        return DB::transaction(function () use ($article, $userId, $fileId, $withoutUpdateModifiedAt): Article {
             $article = Article::query()->lockForUpdate()->findOrFail($article->id);
             $this->ensureConvertible($article, $userId);
             $attachment = Attachment::query()->lockForUpdate()->find($fileId);
@@ -51,11 +51,14 @@ class ConvertIntroductionToPost
                 'thumbnail' => $contents->thumbnail,
                 'file' => $attachment->id,
             ]);
-            $this->articleRepository->update($article, [
+            $newData = [
                 'post_type' => ArticlePostType::AddonPost,
                 'contents' => $postContents,
-                'modified_at' => now(),
-            ]);
+            ];
+            if (! $withoutUpdateModifiedAt) {
+                $newData['modified_at'] = now();
+            }
+            $this->articleRepository->update($article, $newData);
             $article = $article->fresh() ?? $article;
             $this->articleRepository->syncAttachments($article, array_values(array_filter([$postContents->thumbnail, $attachment->id])));
             $this->historyRepository->clear($article);

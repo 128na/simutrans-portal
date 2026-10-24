@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 import { ArticleTable } from "../../features/articles/ArticleTable";
 import { ArticleModal } from "../../features/articles/ArticleModal";
 import { ArticleDeleteModal } from "../../features/articles/ArticleDeleteModal";
+import { ArticleConvertModal } from "../../features/articles/ArticleConvertModal";
 import { useState } from "react";
 import { AppWrapper } from "../../components/AppWrapper";
 
@@ -16,7 +17,7 @@ if (app) {
   ) as Article.MypageShow[];
 
   type ArticleModalState = {
-    type: "info" | "delete";
+    type: "info" | "delete" | "convert";
     article: Article.MypageShow;
   };
 
@@ -37,7 +38,17 @@ if (app) {
           article={modal?.type === "info" ? modal.article : null}
           onClose={() => setModal(null)}
           onDeleteRequest={(article) => setModal({ type: "delete", article })}
+          onConvertRequest={(article) => setModal({ type: "convert", article })}
         />
+        {modal?.type === "convert" && (
+          <ArticleConvertModal
+            article={modal.article}
+            onClose={() => setModal(null)}
+            onSuccess={(id) => {
+              window.location.assign(`/mypage/articles/edit/${id}?converted=1`);
+            }}
+          />
+        )}
         <ArticleDeleteModal
           article={modal?.type === "delete" ? modal.article : null}
           onClose={() => setModal(null)}

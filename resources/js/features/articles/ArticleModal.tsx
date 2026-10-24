@@ -5,6 +5,7 @@ type Props = {
   article: Article.MypageShow | null;
   onClose?: () => void;
   onDeleteRequest?: (article: Article.MypageShow) => void;
+  onConvertRequest?: (article: Article.MypageShow) => void;
 };
 
 export const ArticleModal = ({
@@ -12,6 +13,7 @@ export const ArticleModal = ({
   article,
   onClose,
   onDeleteRequest,
+  onConvertRequest,
 }: Props) => {
   // article が null の場合はモーダルを非表示にする
   if (!article) return null;
@@ -59,6 +61,20 @@ export const ArticleModal = ({
             </button>
           </div>
         </div>
+        {article.post_type === "addon-introduction" &&
+          article.status !== "trash" && (
+            <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
+              <div className="flex-auto">
+                <button
+                  className="block font-semibold cursor-pointer"
+                  onClick={() => onConvertRequest?.(article)}
+                >
+                  投稿記事へ変換
+                  <span className="absolute inset-0"></span>
+                </button>
+              </div>
+            </div>
+          )}
         <div className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50">
           <div className="flex-auto">
             <button

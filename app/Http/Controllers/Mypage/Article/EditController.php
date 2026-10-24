@@ -58,7 +58,13 @@ class EditController extends Controller
         $validated = $updateRequest->validated();
         $updateArticleData = UpdateArticleData::fromArray($validated);
 
-        $article = DB::transaction(fn (): Article => $updateArticle($article, $updateArticleData));
+        $article = DB::transaction(function () use ($article, $updateArticle, $updateArticleData, $updateRequest): Article {
+            $article = Article::query()->lockForUpdate()->findOrFail($article->id);
+            $this->authorize('update', $article);
+            abort_if($updateRequest->string('article.post_type')->toString() !== $article->post_type->value, 409, '記事タイプが変更されています。画面を再読み込みしてください。');
+
+            return $updateArticle($article, $updateArticleData);
+        });
 
         return response()->json(['article_id' => $article->id], 200);
     }

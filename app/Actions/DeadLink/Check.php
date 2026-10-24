@@ -29,10 +29,16 @@ class Check
 
     /**
      * @param  callable(Article $article):bool  $onDead
+     * @param  (callable():bool)|null  $onProgress
+     * @param  (callable(Article):void)|null  $onAlive
      */
-    public function __invoke(callable $onDead): void
+    public function __invoke(callable $onDead, ?callable $onProgress = null, ?callable $onAlive = null): void
     {
+        $this->changeAnyArticle = false;
         foreach ($this->getArticles() as $article) {
+            if ($onProgress !== null && ! $onProgress()) {
+                break;
+            }
             if ($this->shouldProcess($article)) {
                 $isDead = $this->isDead($article);
 
@@ -42,7 +48,11 @@ class Check
                 }
 
                 if ($isDead === false) {
-                    $this->articleLinkCheckHistoryRepository->clear($article);
+                    if ($onAlive !== null) {
+                        $onAlive($article);
+                    } else {
+                        $this->articleLinkCheckHistoryRepository->clear($article);
+                    }
 
                     continue;
                 }

@@ -22,6 +22,10 @@ class Kernel extends ConsoleKernel
     {
         $output = $this->getLogPath();
 
+        $schedule->command('article:closure-notifications --recover')->everyTwoMinutes()
+            ->withoutOverlapping()
+            ->appendOutputTo($output);
+
         // 毎日
         $schedule->command('check:deadlink')->dailyAt('10:00')
             ->withoutOverlapping()

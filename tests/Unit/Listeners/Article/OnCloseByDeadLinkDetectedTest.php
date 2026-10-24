@@ -7,64 +7,44 @@ namespace Tests\Unit\Listeners\Article;
 use App\Events\Article\CloseByDeadLinkDetected;
 use App\Listeners\Article\OnCloseByDeadLinkDetected;
 use App\Models\Article;
-use App\Notifications\SendDeadLinkDetectedEmail;
-use Mockery;
-use PHPUnit\Framework\Attributes\Test;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Tests\Unit\TestCase;
 
 class OnCloseByDeadLinkDetectedTest extends TestCase
 {
-    #[Test]
-    public function it_sends_notification_to_article(): void
+    public function test_legacy_event_records_the_article_in_audit_log(): void
     {
-        $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
-        $article->shouldReceive('setAttribute')->andReturnNull();
-        $article->shouldReceive('notify')->once()->with(Mockery::type(SendDeadLinkDetectedEmail::class));
-        $article->id = 1;
-
-        $listener = new OnCloseByDeadLinkDetected;
-        $event = new CloseByDeadLinkDetected($article);
-        $listener->handle($event);
-
-        // モックの期待値が満たされることを確認
-        $this->assertTrue(true);
-    }
-
-    #[Test]
-    public function it_sends_correct_notification_type(): void
-    {
-        $notificationReceived = null;
-        $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
-        $article->shouldReceive('setAttribute')->andReturnNull();
-        $article->shouldReceive('notify')->once()->with(Mockery::on(function ($notification) use (&$notificationReceived) {
-            $notificationReceived = $notification;
-
-            return $notification instanceof SendDeadLinkDetectedEmail;
-        }));
-        $article->id = 2;
-
-        $listener = new OnCloseByDeadLinkDetected;
-        $event = new CloseByDeadLinkDetected($article);
-        $listener->handle($event);
-
-        $this->assertInstanceOf(SendDeadLinkDetectedEmail::class, $notificationReceived);
-    }
-
-    #[Test]
-    public function it_sends_only_one_notification(): void
-    {
-        $callCount = 0;
-        $article = Mockery::mock(Article::class)->shouldAllowMockingProtectedMethods();
-        $article->shouldReceive('setAttribute')->andReturnNull();
-        $article->shouldReceive('notify')->once()->with(Mockery::type(SendDeadLinkDetectedEmail::class))->andReturnUsing(function () use (&$callCount) {
-            $callCount++;
+        Log::shouldReceive('channel')->with('audit')->andReturnSelf();
+        $context = null;
+        Log::shouldReceive('info')->with('記事非公開化', \Mockery::type('array'))->andReturnUsing(function (string $message, array $values) use (&$context): void {
+            $context = $values;
         });
-        $article->id = 3;
+        $article = (new Article)->forceFill(['id' => 1, 'title' => '対象記事']);
+        (new OnCloseByDeadLinkDetected)->handle(new CloseByDeadLinkDetected($article));
+        $this->assertSame(['articleId' => 1, 'articleTitle' => '対象記事'], $context);
+    }
 
+    public function test_legacy_event_does_not_send_an_individual_email(): void
+    {
+        Log::shouldReceive('channel')->with('audit')->andReturnSelf();
+        Log::shouldReceive('info')->with('記事非公開化', \Mockery::type('array'))->andReturnNull();
+        Notification::fake();
+        $article = (new Article)->forceFill(['id' => 2, 'title' => '対象記事']);
+        (new OnCloseByDeadLinkDetected)->handle(new CloseByDeadLinkDetected($article));
+        Notification::assertNothingSent();
+    }
+
+    public function test_repeated_legacy_event_does_not_create_duplicate_emails(): void
+    {
+        Log::shouldReceive('channel')->with('audit')->andReturnSelf();
+        Log::shouldReceive('info')->with('記事非公開化', \Mockery::type('array'))->andReturnNull();
+        Notification::fake();
+        $event = new CloseByDeadLinkDetected((new Article)->forceFill(['id' => 3, 'title' => '対象記事']));
         $listener = new OnCloseByDeadLinkDetected;
-        $event = new CloseByDeadLinkDetected($article);
         $listener->handle($event);
-
-        $this->assertSame(1, $callCount);
+        $listener->handle($event);
+        Notification::assertNothingSent();
+        Log::shouldHaveReceived('info')->twice();
     }
 }

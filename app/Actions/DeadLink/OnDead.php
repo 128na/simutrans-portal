@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace App\Actions\DeadLink;
 
-use App\Enums\ArticleStatus;
-use App\Events\Article\CloseByDeadLinkDetected;
+use App\Actions\ArticleClosure\CloseArticle;
+use App\Enums\ArticleClosureReason;
 use App\Events\Article\DeadLinkDetected;
 use App\Models\Article;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
-use App\Repositories\ArticleRepository;
 
 class OnDead
 {
     private const int FAILED_LIMIT = 3;
 
     public function __construct(
-        private ArticleRepository $articleRepository,
+        private CloseArticle $closeArticle,
         private ArticleLinkCheckHistoryRepository $articleLinkCheckHistoryRepository,
     ) {}
 
-    public function __invoke(Article $article): bool
+    public function __invoke(Article $article, int $runId): bool
     {
         event(new DeadLinkDetected($article));
 
@@ -31,11 +30,6 @@ class OnDead
             return false;
         }
 
-        $this->articleRepository->update($article, ['status' => ArticleStatus::Private]);
-
-        event(new CloseByDeadLinkDetected($article));
-        $this->articleLinkCheckHistoryRepository->clear($article);
-
-        return true;
+        return ($this->closeArticle)($article, $runId, ArticleClosureReason::DeadLink);
     }
 }

@@ -97,6 +97,9 @@ describe("記事の変換", () => {
   it("配布ファイル未選択では送信できない", async () => {
     setup();
     await screen.findByText("選択中: 未選択");
+    expect(
+      screen.getByRole("checkbox", { name: "更新日時を更新しない" })
+    ).not.toBeChecked();
     const button = screen.getByRole("button", { name: "変換する" });
     expect(button).toBeDisabled();
     fireEvent.click(button);
@@ -139,7 +142,7 @@ describe("記事の変換", () => {
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith(1));
     expect(axios.post).toHaveBeenCalledWith(
       "/api/v2/articles/1/convert-to-post",
-      { file: 9 }
+      { file: 9, without_update_modified_at: false }
     );
   });
 
@@ -168,7 +171,7 @@ describe("記事の変換", () => {
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith(1));
     expect(axios.post).toHaveBeenLastCalledWith(
       "/api/v2/articles/1/convert-to-post",
-      { file: 15 }
+      { file: 15, without_update_modified_at: false }
     );
   });
 
@@ -184,16 +187,27 @@ describe("記事の変換", () => {
       .mockResolvedValueOnce({ data: { article_id: 1 } });
     const { onSuccess } = setup();
     await selectFile();
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: "更新日時を更新しない" })
+    );
     await userEvent.click(screen.getByRole("button", { name: "変換する" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "このファイルは利用できません"
     );
+    expect(axios.post).toHaveBeenNthCalledWith(
+      1,
+      "/api/v2/articles/1/convert-to-post",
+      { file: 9, without_update_modified_at: true }
+    );
     expect(screen.getByText("選択中: existing-addon.zip")).toBeInTheDocument();
+    expect(
+      screen.getByRole("checkbox", { name: "更新日時を更新しない" })
+    ).toBeChecked();
     await userEvent.click(screen.getByRole("button", { name: "変換する" }));
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith(1));
     expect(axios.post).toHaveBeenLastCalledWith(
       "/api/v2/articles/1/convert-to-post",
-      { file: 9 }
+      { file: 9, without_update_modified_at: true }
     );
   });
 
@@ -256,7 +270,7 @@ describe("記事の変換", () => {
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith(1));
     expect(axios.post).toHaveBeenLastCalledWith(
       "/api/v2/articles/1/convert-to-post",
-      { file: 9 }
+      { file: 9, without_update_modified_at: false }
     );
   });
 
@@ -271,6 +285,9 @@ describe("記事の変換", () => {
     expect(axios.post).toHaveBeenCalledTimes(1);
     expect(onClose).not.toHaveBeenCalled();
     expect(screen.getByRole("button", { name: "キャンセル" })).toBeDisabled();
+    expect(
+      screen.getByRole("checkbox", { name: "更新日時を更新しない" })
+    ).toBeDisabled();
   });
 
   it("アップロード中は変換と閉じる操作を防ぐ", async () => {
@@ -285,6 +302,9 @@ describe("記事の変換", () => {
       new File(["addon"], "addon.zip", { type: "application/zip" })
     );
     expect(screen.getByRole("button", { name: "変換する" })).toBeDisabled();
+    expect(
+      screen.getByRole("checkbox", { name: "更新日時を更新しない" })
+    ).toBeDisabled();
     fireEvent.click(screen.getByRole("dialog"));
     expect(onClose).not.toHaveBeenCalled();
     expect(axios.post).toHaveBeenCalledTimes(1);

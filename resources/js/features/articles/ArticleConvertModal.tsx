@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal } from "@/components/ui/Modal";
 import { ModalFull } from "@/components/ui/ModalFull";
 import Button from "@/components/ui/Button";
+import Checkbox from "@/components/ui/Checkbox";
 import { Upload } from "@/components/form/Upload";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import { useApiCall } from "@/hooks/useApiCall";
@@ -17,6 +18,7 @@ type Props = {
 export const ArticleConvertModal = ({ article, onClose, onSuccess }: Props) => {
   const [attachments, setAttachments] = useState<Attachment.MypageEdit[]>([]);
   const [file, setFile] = useState<number | null>(null);
+  const [withoutUpdateModifiedAt, setWithoutUpdateModifiedAt] = useState(false);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -54,7 +56,7 @@ export const ArticleConvertModal = ({ article, onClose, onSuccess }: Props) => {
       () =>
         axios.post<{ article_id: number }>(
           `/api/v2/articles/${article.id}/convert-to-post`,
-          { file }
+          { file, without_update_modified_at: withoutUpdateModifiedAt }
         ),
       { silent: true, onError: (error) => setError(extractErrorMessage(error)) }
     );
@@ -143,6 +145,18 @@ export const ArticleConvertModal = ({ article, onClose, onSuccess }: Props) => {
           </p>
         </fieldset>
       )}
+      <div className="mt-4">
+        <Checkbox
+          checked={withoutUpdateModifiedAt}
+          disabled={busy}
+          onChange={(event) => setWithoutUpdateModifiedAt(event.target.checked)}
+        >
+          更新日時を更新しない
+        </Checkbox>
+        <p className="text-sm v2-text-sub">
+          チェックすると現在の更新日時を維持します。チェックしない場合は変換日時に更新します。
+        </p>
+      </div>
       <div className="flex gap-2 justify-end mt-4">
         <Button variant="subOutline" disabled={busy} onClick={onClose}>
           キャンセル

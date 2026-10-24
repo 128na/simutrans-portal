@@ -19,6 +19,9 @@ class ConvertToPostRequest extends FormRequest
     /** @return array<string, array<string>> */
     public function rules(): array
     {
-        return ['file' => ['required', 'integer', 'min:1']];
+        return [
+            'file' => ['required', 'integer', 'min:1'],
+            'without_update_modified_at' => ['sometimes', 'boolean'],
+        ];
     }
 }

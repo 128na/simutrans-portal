@@ -29,7 +29,7 @@ class ConvertToPostController extends Controller
 
     public function store(ConvertToPostRequest $request, Article $article, ConvertIntroductionToPost $convert): JsonResponse
     {
-        $article = $convert($article, $this->loggedinUser()->id, (int) $request->validated('file'));
+        $article = $convert($article, $this->loggedinUser()->id, (int) $request->validated('file'), $request->boolean('without_update_modified_at'));
 
         return response()->json(['article_id' => $article->id]);
     }

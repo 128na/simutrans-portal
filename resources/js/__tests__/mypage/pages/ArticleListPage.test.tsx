@@ -98,6 +98,6 @@ it("一覧から紹介記事を変換し、同じ記事の編集画面へ移動�
   expect(axios.post).toHaveBeenNthCalledWith(
     2,
     "/api/v2/articles/73/convert-to-post",
-    { file: 51 }
+    { file: 51, without_update_modified_at: false }
   );
 });

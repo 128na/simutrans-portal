@@ -96,6 +96,84 @@ class ConvertToPostTest extends TestCase
         $this->get(route('articles.download', ['article' => $after]))->assertOk();
     }
 
+    public function test_conversion_can_preserve_the_current_database_modified_at_including_null(): void
+    {
+        $this->travelTo(now()->setDate(2030, 1, 2)->startOfDay());
+        Bus::fake();
+        Event::fake([ArticleUpdated::class]);
+        foreach (['2020-02-03 04:05:06', null] as $modifiedAt) {
+            $article = Article::factory()->addonIntroduction()->publish()->create([
+                'user_id' => $this->article->user_id,
+                'modified_at' => $modifiedAt,
+                'updated_at' => '2020-01-01 00:00:00',
+            ]);
+            $file = $this->createAttachment($article->user);
+            $before = $article->fresh();
+            $history = app(ArticleLinkCheckHistoryRepository::class);
+            $history->increment($article);
+
+            $this->actingAs($article->user)->postJson('/api/v2/articles/'.$article->id.'/convert-to-post', [
+                'file' => $file->id,
+                'without_update_modified_at' => true,
+            ])->assertOk();
+
+            $after = $article->fresh();
+            $this->assertSame($before->getRawOriginal('modified_at'), $after->getRawOriginal('modified_at'));
+            $this->assertTrue($after->updated_at->equalTo(now()));
+            $this->assertSame(ArticlePostType::AddonPost, $after->post_type);
+            $this->assertSame($file->id, $after->contents->file);
+            $this->assertSame($article->id, $file->fresh()->attachmentable_id);
+            $this->assertSame($before->status, $after->status);
+            $this->assertEquals($before->published_at, $after->published_at);
+            $this->assertSame(0, $history->get($after));
+            Bus::assertDispatched(JobUpdateRelated::class);
+            Event::assertDispatched(ArticleUpdated::class, fn (ArticleUpdated $event): bool => $event->article->id === $article->id && ! $event->shouldNotify);
+        }
+    }
+
+    public function test_conversion_updates_modified_at_when_option_is_false_or_omitted(): void
+    {
+        $this->travelTo(now()->setDate(2030, 1, 2)->startOfDay());
+        Bus::fake();
+        Event::fake([ArticleUpdated::class]);
+        foreach ([[], ['without_update_modified_at' => false]] as $options) {
+            $article = Article::factory()->addonIntroduction()->publish()->create([
+                'user_id' => $this->article->user_id,
+                'modified_at' => '2020-02-03 04:05:06',
+            ]);
+            $file = $this->createAttachment($article->user);
+
+            $this->actingAs($article->user)->postJson('/api/v2/articles/'.$article->id.'/convert-to-post', [
+                'file' => $file->id,
+                ...$options,
+            ])->assertOk();
+
+            $this->assertTrue($article->fresh()->modified_at->equalTo(now()));
+        }
+    }
+
+    public function test_preserving_modified_at_uses_the_locked_article_instead_of_a_stale_instance(): void
+    {
+        $stale = $this->article;
+        Article::findOrFail($stale->id)->update(['modified_at' => '2020-02-03 04:05:06']);
+        app(ConvertIntroductionToPost::class)($stale, $stale->user_id, $this->file->id, true);
+
+        $this->assertSame('2020-02-03 04:05:06', $stale->fresh()->getRawOriginal('modified_at'));
+    }
+
+    public function test_invalid_modified_at_option_is_rejected_without_converting(): void
+    {
+        $before = $this->article->fresh()->getRawOriginal();
+        foreach ([null, 'false', 2, []] as $option) {
+            $this->actingAs($this->article->user)->postJson($this->url, [
+                'file' => $this->file->id,
+                'without_update_modified_at' => $option,
+            ])->assertUnprocessable()->assertJsonValidationErrors('without_update_modified_at');
+        }
+        $this->assertSame($before, $this->article->fresh()->getRawOriginal());
+        $this->assertNull($this->file->fresh()->attachmentable_id);
+    }
+
     public function test_nonpublic_and_reservation_statuses_are_preserved(): void
     {
         foreach ([ArticleStatus::Private, ArticleStatus::Draft, ArticleStatus::Reservation] as $status) {

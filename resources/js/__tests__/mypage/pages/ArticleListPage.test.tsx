@@ -32,7 +32,7 @@ afterEach(async () => {
   vi.restoreAllMocks();
 });
 
-it("一覧から紹介記事を変換し、同じ記事の編集画面へ移動する", async () => {
+it("一覧から紹介記事を変換し、記事一覧へ戻る", async () => {
   const article: Article.MypageShow = {
     id: 73,
     user_id: 4,
@@ -86,9 +86,7 @@ it("一覧から紹介記事を変換し、同じ記事の編集画面へ移動�
   expect(await screen.findByText(/選択中: moving.zip/)).toBeInTheDocument();
   await user.click(screen.getByRole("button", { name: "変換する" }));
 
-  await waitFor(() =>
-    expect(assign).toHaveBeenCalledWith("/mypage/articles/edit/73?converted=1")
-  );
+  await waitFor(() => expect(assign).toHaveBeenCalledWith("/mypage/articles"));
   expect(axios.post).toHaveBeenNthCalledWith(
     1,
     "/api/v2/attachments",

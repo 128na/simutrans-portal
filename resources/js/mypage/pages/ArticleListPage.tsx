@@ -44,8 +44,8 @@ if (app) {
           <ArticleConvertModal
             article={modal.article}
             onClose={() => setModal(null)}
-            onSuccess={(id) => {
-              window.location.assign(`/mypage/articles/edit/${id}?converted=1`);
+            onSuccess={() => {
+              window.location.assign("/mypage/articles");
             }}
           />
         )}

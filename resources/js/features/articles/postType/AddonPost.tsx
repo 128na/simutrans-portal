@@ -3,7 +3,7 @@ import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
-import { Upload } from "@/components/form/Upload";
+import { ArticleUpload } from "@/features/articles/forms/ArticleUpload";
 import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import TextError from "@/components/ui/TextError";
@@ -92,7 +92,7 @@ export const AddonPost = () => {
           ファイル
         </FormCaption>
         <TextError>{getError("article.contents.file")}</TextError>
-        <Upload
+        <ArticleUpload
           className="w-full mb-4"
           onUploaded={(a) => {
             useArticleEditor.setState((state) => {

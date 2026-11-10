@@ -1,4 +1,5 @@
-import { Upload } from "@/components/form/Upload";
+import { useRef } from "react";
+import { ArticleUpload } from "@/features/articles/forms/ArticleUpload";
 import { useArticleEditor, useIsSlugUpdated } from "@/hooks/useArticleEditor";
 import TextSub from "@/components/ui/TextSub";
 import TextError from "@/components/ui/TextError";
@@ -14,8 +15,30 @@ import Checkbox from "@/components/ui/Checkbox";
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
 
+const generateSlug = (title: string) => {
+  if (!title.trim()) return "";
+
+  const cleaned = title
+    .toLowerCase()
+    .replace(regReplace, "-")
+    .replace(/^-+|-+$/g, "");
+  const candidate = cleaned
+    ? Number.isNaN(Number(cleaned))
+      ? cleaned
+      : "article-" + cleaned
+    : "article";
+  let encoded = "";
+  for (const character of candidate) {
+    const next = encodeURI(character);
+    if (encoded.length + next.length > 255) break;
+    encoded += next;
+  }
+  return encoded;
+};
+
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
+  const slugManuallyEdited = useRef(false);
   const update = useArticleEditor((s) => s.update);
 
   const user = useArticleEditor((s) => s.user);
@@ -42,10 +65,19 @@ export const CommonForm = () => {
         <TextError>{getError("article.title")}</TextError>
         <Input
           className="w-full"
+          aria-label="タイトル"
           value={article.title || ""}
           required
           maxLength={255}
-          onChange={(e) => update((draft) => (draft.title = e.target.value))}
+          onChange={(e) => {
+            const title = e.target.value;
+            update((draft) => {
+              draft.title = title;
+              if (!draft.id && !slugManuallyEdited.current) {
+                draft.slug = generateSlug(title);
+              }
+            });
+          }}
         />
       </div>
 
@@ -57,13 +89,15 @@ export const CommonForm = () => {
         <TextError>{getError("article.slug")}</TextError>
         <Input
           className="w-full"
+          aria-label="記事URL"
           value={decodeURI(article.slug || "")}
           required
           maxLength={255}
           counter={(value) => [...escape(value)].length}
-          onChange={(e) =>
-            update((draft) => (draft.slug = escape(e.target.value)))
-          }
+          onChange={(e) => {
+            slugManuallyEdited.current = true;
+            update((draft) => (draft.slug = escape(e.target.value)));
+          }}
         />
         <TextSub className="my-1">
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
@@ -72,7 +106,8 @@ export const CommonForm = () => {
           variant="subOutline"
           disabled={!article.title}
           onClick={() => {
-            update((draft) => (draft.slug = escape(draft.title || "")));
+            slugManuallyEdited.current = true;
+            update((draft) => (draft.slug = generateSlug(draft.title || "")));
           }}
         >
           タイトルから入力
@@ -101,7 +136,7 @@ export const CommonForm = () => {
       <div>
         <FormCaption>サムネイル</FormCaption>
         <TextError>{getError("article.contents.thumbnail")}</TextError>
-        <Upload
+        <ArticleUpload
           className="w-full mb-4"
           accept="image/*"
           onUploaded={(a) => {

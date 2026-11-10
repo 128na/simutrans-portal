@@ -15,6 +15,7 @@ type ArticleEditorState = {
   withoutUpdateModifiedAt: boolean;
   /** URL変更時にリダイレクト追加するか */
   followRedirect: boolean;
+  uploadsInProgress: number;
 
   init: (initial: {
     user: User.MypageShow;
@@ -49,6 +50,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
     shouldNotify: false,
     withoutUpdateModifiedAt: false,
     followRedirect: false,
+    uploadsInProgress: 0,
 
     init(initial) {
       set({
@@ -62,6 +64,7 @@ export const useArticleEditor = create<ArticleEditorState>()(
         shouldNotify: initial.shouldNotify,
         withoutUpdateModifiedAt: initial.withoutUpdateModifiedAt,
         followRedirect: initial.followRedirect,
+        uploadsInProgress: 0,
       });
     },
 

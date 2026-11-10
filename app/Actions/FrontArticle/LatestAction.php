@@ -33,7 +33,7 @@ class LatestAction
      */
     public function cardsByPak(string $pak, int $limit = 12): array
     {
-        return $this->articleRepository->getLatestForCards($pak, $limit)
+        return array_values($this->articleRepository->getLatestForCards($pak, $limit)
             ->map(fn (Article $article): array => [
                 'id' => $article->id,
                 'user_id' => $article->user_id,
@@ -42,7 +42,7 @@ class LatestAction
                 'thumbnail_url' => $article->thumbnail_url,
                 'published_at' => $article->published_at?->toIso8601String(),
                 'modified_at' => $article->modified_at?->toIso8601String(),
-            ])->values()->all();
+            ])->all());
     }
 
     /**

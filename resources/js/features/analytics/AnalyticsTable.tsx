@@ -53,12 +53,13 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
   const totalPages = Math.ceil(filtered.length / limit);
   const activePage = Math.min(current, Math.max(1, totalPages));
 
-  const sorted = filtered.sort((a, b) => {
+  const sorted = [...filtered].sort((a, b) => {
     const result = compareArticleValues(a[sort.column], b[sort.column]);
     return sort.order === "asc" ? result : -result;
   });
 
   const onSort = (column: keyof Analytics.Article) => {
+    setCurrent(1);
     setSort((prev) =>
       prev.column === column
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }

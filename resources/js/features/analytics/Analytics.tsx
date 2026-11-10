@@ -9,9 +9,9 @@ type Props = {
 export const Analytics = ({ articles }: Props) => {
   return (
     <div className="grid gap-4">
+      <AnalyticsGraph articles={articles} loadOnMount />
       <AnalyticsOption />
       <AnalyticsTable articles={articles} limit={15} />
-      <AnalyticsGraph articles={articles} />
     </div>
   );
 };

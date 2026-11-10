@@ -81,10 +81,53 @@ describe("AnalyticsGraph", () => {
     expect(screen.getByText("記事を選んでください")).toBeInTheDocument();
   });
 
-  it("グラフを表示ボタンが表示される", () => {
+  it("初期選択で一度だけ取得し、条件を変更しただけでは再取得しない", async () => {
+    mockAxios.post = vi.fn().mockResolvedValue({
+      data: {
+        data: [
+          {
+            id: 1,
+            viewCounts: { "2024-01-01": 10 },
+            conversionCounts: {},
+            pastViewCount: 0,
+            pastConversionCount: 0,
+          },
+        ],
+      },
+    });
+
+    const { rerender } = render(
+      <AnalyticsGraph articles={mockArticles} loadOnMount />
+    );
+    expect(await screen.findByTestId("line-chart")).toBeInTheDocument();
+    expect(mockAxios.post).toHaveBeenCalledExactlyOnceWith(
+      "/api/v2/analytics",
+      {
+        ids: [1, 2],
+        type: "daily",
+        start_date: "2024-01-01",
+        end_date: "2024-01-31",
+      },
+      { signal: expect.any(AbortSignal) }
+    );
+
+    mockUseAnalyticsStore.mockReturnValue({
+      selected: [2],
+      start_date: "2024-01-01",
+      end_date: "2024-01-15",
+      type: "daily",
+      axes: ["pv"],
+      mode: "periodic",
+    });
+    rerender(<AnalyticsGraph articles={mockArticles} loadOnMount />);
+    expect(screen.getByText(/条件は未適用/)).toBeInTheDocument();
+    expect(mockAxios.post).toHaveBeenCalledTimes(1);
+  });
+
+  it("グラフを再表示ボタンが表示される", () => {
     render(<AnalyticsGraph articles={mockArticles} />);
     expect(
-      screen.getByRole("button", { name: "グラフを表示" })
+      screen.getByRole("button", { name: "グラフを再表示" })
     ).toBeInTheDocument();
   });
 
@@ -99,7 +142,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
     expect(button).toBeDisabled();
   });
 
@@ -120,7 +163,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -155,7 +198,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -181,7 +224,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -217,7 +260,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -255,7 +298,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -295,7 +338,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -326,7 +369,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 
@@ -355,7 +398,7 @@ describe("AnalyticsGraph", () => {
       .mockResolvedValueOnce({ data: { data: [] } });
 
     const { rerender } = render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
     await user.click(button);
     expect(screen.getByText("集計を取得しています。")).toBeInTheDocument();
 
@@ -399,7 +442,7 @@ describe("AnalyticsGraph", () => {
       .mockResolvedValueOnce({ data: { data: [] } });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
     await user.click(button);
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "集計の取得に失敗しました"
@@ -428,7 +471,7 @@ describe("AnalyticsGraph", () => {
     });
 
     render(<AnalyticsGraph articles={mockArticles} />);
-    const button = screen.getByRole("button", { name: "グラフを表示" });
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
 
     await user.click(button);
 

@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Upload } from "@/components/form/Upload";
+import { ArticleUpload } from "@/features/articles/forms/ArticleUpload";
 import { useArticleEditor, useIsSlugUpdated } from "@/hooks/useArticleEditor";
 import TextSub from "@/components/ui/TextSub";
 import TextError from "@/components/ui/TextError";
@@ -14,6 +14,27 @@ import Checkbox from "@/components/ui/Checkbox";
 
 const regReplace =
   /(!|"|#|\$|%|&|'|\(|\)|\*|\+|,|\/|:|;|<|=|>|\?|@|\[|\\|\]|\^|`|\{|\||\}|\s|\.)+/gi;
+
+const generateSlug = (title: string) => {
+  if (!title.trim()) return "";
+
+  const cleaned = title
+    .toLowerCase()
+    .replace(regReplace, "-")
+    .replace(/^-+|-+$/g, "");
+  const candidate = cleaned
+    ? Number.isNaN(Number(cleaned))
+      ? cleaned
+      : "article-" + cleaned
+    : "article";
+  let encoded = "";
+  for (const character of candidate) {
+    const next = encodeURI(character);
+    if (encoded.length + next.length > 255) break;
+    encoded += next;
+  }
+  return encoded;
+};
 
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
@@ -53,7 +74,7 @@ export const CommonForm = () => {
             update((draft) => {
               draft.title = title;
               if (!draft.id && !slugManuallyEdited.current) {
-                draft.slug = escape(title);
+                draft.slug = generateSlug(title);
               }
             });
           }}
@@ -86,7 +107,7 @@ export const CommonForm = () => {
           disabled={!article.title}
           onClick={() => {
             slugManuallyEdited.current = true;
-            update((draft) => (draft.slug = escape(draft.title || "")));
+            update((draft) => (draft.slug = generateSlug(draft.title || "")));
           }}
         >
           タイトルから入力
@@ -115,7 +136,7 @@ export const CommonForm = () => {
       <div>
         <FormCaption>サムネイル</FormCaption>
         <TextError>{getError("article.contents.thumbnail")}</TextError>
-        <Upload
+        <ArticleUpload
           className="w-full mb-4"
           accept="image/*"
           onUploaded={(a) => {

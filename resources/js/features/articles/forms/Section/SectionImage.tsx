@@ -1,4 +1,4 @@
-import { Upload } from "@/components/form/Upload";
+import { ArticleUpload } from "@/features/articles/forms/ArticleUpload";
 import { ModalFull } from "@/components/ui/ModalFull";
 import TextError from "@/components/ui/TextError";
 import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
@@ -27,7 +27,7 @@ export const SectionImage = ({
     <>
       <div>
         <TextError>{getError(`article.contents.sections.${idx}.id`)}</TextError>
-        <Upload
+        <ArticleUpload
           className="w-full mb-4"
           accept="image/*"
           onUploaded={onUploaded}

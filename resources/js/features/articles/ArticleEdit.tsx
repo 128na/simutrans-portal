@@ -43,11 +43,13 @@ export const ArticleEdit = () => {
     (s) => s.withoutUpdateModifiedAt
   );
   const followRedirect = useArticleEditor((s) => s.followRedirect);
+  const uploading = useArticleEditor((s) => s.uploadsInProgress > 0);
   const isDirty =
     useIsArticleUpdated() ||
     shouldNotify ||
     withoutUpdateModifiedAt ||
-    followRedirect;
+    followRedirect ||
+    uploading;
   const [panel, setPanel] = useState<"edit" | "preview">("edit");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string>();
@@ -71,7 +73,7 @@ export const ArticleEdit = () => {
   }, [isDirty]);
 
   const save = async () => {
-    if (saveInProgress.current || saved.current) return;
+    if (saveInProgress.current || saved.current || uploading) return;
     saveInProgress.current = true;
     setSaving(true);
     setError(undefined);
@@ -88,11 +90,12 @@ export const ArticleEdit = () => {
         follow_redirect: followRedirect,
       });
       saved.current = true;
-      window.location.href =
+      window.location.replace(
         "/mypage/articles/edit/" +
-        res.data.article_id +
-        "?updated=1&saved=" +
-        operation;
+          res.data.article_id +
+          "?updated=1&saved=" +
+          operation
+      );
     } catch (error) {
       if (setValidationErrorFrom(error)) {
         setError("入力内容を確認してください。");
@@ -178,8 +181,12 @@ export const ArticleEdit = () => {
           </p>
         )}
         <div className="flex flex-wrap items-center gap-3">
-          <Button onClick={save} size="lg" disabled={saving}>
-            {saving ? "保存中…" : actions[operation].label}
+          <Button onClick={save} size="lg" disabled={saving || uploading}>
+            {saving
+              ? "保存中…"
+              : uploading
+                ? "アップロード中…"
+                : actions[operation].label}
           </Button>
           <p className="text-sm text-c-sub">
             保存後の状態は「{StatusText[article.status]}」です。

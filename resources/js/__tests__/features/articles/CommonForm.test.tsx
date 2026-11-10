@@ -35,6 +35,20 @@ describe("記事 URL の入力", () => {
     expect(slug).toHaveValue("custom-url");
   });
 
+  it("数値だけのタイトルと長い日本語タイトルから有効な候補を作る", () => {
+    render(<CommonForm />);
+    const title = screen.getByRole("textbox", { name: "タイトル" });
+    const slug = screen.getByRole("textbox", { name: "記事URL" });
+
+    fireEvent.change(title, { target: { value: "123" } });
+    expect(slug).toHaveValue("article-123");
+    fireEvent.change(title, { target: { value: "あ".repeat(40) } });
+    expect(slug).toHaveValue("あ".repeat(28));
+    expect(useArticleEditor.getState().article.slug.length).toBeLessThanOrEqual(
+      255
+    );
+  });
+
   it("既存記事のタイトルを変更しても公開 URL を維持する", () => {
     useArticleEditor.setState((state) => {
       state.article.id = 15;

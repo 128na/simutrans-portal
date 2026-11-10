@@ -86,7 +86,7 @@ describe("ArticleEdit", () => {
 
     // window.location.href のモック
     delete (window as { location?: unknown }).location;
-    (window as { location: { href: string } }).location = { href: "" };
+    window.location = { replace: vi.fn() } as unknown as Location;
   });
 
   it("記事のpost_typeが存在しない場合は何も表示しない", () => {
@@ -221,6 +221,20 @@ describe("ArticleEdit", () => {
     ).toBe(false);
   });
 
+  it("添付のアップロードが終わるまで保存を無効にする", () => {
+    vi.mocked(useArticleEditor).mockImplementation((selector) =>
+      selector({
+        article: mockArticle,
+        initialArticle: mockArticle,
+        uploadsInProgress: 1,
+      } as ReturnType<typeof useArticleEditor.getState>)
+    );
+    render(<ArticleEdit />);
+    expect(
+      screen.getByRole("button", { name: "アップロード中…" })
+    ).toBeDisabled();
+  });
+
   it("保存成功後にリダイレクトする", async () => {
     vi.spyOn(mockedAxios, "post").mockResolvedValue({
       data: { article_id: 123 },
@@ -233,7 +247,7 @@ describe("ArticleEdit", () => {
     fireEvent.click(saveButton);
 
     await waitFor(() => {
-      expect(window.location.href).toBe(
+      expect(window.location.replace).toHaveBeenCalledWith(
         "/mypage/articles/edit/123?updated=1&saved=update"
       );
     });

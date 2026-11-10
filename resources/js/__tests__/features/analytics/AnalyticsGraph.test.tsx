@@ -32,7 +32,8 @@ vi.mock("recharts", () => ({
     stroke: string;
   }) => (
     <div
-      data-testid={`line-${dataKey}`}
+      data-testid={`line-${name}`}
+      data-key={dataKey}
       data-name={name}
       data-stroke={stroke}
     />
@@ -265,8 +266,8 @@ describe("AnalyticsGraph", () => {
       );
       // 累積なので、過去値100 + 10 = 110、110 + 20 = 130
       expect(chartData).toHaveLength(2);
-      expect(chartData[0]["Article 1 (PV)"]).toBe(110);
-      expect(chartData[1]["Article 1 (PV)"]).toBe(130);
+      expect(chartData[0]["1-pv"]).toBe(110);
+      expect(chartData[1]["1-pv"]).toBe(130);
     });
   });
 

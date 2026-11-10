@@ -38,6 +38,12 @@ type RequestState =
       analytics: Analytics.ArticleAnalytic[];
     };
 
+const periodLength: Record<Analytics.Type, number> = {
+  daily: 10,
+  monthly: 7,
+  yearly: 4,
+};
+
 const intervalNames: Record<Analytics.Type, string> = {
   daily: "日次",
   monthly: "月次",
@@ -67,16 +73,24 @@ export function AnalyticsGraph({ articles }: Props) {
   useEffect(() => () => latestRequest.current?.abort(), []);
 
   // convert from analytics
-  const keys: { name: string; stroke: string; id: number }[] = [];
+  const keys: {
+    key: string;
+    name: string;
+    stroke: string;
+    id: number;
+    axis: Analytics.Axis;
+  }[] = [];
   const data: DataSet = [];
   analytics.forEach((an, idx) => {
     const { id, viewCounts, conversionCounts } = an;
     const article = articles.find((a) => a.id === id);
     if (!article) return;
     if (appliedAxes.includes("pv")) {
-      const pvKey = `${article.title} (PV)`;
+      const pvKey = `${article.id}-pv`;
       keys.push({
-        name: pvKey,
+        key: pvKey,
+        name: `${article.title} (PV)`,
+        axis: "pv",
         stroke: `hsl(${211 + idx * 53}, 82%, 54%)`,
         id: article.id,
       });
@@ -90,9 +104,11 @@ export function AnalyticsGraph({ articles }: Props) {
       });
     }
     if (appliedAxes.includes("cv")) {
-      const cvKey = `${article.title} (CV)`;
+      const cvKey = `${article.id}-cv`;
       keys.push({
-        name: cvKey,
+        key: cvKey,
+        name: `${article.title} (CV)`,
+        axis: "cv",
         stroke: `hsl(${211 + idx * 53}, 63%, 76%)`,
         id: article.id,
       });
@@ -123,18 +139,17 @@ export function AnalyticsGraph({ articles }: Props) {
         if (idx === 0) {
           const analytic = analytics.find((a) => a.id === key.id);
           if (!analytic) return;
-          if (key.name.endsWith("(PV)")) {
-            cumulativeSums[key.name] = analytic.pastViewCount;
-          } else if (key.name.endsWith("(CV)")) {
-            cumulativeSums[key.name] = analytic.pastConversionCount;
-          }
+          cumulativeSums[key.key] =
+            key.axis === "pv"
+              ? analytic.pastViewCount
+              : analytic.pastConversionCount;
         }
         // 都度加算
         const value =
-          typeof entry[key.name] === "number" ? (entry[key.name] as number) : 0;
-        cumulativeSums[key.name] = (cumulativeSums[key.name] || 0) + value;
+          typeof entry[key.key] === "number" ? (entry[key.key] as number) : 0;
+        cumulativeSums[key.key] = (cumulativeSums[key.key] || 0) + value;
 
-        newEntry[key.name] = cumulativeSums[key.name];
+        newEntry[key.key] = cumulativeSums[key.key];
       });
       cumulativeData.push(newEntry);
     });
@@ -204,9 +219,17 @@ export function AnalyticsGraph({ articles }: Props) {
         {result && (
           <div className="text-sm text-c-sub">
             <p>
-              適用済み：{result.conditions.start_date}〜
-              {result.conditions.end_date}（
-              {intervalNames[result.conditions.type]}・
+              適用済み：
+              {result.conditions.start_date.slice(
+                0,
+                periodLength[result.conditions.type]
+              )}
+              〜
+              {result.conditions.end_date.slice(
+                0,
+                periodLength[result.conditions.type]
+              )}
+              （{intervalNames[result.conditions.type]}・
               {result.conditions.mode === "cumulative" ? "累積" : "期間別"}）
             </p>
             <p>
@@ -234,8 +257,8 @@ export function AnalyticsGraph({ articles }: Props) {
             <CartesianGrid strokeDasharray="3 3" />
             {keys.map((key) => (
               <Line
-                key={key.name}
-                dataKey={key.name}
+                key={key.key}
+                dataKey={key.key}
                 name={key.name}
                 stroke={key.stroke}
                 connectNulls

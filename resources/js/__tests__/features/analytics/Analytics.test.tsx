@@ -201,6 +201,32 @@ describe("Analytics Integration Component", () => {
     expect(screen.getByText("期間プリセット")).toBeInTheDocument();
   });
 
+  it("キーボードで選択でき、10件で上限に達し、全解除できる", async () => {
+    const user = userEvent.setup();
+    const articles = Array.from({ length: 11 }, (_, i) => ({
+      ...mockArticles[0],
+      id: i + 1,
+      title: `選択用記事 ${i + 1}`,
+    }));
+
+    render(<Analytics articles={articles} />);
+    const checkboxes = screen.getAllByRole("checkbox", { name: /選択用記事/ });
+    checkboxes[0].focus();
+    await user.keyboard(" ");
+    expect(checkboxes[0]).toBeChecked();
+
+    for (const checkbox of checkboxes.slice(1, 10)) {
+      await user.click(checkbox);
+    }
+    expect(screen.getByText("選択済み 10 / 10件")).toBeInTheDocument();
+    expect(checkboxes[10]).toBeDisabled();
+
+    await user.click(screen.getByRole("button", { name: "全解除" }));
+    expect(screen.getByText("選択済み 0 / 10件")).toBeInTheDocument();
+    expect(checkboxes[0]).not.toBeChecked();
+    expect(checkboxes[10]).toBeEnabled();
+  });
+
   it("記事表示: タイトル列確認", () => {
     render(<Analytics articles={mockArticles} />);
 

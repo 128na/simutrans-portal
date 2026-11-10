@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AnalyticsGraph } from "@/features/analytics/AnalyticsGraph";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
@@ -124,12 +124,16 @@ describe("AnalyticsGraph", () => {
     await user.click(button);
 
     await waitFor(() => {
-      expect(mockAxios.post).toHaveBeenCalledWith("/api/v2/analytics", {
-        ids: [1, 2],
-        type: "daily",
-        start_date: "2024-01-01",
-        end_date: "2024-01-31",
-      });
+      expect(mockAxios.post).toHaveBeenCalledWith(
+        "/api/v2/analytics",
+        {
+          ids: [1, 2],
+          type: "daily",
+          start_date: "2024-01-01",
+          end_date: "2024-01-31",
+        },
+        { signal: expect.any(AbortSignal) }
+      );
     });
   });
 
@@ -336,6 +340,76 @@ describe("AnalyticsGraph", () => {
     });
   });
 
+  it("変更した条件の結果を、後から届いた旧レスポンスで上書きしない", async () => {
+    const user = userEvent.setup();
+    let resolveOld!: (value: {
+      data: { data: Analytics.ArticleAnalytic[] };
+    }) => void;
+    const oldRequest = new Promise((resolve) => {
+      resolveOld = resolve;
+    });
+    mockAxios.post = vi
+      .fn()
+      .mockReturnValueOnce(oldRequest)
+      .mockResolvedValueOnce({ data: { data: [] } });
+
+    const { rerender } = render(<AnalyticsGraph articles={mockArticles} />);
+    const button = screen.getByRole("button", { name: "グラフを表示" });
+    await user.click(button);
+    expect(screen.getByText("集計を取得しています。")).toBeInTheDocument();
+
+    mockUseAnalyticsStore.mockReturnValue({
+      selected: [2],
+      start_date: "2024-02-01",
+      end_date: "2024-02-29",
+      type: "daily",
+      axes: ["pv"],
+      mode: "periodic",
+    });
+    rerender(<AnalyticsGraph articles={mockArticles} />);
+    expect(screen.getByText(/条件は未適用/)).toBeInTheDocument();
+    await user.click(button);
+    expect(await screen.findByText("対象記事：Article 2")).toBeInTheDocument();
+
+    await act(async () => {
+      resolveOld({
+        data: {
+          data: [
+            {
+              id: 1,
+              viewCounts: { "2024-01-01": 10 },
+              conversionCounts: {},
+              pastViewCount: 0,
+              pastConversionCount: 0,
+            },
+          ],
+        },
+      });
+    });
+    expect(screen.getByText("対象記事：Article 2")).toBeInTheDocument();
+    expect(screen.queryByTestId("line-chart")).not.toBeInTheDocument();
+  });
+
+  it("取得失敗を0件と区別し再試行できる", async () => {
+    const user = userEvent.setup();
+    mockAxios.post = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValueOnce({ data: { data: [] } });
+
+    render(<AnalyticsGraph articles={mockArticles} />);
+    const button = screen.getByRole("button", { name: "グラフを表示" });
+    await user.click(button);
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "集計の取得に失敗しました"
+    );
+    await user.click(button);
+    expect(
+      await screen.findByText("適用した条件に該当する集計はありません。")
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
   it("存在しない記事IDのデータは無視される", async () => {
     const user = userEvent.setup();
     mockAxios.post = vi.fn().mockResolvedValue({
@@ -358,8 +432,9 @@ describe("AnalyticsGraph", () => {
     await user.click(button);
 
     await waitFor(() => {
-      // データが無視されるので、"記事を選んでください"が表示される
-      expect(screen.getByText("記事を選んでください")).toBeInTheDocument();
+      expect(
+        screen.getByText("適用した条件に該当する集計はありません。")
+      ).toBeInTheDocument();
     });
   });
 });

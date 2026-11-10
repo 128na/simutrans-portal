@@ -4,7 +4,14 @@ import Checkbox from "@/components/ui/Checkbox";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
-import { format, subMonths, subYears } from "date-fns";
+import {
+  format,
+  isValid,
+  parseISO,
+  subDays,
+  subMonths,
+  subYears,
+} from "date-fns";
 
 const TYPES = {
   daily: "日次",
@@ -29,7 +36,23 @@ export function AnalyticsOption() {
     <>
       <div>
         <FormCaption>期間プリセット</FormCaption>
-        <div className="gap-2 flex items-end">
+        <div className="gap-2 flex flex-wrap items-end">
+          {[7, 30].map((days) => (
+            <Button
+              key={days}
+              variant="sub"
+              onClick={() => {
+                const today = new Date();
+                set({
+                  start_date: subDays(today, days - 1),
+                  end_date: today,
+                  type: "daily",
+                });
+              }}
+            >
+              直近{days}日
+            </Button>
+          ))}
           <Button
             variant="sub"
             onClick={() =>
@@ -77,7 +100,10 @@ export function AnalyticsOption() {
               id="start-date"
               type="date"
               value={format(start_date, "yyyy-MM-dd")}
-              onChange={(e) => set({ start_date: new Date(e.target.value) })}
+              onChange={(e) => {
+                const date = parseISO(e.target.value);
+                if (isValid(date)) set({ start_date: date });
+              }}
             />
           </div>
           <div className="flex flex-col">
@@ -86,7 +112,10 @@ export function AnalyticsOption() {
               id="end-date"
               type="date"
               value={format(end_date, "yyyy-MM-dd")}
-              onChange={(e) => set({ end_date: new Date(e.target.value) })}
+              onChange={(e) => {
+                const date = parseISO(e.target.value);
+                if (isValid(date)) set({ end_date: date });
+              }}
             />
           </div>
           <div className="flex flex-col">
@@ -111,6 +140,9 @@ export function AnalyticsOption() {
       </div>
       <div>
         <FormCaption>表示データ</FormCaption>
+        <p className="text-sm text-c-sub">
+          CV はダウンロードや配布リンクをクリックした回数です。
+        </p>
         <div className="gap-4 flex flex-col sm:flex-row">
           {AXES.map((axis) => (
             <Checkbox

@@ -3,7 +3,8 @@ import TextSub from "@/components/ui/TextSub";
 import Button from "@/components/ui/Button";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { format } from "date-fns";
 import {
   CartesianGrid,
   Legend,
@@ -19,11 +20,51 @@ type Props = {
 };
 
 type DataSet = ({ name: string } & Record<string, number | string>)[];
+type Conditions = {
+  ids: number[];
+  type: Analytics.Type;
+  start_date: string;
+  end_date: string;
+  mode: Analytics.Mode;
+  axes: Analytics.Axis[];
+};
+
+type RequestState =
+  | { phase: "loading" | "error"; key: string }
+  | {
+      phase: "ready";
+      key: string;
+      conditions: Conditions;
+      analytics: Analytics.ArticleAnalytic[];
+    };
+
+const intervalNames: Record<Analytics.Type, string> = {
+  daily: "日次",
+  monthly: "月次",
+  yearly: "年次",
+};
+
 export function AnalyticsGraph({ articles }: Props) {
   const { selected, start_date, end_date, type, axes, mode } =
     useAnalyticsStore();
 
-  const [analytics, setAnalytics] = useState<Analytics.ArticleAnalytic[]>([]);
+  const conditions = {
+    ids: selected,
+    type,
+    start_date: format(start_date, "yyyy-MM-dd"),
+    end_date: format(end_date, "yyyy-MM-dd"),
+    mode,
+    axes,
+  };
+  const key = JSON.stringify(conditions);
+  const [request, setRequest] = useState<RequestState | null>(null);
+  const latestRequest = useRef<AbortController | null>(null);
+  const result = request?.phase === "ready" ? request : null;
+  const analytics = result?.analytics ?? [];
+  const appliedAxes = result?.conditions.axes ?? [];
+  const validDates = conditions.start_date < conditions.end_date;
+
+  useEffect(() => () => latestRequest.current?.abort(), []);
 
   // convert from analytics
   const keys: { name: string; stroke: string; id: number }[] = [];
@@ -32,7 +73,7 @@ export function AnalyticsGraph({ articles }: Props) {
     const { id, viewCounts, conversionCounts } = an;
     const article = articles.find((a) => a.id === id);
     if (!article) return;
-    if (axes.includes("pv")) {
+    if (appliedAxes.includes("pv")) {
       const pvKey = `${article.title} (PV)`;
       keys.push({
         name: pvKey,
@@ -48,7 +89,7 @@ export function AnalyticsGraph({ articles }: Props) {
         }
       });
     }
-    if (axes.includes("cv")) {
+    if (appliedAxes.includes("cv")) {
       const cvKey = `${article.title} (CV)`;
       keys.push({
         name: cvKey,
@@ -70,7 +111,7 @@ export function AnalyticsGraph({ articles }: Props) {
   data.sort((a, b) => (a.name < b.name ? -1 : 1));
 
   // 積算なら過去値も加えて加算する
-  if (mode === "cumulative") {
+  if (result?.conditions.mode === "cumulative") {
     const cumulativeData: DataSet = [];
     const cumulativeSums: Record<string, number> = {};
     data.forEach((entry, idx) => {
@@ -101,48 +142,113 @@ export function AnalyticsGraph({ articles }: Props) {
   }
 
   const onClick = async () => {
-    const res = await axios.post("/api/v2/analytics", {
-      ids: selected,
-      type,
-      start_date,
-      end_date,
-    });
+    latestRequest.current?.abort();
+    const controller = new AbortController();
+    latestRequest.current = controller;
+    setRequest({ phase: "loading", key });
+    const { ids, type, start_date, end_date } = conditions;
 
-    setAnalytics(res.data.data);
+    try {
+      const response = await axios.post<{ data: Analytics.ArticleAnalytic[] }>(
+        "/api/v2/analytics",
+        { ids, type, start_date, end_date },
+        { signal: controller.signal }
+      );
+      if (!controller.signal.aborted) {
+        setRequest({
+          phase: "ready",
+          key,
+          conditions,
+          analytics: response.data.data,
+        });
+      }
+    } catch {
+      if (!controller.signal.aborted) {
+        setRequest({ phase: "error", key });
+      }
+    }
   };
 
   return (
     <div>
       <FormCaption>グラフ</FormCaption>
-      {data.length === 0 ? (
-        <TextSub>記事を選んでください</TextSub>
-      ) : (
-        <LineChart
-          style={{ width: "100%", minHeight: 300, maxHeight: 600 }}
-          responsive
-          data={data}
+      <div className="space-y-2 mb-4">
+        <Button
+          onClick={onClick}
+          disabled={
+            selected.length === 0 ||
+            axes.length === 0 ||
+            !validDates ||
+            (request?.phase === "loading" && request.key === key)
+          }
+          size="lg"
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          {keys.map((key) => (
-            <Line
-              key={key.name}
-              dataKey={key.name}
-              name={key.name}
-              stroke={key.stroke}
-              connectNulls
+          グラフを表示
+        </Button>
+        {selected.length === 0 && <TextSub>記事を選んでください</TextSub>}
+        {!validDates && <TextSub>終了日は開始日より後にしてください。</TextSub>}
+        {axes.length === 0 && (
+          <TextSub>表示データを1つ以上選んでください。</TextSub>
+        )}
+        {(selected.length > 0 || request !== null) && request?.key !== key && (
+          <p role="status" className="text-sm text-c-sub">
+            条件は未適用です。「グラフを表示」で反映してください。
+          </p>
+        )}
+        {request?.phase === "loading" && (
+          <p role="status">集計を取得しています。</p>
+        )}
+        {request?.phase === "error" && (
+          <p role="alert">集計の取得に失敗しました。もう一度お試しください。</p>
+        )}
+        {result && (
+          <div className="text-sm text-c-sub">
+            <p>
+              適用済み：{result.conditions.start_date}〜
+              {result.conditions.end_date}（
+              {intervalNames[result.conditions.type]}・
+              {result.conditions.mode === "cumulative" ? "累積" : "期間別"}）
+            </p>
+            <p>
+              対象記事：
+              {result.conditions.ids
+                .map(
+                  (id) =>
+                    articles.find((article) => article.id === id)?.title ??
+                    String(id)
+                )
+                .join("、")}
+            </p>
+          </div>
+        )}
+      </div>
+      {result &&
+        (data.length === 0 ? (
+          <TextSub>適用した条件に該当する集計はありません。</TextSub>
+        ) : (
+          <LineChart
+            style={{ width: "100%", minHeight: 300, maxHeight: 600 }}
+            responsive
+            data={data}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            {keys.map((key) => (
+              <Line
+                key={key.name}
+                dataKey={key.name}
+                name={key.name}
+                stroke={key.stroke}
+                connectNulls
+              />
+            ))}
+            <XAxis dataKey="name" />
+            <YAxis
+              label={{ value: "件数", angle: -90, position: "insideLeft" }}
             />
-          ))}
-          <XAxis dataKey="name" />
-          <YAxis
-            label={{ value: "件数", angle: -90, position: "insideLeft" }}
-          />
-          <Legend />
-          <Tooltip />
-        </LineChart>
-      )}
-      <Button onClick={onClick} disabled={selected.length < 1} size="lg">
-        グラフを表示
-      </Button>
+            <Legend />
+            <Tooltip />
+          </LineChart>
+        ))}
     </div>
   );
 }

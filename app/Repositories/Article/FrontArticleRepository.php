@@ -153,23 +153,7 @@ class FrontArticleRepository
      */
     public function paginateLatest(string $pak, int $limit = 24): LengthAwarePaginator
     {
-        $query = $this->model->query()
-            ->select(['articles.*'])
-            ->distinct()
-            ->withoutGlobalScopes();
-
-        $this->joinActiveUsers($query);
-
-        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
-            ->join('categories', function (JoinClause $joinClause) use ($pak): void {
-                $joinClause->on('article_category.category_id', '=', 'categories.id')
-                    ->where('categories.type', CategoryType::Pak)
-                    ->where('categories.slug', $pak);
-            });
-
-        $this->wherePublished($query);
-        $this->whereAddonPostTypes($query);
-        $this->orderByLatest($query);
+        $query = $this->latestPakQuery($pak)->select(['articles.*'])->distinct();
         $this->withStandardRelations($query);
 
         return $query->paginate($limit);
@@ -182,26 +166,26 @@ class FrontArticleRepository
      */
     public function getLatest(string $pak, int $limit = 24): Collection
     {
-        $query = $this->model->query()
+        return $this->latestPakQuery($pak)
             ->select(['articles.*', 'users.nickname as user_nickname'])
             ->distinct()
-            ->withoutGlobalScopes();
+            ->limit($limit)
+            ->get();
+    }
 
-        $this->joinActiveUsers($query);
-
-        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
-            ->join('categories', function (JoinClause $joinClause) use ($pak): void {
-                $joinClause->on('article_category.category_id', '=', 'categories.id')
-                    ->where('categories.type', CategoryType::Pak)
-                    ->where('categories.slug', $pak);
-            });
-
-        $this->wherePublished($query);
-        $this->whereAddonPostTypes($query);
-        $this->orderByLatest($query);
-        $query->limit($limit);
-
-        return $query->get();
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getLatestForCards(string $pak, int $limit): Collection
+    {
+        return $this->latestPakQuery($pak)
+            ->select([
+                'articles.id', 'articles.user_id', 'articles.title', 'articles.slug',
+                'articles.post_type', 'articles.contents', 'articles.published_at', 'articles.modified_at',
+            ])
+            ->with('user:id,nickname', 'attachments:id,attachmentable_id,path,thumbnail_path')
+            ->limit($limit)
+            ->get();
     }
 
     /**
@@ -454,6 +438,26 @@ class FrontArticleRepository
         $this->withStandardRelations($query);
 
         return $query->paginate($limit);
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function latestPakQuery(string $pak): Builder
+    {
+        $query = $this->model->query()->withoutGlobalScopes();
+        $this->joinActiveUsers($query);
+        $query->join('article_category', 'articles.id', '=', 'article_category.article_id')
+            ->join('categories', function (JoinClause $joinClause) use ($pak): void {
+                $joinClause->on('article_category.category_id', '=', 'categories.id')
+                    ->where('categories.type', CategoryType::Pak)
+                    ->where('categories.slug', $pak);
+            });
+
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+
+        return $this->orderByLatest($query);
     }
 
     /**

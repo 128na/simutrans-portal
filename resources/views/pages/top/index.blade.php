@@ -47,9 +47,18 @@
         </div>
         <div class="grid gap-10">
           <section class="space-y-8">
-            <h3 class="v2-text-h4">
-              <x-ui.link :url="route('latest')" :title="'新着アドオン'" />
-            </h3>
+            <div class="space-y-4">
+              <h3 class="v2-text-h4">新着アドオン</h3>
+              @if ($latestCards->isNotEmpty())
+                <p class="text-sm text-c-sub">Pak128Japan・Pak128・Pak64 の新規・更新記事</p>
+                <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  @foreach ($latestCards as $article)
+                    @include('components.partials.tile', ['article' => $article])
+                  @endforeach
+                </div>
+              @endif
+              <x-ui.link :url="route('latest')" :title="'新着アドオンをもっと見る'" />
+            </div>
 
             <div>
               <h3 class="v2-text-h4 mb-4">

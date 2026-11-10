@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Front;
 
 use Closure;
+use DateTimeImmutable;
 use Illuminate\Container\Attributes\Singleton;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
@@ -40,12 +41,21 @@ class PublicArticleSnapshot
         }
 
         foreach (self::PAKS as $pak) {
-            if (! $this->validCards($latest[$pak] ?? null, ['title', 'url', 'thumbnail_url'])) {
+            $cards = $latest[$pak] ?? null;
+            if (! $this->validCards($cards, ['title', 'url', 'thumbnail_url'])) {
                 return ['latest' => [], 'announces' => []];
+            }
+            foreach ($cards as $card) {
+                if (! is_int($card['id'] ?? null)
+                    || ! array_key_exists('published_at', $card) || ! array_key_exists('modified_at', $card)
+                    || ! $this->validDate($card['published_at'] ?? null)
+                    || ! $this->validDate($card['modified_at'] ?? null)) {
+                    return ['latest' => [], 'announces' => []];
+                }
             }
         }
 
-        return ['latest' => $latest, 'announces' => $announces];
+        return ['latest' => array_intersect_key($latest, array_flip(self::PAKS)), 'announces' => $announces];
     }
 
     /**
@@ -139,6 +149,20 @@ class PublicArticleSnapshot
         }
 
         return true;
+    }
+
+    private function validDate(mixed $date): bool
+    {
+        if ($date === null) {
+            return true;
+        }
+        if (! is_string($date) || str_contains($date, "\0")) {
+            return false;
+        }
+
+        $parsed = DateTimeImmutable::createFromFormat(DATE_ATOM, $date);
+
+        return $parsed !== false && $parsed->format(DATE_ATOM) === $date;
     }
 
     /**

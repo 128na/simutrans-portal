@@ -8,6 +8,8 @@
 /public/icons
 /public/storage
 /storage/*.key
+/storage/app/public-article-snapshot.json
+/storage/app/public-article-snapshot.json.*.lock
 /storage/app/public/thumbnails/
 /vendor
 .env

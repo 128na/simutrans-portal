@@ -8,6 +8,7 @@ use App\Enums\ArticlePostType;
 use App\Rules\ImageAttachment;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 abstract class BaseRequest extends FormRequest
 {
@@ -64,6 +65,7 @@ abstract class BaseRequest extends FormRequest
             'article.contents.thumbnail' => ['nullable', 'exists:attachments,id,user_id,'.Auth::id(), resolve(ImageAttachment::class)],
             'article.contents.author' => 'required|max:255',
             'article.contents.link' => 'required|url|max:255',
+            'article.contents.link_type' => ['nullable', Rule::in(['page', 'file'])],
             'article.contents.description' => 'required|string|max:2048',
             'article.contents.agreement' => 'nullable',
             'article.contents.exclude_link_check' => 'nullable',

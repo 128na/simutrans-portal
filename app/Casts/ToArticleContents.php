@@ -31,7 +31,7 @@ class ToArticleContents implements CastsAttributes
     #[\Override]
     public function get($model, $key, $value, $attributes)
     {
-        /** @var array{thumbnail?:int,sections?:array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>,markdown?:string,description?:string,file?:int,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool} */
+        /** @var array{thumbnail?:int,sections?:array<int,array{type:string,caption?:string,text?:string,url?:string,id?:int}>,markdown?:string,description?:string,file?:int,author?:string,license?:string,thanks?:string,link?:string,link_type?:string|null,agreement?:bool,exclude_link_check?:bool} */
         $data = json_decode((string) $value, true);
 
         /** @var ArticlePostType $postType */

@@ -187,6 +187,7 @@ export interface ArticleContentAddonPost extends ArticleContentBase {
 export interface ArticleContentAddonIntroduction extends ArticleContentBase {
   description: string | null;
   link: string | null;
+  link_type?: "page" | "file" | null;
   author: string | null;
   license: string | null;
   thanks: string | null;

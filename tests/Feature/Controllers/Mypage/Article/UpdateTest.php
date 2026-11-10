@@ -163,6 +163,21 @@ class UpdateTest extends TestCase
         $this->get(route('latest'))->assertOk()->assertDontSee($this->article->title);
     }
 
+    public function test_外部リンクの種類を保存できる(): void
+    {
+        $url = '/api/v2/articles/'.$this->article->id;
+        $payload = $this->createArticle();
+        $payload['contents']['link_type'] = 'file';
+
+        $this->actingAs($this->article->user)
+            ->postJson($url, ['article' => $payload])->assertOk();
+        $this->assertSame('file', $this->article->fresh()->contents->link_type);
+
+        $payload['contents']['link_type'] = 'unknown';
+        $this->postJson($url, ['article' => $payload])
+            ->assertUnprocessable()->assertJsonValidationErrors('article.contents.link_type');
+    }
+
     private function createArticle(): array
     {
         return [

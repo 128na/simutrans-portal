@@ -1,4 +1,3 @@
-import Link from "@/components/ui/Link";
 import { formatArticleDate } from "../../utils/articleUtil";
 import { TextPre } from "../TextPre";
 import { TitleH3 } from "../TitleH3";
@@ -6,9 +5,8 @@ import { TitleH4 } from "../TitleH4";
 
 type Props = {
   article: Article.Show;
-  preview: boolean;
 };
-export const AddonIntroduction = ({ article, preview }: Props) => {
+export const AddonIntroduction = ({ article }: Props) => {
   const contents = article.contents as ArticleContent.AddonIntroduction;
   return (
     <>
@@ -35,16 +33,6 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
                 <th>最終更新日時</th>
                 <td>{formatArticleDate(article.modified_at)}</td>
               </tr>
-              <tr>
-                <th>掲載URL</th>
-                <td>
-                  <Link
-                    href={preview ? "#" : `/articles/${article.id}/conversion`}
-                  >
-                    {contents.link ?? "未設定"}
-                  </Link>
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -59,7 +47,7 @@ export const AddonIntroduction = ({ article, preview }: Props) => {
 
       {contents.license && (
         <div>
-          <TitleH4>参考にしたアドオン</TitleH4>
+          <TitleH4>ライセンス・利用条件</TitleH4>
           <TextPre>{contents.license}</TextPre>
         </div>
       )}

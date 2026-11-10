@@ -124,7 +124,7 @@ jobs:
             sh scripts/restrict-deploy-permissions.sh
             php -c ~/www/php.ini ~/bin/composer.phar install --optimize-autoloader --no-dev
             php -c ~/www/php.ini artisan migrate --force
-            php -c ~/www/php.ini artisan optimize:clear
+            php -c ~/www/php.ini artisan optimize:clear --except=cache
             php -c ~/www/php.ini artisan optimize
             php -c ~/www/php.ini artisan event:cache
             php -c ~/www/php.ini artisan view:cache

@@ -320,6 +320,46 @@ php artisan schedule:list
 php artisan schedule:work
 ```
 
+### 本番のキャッシュストア切り替え
+
+本番では Web と cron が同じホスト上の同じアプリを使う。既定キャッシュを
+`file` に切り替えると、スケジュールの一時停止と重複防止ロックは
+`storage/framework/cache/data` に保存される。セッションは `file`、
+キューは `database` のまま運用する。レート制限は並行更新時のカウンターを
+保つため `CACHE_LIMITER_STORE=database` で従来のストアを使う。
+
+1. この手順に対応したコードを先に反映し、cron と同じ PHP で
+   `config:show cache.default`、`config:show cache.limiter` を確認する。
+   Web と CLI が同じキャッシュパスに書き込めることを確認する。
+   各実行経路で一意な短寿命キーを相互に読み取り、同じキーのロックを
+   片方が保持している間は他方で取得できず、解放後に取得できることを確認する。
+   確認用の値とロックだけを削除する。
+2. ポータルの cron を止め、新規の手動実行も止める。実行中の
+   `schedule:run`、バックグラウンドの `backup:sync-uploads` とその子プロセス、
+   `schedule:finish`、キューワーカーなどが終了したことを確認する。
+   手動のバックアップ同期は通常運用でも定期実行と重ねない。
+   Web をメンテナンス状態にして既存リクエストの終了を待ち、二要素認証の
+   使用済みコードが失効してから切り替える。現行本番の受入範囲では終了後2分を取る。
+3. 現行ストアから切り替え先へ、停止状態とバックアップの稼働情報を引き継ぐ。
+   現行ストアでキーが失効済みまたは存在しない場合は、切り替え先に残っている
+   同じキーだけを削除する。
+   - スケジュールの `illuminate:schedule:paused` と、設定済みのキュー停止キー
+     `illuminate:queues:paused`、`illuminate:queue:paused:<connection>:<queue>`
+   - `backup-sync-uploads-health:{dropbox|local_backup}:{first-observed|last-complete|alerted}`
+   - `backup-sync-uploads-digest:{transferred|errors}:{YYYY-MM-DD}` の有効な日付分
+   - `alerted` と集計値は残りの有効期間を引き継ぐ。実行中の処理がないことを
+     確認してから、切り替え先に残ったスケジュールロックだけを必要に応じて解除する。
+4. 本番環境で `CACHE_DRIVER=file` と `CACHE_LIMITER_STORE=database` を設定する。
+   `SCHEDULE_CACHE_DRIVER` または `SCHEDULE_CACHE_STORE` の上書きがないことを確認し、
+   cron と同じ PHP で `config:cache` を実行する。Web と CLI の実効設定と停止状態を確認する。
+   メンテナンス状態を解除し、cron を再開して実行ログとバックアップの集計を確認する。
+
+切り戻しでも Web と cron と手動実行を同じ手順で停止し、停止状態と稼働情報を
+現在のストアから戻し先に同期する。`CACHE_DRIVER=database` に戻して
+設定キャッシュを再生成し、実効設定を確認して Web と cron を再開する。
+通常のデプロイではアプリのキャッシュを保持する。切り替えや切り戻しでも
+`cache:clear` による一括削除は行わない。
+
 ## テスト
 
 コマンドのテストは `tests/Feature/Console/` に配置します。

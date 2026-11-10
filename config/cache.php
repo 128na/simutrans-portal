@@ -21,6 +21,8 @@ return [
 
     'default' => env('CACHE_DRIVER', 'file'),
 
+    'limiter' => env('CACHE_LIMITER_STORE'),
+
     'serializable_classes' => false,
 
     /*

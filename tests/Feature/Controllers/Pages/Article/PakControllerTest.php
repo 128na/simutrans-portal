@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\Pages\Article;
 
 use App\Enums\CategoryType;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use Tests\Feature\TestCase;
 
 class PakControllerTest extends TestCase
@@ -22,6 +23,39 @@ class PakControllerTest extends TestCase
         $testResponse->assertOk();
         $testResponse->assertDontSee('%25', false);
         $testResponse->assertSee($article->showUrl(), false);
+    }
+
+    public function test_latest_limits_cards_without_counting_and_pak_pages_still_paginate(): void
+    {
+        $category = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
+        $articles = [];
+        $now = now();
+        for ($i = 0; $i < 25; $i++) {
+            $article = $this->createAddonIntroduction();
+            $article->update(['modified_at' => $now->subMinutes($i)]);
+            $article->categories()->attach($category);
+            $articles[] = $article;
+        }
+
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+        try {
+            $response = $this->get(route('latest', ['page' => 2]));
+            $queries = DB::getQueryLog();
+        } finally {
+            DB::disableQueryLog();
+            DB::flushQueryLog();
+        }
+
+        $response->assertOk();
+        $response->assertViewHas('pak128Japan', fn (array $cards): bool => array_column($cards, 'id') === array_map(fn ($article): int => $article->id, array_slice($articles, 0, 12)));
+        $this->assertSame([], array_values(array_filter($queries, fn (array $query): bool => preg_match('/^select count\(|\b(?:article_tag|profiles)\b/i', $query['query']) === 1)));
+
+        $this->get(route('pak.128japan', ['page' => 2]))
+            ->assertOk()
+            ->assertViewHas('articles', fn ($articlesResource): bool => $articlesResource->resource->currentPage() === 2
+                && $articlesResource->resource->total() === 25
+                && $articlesResource->resource->first()?->id === $articles[24]->id);
     }
 
     public function test_pak128_japan(): void

@@ -29,6 +29,23 @@ class LatestAction
     }
 
     /**
+     * @return list<array{id: int, user_id: int, title: string, url: string, thumbnail_url: string, published_at: ?string, modified_at: ?string}>
+     */
+    public function cardsByPak(string $pak, int $limit = 12): array
+    {
+        return array_values($this->articleRepository->getLatestForCards($pak, $limit)
+            ->map(fn (Article $article): array => [
+                'id' => $article->id,
+                'user_id' => $article->user_id,
+                'title' => $article->title,
+                'url' => $article->showUrl(),
+                'thumbnail_url' => $article->thumbnail_url,
+                'published_at' => $article->published_at?->toIso8601String(),
+                'modified_at' => $article->modified_at?->toIso8601String(),
+            ])->all());
+    }
+
+    /**
      * @return LengthAwarePaginator<int, Article>
      */
     public function others(int $limit = 24): LengthAwarePaginator

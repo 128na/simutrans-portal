@@ -23,9 +23,9 @@ class PakController extends Controller
     public function latest(): View
     {
         return view('pages.pak.latest', [
-            'pak128Japan' => ArticleList::collection($this->latestAction->byPak('128-japan', 12)),
-            'pak128' => ArticleList::collection($this->latestAction->byPak('128', 12)),
-            'pak64' => ArticleList::collection($this->latestAction->byPak('64', 12)),
+            'pak128Japan' => $this->latestAction->cardsByPak('128-japan', 12),
+            'pak128' => $this->latestAction->cardsByPak('128', 12),
+            'pak64' => $this->latestAction->cardsByPak('64', 12),
             'meta' => $this->metaOgpService->frontLatest(),
         ]);
     }

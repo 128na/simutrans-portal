@@ -51,6 +51,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
   const filtered = analyticsFilter(articles, criteria, selected);
 
   const totalPages = Math.ceil(filtered.length / limit);
+  const activePage = Math.min(current, Math.max(1, totalPages));
 
   const sorted = filtered.sort((a, b) => {
     const result = compareArticleValues(a[sort.column], b[sort.column]);
@@ -109,7 +110,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
         <div className="grow"></div>
         <Pagination
           total={totalPages}
-          current={current}
+          current={activePage}
           onChange={setCurrent}
         />
       </div>
@@ -119,7 +120,7 @@ export const AnalyticsTable = ({ articles, limit }: Props) => {
           data={sorted}
           sort={sort}
           limit={limit}
-          current={current}
+          current={activePage}
           onSort={onSort}
           renderRow={(article) => (
             <tr

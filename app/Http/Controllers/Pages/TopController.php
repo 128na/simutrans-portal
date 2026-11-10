@@ -18,6 +18,15 @@ class TopController extends Controller
     {
         $articles = $this->snapshot->read();
 
-        return view('pages.top.index', $articles);
+        $latestCards = collect($articles['latest'])
+            ->flatten(1)
+            ->unique('id')
+            ->sortByDesc(fn (array $card): string => $card['modified_at'] ?? $card['published_at'] ?? '')
+            ->take(8);
+
+        return view('pages.top.index', [
+            'announces' => $articles['announces'],
+            'latestCards' => $latestCards,
+        ]);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Mypage\Article;
 
 use App\Actions\Article\Data\UpdateArticleData;
 use App\Actions\Article\UpdateArticle;
+use App\Enums\ArticleStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Article\UpdateRequest;
 use App\Http\Resources\Mypage\ArticleEdit;
@@ -16,6 +17,7 @@ use App\Repositories\Article\MypageArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Services\Front\MetaOgpService;
+use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +50,7 @@ class EditController extends Controller
     /**
      * 記事を更新
      */
-    public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle): JsonResponse
+    public function update(UpdateRequest $updateRequest, Article $article, UpdateArticle $updateArticle, PublicArticleSnapshot $snapshot): JsonResponse
     {
         $this->authorize('update', $article);
 
@@ -58,13 +60,21 @@ class EditController extends Controller
         $validated = $updateRequest->validated();
         $updateArticleData = UpdateArticleData::fromArray($validated);
 
-        $article = DB::transaction(function () use ($article, $updateArticle, $updateArticleData, $updateRequest): Article {
+        $update = fn (): Article => DB::transaction(function () use ($article, $updateArticle, $updateArticleData, $updateRequest, $snapshot): Article {
             $article = Article::query()->lockForUpdate()->findOrFail($article->id);
             $this->authorize('update', $article);
             abort_if($updateRequest->string('article.post_type')->toString() !== $article->post_type->value, 409, '記事タイプが変更されています。画面を再読み込みしてください。');
 
+            if ($article->is_publish && $updateArticleData->article->status !== ArticleStatus::Publish->value) {
+                $snapshot->invalidate();
+            }
+
             return $updateArticle($article, $updateArticleData);
         });
+
+        $article = $updateArticleData->article->status === ArticleStatus::Publish->value
+            ? $update()
+            : $snapshot->mutate($update);
 
         return response()->json(['article_id' => $article->id], 200);
     }

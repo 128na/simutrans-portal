@@ -6,8 +6,10 @@ namespace Tests\Feature\Controllers\Mypage\Article;
 
 use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
+use App\Enums\CategoryType;
 use App\Enums\ControllOptionKey;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\ControllOption;
 use App\Models\User;
 use App\Notifications\SendArticlePublished;
@@ -140,6 +142,25 @@ class UpdateTest extends TestCase
             $this->article,
             SendArticlePublished::class
         );
+    }
+
+    public function test_hiding_a_published_article_invalidates_its_saved_card(): void
+    {
+        $this->article->update(['status' => ArticleStatus::Publish]);
+        $pak = Category::where('type', CategoryType::Pak)->where('slug', '64')->sole();
+        $this->article->categories()->attach($pak);
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+        $this->get(route('latest'))->assertOk()->assertSee($this->article->title);
+
+        $this->actingAs($this->article->user)
+            ->postJson('/api/v2/articles/'.$this->article->id, ['article' => [
+                ...$this->createArticle(),
+                'status' => ArticleStatus::Private->value,
+                'categories' => [$pak->id],
+            ]])->assertOk();
+
+        $this->assertSame(ArticleStatus::Private, $this->article->fresh()->status);
+        $this->get(route('latest'))->assertOk()->assertDontSee($this->article->title);
     }
 
     private function createArticle(): array

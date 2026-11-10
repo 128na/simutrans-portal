@@ -17,14 +17,13 @@ class TopControllerTest extends TestCase
 
     public function test_お知らせ一覧のリンクは日本語スラッグでも二重エンコードされない(): void
     {
-        // one-liner.blade.php は user リレーションを積まずに user_nickname 列を使う経路
-        // （N+1回避のため）を通るので、articleSlug の urldecode() 処理を実URLで検証する。
         $article = $this->createAnnounce();
         $article->update([
             'title' => '日本語のお知らせ記事',
             'slug' => '日本語のお知らせ記事',
         ]);
 
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
         $testResponse = $this->get(route('index'));
 
         $testResponse->assertOk();

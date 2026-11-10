@@ -6,9 +6,11 @@ namespace App\Console\Commands\Article;
 
 use App\Enums\ArticleStatus;
 use App\Jobs\Article\JobUpdateRelated;
+use App\Models\Article;
 use App\Repositories\ArticleRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PublishReservation extends Command
@@ -49,11 +51,20 @@ class PublishReservation extends Command
         $errorCount = 0;
         foreach ($lazyCollection as $article) {
             try {
-                $article->update([
-                    'status' => ArticleStatus::Publish,
-                    'modified_at' => $article->published_at,
-                ]);
-                $changed = true;
+                $published = DB::transaction(function () use ($article): bool {
+                    $current = Article::query()
+                        ->whereKey($article->id)
+                        ->where('status', ArticleStatus::Reservation)
+                        ->where('published_at', '<=', $this->now)
+                        ->lockForUpdate()
+                        ->first();
+
+                    return $current?->update([
+                        'status' => ArticleStatus::Publish,
+                        'modified_at' => $current->published_at,
+                    ]) ?? false;
+                });
+                $changed = $changed || $published;
             } catch (\Throwable $throwable) {
                 $errorCount++;
                 Log::error('Failed to publish reserved article', [

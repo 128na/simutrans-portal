@@ -26,6 +26,11 @@ class Kernel extends ConsoleKernel
             ->withoutOverlapping()
             ->appendOutputTo($output);
 
+        $schedule->command('article:refresh-public-snapshot')->everyTenMinutes()
+            ->withoutOverlapping()
+            ->runInBackground()
+            ->appendOutputTo($output);
+
         // 毎日
         $schedule->command('check:deadlink')->dailyAt('10:00')
             ->withoutOverlapping()

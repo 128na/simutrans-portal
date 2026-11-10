@@ -127,28 +127,33 @@ export const ArticleEdit = () => {
           {success}
         </p>
       )}
-      <div
-        className="flex gap-2 mb-3 lg:hidden"
-        role="group"
-        aria-label="投稿画面の表示"
-      >
-        <Button
-          variant={panel === "edit" ? "primary" : "subOutline"}
-          aria-pressed={panel === "edit"}
-          aria-controls="article-edit-panel"
-          onClick={() => setPanel("edit")}
-        >
-          編集
-        </Button>
-        <Button
-          variant={panel === "preview" ? "primary" : "subOutline"}
-          aria-pressed={panel === "preview"}
-          aria-controls="article-preview-panel"
-          onClick={() => setPanel("preview")}
-        >
-          プレビュー
-        </Button>
-      </div>
+      <label className="mb-3 inline-flex items-center gap-3 rounded-lg border border-c-sub/20 px-3 py-2 lg:hidden">
+        <span className="text-sm font-medium">プレビュー表示</span>
+        <span className="relative inline-flex">
+          <input
+            type="checkbox"
+            role="switch"
+            aria-controls="article-edit-panel article-preview-panel"
+            checked={panel === "preview"}
+            onChange={(event) =>
+              setPanel(event.target.checked ? "preview" : "edit")
+            }
+            className="peer sr-only"
+          />
+          <span
+            aria-hidden="true"
+            className="h-6 w-11 rounded-full bg-slate-500 transition-colors peer-checked:bg-blue-700 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue-700"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1 left-1 size-4 rounded-full bg-white transition-transform peer-checked:translate-x-5"
+          />
+        </span>
+        <span aria-hidden="true" className="text-sm text-c-sub">
+          {panel === "preview" ? "表示中" : "オフ（編集中）"}
+        </span>
+      </label>
+
       <div className="flex flex-col gap-y-0 lg:grid lg:grid-cols-2 h-[calc(100vh-240px)]">
         <div
           ref={contentRef}

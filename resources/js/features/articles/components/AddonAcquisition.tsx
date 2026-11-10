@@ -37,8 +37,9 @@ export const AddonAcquisition = ({ article, preview }: Props) => {
   return (
     <section
       aria-label="アドオンの入手"
-      className="rounded-lg border border-c-sub/20 p-4 space-y-3"
+      className="space-y-3 rounded-lg border border-c-primary/25 bg-c-primary/8 p-4"
     >
+      <h3 className="font-semibold">アドオンの入手</h3>
       <dl className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
         <div className="flex items-center flex-wrap gap-2">
           <dt className="text-c-sub">対応pak</dt>
@@ -65,7 +66,10 @@ export const AddonAcquisition = ({ article, preview }: Props) => {
         {preview ? (
           <Button disabled>{label}</Button>
         ) : href ? (
-          <a href={href} className="v2-button v2-button-primary v2-button-md">
+          <a
+            href={href}
+            className="inline-flex w-full justify-center rounded-lg bg-[color-mix(in_srgb,var(--color-c-primary)_86%,black)] px-3 py-2.5 text-center text-sm font-semibold text-white hover:bg-[color-mix(in_srgb,var(--color-c-primary)_75%,black)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-primary"
+          >
             {label}
           </a>
         ) : (

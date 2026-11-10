@@ -53,6 +53,51 @@ describe("Analytics Integration Component", () => {
     expect(screen.getByText("表示記事")).toBeInTheDocument();
   });
 
+  it("グラフと表示ボタンを条件・記事一覧より前に表示する", () => {
+    render(<Analytics articles={mockArticles} />);
+    const graph = screen.getByText("グラフ");
+    const button = screen.getByRole("button", { name: "グラフを再表示" });
+    const conditions = screen.getByText("表示条件");
+    const table = screen.getByRole("table");
+    expect(
+      graph.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(
+      button.compareDocumentPosition(conditions) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(
+      button.compareDocumentPosition(table) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it("累計PVを昇順・降順に切り替え、受け取った記事順は保持する", async () => {
+    const user = userEvent.setup();
+    const articles = [...mockArticles];
+    Object.freeze(articles);
+    render(<Analytics articles={articles} />);
+    const header = screen.getByRole("columnheader", { name: /累計PV数/ });
+    const displayedTitles = () =>
+      Array.from(
+        screen.getByRole("table").querySelectorAll("tbody tr"),
+        (row) => row.firstElementChild?.textContent
+      );
+
+    await user.click(header);
+    expect(displayedTitles()).toEqual([
+      "Test Article 3",
+      "Test Article 1",
+      "Test Article 2",
+    ]);
+    await user.click(header);
+    expect(displayedTitles()).toEqual([
+      "Test Article 2",
+      "Test Article 1",
+      "Test Article 3",
+    ]);
+    expect(articles.map(({ id }) => id)).toEqual([1, 2, 3]);
+  });
+
   it("グラフ表示: グラフセクション表示", () => {
     render(<Analytics articles={mockArticles} />);
 

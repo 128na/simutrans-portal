@@ -3,7 +3,7 @@ import TextSub from "@/components/ui/TextSub";
 import Button from "@/components/ui/Button";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import {
   CartesianGrid,
@@ -17,6 +17,7 @@ import {
 
 type Props = {
   articles: Analytics.Article[];
+  loadOnMount?: boolean;
 };
 
 type DataSet = ({ name: string } & Record<string, number | string>)[];
@@ -50,11 +51,11 @@ const intervalNames: Record<Analytics.Type, string> = {
   yearly: "年次",
 };
 
-export function AnalyticsGraph({ articles }: Props) {
+export function AnalyticsGraph({ articles, loadOnMount = false }: Props) {
   const { selected, start_date, end_date, type, axes, mode } =
     useAnalyticsStore();
 
-  const conditions = {
+  const conditions: Conditions = {
     ids: selected,
     type,
     start_date: format(start_date, "yyyy-MM-dd"),
@@ -63,14 +64,57 @@ export function AnalyticsGraph({ articles }: Props) {
     axes,
   };
   const key = JSON.stringify(conditions);
-  const [request, setRequest] = useState<RequestState | null>(null);
+  const validDates = conditions.start_date < conditions.end_date;
+  const canFetch = selected.length > 0 && axes.length > 0 && validDates;
+  const [initialConditions] = useState(() =>
+    loadOnMount && canFetch ? conditions : null
+  );
+  const [request, setRequest] = useState<RequestState | null>(() =>
+    initialConditions
+      ? { phase: "loading", key: JSON.stringify(initialConditions) }
+      : null
+  );
   const latestRequest = useRef<AbortController | null>(null);
   const result = request?.phase === "ready" ? request : null;
   const analytics = result?.analytics ?? [];
   const appliedAxes = result?.conditions.axes ?? [];
-  const validDates = conditions.start_date < conditions.end_date;
 
-  useEffect(() => () => latestRequest.current?.abort(), []);
+  const fetchAnalytics = useCallback((requested: Conditions) => {
+    latestRequest.current?.abort();
+    const controller = new AbortController();
+    latestRequest.current = controller;
+    const requestKey = JSON.stringify(requested);
+    const { ids, type, start_date, end_date } = requested;
+
+    void axios
+      .post<{ data: Analytics.ArticleAnalytic[] }>(
+        "/api/v2/analytics",
+        { ids, type, start_date, end_date },
+        { signal: controller.signal }
+      )
+      .then(
+        (response) => {
+          if (!controller.signal.aborted) {
+            setRequest({
+              phase: "ready",
+              key: requestKey,
+              conditions: requested,
+              analytics: response.data.data,
+            });
+          }
+        },
+        () => {
+          if (!controller.signal.aborted) {
+            setRequest({ phase: "error", key: requestKey });
+          }
+        }
+      );
+  }, []);
+
+  useEffect(() => {
+    if (initialConditions) fetchAnalytics(initialConditions);
+    return () => latestRequest.current?.abort();
+  }, [fetchAnalytics, initialConditions]);
 
   // convert from analytics
   const keys: {
@@ -156,50 +200,15 @@ export function AnalyticsGraph({ articles }: Props) {
     data.splice(0, data.length, ...cumulativeData);
   }
 
-  const onClick = async () => {
-    latestRequest.current?.abort();
-    const controller = new AbortController();
-    latestRequest.current = controller;
+  const onClick = () => {
     setRequest({ phase: "loading", key });
-    const { ids, type, start_date, end_date } = conditions;
-
-    try {
-      const response = await axios.post<{ data: Analytics.ArticleAnalytic[] }>(
-        "/api/v2/analytics",
-        { ids, type, start_date, end_date },
-        { signal: controller.signal }
-      );
-      if (!controller.signal.aborted) {
-        setRequest({
-          phase: "ready",
-          key,
-          conditions,
-          analytics: response.data.data,
-        });
-      }
-    } catch {
-      if (!controller.signal.aborted) {
-        setRequest({ phase: "error", key });
-      }
-    }
+    fetchAnalytics(conditions);
   };
 
   return (
     <div>
       <FormCaption>グラフ</FormCaption>
       <div className="space-y-2 mb-4">
-        <Button
-          onClick={onClick}
-          disabled={
-            selected.length === 0 ||
-            axes.length === 0 ||
-            !validDates ||
-            (request?.phase === "loading" && request.key === key)
-          }
-          size="lg"
-        >
-          グラフを表示
-        </Button>
         {selected.length === 0 && <TextSub>記事を選んでください</TextSub>}
         {!validDates && <TextSub>終了日は開始日より後にしてください。</TextSub>}
         {axes.length === 0 && (
@@ -207,7 +216,7 @@ export function AnalyticsGraph({ articles }: Props) {
         )}
         {(selected.length > 0 || request !== null) && request?.key !== key && (
           <p role="status" className="text-sm text-c-sub">
-            条件は未適用です。「グラフを表示」で反映してください。
+            条件は未適用です。「グラフを再表示」で反映してください。
           </p>
         )}
         {request?.phase === "loading" && (
@@ -272,6 +281,17 @@ export function AnalyticsGraph({ articles }: Props) {
             <Tooltip />
           </LineChart>
         ))}
+      <div className="mt-4">
+        <Button
+          onClick={onClick}
+          disabled={
+            !canFetch || (request?.phase === "loading" && request.key === key)
+          }
+          size="lg"
+        >
+          グラフを再表示
+        </Button>
+      </div>
     </div>
   );
 }

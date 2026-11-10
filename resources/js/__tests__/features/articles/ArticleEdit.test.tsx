@@ -195,17 +195,19 @@ describe("ArticleEdit", () => {
   it("プレビューを切り替えても編集欄を破棄しない", () => {
     render(<ArticleEdit />);
     const form = screen.getByTestId("article-form");
-    fireEvent.click(screen.getByRole("button", { name: "プレビュー" }));
-    expect(screen.getByRole("button", { name: "プレビュー" })).toHaveAttribute(
-      "aria-pressed",
-      "true"
-    );
+    const toggle = screen.getByRole("switch", { name: "プレビュー表示" });
+    expect(toggle).not.toBeChecked();
+    const editor = document.getElementById("article-edit-panel");
+    const preview = document.getElementById("article-preview-panel");
+    expect(editor).not.toHaveClass("hidden");
+    expect(preview).toHaveClass("hidden");
+    fireEvent.click(toggle);
+    expect(toggle).toBeChecked();
+    expect(editor).toHaveClass("hidden");
+    expect(preview).not.toHaveClass("hidden");
     expect(screen.getByTestId("article-form")).toBe(form);
-    fireEvent.click(screen.getByRole("button", { name: "編集" }));
-    expect(screen.getByRole("button", { name: "編集" })).toHaveAttribute(
-      "aria-pressed",
-      "true"
-    );
+    fireEvent.click(toggle);
+    expect(toggle).not.toBeChecked();
   });
 
   it("未保存のときだけ離脱を警告する", () => {

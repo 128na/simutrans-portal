@@ -63,12 +63,32 @@ export const AddonIntroduction = () => {
           maxLength={255}
           value={contents.link || ""}
           onChange={(e) =>
-            updateContents<ArticleContent.AddonIntroduction>(
-              (draft) => (draft.link = e.target.value)
-            )
+            updateContents<ArticleContent.AddonIntroduction>((draft) => {
+              draft.link = e.target.value;
+              draft.link_type = null;
+            })
           }
         />
       </div>
+
+      <label className="block space-y-2">
+        <FormCaption>リンク先の種類（任意）</FormCaption>
+        <TextError>{getError("article.contents.link_type")}</TextError>
+        <select
+          className="v2-input v2-input-select w-full"
+          value={contents.link_type ?? ""}
+          onChange={({ target: { value } }) =>
+            updateContents<ArticleContent.AddonIntroduction>((draft) => {
+              draft.link_type =
+                value === "page" || value === "file" ? value : null;
+            })
+          }
+        >
+          <option value="">指定しない</option>
+          <option value="page">外部配布ページ</option>
+          <option value="file">外部ファイル</option>
+        </select>
+      </label>
 
       <div>
         <FormCaption>掲載許可</FormCaption>

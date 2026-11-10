@@ -10,6 +10,8 @@ class AddonIntroductionContent extends Content
 
     public ?string $link;
 
+    public ?string $link_type;
+
     public ?string $author;
 
     public ?string $license;
@@ -21,12 +23,13 @@ class AddonIntroductionContent extends Content
     public ?bool $exclude_link_check;
 
     /**
-     * @param  array{description?:string,author?:string,license?:string,thanks?:string,link?:string,agreement?:bool,exclude_link_check?:bool}  $contents
+     * @param  array{description?:string,author?:string,license?:string,thanks?:string,link?:string,link_type?:string|null,agreement?:bool,exclude_link_check?:bool}  $contents
      */
     public function __construct(array $contents)
     {
         $this->description = $contents['description'] ?? null;
         $this->link = $contents['link'] ?? null;
+        $this->link_type = $contents['link_type'] ?? null;
         $this->author = $contents['author'] ?? null;
         $this->license = $contents['license'] ?? null;
         $this->thanks = $contents['thanks'] ?? null;

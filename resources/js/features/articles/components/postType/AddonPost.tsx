@@ -1,4 +1,3 @@
-import Link from "@/components/ui/Link";
 import { TitleH4 } from "../TitleH4";
 import { TitleH3 } from "../TitleH3";
 import { TextPre } from "../TextPre";
@@ -6,15 +5,13 @@ import { formatArticleDate } from "../../utils/articleUtil";
 import { Accordion } from "@/components/ui/Accordion";
 import { PakMetadata } from "../PakMetadata";
 import React from "react";
-import { displaySize } from "@/features/attachments/attachmentUtil";
 import TextSub from "@/components/ui/TextSub";
 
 type Props = {
   article: Article.Show;
-  preview: boolean;
 };
 
-export const AddonPost = ({ article, preview }: Props) => {
+export const AddonPost = ({ article }: Props) => {
   const contents = article.contents as ArticleContent.AddonPost;
   const file = article.attachments.find((att) => att.id === contents.file) as
     Attachment.Show | undefined;
@@ -50,19 +47,6 @@ export const AddonPost = ({ article, preview }: Props) => {
               <tr>
                 <th>最終更新日時</th>
                 <td>{formatArticleDate(article.modified_at)}</td>
-              </tr>
-
-              <tr>
-                <th>ダウンロード</th>
-                <td>
-                  <Link
-                    href={preview ? "#" : `/articles/${article.id}/download`}
-                  >
-                    {file
-                      ? `${file.original_name} (${displaySize(file.size)})`
-                      : "download"}
-                  </Link>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -154,7 +138,7 @@ export const AddonPost = ({ article, preview }: Props) => {
 
       {contents.license && (
         <div>
-          <TitleH4>参考にしたアドオン</TitleH4>
+          <TitleH4>ライセンス・利用条件</TitleH4>
           <TextPre>{contents.license}</TextPre>
         </div>
       )}

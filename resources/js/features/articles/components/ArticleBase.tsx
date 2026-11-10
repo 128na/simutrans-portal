@@ -11,6 +11,7 @@ import { Page } from "./postType/Page";
 import { Markdown } from "./postType/Markdown";
 import { AddonPost } from "./postType/AddonPost";
 import { AddonIntroduction } from "./postType/AddonIntroduction";
+import { AddonAcquisition } from "./AddonAcquisition";
 
 type Props = {
   article: Article.Show;
@@ -22,17 +23,26 @@ export const ArticleBase = ({
   preview = false,
   isAuthenticated = false,
 }: Props) => {
+  const isAddon =
+    article.post_type === "addon-post" ||
+    article.post_type === "addon-introduction";
+  const categories = isAddon
+    ? article.categories.filter((category) => category.type !== "pak")
+    : article.categories;
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4 mb-2">
         <div className="text-sm flex flex-wrap gap-2">
-          <Categories categories={article.categories} preview={preview} />
+          <Categories categories={categories} preview={preview} />
           <Tags tags={article.tags} preview={preview} />
         </div>
         {isAuthenticated && !preview && article.id && (
           <AddToMyListButton articleId={article.id} />
         )}
       </div>
+
+      {isAddon && <AddonAcquisition article={article} preview={preview} />}
 
       <Thumbnail
         attachmentId={article.contents.thumbnail}
@@ -46,11 +56,9 @@ export const ArticleBase = ({
         .with("markdown", () => (
           <Markdown article={article} preview={preview} />
         ))
-        .with("addon-post", () => (
-          <AddonPost article={article} preview={preview} />
-        ))
+        .with("addon-post", () => <AddonPost article={article} />)
         .with("addon-introduction", () => (
-          <AddonIntroduction article={article} preview={preview} />
+          <AddonIntroduction article={article} />
         ))
         .exhaustive()}
 

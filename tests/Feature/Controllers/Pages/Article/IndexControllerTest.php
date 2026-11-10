@@ -30,6 +30,51 @@ class IndexControllerTest extends TestCase
         $testResponse->assertOk();
     }
 
+    public function test_search_without_effective_conditions_explains_how_to_start(): void
+    {
+        foreach (['/search', '/search?word=+++', '/search?word=%E3%80%80', '/search?page=2&utm_source=test', '/search?tagIds%5B%5D='] as $url) {
+            $this->get($url)->assertOk()
+                ->assertSee('キーワードを入力するか、詳細条件を指定して検索してください。')
+                ->assertDontSee('条件に一致する記事が見つかりませんでした。');
+        }
+    }
+
+    public function test_search_with_no_results_explains_how_to_relax_or_clear_conditions(): void
+    {
+        $this->createAddonIntroduction();
+
+        $this->get(route('search', ['word' => 'unmatched-search-token']))
+            ->assertOk()
+            ->assertSee('条件に一致する記事が見つかりませんでした。')
+            ->assertSee('検索条件をすべて解除')
+            ->assertDontSee('キーワードを入力するか、詳細条件を指定して検索してください。');
+
+        $this->get(route('search', ['word' => '0']))
+            ->assertOk()->assertSee('条件に一致する記事が見つかりませんでした。');
+
+        foreach (['categoryIds', 'tagIds', 'userIds', 'postTypes'] as $filter) {
+            $this->get(route('search', [$filter => ['999999']]))
+                ->assertOk()
+                ->assertSee('条件に一致する記事が見つかりませんでした。');
+        }
+    }
+
+    public function test_direct_search_link_with_results_keeps_the_filter_and_result(): void
+    {
+        $article = $this->createAddonIntroduction();
+        $url = route('search', ['userIds' => [$article->user_id]]);
+
+        $this->get($url)->assertOk()
+            ->assertSee('id="app-article-list"', false)
+            ->assertSee($article->title)
+            ->assertSee('検索条件をすべて解除')
+            ->assertDontSee('条件に一致する記事が見つかりませんでした。');
+
+        $this->get($url.'&page=2')->assertOk()
+            ->assertSee('検索結果の最初のページへ')
+            ->assertDontSee('条件に一致する記事が見つかりませんでした。');
+    }
+
     public function test_search_preserves_selected_ids_in_html_attributes(): void
     {
         $response = $this->get('/search?word=&categoryIds%5B%5D=2&categoryIds%5B%5D=10&userIds%5B%5D=27&tagIds%5B%5D=5&tagIds%5B%5D=8');

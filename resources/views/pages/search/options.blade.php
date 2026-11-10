@@ -5,13 +5,19 @@
     <input
       type="search"
       name="word"
+      aria-label="キーワード"
       value="{{ $condition['word'] ?? '' }}"
       placeholder="キーワードを入力"
       class="w-full sm:w-64 v2-input"
     />
-    <button type="submit" class="v2-button v2-button-lg v2-button-primary">
-      検索
-    </button>
+    <div class="flex flex-wrap items-center gap-4">
+      <button type="submit" class="v2-button v2-button-lg v2-button-primary">
+        検索
+      </button>
+      @if ($hasSearchConditions)
+        <x-ui.link :url="route('search')" title="検索条件をすべて解除" />
+      @endif
+    </div>
   </div>
   <script id="data-options" type="application/json">
     @json($options)

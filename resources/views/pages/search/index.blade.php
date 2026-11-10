@@ -2,15 +2,29 @@
 
 @section('max-w', 'v2-page-lg')
 @section('page-content')
-  <script id="data-articles" type="application/json">
-    @json($articles)
-  </script>
   <div class="v2-page v2-page-lg">
     @include('pages.search.options')
-    <div id="app-article-list">読み込み中...</div>
+    @if (! $hasSearchConditions)
+      <p class="v2-text-sub">キーワードを入力するか、詳細条件を指定して検索してください。</p>
+    @elseif ($articles->total() === 0)
+      <div class="space-y-2 v2-text-sub">
+        <p>条件に一致する記事が見つかりませんでした。</p>
+        <p>キーワードを短くするか、条件を減らして再検索してください。</p>
+      </div>
+    @elseif ($articles->count() === 0)
+      <p class="v2-text-sub">
+        このページに記事はありません。
+        <x-ui.link :url="$articles->withQueryString()->url(1)" title="検索結果の最初のページへ" />
+      </p>
+    @else
+      <script id="data-articles" type="application/json">
+        @json($articles)
+      </script>
+      <div id="app-article-list">読み込み中...</div>
 
-    <div class="mt-10 v2-page-pagination-area">
-      {{ $articles->withQueryString() }}
-    </div>
+      <div class="mt-10 v2-page-pagination-area">
+        {{ $articles->withQueryString() }}
+      </div>
+    @endif
   </div>
 @endsection

@@ -12,6 +12,8 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class SearchAction
 {
@@ -24,7 +26,7 @@ class SearchAction
 
     /**
      * @param  array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}  $condition
-     * @return array{condition: array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}, options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed}
+     * @return array{condition: array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}, hasSearchConditions: bool, options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed}
      */
     public function __invoke(array $condition): array
     {
@@ -32,8 +34,9 @@ class SearchAction
 
         return [
             'condition' => $condition,
+            'hasSearchConditions' => $condition !== [],
             'options' => $this->options(),
-            'articles' => ArticleList::collection($this->search($condition)),
+            'articles' => ArticleList::collection($this->articleRepository->search($condition)),
         ];
     }
 
@@ -67,13 +70,12 @@ class SearchAction
      */
     private function normalizeCondition(array $condition): array
     {
-        if (array_key_exists('word', $condition)) {
-            $word = trim((string) $condition['word']);
-            if ($word === '') {
-                unset($condition['word']);
-            } else {
-                $condition['word'] = $word;
-            }
+        $condition = Arr::only($condition, ['word', 'userIds', 'categoryIds', 'tagIds', 'postTypes']);
+        $word = is_string($condition['word'] ?? null) ? Str::trim($condition['word']) : '';
+        if (Str::trim(str_replace([',', '、', '・'], ' ', $word)) === '') {
+            unset($condition['word']);
+        } else {
+            $condition['word'] = $word;
         }
 
         foreach (['userIds', 'categoryIds', 'tagIds', 'postTypes'] as $key) {
@@ -82,8 +84,12 @@ class SearchAction
             }
 
             $value = $condition[$key];
-            if (! is_array($value) || $value === []) {
+            $values = is_array($value) ? array_values(array_filter($value, fn (mixed $item): bool => is_int($item)
+                || (is_string($item) && Str::trim($item) !== ''))) : [];
+            if ($values === []) {
                 unset($condition[$key]);
+            } else {
+                $condition[$key] = $values;
             }
         }
 

@@ -75,10 +75,10 @@ class FrontArticleRepository
 
         // キーワード
         $rawWord = $condition['word'] ?? '';
-        $words = array_filter(explode(
-            ' ',
-            str_replace(['　', ',', '、', '・'], ' ', $rawWord)
-        ));
+        $words = array_filter(
+            explode(' ', str_replace(['　', ',', '、', '・'], ' ', $rawWord)),
+            fn (string $word): bool => $word !== ''
+        );
         if ($words !== []) {
             $queryString = implode(' ', array_map(fn (string $w): string => '+'.$w, $words));
             $baseQuery->join('article_search_index as idx', function (JoinClause $joinClause) use ($queryString): void {

@@ -37,7 +37,7 @@ class IndexController extends Controller
 
     public function search(Request $request, SearchAction $searchAction): View
     {
-        $condition = $request->all();
+        $condition = $request->query();
 
         return view('pages.search.index', [
             ...$searchAction($condition),

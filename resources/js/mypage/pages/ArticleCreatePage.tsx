@@ -36,7 +36,9 @@ if (app) {
     useEffect(() => {
       if (postType) {
         useArticleEditor.setState((state) => {
-          state.article = createArticle(postType, user);
+          const initial = createArticle(postType, user);
+          state.initialArticle = initial;
+          state.article = structuredClone(initial);
         });
       }
       // postTypeが変更されたときのみ初期化したいため意図的にuserを依存配列から除外している。

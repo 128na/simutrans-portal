@@ -1,7 +1,10 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { ArticleEdit } from "@/features/articles/ArticleEdit";
-import { useArticleEditor } from "@/hooks/useArticleEditor";
+import {
+  useArticleEditor,
+  useIsArticleUpdated,
+} from "@/hooks/useArticleEditor";
 import axios from "axios";
 import type { AxiosResponse } from "axios";
 
@@ -65,6 +68,7 @@ describe("ArticleEdit", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(useIsArticleUpdated).mockReturnValue(false);
 
     // useArticleEditor のデフォルトモック
     (
@@ -72,6 +76,7 @@ describe("ArticleEdit", () => {
     ).mockImplementation((selector: (state: unknown) => unknown) => {
       const mockState = {
         article: mockArticle,
+        initialArticle: mockArticle,
         shouldNotify: false,
         withoutUpdateModifiedAt: false,
         followRedirect: false,
@@ -111,7 +116,9 @@ describe("ArticleEdit", () => {
   it("保存ボタンが表示される", () => {
     render(<ArticleEdit />);
 
-    expect(screen.getByRole("button", { name: "保存" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /公開内容を更新|公開する/ })
+    ).toBeInTheDocument();
   });
 
   it("保存ボタンクリックで新規作成APIを呼ぶ（id なし）", async () => {
@@ -132,7 +139,9 @@ describe("ArticleEdit", () => {
     } as AxiosResponse);
 
     render(<ArticleEdit />);
-    const saveButton = screen.getByRole("button", { name: "保存" });
+    const saveButton = screen.getByRole("button", {
+      name: /公開内容を更新|公開する/,
+    });
     fireEvent.click(saveButton);
 
     await waitFor(() => {
@@ -151,7 +160,9 @@ describe("ArticleEdit", () => {
     } as AxiosResponse);
 
     render(<ArticleEdit />);
-    const saveButton = screen.getByRole("button", { name: "保存" });
+    const saveButton = screen.getByRole("button", {
+      name: /公開内容を更新|公開する/,
+    });
     fireEvent.click(saveButton);
 
     await waitFor(() => {
@@ -164,17 +175,67 @@ describe("ArticleEdit", () => {
     });
   });
 
+  it.each([
+    ["draft", "下書きを保存"],
+    ["reservation", "公開を予約する"],
+    ["publish", "公開する"],
+  ] as const)(
+    "新規記事の状態 %s に応じて保存操作を表示する",
+    (status, label) => {
+      vi.mocked(useArticleEditor).mockImplementation((selector) =>
+        selector({
+          article: { ...mockArticle, id: null, status },
+        } as ReturnType<typeof useArticleEditor.getState>)
+      );
+      render(<ArticleEdit />);
+      expect(screen.getByRole("button", { name: label })).toBeInTheDocument();
+    }
+  );
+
+  it("プレビューを切り替えても編集欄を破棄しない", () => {
+    render(<ArticleEdit />);
+    const form = screen.getByTestId("article-form");
+    fireEvent.click(screen.getByRole("button", { name: "プレビュー" }));
+    expect(screen.getByRole("button", { name: "プレビュー" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
+    expect(screen.getByTestId("article-form")).toBe(form);
+    fireEvent.click(screen.getByRole("button", { name: "編集" }));
+    expect(screen.getByRole("button", { name: "編集" })).toHaveAttribute(
+      "aria-pressed",
+      "true"
+    );
+  });
+
+  it("未保存のときだけ離脱を警告する", () => {
+    const { rerender } = render(<ArticleEdit />);
+    expect(
+      window.dispatchEvent(new Event("beforeunload", { cancelable: true }))
+    ).toBe(true);
+
+    vi.mocked(useIsArticleUpdated).mockReturnValue(true);
+    rerender(<ArticleEdit />);
+    expect(
+      window.dispatchEvent(new Event("beforeunload", { cancelable: true }))
+    ).toBe(false);
+  });
+
   it("保存成功後にリダイレクトする", async () => {
     vi.spyOn(mockedAxios, "post").mockResolvedValue({
       data: { article_id: 123 },
     } as AxiosResponse);
 
     render(<ArticleEdit />);
-    const saveButton = screen.getByRole("button", { name: "保存" });
+    const saveButton = screen.getByRole("button", {
+      name: /公開内容を更新|公開する/,
+    });
     fireEvent.click(saveButton);
 
     await waitFor(() => {
-      expect(window.location.href).toBe("/mypage/articles/edit/123?updated=1");
+      expect(window.location.href).toBe(
+        "/mypage/articles/edit/123?updated=1&saved=update"
+      );
     });
   });
 
@@ -197,26 +258,32 @@ describe("ArticleEdit", () => {
     vi.spyOn(mockedAxios, "post").mockRejectedValue(validationError);
 
     render(<ArticleEdit />);
-    fireEvent.click(screen.getByRole("button", { name: "保存" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /公開内容を更新|公開する/ })
+    );
 
     await waitFor(() => {
       expect(mockSetValidationErrorFrom).toHaveBeenCalledWith(validationError);
     });
   });
 
-  it("一般的なエラー発生時にalertが表示される", async () => {
-    const alertMock = vi.fn();
-    vi.stubGlobal("alert", alertMock);
+  it("保存失敗を表示し、未保存の変更を保持する", async () => {
+    vi.mocked(useIsArticleUpdated).mockReturnValue(true);
     mockSetValidationErrorFrom.mockReturnValue(false);
 
     const generalError = new Error("Network error");
     vi.spyOn(mockedAxios, "post").mockRejectedValue(generalError);
 
     render(<ArticleEdit />);
-    fireEvent.click(screen.getByRole("button", { name: "保存" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: /公開内容を更新|公開する/ })
+    );
 
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalledWith("Network error");
+      expect(screen.getByRole("alert")).toHaveTextContent(
+        "入力内容を保持しています"
+      );
+      expect(screen.getByText(/未保存の変更/)).toBeInTheDocument();
     });
   });
 });

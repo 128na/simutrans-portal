@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Upload } from "@/components/form/Upload";
 import { useArticleEditor, useIsSlugUpdated } from "@/hooks/useArticleEditor";
 import TextSub from "@/components/ui/TextSub";
@@ -16,6 +17,7 @@ const regReplace =
 
 export const CommonForm = () => {
   const article = useArticleEditor((s) => s.article);
+  const slugManuallyEdited = useRef(false);
   const update = useArticleEditor((s) => s.update);
 
   const user = useArticleEditor((s) => s.user);
@@ -42,10 +44,19 @@ export const CommonForm = () => {
         <TextError>{getError("article.title")}</TextError>
         <Input
           className="w-full"
+          aria-label="タイトル"
           value={article.title || ""}
           required
           maxLength={255}
-          onChange={(e) => update((draft) => (draft.title = e.target.value))}
+          onChange={(e) => {
+            const title = e.target.value;
+            update((draft) => {
+              draft.title = title;
+              if (!draft.id && !slugManuallyEdited.current) {
+                draft.slug = escape(title);
+              }
+            });
+          }}
         />
       </div>
 
@@ -57,13 +68,15 @@ export const CommonForm = () => {
         <TextError>{getError("article.slug")}</TextError>
         <Input
           className="w-full"
+          aria-label="記事URL"
           value={decodeURI(article.slug || "")}
           required
           maxLength={255}
           counter={(value) => [...escape(value)].length}
-          onChange={(e) =>
-            update((draft) => (draft.slug = escape(e.target.value)))
-          }
+          onChange={(e) => {
+            slugManuallyEdited.current = true;
+            update((draft) => (draft.slug = escape(e.target.value)));
+          }}
         />
         <TextSub className="my-1">
           URLプレビュー: /users/{user.nickname ?? user.id}/{article.slug || ""}
@@ -72,6 +85,7 @@ export const CommonForm = () => {
           variant="subOutline"
           disabled={!article.title}
           onClick={() => {
+            slugManuallyEdited.current = true;
             update((draft) => (draft.slug = escape(draft.title || "")));
           }}
         >

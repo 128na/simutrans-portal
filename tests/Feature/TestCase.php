@@ -18,8 +18,10 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Sleep;
+use Illuminate\Support\Str;
 use Mockery;
 
 abstract class TestCase extends BaseTestCase
@@ -31,6 +33,9 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         Sleep::fake();
+        $snapshotDirectory = storage_path('framework/testing/snapshot-'.Str::uuid());
+        config(['public-article-snapshot.path' => $snapshotDirectory.'/snapshot.json']);
+        $this->beforeApplicationDestroyed(fn () => File::deleteDirectory($snapshotDirectory));
         $this->dirtyDatabaseCheck();
 
         $this->seed(CategorySeeder::class);

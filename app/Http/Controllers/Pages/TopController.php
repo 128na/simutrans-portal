@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\Article\FrontArticleRepository;
+use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Contracts\View\View;
 
 class TopController extends Controller
 {
     public function __construct(
-        private readonly FrontArticleRepository $articleRepository,
+        private readonly PublicArticleSnapshot $snapshot,
     ) {}
 
     public function top(): View
     {
-        $articles = $this->articleRepository->getTopPageArticles(announcesLimit: 3);
+        $articles = $this->snapshot->read();
 
         return view('pages.top.index', $articles);
     }

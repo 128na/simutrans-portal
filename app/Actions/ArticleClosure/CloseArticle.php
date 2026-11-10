@@ -19,6 +19,7 @@ use App\Models\Contents\AddonIntroductionContent;
 use App\Models\User;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
 use App\Repositories\ArticleRepository;
+use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\DB;
@@ -30,11 +31,12 @@ class CloseArticle
         private ArticleLinkCheckHistoryRepository $historyRepository,
         private InIgnoreList $inIgnoreList,
         private Logger $logger,
+        private PublicArticleSnapshot $snapshot,
     ) {}
 
     public function __invoke(Article $expected, int $runId, ArticleClosureReason $reason): bool
     {
-        return DB::transaction(function () use ($expected, $runId, $reason): bool {
+        return $this->snapshot->mutate(fn (): bool => DB::transaction(function () use ($expected, $runId, $reason): bool {
             $run = ArticleClosureRun::query()->lockForUpdate()->findOrFail($runId);
             if ($run->status !== ArticleClosureRunStatus::Running) {
                 return false;
@@ -52,6 +54,7 @@ class CloseArticle
 
             /** @var AddonIntroductionContent $contents */
             $contents = $current->contents;
+            $this->snapshot->invalidate();
             $this->articleRepository->update($current, ['status' => ArticleStatus::Private]);
             $this->historyRepository->clear($current);
             $item = ArticleClosureItem::create([
@@ -70,7 +73,7 @@ class CloseArticle
             });
 
             return true;
-        });
+        }));
     }
 
     public function isEligible(Article $current, Article $expected, ArticleClosureReason $reason): bool

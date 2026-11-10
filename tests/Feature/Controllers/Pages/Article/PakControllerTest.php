@@ -18,6 +18,7 @@ class PakControllerTest extends TestCase
         $category = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
         $article->categories()->save($category);
 
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
         $testResponse = $this->get(route('latest'));
 
         $testResponse->assertOk();
@@ -40,8 +41,11 @@ class PakControllerTest extends TestCase
         DB::enableQueryLog();
         DB::flushQueryLog();
         try {
+            $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+            $generationQueries = DB::getQueryLog();
+            DB::flushQueryLog();
             $response = $this->get(route('latest', ['page' => 2]));
-            $queries = DB::getQueryLog();
+            $renderQueries = DB::getQueryLog();
         } finally {
             DB::disableQueryLog();
             DB::flushQueryLog();
@@ -49,7 +53,9 @@ class PakControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewHas('pak128Japan', fn (array $cards): bool => array_column($cards, 'id') === array_map(fn ($article): int => $article->id, array_slice($articles, 0, 12)));
-        $this->assertSame([], array_values(array_filter($queries, fn (array $query): bool => preg_match('/^select count\(|\b(?:article_tag|profiles)\b/i', $query['query']) === 1)));
+        $this->assertSame([], array_values(array_filter($generationQueries, fn (array $query): bool => preg_match('/^select count\(|\b(?:article_tag|profiles)\b/i', $query['query']) === 1)));
+
+        $this->assertSame([], $renderQueries);
 
         $this->get(route('pak.128japan', ['page' => 2]))
             ->assertOk()

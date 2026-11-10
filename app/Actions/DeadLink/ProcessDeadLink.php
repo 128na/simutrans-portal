@@ -10,6 +10,7 @@ use App\Enums\ArticleClosureRunStatus;
 use App\Models\Article;
 use App\Models\ArticleClosureRun;
 use App\Repositories\ArticleLinkCheckHistoryRepository;
+use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Support\Facades\DB;
 
 class ProcessDeadLink
@@ -18,6 +19,7 @@ class ProcessDeadLink
         private CloseArticle $closeArticle,
         private OnDead $onDead,
         private ArticleLinkCheckHistoryRepository $history,
+        private PublicArticleSnapshot $snapshot,
     ) {}
 
     public function __invoke(Article $expected, int $runId): bool
@@ -32,7 +34,7 @@ class ProcessDeadLink
 
     private function process(Article $expected, int $runId, bool $alive): bool
     {
-        return DB::transaction(function () use ($expected, $runId, $alive): bool {
+        $process = fn (): bool => DB::transaction(function () use ($expected, $runId, $alive): bool {
             $run = ArticleClosureRun::query()->lockForUpdate()->findOrFail($runId);
             if ($run->status !== ArticleClosureRunStatus::Running) {
                 return false;
@@ -50,5 +52,7 @@ class ProcessDeadLink
 
             return ($this->onDead)($article, $runId);
         });
+
+        return $alive ? $process() : $this->snapshot->mutate($process);
     }
 }

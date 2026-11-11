@@ -130,7 +130,7 @@ class ArticleCardListTest extends TestCase
         $html = $this->get($this->url('pak', []))->assertOk()->getContent();
 
         $this->assertIsString($html);
-        $this->assertMatchesRegularExpression('/<span class="sr-only">件<\/span>/u', $html, '件数の読み上げ用テキストがある');
+        $this->assertMatchesRegularExpression('/<nav aria-label="種類で絞り込む" class="[^"]*"(?:(?!<\/nav>).)*<span class="sr-only">件<\/span>/su', $html, '種類の行の中に件数の読み上げ用テキストがある');
         $this->assertMatchesRegularExpression('/<nav aria-label="種類で絞り込む" class="(?=[^"]*\brelative\b)(?=[^"]*\boverflow-x-auto\b)[^"]*"/u', $html);
     }
 

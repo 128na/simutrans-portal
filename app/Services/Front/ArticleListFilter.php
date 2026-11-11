@@ -37,6 +37,14 @@ final readonly class ArticleListFilter
     }
 
     /**
+     * 種類がすでに決まっている一覧（pak×種類）用に、種類の絞り込みを外す
+     */
+    public function withoutAddon(): self
+    {
+        return new self(downloadOnly: $this->downloadOnly, sort: $this->sort);
+    }
+
+    /**
      * 種類の選択肢（slug => 表示名）
      *
      * @return array<string, string>

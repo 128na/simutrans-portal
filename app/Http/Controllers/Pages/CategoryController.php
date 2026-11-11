@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
     public function categoryPakAddon(Request $request, string $pakSlug, string $addonSlug): View
     {
-        $filter = ArticleListFilter::fromRequest($request);
+        $filter = ArticleListFilter::fromRequest($request)->withoutAddon();
         $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, $pakSlug);
         $addon = $this->categoryRepository->getByTypeSlug(CategoryType::Addon, $addonSlug);
 

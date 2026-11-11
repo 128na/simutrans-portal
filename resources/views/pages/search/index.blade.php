@@ -6,7 +6,7 @@
     @include('pages.search.options')
     @if ($hasSearchConditions)
       <div class="mb-6">
-        @include('components.partials.article-list-filter', ['filter' => $filter, 'total' => $articles->total()])
+        @include('components.partials.article-list-filter', ['filter' => $filter, 'total' => $articles->total(), 'showAcquisition' => false])
       </div>
     @endif
     @if (! $hasSearchConditions)

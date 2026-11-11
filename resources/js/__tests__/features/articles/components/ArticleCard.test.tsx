@@ -102,6 +102,24 @@ describe("アドオン一覧のカード", () => {
     expect(isDownloadable(intro)).toBe(false);
   });
 
+  it("検索結果の一般記事は入手方法の表示も入手ボタンも出さない", () => {
+    render(
+      <ArticleCard
+        article={{
+          ...intro,
+          id: 303,
+          post_type: "page",
+          addon_page_url: undefined,
+        }}
+      />
+    );
+
+    expect(screen.queryByText("掲載先で入手")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /掲載先へ|ダウンロード/ })
+    ).not.toBeInTheDocument();
+  });
+
   it("ログイン中だけマイリストのボタンを出し、操作欄に要素を足せる", () => {
     const { rerender } = render(<ArticleCard article={post} />);
     expect(

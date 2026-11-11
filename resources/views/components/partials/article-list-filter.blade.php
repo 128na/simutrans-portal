@@ -1,6 +1,8 @@
 @php
   /** @var \App\Services\Front\ArticleListFilter $filter */
   $showAddon ??= true;
+  // 検索画面は詳細条件の「投稿形式」で postTypes を選ぶので、入手方法の切り替えは出さない
+  $showAcquisition ??= true;
   $total ??= null;
 @endphp
 <div class="flex flex-col gap-3 rounded-lg bg-c-surface p-3">
@@ -22,19 +24,21 @@
     </nav>
   @endif
   <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
-    <nav aria-label="入手方法で絞り込む" class="flex flex-wrap items-center gap-2">
-      <span class="shrink-0 px-1 text-meta font-bold text-c-sub">入手方法</span>
-      <a
-        href="{{ request()->fullUrlWithQuery(['postTypes' => null, 'page' => null]) }}"
-        class="v2-chip"
-        @if (! $filter->downloadOnly) aria-current="true" @endif
-      >すべて</a>
-      <a
-        href="{{ request()->fullUrlWithQuery(['postTypes' => [\App\Enums\ArticlePostType::AddonPost->value], 'page' => null]) }}"
-        class="v2-chip"
-        @if ($filter->downloadOnly) aria-current="true" @endif
-      >ダウンロードできるものだけ</a>
-    </nav>
+    @if ($showAcquisition)
+      <nav aria-label="入手方法で絞り込む" class="flex flex-wrap items-center gap-2">
+        <span class="shrink-0 px-1 text-meta font-bold text-c-sub">入手方法</span>
+        <a
+          href="{{ request()->fullUrlWithQuery(['postTypes' => null, 'page' => null]) }}"
+          class="v2-chip"
+          @if (! $filter->downloadOnly) aria-current="true" @endif
+        >すべて</a>
+        <a
+          href="{{ request()->fullUrlWithQuery(['postTypes' => [\App\Enums\ArticlePostType::AddonPost->value], 'page' => null]) }}"
+          class="v2-chip"
+          @if ($filter->downloadOnly) aria-current="true" @endif
+        >ダウンロードできるものだけ</a>
+      </nav>
+    @endif
     <nav aria-label="並び順" class="flex flex-wrap items-center gap-2 sm:ml-auto">
       <span class="shrink-0 px-1 text-meta font-bold text-c-sub">並び順</span>
       @foreach (\App\Enums\ArticleListSort::cases() as $sort)

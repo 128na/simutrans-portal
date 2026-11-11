@@ -116,6 +116,24 @@ class ArticleCardListTest extends TestCase
         $this->assertSame([$this->introTrains->id, $this->postTrains->id], $this->idsOf($this->get($url)));
         $this->assertSame([$this->postTrains->id], $this->idsOf($this->get($url.'?postTypes[]=addon-post')));
         $this->get($url)->assertDontSee('aria-label="種類で絞り込む"', false);
+        $this->assertSame([$this->introTrains->id, $this->postTrains->id], $this->idsOf($this->get($url.'?addon=buildings')), '種類の切り替えを出さない一覧では ?addon を無視する');
+    }
+
+    public function test_検索画面では入手方法の切り替えを出さず投稿形式の条件を上書きしない(): void
+    {
+        $this->get($this->url('search', ['postTypes' => ['addon-introduction']]))
+            ->assertOk()
+            ->assertSee('aria-label="並び順"', false)
+            ->assertDontSee('aria-label="入手方法で絞り込む"', false);
+        $this->get($this->url('pak', []))->assertSee('aria-label="入手方法で絞り込む"', false);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_日時が同じ記事は_i_dの新しい順に並べページ送りで重複させない(string $list): void
+    {
+        $this->introTrains->update(['published_at' => '2026-01-03 00:00:00']);
+
+        $this->assertIds($list, ['sort' => 'published'], [$this->introTrains, $this->postTrains, $this->postBuildings]);
     }
 
     #[DataProvider('listProvider')]

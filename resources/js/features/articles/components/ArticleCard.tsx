@@ -100,7 +100,7 @@ export const ArticleCard = ({
         <div className="flex flex-wrap gap-1">
           <Categories categories={paks} />
           <Categories categories={addons} />
-          {!isDownloadable(article) && (
+          {article.addon_page_url && (
             <span className="v2-tag">掲載先で入手</span>
           )}
         </div>

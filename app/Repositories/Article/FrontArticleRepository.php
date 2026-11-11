@@ -466,6 +466,7 @@ class FrontArticleRepository
 
         return $builder
             ->latest($filter->sort->column())
+            ->orderByDesc('articles.id')
             ->with('categories:id,type,slug', 'attachments:id,attachmentable_id,path,thumbnail_path', 'user:id,name,nickname');
     }
 

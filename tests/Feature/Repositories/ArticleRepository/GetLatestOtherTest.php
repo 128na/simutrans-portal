@@ -177,7 +177,7 @@ class GetLatestOtherTest extends TestCase
         $this->assertEquals($newArticle->id, $firstArticle->id, '最新の記事が最初に取得されること');
     }
 
-    public function test関連データが読み込まれる(): void
+    public function test一覧カードに使う関連データだけが読み込まれる(): void
     {
         $article = $this->createAddonIntroduction($this->user);
         $category = Category::where('type', CategoryType::Pak)->where('slug', '256')->firstOrFail();
@@ -188,8 +188,9 @@ class GetLatestOtherTest extends TestCase
         $firstArticle = $result->first();
         $this->assertNotNull($firstArticle);
         $this->assertTrue($firstArticle->relationLoaded('categories'));
-        $this->assertTrue($firstArticle->relationLoaded('tags'));
         $this->assertTrue($firstArticle->relationLoaded('attachments'));
         $this->assertTrue($firstArticle->relationLoaded('user'));
+        $this->assertFalse($firstArticle->relationLoaded('tags'), 'カードはタグを表示しないので読み込まない');
+        $this->assertFalse($firstArticle->user->relationLoaded('profile'), 'カードはプロフィールを表示しないので読み込まない');
     }
 }

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Actions\FrontArticle;
 
 use App\Enums\ArticlePostType;
-use App\Http\Resources\Frontend\ArticleList;
+use App\Http\Resources\Frontend\ArticleCard;
 use App\Models\Article;
 use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\CategoryRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\UserRepository;
+use App\Services\Front\ArticleListFilter;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -26,9 +27,9 @@ class SearchAction
 
     /**
      * @param  array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}  $condition
-     * @return array{condition: array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}, hasSearchConditions: bool, options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed}
+     * @return array{condition: array{word?: string, userIds?: array<int>, categoryIds?: array<int>, tagIds?: array<int>, postTypes?: array<string>}, hasSearchConditions: bool, options: array{categories: mixed, tags: mixed, users: mixed, postTypes: array<ArticlePostType>}, articles: mixed, filter: ArticleListFilter}
      */
-    public function __invoke(array $condition): array
+    public function __invoke(array $condition, ArticleListFilter $filter = new ArticleListFilter): array
     {
         $condition = $this->normalizeCondition($condition);
 
@@ -36,7 +37,8 @@ class SearchAction
             'condition' => $condition,
             'hasSearchConditions' => $condition !== [],
             'options' => $this->options(),
-            'articles' => ArticleList::collection($this->articleRepository->search($condition)),
+            'articles' => ArticleCard::collection($this->articleRepository->search($condition, filter: $filter)),
+            'filter' => $filter,
         ];
     }
 

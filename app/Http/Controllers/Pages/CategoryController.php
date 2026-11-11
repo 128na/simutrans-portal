@@ -6,11 +6,13 @@ namespace App\Http\Controllers\Pages;
 
 use App\Enums\CategoryType;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Frontend\ArticleList;
+use App\Http\Resources\Frontend\ArticleCard;
 use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\CategoryRepository;
+use App\Services\Front\ArticleListFilter;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -28,15 +30,17 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function categoryPakAddon(string $pakSlug, string $addonSlug): View
+    public function categoryPakAddon(Request $request, string $pakSlug, string $addonSlug): View
     {
+        $filter = ArticleListFilter::fromRequest($request)->withoutAddon();
         $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, $pakSlug);
         $addon = $this->categoryRepository->getByTypeSlug(CategoryType::Addon, $addonSlug);
 
         return view('pages.categories.show', [
             'pak' => $category,
             'addon' => $addon,
-            'articles' => ArticleList::collection($this->articleRepository->getForPakAddon($category->id, $addon->id)),
+            'articles' => ArticleCard::collection($this->articleRepository->getForPakAddon($category->id, $addon->id, filter: $filter)),
+            'filter' => $filter,
             'meta' => $this->metaOgpService->frontPakAddon($category, $addon),
         ]);
     }

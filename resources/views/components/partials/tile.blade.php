@@ -5,7 +5,7 @@
   <div class="aspect-video w-full overflow-hidden rounded-t-md bg-gray-100">
     <img
       src="{{ $article['thumbnail_url'] }}"
-      alt="{{ $article['title'] }}"
+      alt=""
       class="h-full w-full object-cover"
     />
   </div>

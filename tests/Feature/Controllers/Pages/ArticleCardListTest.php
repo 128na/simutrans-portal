@@ -1,0 +1,256 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Controllers\Pages;
+
+use App\Enums\CategoryType;
+use App\Models\Article;
+use App\Models\Category;
+use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\Feature\TestCase;
+
+/**
+ * pak 別・タグ・ユーザー・検索結果・pak×種類の一覧（カード表示）の絞り込み・並び順
+ */
+class ArticleCardListTest extends TestCase
+{
+    private User $user;
+
+    private Tag $tag;
+
+    private Category $pak;
+
+    private Category $trains;
+
+    private Category $buildings;
+
+    /** 公開は一番新しいが、更新は2番目 */
+    private Article $postTrains;
+
+    /** 公開は一番古いが、更新は一番新しい（アドオン紹介） */
+    private Article $introTrains;
+
+    /** 公開・更新とも中間〜一番古い */
+    private Article $postBuildings;
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // 記事・ユーザー・タグの ID がカテゴリ ID などと重ならないよう、無関係なデータを先に作る
+        User::factory()->count(3)->create();
+        Tag::factory()->count(4)->create();
+        for ($i = 0; $i < 5; $i++) {
+            $this->createPage();
+        }
+
+        $this->user = User::factory()->create();
+        $this->tag = Tag::factory()->create();
+        $this->pak = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
+        $this->trains = Category::where('type', CategoryType::Addon)->where('slug', 'trains')->firstOrFail();
+        $this->buildings = Category::where('type', CategoryType::Addon)->where('slug', 'buildings')->firstOrFail();
+
+        $this->postTrains = $this->makeArticle(true, $this->trains, '2026-01-03 00:00:00', '2026-01-04 00:00:00');
+        $this->introTrains = $this->makeArticle(false, $this->trains, '2026-01-01 00:00:00', '2026-01-05 00:00:00');
+        $this->postBuildings = $this->makeArticle(true, $this->buildings, '2026-01-02 00:00:00', '2026-01-03 00:00:00');
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function listProvider(): array
+    {
+        return [
+            'pak' => ['pak'],
+            'tag' => ['tag'],
+            'user' => ['user'],
+            'search' => ['search'],
+        ];
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_既定は更新が新しい順(string $list): void
+    {
+        $this->assertIds($list, [], [$this->introTrains, $this->postTrains, $this->postBuildings]);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_公開が新しい順に並べ替えられる(string $list): void
+    {
+        $this->assertIds($list, ['sort' => 'published'], [$this->postTrains, $this->postBuildings, $this->introTrains]);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_種類で絞り込める(string $list): void
+    {
+        $this->assertIds($list, ['addon' => 'buildings'], [$this->postBuildings]);
+        $this->assertIds($list, ['addon' => 'trains'], [$this->introTrains, $this->postTrains]);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_ダウンロードできるものだけに絞り込める(string $list): void
+    {
+        $this->assertIds($list, ['postTypes' => ['addon-post']], [$this->postTrains, $this->postBuildings]);
+        $this->assertIds($list, ['postTypes' => ['addon-post'], 'addon' => 'trains', 'sort' => 'published'], [$this->postTrains]);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_不正な値は既定の条件として扱う(string $list): void
+    {
+        $this->assertIds($list, ['sort' => 'popular', 'addon' => 'unknown-addon'], [$this->introTrains, $this->postTrains, $this->postBuildings]);
+        $this->assertIds($list, ['sort' => ['published'], 'addon' => ['trains']], [$this->introTrains, $this->postTrains, $this->postBuildings]);
+    }
+
+    public function test_pak種類別の一覧も並び順と入手方法で絞り込める(): void
+    {
+        $url = route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']);
+
+        $this->assertSame([$this->introTrains->id, $this->postTrains->id], $this->idsOf($this->get($url)));
+        $this->assertSame([$this->postTrains->id], $this->idsOf($this->get($url.'?postTypes[]=addon-post')));
+        $this->get($url)->assertDontSee('aria-label="種類で絞り込む"', false);
+        $this->assertSame([$this->introTrains->id, $this->postTrains->id], $this->idsOf($this->get($url.'?addon=buildings')), '種類の切り替えを出さない一覧では ?addon を無視する');
+    }
+
+    public function test_検索画面では入手方法の切り替えを出さず投稿形式の条件を上書きしない(): void
+    {
+        $this->get($this->url('search', ['postTypes' => ['addon-introduction']]))
+            ->assertOk()
+            ->assertSee('aria-label="並び順"', false)
+            ->assertDontSee('aria-label="入手方法で絞り込む"', false);
+        $this->get($this->url('pak', []))->assertSee('aria-label="入手方法で絞り込む"', false);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_日時が同じ記事は_i_dの新しい順に並べページ送りで重複させない(string $list): void
+    {
+        $this->introTrains->update(['published_at' => '2026-01-03 00:00:00']);
+
+        $this->assertIds($list, ['sort' => 'published'], [$this->introTrains, $this->postTrains, $this->postBuildings]);
+    }
+
+    #[DataProvider('listProvider')]
+    public function test_絞り込み・並び順を付けてもクエリ数は増えず件数の集計も1回だけ(string $list): void
+    {
+        $plain = $this->queriesOf($this->url($list, []));
+        $filtered = $this->queriesOf($this->url($list, ['addon' => 'trains', 'sort' => 'published', 'postTypes' => ['addon-post']]));
+
+        $this->assertCount(count($plain), $filtered);
+        $this->assertCount(1, array_filter($filtered, fn (string $sql): bool => str_starts_with($sql, 'select count(')));
+        $this->assertSame([], array_values(array_filter($filtered, fn (string $sql): bool => preg_match('/from `profiles`|from `tags` inner join `article_tag`/', $sql) === 1)), 'カードで使わないタグ・プロフィールは読み込まない');
+    }
+
+    public function test_カードは既存のダウンロード・掲載先の経路を使い種別を見分けられる(): void
+    {
+        $response = $this->get($this->url('pak', []));
+
+        $response->assertOk()->assertSee('id="app-article-cards"', false);
+        $cards = collect($this->cardsOf($response))->keyBy('id');
+        $this->assertSame(route('articles.download', ['article' => $this->postTrains->id]), $cards[$this->postTrains->id]['download_url']);
+        $this->assertArrayNotHasKey('addon_page_url', $cards[$this->postTrains->id]);
+        $this->assertSame(route('articles.conversion', ['article' => $this->introTrains->id]), $cards[$this->introTrains->id]['addon_page_url']);
+        $this->assertArrayNotHasKey('download_url', $cards[$this->introTrains->id]);
+        $this->assertSame(['id' => $this->user->id, 'name' => $this->user->name, 'url' => route('users.show', ['userIdOrNickname' => $this->user->nickname ?? $this->user->id])], $cards[$this->introTrains->id]['user']);
+    }
+
+    public function test_選択中の条件が分かり切り替えリンクとページ送りが条件を保つ(): void
+    {
+        for ($i = 0; $i < 24; $i++) {
+            $this->makeArticle(true, $this->trains, '2025-12-01 00:00:00', '2025-12-01 00:00:00');
+        }
+
+        $response = $this->get($this->url('pak', ['addon' => 'trains', 'sort' => 'published']));
+
+        $response->assertOk();
+        $html = $response->getContent();
+        $this->assertIsString($html);
+        $this->assertMatchesRegularExpression('/href="[^"]*addon=trains[^"]*"\s+class="v2-chip"\s+aria-current="true"\s*>鉄道車両</', $html);
+        $this->assertMatchesRegularExpression('/aria-current="true"\s*>公開が新しい順</', $html);
+        $this->assertMatchesRegularExpression('/href="[^"]*addon=buildings[^"]*sort=published[^"]*"/', $html, '種類を切り替えても並び順を保つ');
+        $this->assertMatchesRegularExpression('/href="[^"]*addon=trains[^"]*sort=published[^"]*page=2[^"]*"/', html_entity_decode($html), 'ページ送りが条件を保つ');
+        $response->assertSee('26 件');
+    }
+
+    private function makeArticle(bool $post, Category $addon, string $publishedAt, string $modifiedAt): Article
+    {
+        $article = $post ? $this->createAddonPost($this->user) : $this->createAddonIntroduction($this->user);
+        $article->update(['published_at' => $publishedAt, 'modified_at' => $modifiedAt]);
+        $article->categories()->attach([$this->pak->id, $addon->id]);
+        $article->tags()->attach($this->tag->id);
+
+        return $article;
+    }
+
+    /**
+     * @param  array<string, mixed>  $query
+     */
+    private function url(string $list, array $query): string
+    {
+        return match ($list) {
+            'pak' => route('pak.128japan', $query),
+            'tag' => route('tags.show', ['tag' => $this->tag, ...$query]),
+            'user' => route('users.show', ['userIdOrNickname' => $this->user->id, ...$query]),
+            'search' => route('search', ['categoryIds' => [$this->pak->id], ...$query]),
+        };
+    }
+
+    /**
+     * @param  array<string, mixed>  $query
+     * @param  list<Article>  $expected
+     */
+    private function assertIds(string $list, array $query, array $expected): void
+    {
+        $this->assertSame(
+            array_map(fn (Article $article): int => $article->id, $expected),
+            $this->idsOf($this->get($this->url($list, $query))),
+            json_encode($query, JSON_THROW_ON_ERROR),
+        );
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function idsOf(TestResponse $response): array
+    {
+        return array_map(fn (array $card): int => $card['id'], $this->cardsOf($response));
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    private function cardsOf(TestResponse $response): array
+    {
+        $response->assertOk();
+        /** @var AnonymousResourceCollection $articles */
+        $articles = $response->viewData('articles');
+
+        return array_values(array_map(
+            fn (JsonResource $card): array => json_decode(json_encode($card, JSON_THROW_ON_ERROR), true),
+            $articles->collection->all(),
+        ));
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function queriesOf(string $url): array
+    {
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+        try {
+            $this->get($url)->assertOk();
+
+            return array_map(fn (array $query): string => $query['query'], DB::getQueryLog());
+        } finally {
+            DB::disableQueryLog();
+            DB::flushQueryLog();
+        }
+    }
+}

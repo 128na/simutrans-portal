@@ -9,6 +9,7 @@ use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Repositories\Concerns\ArticleQueryConcern;
+use App\Services\Front\ArticleListFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
@@ -55,9 +56,10 @@ class FrontArticleRepository
      *     tagIds?: int[],
      *     postTypes?: string[]
      * } $condition
+     * @param  ArticleListFilter  $filter  入手方法は $condition['postTypes'] で指定するため、ここでは種類と並び順だけを使う
      * @return LengthAwarePaginator<int,Article>
      */
-    public function search(array $condition, int $limit = 24): LengthAwarePaginator
+    public function search(array $condition, int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
         if ($condition === []) {
             return new LengthAwarePaginator([], 0, 30);
@@ -70,8 +72,7 @@ class FrontArticleRepository
 
         $this->joinActiveUsers($baseQuery);
         $this->wherePublished($baseQuery);
-        $this->orderByLatest($baseQuery);
-        $this->withStandardRelations($baseQuery);
+        $this->applyListFilter($baseQuery, new ArticleListFilter(addonSlug: $filter->addonSlug, sort: $filter->sort));
 
         // キーワード
         $rawWord = $condition['word'] ?? '';
@@ -151,10 +152,10 @@ class FrontArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function paginateLatest(string $pak, int $limit = 24): LengthAwarePaginator
+    public function paginateLatest(string $pak, int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
-        $query = $this->latestPakQuery($pak)->select(['articles.*'])->distinct();
-        $this->withStandardRelations($query);
+        $query = $this->pakQuery($pak)->select(['articles.*'])->distinct();
+        $this->applyListFilter($query, $filter);
 
         return $query->paginate($limit);
     }
@@ -255,7 +256,7 @@ class FrontArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getLatestOther(int $limit = 24): LengthAwarePaginator
+    public function getLatestOther(int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
         $excludeSlugs = ['64', '128', '128-japan'];
 
@@ -276,8 +277,7 @@ class FrontArticleRepository
                 ->whereIn('c.slug', $excludeSlugs);
         });
 
-        $this->orderByLatest($query);
-        $this->withStandardRelations($query);
+        $this->applyListFilter($query, $filter);
 
         return $query->paginate($limit);
     }
@@ -365,7 +365,7 @@ class FrontArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getByTag(int $tagId, int $limit = 24): LengthAwarePaginator
+    public function getByTag(int $tagId, int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -381,8 +381,7 @@ class FrontArticleRepository
 
         $this->wherePublished($query);
         $this->whereAddonPostTypes($query);
-        $this->orderByLatest($query);
-        $this->withStandardRelations($query);
+        $this->applyListFilter($query, $filter);
 
         return $query->paginate($limit);
     }
@@ -392,7 +391,7 @@ class FrontArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getForPakAddon(int $pakId, int $addonId, int $limit = 24): LengthAwarePaginator
+    public function getForPakAddon(int $pakId, int $addonId, int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -412,8 +411,7 @@ class FrontArticleRepository
 
         $this->wherePublished($query);
         $this->whereAddonPostTypes($query);
-        $this->orderByLatest($query);
-        $this->withStandardRelations($query);
+        $this->applyListFilter($query, $filter);
 
         return $query->paginate($limit);
     }
@@ -423,7 +421,7 @@ class FrontArticleRepository
      *
      * @return LengthAwarePaginator<int,Article>
      */
-    public function getByUser(int $userId, int $limit = 24): LengthAwarePaginator
+    public function getByUser(int $userId, int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
         $query = $this->model->query()
             ->select(['articles.*'])
@@ -434,16 +432,56 @@ class FrontArticleRepository
         $this->joinActiveUsers($query);
         $this->wherePublished($query);
         $this->whereAddonPostTypes($query);
-        $this->orderByLatest($query);
-        $this->withStandardRelations($query);
+        $this->applyListFilter($query, $filter);
 
         return $query->paginate($limit);
+    }
+
+    /**
+     * 公開側のアドオン一覧（カード表示）の絞り込み・並び順・関連読み込み
+     *
+     * 種類と入手方法は同じクエリの条件として足すだけにし、件数用の集計クエリは増やさない。
+     * カードはタグ・プロフィールを表示しないので、読み込むのは pak・種類・サムネイル・作者名だけにする。
+     *
+     * @param  Builder<Article>  $builder
+     * @return Builder<Article>
+     */
+    private function applyListFilter(Builder $builder, ArticleListFilter $filter): Builder
+    {
+        if ($filter->addonSlug !== null) {
+            $addonSlug = $filter->addonSlug;
+            $builder->whereExists(function ($q) use ($addonSlug): void {
+                $q->selectRaw(1)
+                    ->from('article_category as filter_ac')
+                    ->join('categories as filter_c', 'filter_c.id', '=', 'filter_ac.category_id')
+                    ->whereColumn('filter_ac.article_id', 'articles.id')
+                    ->where('filter_c.type', CategoryType::Addon)
+                    ->where('filter_c.slug', $addonSlug);
+            });
+        }
+
+        if ($filter->downloadOnly) {
+            $builder->where('articles.post_type', ArticlePostType::AddonPost);
+        }
+
+        return $builder
+            ->latest($filter->sort->column())
+            ->orderByDesc('articles.id')
+            ->with('categories:id,type,slug', 'attachments:id,attachmentable_id,path,thumbnail_path', 'user:id,name,nickname');
     }
 
     /**
      * @return Builder<Article>
      */
     private function latestPakQuery(string $pak): Builder
+    {
+        return $this->orderByLatest($this->pakQuery($pak));
+    }
+
+    /**
+     * @return Builder<Article>
+     */
+    private function pakQuery(string $pak): Builder
     {
         $query = $this->model->query()->withoutGlobalScopes();
         $this->joinActiveUsers($query);
@@ -455,9 +493,8 @@ class FrontArticleRepository
             });
 
         $this->wherePublished($query);
-        $this->whereAddonPostTypes($query);
 
-        return $this->orderByLatest($query);
+        return $this->whereAddonPostTypes($query);
     }
 
     /**

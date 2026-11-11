@@ -43,6 +43,24 @@ export interface ArticleList {
 }
 
 /**
+ * アドオン一覧カード用の型（公開ページ）
+ * download_url があればアドオン投稿（ダウンロード）、addon_page_url があればアドオン紹介（掲載先へ移動）
+ */
+export interface ArticleCard {
+  id: number;
+  title: string;
+  url: string;
+  post_type: ArticlePostType;
+  download_url?: string;
+  addon_page_url?: string;
+  thumbnail: string;
+  categories: import("./Category").CategoryShow[];
+  user: { id: number; name: string; url: string };
+  published_at: string | null;
+  modified_at: string | null;
+}
+
+/**
  * 記事詳細の基本型
  * Base article detail type
  */

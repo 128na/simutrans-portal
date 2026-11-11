@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Frontend\ArticleList;
+use App\Http\Resources\Frontend\ArticleCard;
 use App\Models\Tag;
 use App\Repositories\Article\FrontArticleRepository;
 use App\Repositories\TagRepository;
+use App\Services\Front\ArticleListFilter;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
@@ -28,11 +30,14 @@ class TagController extends Controller
         ]);
     }
 
-    public function tag(Tag $tag): View
+    public function tag(Request $request, Tag $tag): View
     {
+        $filter = ArticleListFilter::fromRequest($request);
+
         return view('pages.tags.show', [
             'tag' => $tag,
-            'articles' => ArticleList::collection($this->articleRepository->getByTag($tag->id)),
+            'articles' => ArticleCard::collection($this->articleRepository->getByTag($tag->id, filter: $filter)),
+            'filter' => $filter,
             'meta' => $this->metaOgpService->frontTag($tag),
         ]);
     }

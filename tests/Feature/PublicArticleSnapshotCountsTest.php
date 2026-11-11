@@ -150,6 +150,7 @@ class PublicArticleSnapshotCountsTest extends TestCase
         try {
             $this->get(route('index'))->assertOk()
                 ->assertSee('新着アドオン')
+                ->assertSee('v2-tag-pak v2-tag-pak-128-japan', false)
                 ->assertSee(route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']), false)
                 ->assertSee('3<span class="sr-only">件</span>', false);
         } finally {

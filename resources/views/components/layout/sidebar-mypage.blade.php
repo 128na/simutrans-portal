@@ -24,6 +24,9 @@
       <li><x-ui.nav-link :url="route('mypage.invite')" :title="'ユーザー招待'" /></li>
       <li><x-ui.nav-link :url="route('mypage.tokens.index')" :title="'APIトークン'" /></li>
       <li><x-ui.nav-link :url="route('mypage.login-histories')" :title="'ログイン履歴'" /></li>
+      @if (auth()->user()?->isAdmin())
+        <li><x-ui.nav-link :url="route('admin.index')" :title="'管理画面'" /></li>
+      @endif
     </ul>
   </div>
   <div class="v2-nav-group">

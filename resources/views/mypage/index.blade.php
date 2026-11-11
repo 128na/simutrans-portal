@@ -2,142 +2,137 @@
 @section('max-w', 'v2-page-lg')
 @section('page-content')
   <div class="v2-page v2-page-lg">
-    <div class="mb-12">
+    <div class="mb-8 flex flex-wrap items-center gap-3">
       <h2 class="v2-text-h2">マイページ</h2>
+      <a
+        href="{{ route('mypage.articles.create') }}"
+        class="v2-button v2-button-lg v2-button-primary ml-auto font-semibold"
+      >
+        アドオンを投稿する
+      </a>
     </div>
     <div class="v2-page-content-area-lg">
-      <div>
-        <h3 class="v2-text-h3 mb-4">サマリ</h3>
-        <div class="v2-table-wrapper">
-          <table class="v2-table">
-            <tbody>
-              <tr>
-                <th>投稿数</th>
-                <td>{{ $summary->article_count ?? 0 }} 件</td>
-                <td>
-                  <x-ui.link :url="route('mypage.articles.index')" :title="'記事一覧'" />
-                  ,
-                  <x-ui.link :url="route('mypage.articles.create')" :title="'作成'" />
-                </td>
-              </tr>
-              <tr>
-                <th>記事リダイレクト設定数</th>
-                <td>{{ $summary->redirect_count ?? 0 }} 件</td>
-                <td>
-                  <x-ui.link :url="route('mypage.redirects')" :title="'リダイレクト設定'" />
-                </td>
-              </tr>
-              <tr>
-                <th>作成マイリスト数（公開数）</th>
-                <td>
-                  {{ $summary->mylist_count ?? 0 }}
-                  件（{{ $summary->public_mylist_count ?? 0 }} 件）
-                </td>
-                <td>
-                  <x-ui.link :url="route('mypage.mylists.index')" :title="'マイリスト管理'" />
-                </td>
-              </tr>
-              <tr>
-                <th>投稿ファイル数</th>
-                <td>{{ $summary->attachment_count ?? 0 }} 件</td>
-                <td rowspan="2">
-                  <x-ui.link :url="route('mypage.attachments')" :title="'ファイル管理'" />
-                </td>
-              </tr>
-              <tr>
-                <th>ファイルストレージ使用量</th>
-                <td>
-                  {{ round(($summary->total_attachment_size ?? 0) / 1024 / 1024, 1) }}
-                  MB
-                </td>
-              </tr>
-              <tr>
-                <th>今月の合計PV数</th>
-                <td>{{ $summary->total_view_count ?? 0 }} 件</td>
-                <td rowspan="2">
-                  <x-ui.link :url="route('mypage.analytics')" :title="'アナリティクス'" />
-                </td>
-              </tr>
-              <tr>
-                <th>今月の合計CV数</th>
-                <td>{{ $summary->total_conversion_count ?? 0 }} 件</td>
-              </tr>
-              <tr>
-                <th>作成したタグ数</th>
-                <td>{{ $summary->tag_count ?? 0 }} 件</td>
-                <td>
-                  <x-ui.link :url="route('mypage.tags')" :title="'タグ編集'" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      @if (! $user->hasVerifiedEmail())
+        <div class="v2-card v2-card-warn flex flex-wrap items-center gap-x-3 gap-y-1" role="status">
+          <span class="font-semibold">メールアドレスの認証が完了していません</span>
+          <span class="text-c-main">記事の投稿などを使うには認証が必要です。</span>
+          <a href="{{ route('mypage.verify-email') }}" class="v2-link ml-auto font-semibold">認証する</a>
         </div>
-      </div>
-      <div>
-        <h3 class="v2-text-h3 mb-4">ユーザー情報</h3>
-        <div class="v2-table-wrapper">
-          <table class="v2-table">
-            <tbody>
-              <tr>
-                <th>ユーザー名</th>
-                <td>{{ $user->name }}</td>
-                <td rowspan="2">
-                  <x-ui.link :url="route('mypage.profile')" :title="'プロフィール編集'" />
-                </td>
-              </tr>
-              <tr>
-                <th>ニックネーム</th>
-                <td>{{ $user->nickname ?? '未設定' }}</td>
-              </tr>
-              <tr>
-                <th>ユーザータイプ</th>
-                <td>@lang("role.{$user->role->value}")</td>
-                <td>
-                  @if ($user->role === \App\Enums\UserRole::Admin)
-                    <x-ui.link :url="route('admin.index')" :title="'管理画面'" />
-                  @else
-                    -
-                  @endif
-                </td>
-              </tr>
-              <tr>
-                <th>メールアドレス認証</th>
-                <td>{{ $user->email_verified_at ? '✅完了' : '⚠️未完了' }}</td>
-                <td>
-                  @if ($user->email_verified_at)
-                    -
-                  @else
-                    <x-ui.link :url="route('mypage.verify-email')" :title="'認証'" />
-                  @endif
-                </td>
-              </tr>
-              <tr>
-                <th>二要素認証</th>
-                <td>{{ $user->two_factor_confirmed_at ? '✅有効' : '⚠️無効' }}</td>
-                <td>
-                  <x-ui.link :url="route('mypage.two-factor')" :title="'設定'" />
-                </td>
-              </tr>
-              <tr>
-                <th>招待リンク</th>
-                <td>{{ $user->invitation_code ? '⚠️発行済み' : '✅未発行' }}</td>
-                <td>
-                  <x-ui.link :url="route('mypage.invite')" :title="'設定'" />
-                </td>
-              </tr>
-              <tr>
-                <th>最終ログイン日時</th>
-                <td>
-                  {{ $user->loginHistories()->latest()->first()?->created_at->format('Y/m/d H:i:s') }}
-                </td>
-                <td>
-                  <x-ui.link :url="route('mypage.login-histories')" :title="'ログイン履歴'" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      @endif
+
+      @if ($showTwoFactorNotice)
+        <div class="v2-card v2-card-warn flex flex-wrap items-center gap-x-3 gap-y-1" role="status">
+          <span class="font-semibold">二要素認証が無効です</span>
+          <span class="text-c-main">アカウントを守るために設定をおすすめします。</span>
+          <a href="{{ route('mypage.two-factor') }}" class="v2-link ml-auto font-semibold">設定する</a>
         </div>
-      </div>
+      @endif
+
+      <dl class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div class="v2-card flex flex-col gap-1 border-c-border">
+          <dt class="text-note text-c-sub">今月の表示回数（PV）</dt>
+          <dd class="text-3xl font-bold tabular-nums">{{ number_format((int) ($summary->total_view_count ?? 0)) }}</dd>
+        </div>
+        <div class="v2-card flex flex-col gap-1 border-c-border">
+          <dt class="text-note text-c-sub">今月のダウンロード（CV）</dt>
+          <dd class="text-3xl font-bold tabular-nums">
+            {{ number_format((int) ($summary->total_conversion_count ?? 0)) }}
+          </dd>
+        </div>
+        <div class="v2-card flex flex-col gap-1 border-c-border">
+          <dt class="text-note text-c-sub">公開中の記事</dt>
+          <dd class="text-3xl font-bold tabular-nums">
+            {{ number_format((int) ($summary->published_article_count ?? 0)) }}
+            <span class="text-note font-normal text-c-sub">
+              / 全 {{ number_format((int) ($summary->article_count ?? 0)) }} 件
+            </span>
+          </dd>
+        </div>
+        <div class="v2-card flex flex-col gap-1 border-c-border">
+          <dt class="text-note text-c-sub">ファイル使用量</dt>
+          <dd class="text-3xl font-bold tabular-nums">
+            {{ round(($summary->total_attachment_size ?? 0) / 1024 / 1024, 1) }}
+            <span class="text-body font-normal">MB</span>
+          </dd>
+        </div>
+      </dl>
+
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h3 class="v2-text-h3">直近30日の推移</h3>
+          <span class="text-note text-c-sub">公開中で最近更新した記事 {{ count($trend['analytics']) }} 件の合計</span>
+          <a href="{{ route('mypage.analytics') }}" class="v2-link ml-auto text-note font-semibold">
+            アナリティクスで詳しく見る
+          </a>
+        </div>
+        <script id="data-trend" type="application/json">
+          @json($trend)
+        </script>
+        <div id="app-mypage-trend">読み込み中...</div>
+      </section>
+
+      <section class="flex flex-col gap-3">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <h3 class="v2-text-h3">最近更新した記事</h3>
+          <a href="{{ route('mypage.articles.index') }}" class="v2-link ml-auto text-note font-semibold">
+            すべての記事
+          </a>
+        </div>
+        @if ($recentArticles->isEmpty())
+          <p class="text-c-sub">まだ記事がありません。</p>
+        @else
+          <div class="v2-table-wrapper">
+            <table class="v2-table w-full min-w-[640px]">
+              <thead>
+                <tr>
+                  <th>タイトル</th>
+                  <th>状態</th>
+                  <th>更新日</th>
+                  <th class="text-right">累計PV</th>
+                  <th class="text-right">累計CV</th>
+                  <th><span class="sr-only">操作</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($recentArticles as $article)
+                  <tr>
+                    <td>
+                      @if ($article->status === \App\Enums\ArticleStatus::Publish)
+                        <a href="{{ $article->showUrl() }}" class="v2-link font-semibold">{{ $article->title }}</a>
+                      @else
+                        <span class="font-semibold">{{ $article->title }}</span>
+                      @endif
+                    </td>
+                    <td>
+                      <span
+                        @class([
+                          'v2-badge whitespace-nowrap',
+                          'v2-badge-success' => $article->status === \App\Enums\ArticleStatus::Publish,
+                          'v2-badge-info' => $article->status === \App\Enums\ArticleStatus::Reservation,
+                          'v2-badge-warn' => $article->status === \App\Enums\ArticleStatus::Draft,
+                          'v2-badge-sub' => in_array($article->status, [\App\Enums\ArticleStatus::Private, \App\Enums\ArticleStatus::Trash], true),
+                        ])
+                      >
+                        @lang("statuses.{$article->status->value}")
+                      </span>
+                    </td>
+                    <td class="whitespace-nowrap text-c-sub">{{ $article->modified_at?->format('Y/m/d') }}</td>
+                    <td class="text-right tabular-nums">
+                      {{ number_format((int) ($article->totalViewCount?->count ?? 0)) }}
+                    </td>
+                    <td class="text-right tabular-nums">
+                      {{ number_format((int) ($article->totalConversionCount?->count ?? 0)) }}
+                    </td>
+                    <td class="whitespace-nowrap text-right">
+                      <a href="{{ route('mypage.articles.edit', $article) }}" class="v2-link font-semibold">編集</a>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
+      </section>
     </div>
   </div>
 @endsection

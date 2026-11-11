@@ -7,9 +7,6 @@ namespace App\Repositories;
 use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\MyList;
-use App\Models\Redirect;
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -19,16 +16,14 @@ class UserRepository
     public function __construct(public User $model) {}
 
     /**
-     * マイページのサマリ表示用
+     * マイページトップの数字（記事数・ファイル使用量・今月のPV/CV）を1クエリで取得する
      *
      * @return object{
      *     article_count: int|null,
-     *     attachment_count: int|null,
+     *     published_article_count: int|null,
      *     total_attachment_size: int|null,
      *     total_conversion_count: int|null,
-     *     total_view_count: int|null,
-     *     redirect_count: int|null,
-     *     tag_count: int|null
+     *     total_view_count: int|null
      * }
      */
     public function getSummary(User $user): object
@@ -37,11 +32,8 @@ class UserRepository
         $period = now()->format('Ym');
         $articlesTable = (new Article)->getTable();
         $attachmentsTable = (new Attachment)->getTable();
-        $mylistsTable = (new MyList)->getTable();
-        $redirectsTable = (new Redirect)->getTable();
-        $tagsTable = (new Tag)->getTable();
 
-        /** @var object{article_count: int|null, attachment_count: int|null, total_attachment_size: int|null, total_conversion_count: int|null, total_view_count: int|null, redirect_count: int|null, tag_count: int|null} $result */
+        /** @var object{article_count: int|null, published_article_count: int|null, total_attachment_size: int|null, total_conversion_count: int|null, total_view_count: int|null} $result */
         $result = DB::query()
             ->selectSub(
                 DB::table($articlesTable)
@@ -51,29 +43,18 @@ class UserRepository
                 'article_count'
             )
             ->selectSub(
-                DB::table($attachmentsTable)
+                DB::table($articlesTable)
                     ->where('user_id', $userId)
+                    ->where('status', ArticleStatus::Publish)
+                    ->whereNull('deleted_at')
                     ->selectRaw('COUNT(*)'),
-                'attachment_count'
+                'published_article_count'
             )
             ->selectSub(
                 DB::table($attachmentsTable)
                     ->where('user_id', $userId)
                     ->selectRaw('SUM(size)'),
                 'total_attachment_size'
-            )
-            ->selectSub(
-                DB::table($mylistsTable)
-                    ->where('user_id', $userId)
-                    ->selectRaw('COUNT(*)'),
-                'mylist_count'
-            )
-            ->selectSub(
-                DB::table($mylistsTable)
-                    ->where('user_id', $userId)
-                    ->where('is_public', true)
-                    ->selectRaw('COUNT(*)'),
-                'public_mylist_count'
             )
             ->selectSub(
                 DB::table('conversion_counts')
@@ -90,21 +71,6 @@ class UserRepository
                     ->where('period', $period)
                     ->selectRaw('SUM(count)'),
                 'total_view_count'
-            )
-            ->selectSub(
-                DB::table($redirectsTable)
-                    ->where('user_id', $userId)
-                    ->selectRaw('COUNT(*)'),
-                'redirect_count'
-            )
-            ->selectSub(
-                DB::table($tagsTable)
-                    ->where(function ($q) use ($userId): void {
-                        $q->where('created_by', $userId)
-                            ->orWhere('last_modified_by', $userId);
-                    })
-                    ->selectRaw('COUNT(*)'),
-                'tag_count'
             )
             ->firstOrFail();
 

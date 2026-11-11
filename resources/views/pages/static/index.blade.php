@@ -13,7 +13,7 @@
     <div id="app-article-list">読み込み中...</div>
 
     <div class="mt-10 v2-page-pagination-area">
-      {{ $articles->links() }}
+      {{ $articles->onEachSide(1)->links() }}
     </div>
   </div>
 @endsection

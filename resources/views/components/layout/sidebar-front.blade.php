@@ -1,8 +1,8 @@
 @props(['variant' => 'desktop'])
 
 <nav aria-label="サイトメニュー" class="v2-nav">
-  {{-- PC 幅の検索欄はヘッダーにあるので、検索欄はモバイルメニューにだけ置く --}}
-  @if ($variant === 'mobile')
+  {{-- PC 幅の検索欄はヘッダーにあるので、検索欄はモバイルメニューにだけ置く。検索結果ページはヘッダーと同じくページ内のフォームを使う（#682） --}}
+  @if ($variant === 'mobile' && ! request()->routeIs('search'))
     <x-layout.search-form
       input-id="sidebar-search-mobile"
       role="search"

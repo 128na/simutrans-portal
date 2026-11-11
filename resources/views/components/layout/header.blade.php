@@ -10,12 +10,15 @@
         </a>
       </div>
       {{-- キーワード検索はどのページでもヘッダーのロゴの右隣に置く（サイドメニューには置かない）。lg 未満はヘッダーを2段にしないよう隠し、モバイルメニュー内の検索を使う --}}
-      <x-layout.search-form
-        input-id="header-search"
-        role="search"
-        aria-label="キーワード検索"
-        class="hidden lg:block w-full max-w-md"
-      />
+      {{-- 検索結果ページはページ内に条件付きの検索フォームがあり、ヘッダーから送ると詳細条件が外れるので出さない（#682） --}}
+      @unless (request()->routeIs('search'))
+        <x-layout.search-form
+          input-id="header-search"
+          role="search"
+          aria-label="キーワード検索"
+          class="hidden lg:block w-full max-w-md"
+        />
+      @endunless
       <div class="flex items-center gap-x-4 lg:flex-1 lg:justify-end">
         <div class="flex justify-end">
           @guest

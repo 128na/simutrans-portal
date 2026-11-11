@@ -28,7 +28,7 @@
       <div id="app-article-cards" data-sort="{{ $filter->sort->value }}">読み込み中...</div>
 
       <div class="mt-10 v2-page-pagination-area">
-        {{ $articles->withQueryString() }}
+        {{ $articles->withQueryString()->onEachSide(1)->links() }}
       </div>
     @endif
   </div>

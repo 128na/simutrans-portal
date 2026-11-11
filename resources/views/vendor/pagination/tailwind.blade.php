@@ -36,7 +36,10 @@
       @endif
     </div>
 
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+    {{-- 幅が足りないときは件数の文と番号の列を2行に分け、ページ全体を横に広げない（#682） --}}
+    <div
+      class="hidden sm:flex-1 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-4 sm:gap-y-3"
+    >
       <div>
         <p class="text-sm text-c-sub leading-5">
           <span class="font-medium">{{ $paginator->total() }}</span>

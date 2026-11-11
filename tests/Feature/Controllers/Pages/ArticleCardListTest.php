@@ -148,9 +148,9 @@ class ArticleCardListTest extends TestCase
         $this->assertStringNotContainsString('addon=ships', $pak);
         $this->assertDoesNotMatchRegularExpression('/ほか \d+ 種類/u', $pak, '種類が少なければ畳まない');
 
-        $this->get($this->url('pak', ['addon' => 'ships']))
-            ->assertOk()
-            ->assertSee('addon=ships', false);
+        $selected = $this->get($this->url('pak', ['addon' => 'ships']))->assertOk()->getContent();
+        $this->assertIsString($selected);
+        $this->assertMatchesRegularExpression('/class="v2-chip"\s+aria-current="true"\s*>船舶/u', $selected, '選択中の種類は 0 件でもチップを出す');
 
         $this->get($this->url('tag', []))
             ->assertOk()

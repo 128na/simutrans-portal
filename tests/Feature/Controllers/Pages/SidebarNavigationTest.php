@@ -25,7 +25,7 @@ class SidebarNavigationTest extends TestCase
         $this->assertSame(2, $this->countCurrent($html, route('pak.64')));
         $this->assertSame(0, $this->countCurrent($html, route('pak.128')));
         $this->assertSame(0, $this->countCurrent($html, route('latest')));
-        $this->assertSame(2, substr_count($html, 'aria-current="page"'));
+        $this->assertSame(2, $this->countCurrentLinks($html));
     }
 
     public function test_マイページは前方一致の親項目を現在地にしない(): void
@@ -40,7 +40,15 @@ class SidebarNavigationTest extends TestCase
 
         $this->assertSame(2, $this->countCurrent($html, route('mypage.articles.index')));
         $this->assertSame(0, $this->countCurrent($html, route('mypage.index')));
-        $this->assertSame(2, substr_count($html, 'aria-current="page"'));
+        $this->assertSame(2, $this->countCurrentLinks($html));
+    }
+
+    /**
+     * ページネーションの span にも aria-current が付くため、リンク要素に限って数える.
+     */
+    private function countCurrentLinks(string $html): int
+    {
+        return preg_match_all('/<a\s+href="[^"]*"\s+aria-current="page"/', $html) ?: 0;
     }
 
     private function countCurrent(string $html, string $url): int

@@ -32,7 +32,7 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
               <div className="text-meta v2-text-sub">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
-              <h3 className="text-xl font-semibold tracking-tight text-pretty">
+              <h3 className="v2-text-h4">
                 <a href={article.url} className="v2-title-link">
                   {article.title}
                 </a>

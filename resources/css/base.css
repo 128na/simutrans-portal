@@ -2,9 +2,6 @@
 @import "tailwindcss";
 
 @theme {
-  --color-tag: #757575;
-  --color-category: #607d8b;
-
   /*
    * 配色の共通ルール（#637）
    * - 文字と背景のコントラストは 4.5:1 以上（値は白背景、または組み合わせる背景色との比）
@@ -34,6 +31,7 @@
   --color-pak-64-fg: #166534; /* 6.5:1 */
   --color-pak-other-bg: #ede9fe;
   --color-pak-other-fg: #5b21b6; /* 7.6:1 */
+  /* pak 問わずは特定の pak を指さないので中立色（c-sub-strong / c-surface 8.9:1） */
 
   /*
    * 文字サイズは「タイトル・本文・補足」の3段階。meta（12px）は日付など最小限に使う
@@ -80,7 +78,7 @@
 
   /* 記事タイトルなどのリンク（下線なし。ホバーで色を変える） */
   .v2-title-link {
-    @apply text-c-main font-semibold no-underline break-all hover:text-c-link hover:underline;
+    @apply text-c-main font-semibold no-underline break-all hover:text-c-link;
   }
 
   /* サイドメニュー（公開側・マイページ共通）。現在地は背景色で示す */
@@ -264,7 +262,7 @@
 
   /* カラーバリアント：ボタン（アウトライン） */
   .v2-button-sub-outline {
-    @apply border-c-border-strong bg-white text-c-main hover:bg-c-surface;
+    @apply border-c-border-strong bg-white text-c-main hover:bg-c-surface disabled:hover:bg-white;
   }
   .v2-button-primary-outline {
     @apply border-c-primary text-c-primary hover:bg-c-primary/10;
@@ -356,6 +354,9 @@
   }
   .v2-tag-pak-other {
     @apply bg-pak-other-bg text-pak-other-fg;
+  }
+  .v2-tag-pak-any {
+    @apply bg-c-surface text-c-sub-strong border-c-border-strong;
   }
 
   /* ホバー・インタラクション */

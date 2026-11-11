@@ -36,6 +36,14 @@ describe("カテゴリのタグ", () => {
     );
   });
 
+  it("pak 問わずは特定の pak の色にせず中立色にする", () => {
+    render(<Categories categories={[{ id: 22, type: "pak", slug: "any" }]} />);
+
+    const any = screen.getByRole("link", { name: "Pak問わず" });
+    expect(any).toHaveClass("v2-tag-pak", "v2-tag-pak-any");
+    expect(any).not.toHaveClass("v2-tag-pak-other");
+  });
+
   it("種類・ライセンスは枠だけのタグにする", () => {
     render(
       <Categories

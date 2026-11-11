@@ -3,7 +3,7 @@
 @php
   // サイドメニューの項目。現在地はURLの完全一致で判定し、背景色（aria-current）で示す
   $external = ! (str_starts_with($url, config('app.url')) || str_starts_with($url, '/') || str_starts_with($url, '#'));
-  $current = ! $external && rtrim($url, '/') === rtrim(url()->current(), '/');
+  $current = rtrim($url, '/') === rtrim(url()->current(), '/');
 @endphp
 
 <a

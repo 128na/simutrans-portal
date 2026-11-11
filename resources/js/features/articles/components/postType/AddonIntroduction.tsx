@@ -1,7 +1,6 @@
-import { formatArticleDate } from "../../utils/articleUtil";
 import { TextPre } from "../TextPre";
-import { TitleH3 } from "../TitleH3";
 import { TitleH4 } from "../TitleH4";
+import { ADDON_LICENSE_ANCHOR } from "../AddonAcquisition";
 
 type Props = {
   article: Article.Show;
@@ -12,32 +11,6 @@ export const AddonIntroduction = ({ article }: Props) => {
     <>
       <TextPre>{contents.description || "(本文)"}</TextPre>
 
-      <div>
-        <TitleH3>詳細情報</TitleH3>
-        <div className="v2-table-wrapper">
-          <table className="v2-table">
-            <tbody>
-              <tr>
-                <th>作者</th>
-                <td>{contents.author ?? article.user.name}</td>
-              </tr>
-              <tr>
-                <th>作者による掲載許可</th>
-                <td>{contents.agreement ? "取得済み" : "未取得"}</td>
-              </tr>
-              <tr>
-                <th>公開日時</th>
-                <td>{formatArticleDate(article.published_at)}</td>
-              </tr>
-              <tr>
-                <th>最終更新日時</th>
-                <td>{formatArticleDate(article.modified_at)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       {contents.thanks && (
         <div>
           <TitleH4>謝辞</TitleH4>
@@ -46,7 +19,7 @@ export const AddonIntroduction = ({ article }: Props) => {
       )}
 
       {contents.license && (
-        <div>
+        <div id={ADDON_LICENSE_ANCHOR} className="scroll-mt-6">
           <TitleH4>ライセンス・利用条件</TitleH4>
           <TextPre>{contents.license}</TextPre>
         </div>

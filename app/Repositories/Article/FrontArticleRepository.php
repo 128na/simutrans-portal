@@ -190,6 +190,46 @@ class FrontArticleRepository
     }
 
     /**
+     * pak × 種類 × 投稿形式ごとの公開中のアドオン記事数（表示データの生成用）
+     *
+     * pak×種類の一覧（getForPakAddon）と同じ条件で数える。
+     *
+     * @param  list<string>  $pakSlugs
+     * @return list<array{pak: string, addon: string, post_type: string, count: int}>
+     */
+    public function countByPakAddon(array $pakSlugs): array
+    {
+        $query = $this->model->query()->withoutGlobalScopes();
+        $this->joinActiveUsers($query);
+        $query->join('article_category as ac_pak', 'ac_pak.article_id', '=', 'articles.id')
+            ->join('categories as pak', function (JoinClause $joinClause) use ($pakSlugs): void {
+                $joinClause->on('pak.id', '=', 'ac_pak.category_id')
+                    ->where('pak.type', CategoryType::Pak)
+                    ->whereIn('pak.slug', $pakSlugs);
+            })
+            ->join('article_category as ac_addon', 'ac_addon.article_id', '=', 'articles.id')
+            ->join('categories as addon', function (JoinClause $joinClause): void {
+                $joinClause->on('addon.id', '=', 'ac_addon.category_id')
+                    ->where('addon.type', CategoryType::Addon);
+            });
+        $this->wherePublished($query);
+        $this->whereAddonPostTypes($query);
+
+        return array_values($query->toBase()
+            ->select(['pak.slug as pak', 'addon.slug as addon', 'articles.post_type'])
+            ->selectRaw('COUNT(DISTINCT articles.id) as article_count')
+            ->groupBy('pak.slug', 'addon.slug', 'articles.post_type')
+            ->get()
+            ->map(fn (object $row): array => [
+                'pak' => (string) $row->pak,
+                'addon' => (string) $row->addon,
+                'post_type' => (string) $row->post_type,
+                'count' => (int) $row->article_count,
+            ])
+            ->all());
+    }
+
+    /**
      * 一般記事一覧取得(ページネーション)
      *
      * @return LengthAwarePaginator<int,Article>

@@ -21,11 +21,12 @@ class PakController extends Controller
         private readonly LatestAction $latestAction,
         private readonly CategoryRepository $categoryRepository,
         private readonly MetaOgpService $metaOgpService,
+        private readonly PublicArticleSnapshot $snapshot,
     ) {}
 
-    public function latest(PublicArticleSnapshot $snapshot): View
+    public function latest(): View
     {
-        $latest = $snapshot->read()['latest'];
+        $latest = $this->snapshot->read()['latest'];
 
         return view('pages.pak.latest', [
             'pak128Japan' => $latest['128-japan'] ?? [],
@@ -45,6 +46,7 @@ class PakController extends Controller
             'categoryIds' => [$category->id],
             'articles' => ArticleCard::collection($this->latestAction->byPak('128-japan', filter: $filter)),
             'filter' => $filter,
+            'addonCounts' => $this->snapshot->addonCounts('128-japan', $filter->downloadOnly),
             'meta' => $this->metaOgpService->frontPak('128-japan'),
         ]);
     }
@@ -59,6 +61,7 @@ class PakController extends Controller
             'categoryIds' => [$category->id],
             'articles' => ArticleCard::collection($this->latestAction->byPak('128', filter: $filter)),
             'filter' => $filter,
+            'addonCounts' => $this->snapshot->addonCounts('128', $filter->downloadOnly),
             'meta' => $this->metaOgpService->frontPak('128'),
         ]);
     }
@@ -73,6 +76,7 @@ class PakController extends Controller
             'categoryIds' => [$category->id],
             'articles' => ArticleCard::collection($this->latestAction->byPak('64', filter: $filter)),
             'filter' => $filter,
+            'addonCounts' => $this->snapshot->addonCounts('64', $filter->downloadOnly),
             'meta' => $this->metaOgpService->frontPak('64'),
         ]);
     }

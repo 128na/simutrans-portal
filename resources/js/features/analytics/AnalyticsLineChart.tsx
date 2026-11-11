@@ -31,8 +31,10 @@ const MAX_MARKERS = 16;
 const renderMarker =
   (shape: MarkerShape, axis: Analytics.Axis, step: number) =>
   (props: DotItemDotProps) => {
-    const { cx, cy, index } = props;
-    if (cx == null || cy == null || index % step !== 0) {
+    const { cx, cy, index, points } = props;
+    // 間引いても最新の区間には必ず付ける
+    const isLast = index === points.length - 1;
+    if (cx == null || cy == null || (index % step !== 0 && !isLast)) {
       return <g key={`dot-${index}`} />;
     }
     const { stroke } = axisStyles[axis];

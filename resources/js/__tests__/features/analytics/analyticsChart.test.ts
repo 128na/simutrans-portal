@@ -99,6 +99,8 @@ describe("spansMultipleYears", () => {
 });
 
 describe("buildChartData", () => {
+  /** 期間より後の固定日。実行日に左右されないようにする */
+  const TODAY = new Date(2030, 0, 1);
   const articles = [
     { id: 11, title: "記事A" },
     { id: 22, title: "記事B" },
@@ -123,7 +125,8 @@ describe("buildChartData", () => {
         },
       ],
       articles,
-      base
+      base,
+      TODAY
     );
 
     expect(series.map((s) => s.key)).toEqual(["11-pv", "11-cv"]);
@@ -153,7 +156,8 @@ describe("buildChartData", () => {
         },
       ],
       articles,
-      { ...base, axes: ["pv"] }
+      { ...base, axes: ["pv"] },
+      TODAY
     );
 
     expect(series.map((s) => s.key)).toEqual(["22-pv"]);
@@ -173,7 +177,8 @@ describe("buildChartData", () => {
         },
       ],
       articles,
-      { ...base, mode: "cumulative" }
+      { ...base, mode: "cumulative" },
+      TODAY
     );
 
     expect(rows.map((r) => r["11-pv"])).toEqual([
@@ -190,13 +195,18 @@ describe("buildChartData", () => {
       pastViewCount: 0,
       pastConversionCount: 0,
     };
-    const monthly = buildChartData([analytic], articles, {
-      ...base,
-      type: "monthly",
-      start_date: "2025-11-15",
-      end_date: "2026-02-10",
-      axes: ["pv"],
-    });
+    const monthly = buildChartData(
+      [analytic],
+      articles,
+      {
+        ...base,
+        type: "monthly",
+        start_date: "2025-11-15",
+        end_date: "2026-02-10",
+        axes: ["pv"],
+      },
+      TODAY
+    );
     expect(monthly.rows.map((r) => [r.name, r["22-pv"]])).toEqual([
       ["202511", 0],
       ["202512", 0],
@@ -213,12 +223,38 @@ describe("buildChartData", () => {
         start_date: "2024-06-01",
         end_date: "2026-01-01",
         axes: ["pv"],
-      }
+      },
+      TODAY
     );
     expect(yearly.rows.map((r) => [r.name, r["22-pv"]])).toEqual([
       ["2024", 0],
       ["2025", 9],
       ["2026", 0],
+    ]);
+  });
+
+  it("終了日が今日より後なら今日までの区間にする", () => {
+    const { rows } = buildChartData(
+      [
+        {
+          id: 11,
+          viewCounts: { "20261109": 1 },
+          conversionCounts: {},
+          pastViewCount: 0,
+          pastConversionCount: 0,
+        },
+      ],
+      articles,
+      { ...base, end_date: "2026-11-20", axes: ["pv"] },
+      new Date(2026, 10, 9, 15, 0)
+    );
+    expect(rows.map((r) => [r.name, r["11-pv"]])).toEqual([
+      ["20261104", 0],
+      ["20261105", 0],
+      ["20261106", 0],
+      ["20261107", 0],
+      ["20261108", 0],
+      ["20261109", 1],
     ]);
   });
 
@@ -235,7 +271,8 @@ describe("buildChartData", () => {
           },
         ],
         articles,
-        base
+        base,
+        TODAY
       )
     ).toEqual({ series: [], rows: [] });
   });

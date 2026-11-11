@@ -82,16 +82,19 @@ export const spansMultipleYears = (periods: string[]): boolean =>
 
 /**
  * API の集計を、指定期間の全区間を 0 で埋めたグラフ用の系列と行に変換する
+ * 終了日が today より後なら today までにする（未来の区間を 0 と誤読させない）
  */
 export const buildChartData = (
   analytics: Analytics.ArticleAnalytic[],
   articles: Pick<Analytics.Article, "id" | "title">[],
-  conditions: ChartConditions
+  conditions: ChartConditions,
+  today: Date = new Date()
 ): { series: ChartSeries[]; rows: ChartRow[] } => {
+  const todayDate = format(today, "yyyy-MM-dd");
   const periods = enumeratePeriods(
     conditions.type,
     conditions.start_date,
-    conditions.end_date
+    conditions.end_date < todayDate ? conditions.end_date : todayDate
   );
   const series: ChartSeries[] = [];
   const counts: Record<string, Record<string, number>> = {};
@@ -145,8 +148,8 @@ export const buildChartData = (
  * 系列の見た目。PV と CV は色相・明るさ・線種で区別し、記事はマーカーの形で区別する
  */
 export const axisStyles = {
-  /** 青（c-primary）・実線。明るさ OKLab L 0.53 */
-  pv: { stroke: "#1565d8", strokeDasharray: undefined },
+  /** 濃い青・実線（OKLab L 0.49）。c-primary は主要操作用なので使わない */
+  pv: { stroke: "#1d4ed8", strokeDasharray: undefined },
   /** 橙・破線。PV より明るい（OKLab L 0.65） */
   cv: { stroke: "#ea580c", strokeDasharray: "6 3" },
 } as const satisfies Record<

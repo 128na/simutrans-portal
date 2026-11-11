@@ -3,9 +3,9 @@ import TextSub from "@/components/ui/TextSub";
 import Button from "@/components/ui/Button";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
-import { buildChartData } from "./analyticsChart";
+import { buildChartData, type ChartConditions } from "./analyticsChart";
 import { AnalyticsLineChart } from "./AnalyticsLineChart";
 
 type Props = {
@@ -13,14 +13,7 @@ type Props = {
   loadOnMount?: boolean;
 };
 
-type Conditions = {
-  ids: number[];
-  type: Analytics.Type;
-  start_date: string;
-  end_date: string;
-  mode: Analytics.Mode;
-  axes: Analytics.Axis[];
-};
+type Conditions = ChartConditions & { ids: number[] };
 
 type RequestState =
   | { phase: "loading" | "error"; key: string }
@@ -106,9 +99,14 @@ export function AnalyticsGraph({ articles, loadOnMount = false }: Props) {
     return () => latestRequest.current?.abort();
   }, [fetchAnalytics, initialConditions]);
 
-  const { series, rows } = result
-    ? buildChartData(result.analytics, articles, result.conditions)
-    : { series: [], rows: [] };
+  // 条件の変更で再描画されても、適用済みの結果が同じなら作り直さない
+  const { series, rows } = useMemo(
+    () =>
+      result
+        ? buildChartData(result.analytics, articles, result.conditions)
+        : { series: [], rows: [] },
+    [result, articles]
+  );
 
   const onClick = () => {
     setRequest({ phase: "loading", key });

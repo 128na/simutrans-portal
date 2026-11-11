@@ -262,6 +262,40 @@ describe("downloadSequentially", () => {
       expect(result.resumeAt).toBe(start + 3_000_000);
     });
 
+    it("短い待ち（1 分の上限）の途中で中止したときは resumeAt を返さない", async () => {
+      let cancelled = false;
+      const t = setup({ "/articles/41/download": [tooMany("30")] });
+      t.sleep.mockImplementation(async (ms: number) => {
+        t.clock.ms += ms;
+        cancelled = true;
+      });
+
+      const result = await downloadSequentially([postC], {
+        ...t.options,
+        isCancelled: () => cancelled,
+      });
+
+      expect(result.skipped.map((i) => i.id)).toEqual([41]);
+      expect(result.resumeAt).toBeUndefined();
+    });
+
+    it("Retry-After が HTTP 日付でも、差し替えた時計で待ち時間を出す", async () => {
+      const t = setup({
+        "/articles/41/download": [
+          // 偽の時計（2026-11-11T05:00:00Z）の 50 分後
+          tooMany("Wed, 11 Nov 2026 05:50:00 GMT"),
+          ok("c.zip"),
+        ],
+      });
+
+      await downloadSequentially([postC], t.options);
+
+      expect(t.progress.find((p) => p.type === "waiting")).toMatchObject({
+        totalSeconds: 3000,
+        seconds: 3000,
+      });
+    });
+
     it("中止せずに終わったときは resumeAt を返さない", async () => {
       const t = setup({
         "/articles/41/download": [tooMany("5"), ok("c.zip")],

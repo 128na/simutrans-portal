@@ -35,7 +35,7 @@ export type BulkResult = {
   failed: BulkItem[];
   /** 中止したときに取得しなかったもの */
   skipped: BulkItem[];
-  /** 上限の待機中に中止したとき、上限が解ける時刻（エポックミリ秒） */
+  /** 長い待ち（isLongWait）の途中で中止したとき、上限が解ける時刻（エポックミリ秒） */
   resumeAt?: number;
 };
 
@@ -168,7 +168,8 @@ export const downloadSequentially = async (
 
     let saved = false;
     let cancelledWhileWaiting = false;
-    let resumeAt = 0;
+    /** 長い待ちの途中で中止したときに返す、上限が解ける時刻 */
+    let longWaitResumeAt: number | undefined;
     // 429 の間だけ待って同じ件を取り直す
     for (;;) {
       let response: Response;
@@ -182,11 +183,13 @@ export const downloadSequentially = async (
       }
 
       if (response.status === 429) {
+        const startedAt = now();
         const totalSeconds = parseRetryAfter(
-          response.headers.get("Retry-After")
+          response.headers.get("Retry-After"),
+          startedAt
         );
         // 残りは締切の時刻から数える。隠れたタブではタイマーが間引かれ、1 秒ずつ数えると長い待ちが終わらない
-        resumeAt = now() + totalSeconds * 1000;
+        const resumeAt = startedAt + totalSeconds * 1000;
         for (;;) {
           const remainingMs = resumeAt - now();
           if (remainingMs <= 0) {
@@ -194,6 +197,10 @@ export const downloadSequentially = async (
           }
           if (isCancelled()) {
             cancelledWhileWaiting = true;
+            // 短い待ち（1 分の上限）なら再開の時刻は案内しない
+            if (isLongWait(totalSeconds)) {
+              longWaitResumeAt = resumeAt;
+            }
             break;
           }
           onProgress?.({
@@ -242,7 +249,9 @@ export const downloadSequentially = async (
 
     if (cancelledWhileWaiting) {
       result.skipped.push(...targets.slice(index));
-      result.resumeAt = resumeAt;
+      if (longWaitResumeAt !== undefined) {
+        result.resumeAt = longWaitResumeAt;
+      }
       break;
     }
     if (saved) {

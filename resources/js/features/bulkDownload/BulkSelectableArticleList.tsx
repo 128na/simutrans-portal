@@ -44,19 +44,46 @@ const SelectToggle = ({
   </Button>
 );
 
-/** 再開する時刻を「14:05」の形にする */
-const formatClock = (epochMs: number): string =>
-  new Date(epochMs).toLocaleTimeString("ja-JP", {
+/** 再開する時刻を「14:05」の形にする。日付をまたぐときは「明日 00:40」 */
+const formatClock = (epochMs: number, now: number = Date.now()): string => {
+  const date = new Date(epochMs);
+  const time = date.toLocaleTimeString("ja-JP", {
     hour: "2-digit",
     minute: "2-digit",
   });
+  return date.toDateString() === new Date(now).toDateString()
+    ? time
+    : `明日 ${time}`;
+};
 
 const isLongWaiting = (progress: BulkProgress | null): boolean =>
   progress?.type === "waiting" && isLongWait(progress.totalSeconds);
 
-const ProgressMessage = ({ progress }: { progress: BulkProgress }) => {
+/**
+ * 長い待ちは分でしか表示が変わらないので、同じ分の間は前の進捗を使い続けて一覧を描き直さない
+ */
+const nextProgress = (
+  prev: BulkProgress | null,
+  next: BulkProgress
+): BulkProgress | null =>
+  prev?.type === "waiting" &&
+  next.type === "waiting" &&
+  isLongWait(next.totalSeconds) &&
+  prev.resumeAt === next.resumeAt &&
+  prev.item.id === next.item.id &&
+  Math.ceil(prev.seconds / 60) === Math.ceil(next.seconds / 60)
+    ? prev
+    : next;
+
+const ProgressMessage = ({
+  progress,
+  isLong,
+}: {
+  progress: BulkProgress;
+  isLong: boolean;
+}) => {
   if (progress.type === "waiting") {
-    if (isLongWait(progress.totalSeconds)) {
+    if (isLong) {
       // 1 時間の上限。秒で数えても待つべきか分からないので、分と時刻、取れる行動を示す
       return (
         <>
@@ -106,6 +133,7 @@ export const BulkSelectableArticleList = ({
 
   const downloadable = items.filter((item) => item.download_url);
   const external = items.filter((item) => !item.download_url);
+  const isLong = isLongWaiting(progress);
 
   // クリックからだけ起動する（effect から起動すると StrictMode で 2 回走り CV が二重になる）
   const handleBulkDownload = async () => {
@@ -118,7 +146,7 @@ export const BulkSelectableArticleList = ({
     setFinished(null);
 
     const result = await download(items, {
-      onProgress: setProgress,
+      onProgress: (next) => setProgress((prev) => nextProgress(prev, next)),
       isCancelled: () => cancelRef.current,
     });
 
@@ -233,16 +261,12 @@ export const BulkSelectableArticleList = ({
                   {isRunning ? (
                     // 長く待つときは中止が取りうる行動の本命なので目立たせる
                     <Button
-                      variant={
-                        isLongWaiting(progress) ? "primary" : "subOutline"
-                      }
+                      variant={isLong ? "primary" : "subOutline"}
                       onClick={() => {
                         cancelRef.current = true;
                       }}
                     >
-                      {isLongWaiting(progress)
-                        ? "中止して後で取得する"
-                        : "中止"}
+                      {isLong ? "中止して後で取得する" : "中止"}
                     </Button>
                   ) : (
                     <>
@@ -277,11 +301,11 @@ export const BulkSelectableArticleList = ({
               </div>
               {progress && (
                 <p className="text-body" role="status">
-                  <ProgressMessage progress={progress} />
+                  <ProgressMessage progress={progress} isLong={isLong} />
                 </p>
               )}
               {/* 長く待つ間は案内を優先し、下端の帯が画面を覆いすぎないよう保存の注意は出さない */}
-              {downloadable.length > 1 && !isLongWaiting(progress) && (
+              {downloadable.length > 1 && !isLong && (
                 <p className="text-meta text-c-sub">
                   1
                   件ずつ順番に保存します。ブラウザが「複数ファイルのダウンロード」の許可を求めたら「許可」を選んでください。ブロックすると

@@ -1,4 +1,5 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
+import { Profiler } from "react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { BulkSelectableArticleList } from "@/features/bulkDownload/BulkSelectableArticleList";
@@ -245,7 +246,16 @@ describe("BulkSelectableArticleList", () => {
       title: "地下鉄",
       download_url: "/articles/136/download",
     });
+    const now = Date.parse("2026-11-11T05:00:00Z");
     const resumeAt = Date.parse("2026-11-11T05:47:00Z");
+    beforeEach(() => {
+      // 「明日」の判定を決まった日付で行う。タイマーは本物のまま（userEvent が使う）
+      vi.useFakeTimers({ toFake: ["Date"] });
+      vi.setSystemTime(now);
+    });
+    afterEach(() => {
+      vi.useRealTimers();
+    });
     const clock = (epochMs: number) =>
       new Date(epochMs).toLocaleTimeString("ja-JP", {
         hour: "2-digit",
@@ -253,20 +263,27 @@ describe("BulkSelectableArticleList", () => {
       });
 
     /** 1 件目を取得した後、2 件目で待機したまま止まるダウンロード */
-    const waitingDownload = (totalSeconds: number, seconds: number) => {
+    const waitingDownload = (
+      totalSeconds: number,
+      seconds: number,
+      waitUntil: number = resumeAt
+    ) => {
       let finish: (r: BulkResult) => void = () => {};
       let isCancelled: () => boolean = () => false;
+      let emit: (seconds: number) => void = () => {};
       const download = vi.fn<Download>((items, options) => {
         isCancelled = options?.isCancelled ?? isCancelled;
-        options?.onProgress?.({
-          type: "waiting",
-          seconds,
-          totalSeconds,
-          resumeAt,
-          index: 1,
-          total: items.length,
-          item: items[1],
-        });
+        emit = (s: number) =>
+          options?.onProgress?.({
+            type: "waiting",
+            seconds: s,
+            totalSeconds,
+            resumeAt: waitUntil,
+            index: 1,
+            total: items.length,
+            item: items[1],
+          });
+        emit(seconds);
         return new Promise<BulkResult>((resolve) => {
           finish = resolve;
         });
@@ -275,6 +292,7 @@ describe("BulkSelectableArticleList", () => {
         download,
         finish: (r: BulkResult) => finish(r),
         isCancelled: () => isCancelled(),
+        emit: (s: number) => act(() => emit(s)),
       };
     };
 
@@ -317,6 +335,55 @@ describe("BulkSelectableArticleList", () => {
       expect(w.isCancelled()).toBe(false);
       await user.click(cancel);
       expect(w.isCancelled()).toBe(true);
+    });
+
+    it("長い待ちは分が変わるときだけ描き直す", async () => {
+      const w = waitingDownload(2820, 2790);
+      const onRender = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <Profiler id="list" onRender={onRender}>
+          <BulkSelectableArticleList
+            articles={[yard, tram, subway]}
+            download={w.download}
+          />
+        </Profiler>
+      );
+      await selectAll(user);
+      const status = within(
+        screen.getByRole("region", { name: "選択中のアドオン" })
+      ).getByRole("status");
+      const commits = onRender.mock.calls.length;
+
+      // 2789〜2761 秒はどれも約 47 分
+      for (let s = 2789; s > 2760; s--) {
+        w.emit(s);
+      }
+      // React は同じ値への更新でも 1 回だけ描き直すことがある。毎秒描き直すなら 29 回増える
+      expect(onRender.mock.calls.length).toBeLessThanOrEqual(commits + 1);
+      expect(status).toHaveTextContent("再開まで約 47 分");
+
+      w.emit(2760);
+      expect(status).toHaveTextContent("再開まで約 46 分");
+    });
+
+    it("再開が日付をまたぐときは「明日」を付ける", async () => {
+      const tomorrow = now + 24 * 60 * 60 * 1000;
+      const w = waitingDownload(3600, 3600, tomorrow);
+      const user = userEvent.setup();
+      render(
+        <BulkSelectableArticleList
+          articles={[yard, tram, subway]}
+          download={w.download}
+        />
+      );
+      await selectAll(user);
+
+      expect(
+        within(
+          screen.getByRole("region", { name: "選択中のアドオン" })
+        ).getByRole("status")
+      ).toHaveTextContent(`（明日 ${clock(tomorrow)} ごろ）`);
     });
 
     it("1 分の上限の短い待ちは秒で数え、中止はいつもどおり控えめに出す", async () => {

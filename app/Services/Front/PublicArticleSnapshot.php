@@ -23,6 +23,9 @@ class PublicArticleSnapshot
 
     /**
      * 2: pak × 種類の公開記事数（pak_addon_counts）を追加
+     *
+     * 新着カードの paks（記事の pak の slug）は任意項目として 2 のまま追加した。
+     * 無い・壊れているカードは paks を空にして、pak のタグだけを出さない
      */
     private const int VERSION = 2;
 
@@ -136,11 +139,13 @@ class PublicArticleSnapshot
             return ['latest' => [], 'announces' => []];
         }
 
+        $valid = [];
         foreach (self::PAKS as $pak) {
             $cards = $latest[$pak] ?? null;
             if (! $this->validCards($cards, ['title', 'url', 'thumbnail_url'])) {
                 return ['latest' => [], 'announces' => []];
             }
+            $valid[$pak] = [];
             foreach ($cards as $card) {
                 if (! is_int($card['id'] ?? null)
                     || ! array_key_exists('published_at', $card) || ! array_key_exists('modified_at', $card)
@@ -148,10 +153,30 @@ class PublicArticleSnapshot
                     || ! $this->validDate($card['modified_at'] ?? null)) {
                     return ['latest' => [], 'announces' => []];
                 }
+                $valid[$pak][] = [...$card, 'paks' => $this->paks($card['paks'] ?? null)];
             }
         }
 
-        return ['latest' => array_intersect_key($latest, array_flip(self::PAKS)), 'announces' => $announces];
+        return ['latest' => $valid, 'announces' => $announces];
+    }
+
+    /**
+     * カードの pak の slug。旧形式で無いとき・壊れているときは空にする
+     *
+     * @return list<string>
+     */
+    private function paks(mixed $paks): array
+    {
+        if (! is_array($paks) || ! array_is_list($paks)) {
+            return [];
+        }
+        foreach ($paks as $pak) {
+            if (! is_string($pak)) {
+                return [];
+            }
+        }
+
+        return $paks;
     }
 
     /**

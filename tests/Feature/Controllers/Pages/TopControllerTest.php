@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Pages;
 
 use App\Enums\CategoryType;
+use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Support\Facades\File;
 use Tests\Feature\TestCase;
 
 class TopControllerTest extends TestCase
@@ -71,6 +73,63 @@ class TopControllerTest extends TestCase
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>更新<\/span>(?:(?!<\/a>).)*更新された記事/s', $html);
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*公開直後に直した記事/s', $html);
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*日付をまたいで公開した記事/s', $html);
+        // 新規は日付が1つだけなので、日付の行の「新規」はバッジと重ねず読み上げ用にだけ出す
+        $this->assertMatchesRegularExpression('/公開直後に直した記事(?:(?!<\/a>).)*<span class="sr-only">新規<\/span><time/s', $html);
+        $this->assertMatchesRegularExpression('/更新された記事(?:(?!<\/a>).)*更新 <time(?:(?!<\/a>).)*公開 <time/s', $html);
+    }
+
+    /**
+     * 「すべて」表示でも各カードの pak が分かるように、生成時に保存した pak を一覧のカードと同じ色分けのタグで出す
+     */
+    public function test_cards_show_pak_tags_saved_at_generation(): void
+    {
+        $multi = $this->createArticleInPaks('64 と 256 の記事', ['256', '64', 'any']);
+        $japan = $this->createArticleInPaks('128-japan の記事', ['128-japan']);
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $latest = json_decode((string) File::get(config()->string('public-article-snapshot.path')), true)['latest'];
+        $this->assertSame(['any', '64', '256'], collect($latest['64'])->firstWhere('id', $multi->id)['paks']);
+        $this->assertSame(['128-japan'], collect($latest['128-japan'])->firstWhere('id', $japan->id)['paks']);
+
+        $html = (string) $this->get(route('index'))->assertOk()->getContent();
+        $this->assertSame(
+            ['v2-tag-pak-any">Pak問わず', 'v2-tag-pak-64">Pak64', 'v2-tag-pak-other">Pak256'],
+            $this->pakTagsOf($html, $multi->title),
+        );
+        $this->assertSame(['v2-tag-pak-128-japan">Pak128.Japan'], $this->pakTagsOf($html, $japan->title));
+
+        $this->assertSame(['v2-tag-pak-128-japan">Pak128.Japan'], $this->pakTagsOf(
+            (string) $this->get(route('index', ['pak' => '128-japan']))->assertOk()->getContent(),
+            $japan->title,
+        ));
+    }
+
+    /**
+     * デプロイ直後の旧ファイル（paks が無い）や paks が壊れたファイルでも、新着は出して pak のタグだけを省く
+     */
+    public function test_cards_without_valid_paks_keep_latest_and_hide_pak_tags(): void
+    {
+        $article = $this->createArticleInPaks('pak の無い保存データの記事', ['64']);
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+        $path = config()->string('public-article-snapshot.path');
+        $snapshot = json_decode((string) File::get($path), true);
+
+        foreach ([null, 'Pak64', ['64' => '64'], [64], ['64', null]] as $paks) {
+            $broken = $snapshot;
+            $broken['latest']['64'] = array_map(function (array $card) use ($paks): array {
+                unset($card['paks']);
+
+                return $paks === null ? $card : [...$card, 'paks' => $paks];
+            }, $broken['latest']['64']);
+            File::put($path, json_encode($broken));
+
+            $this->get(route('index'))->assertOk()
+                ->assertSee($article->title)
+                ->assertDontSee('v2-tag-pak', false);
+            $this->get(route('latest'))->assertOk()
+                ->assertSee($article->title)
+                ->assertDontSee('v2-tag-pak', false);
+        }
     }
 
     public function test_お知らせ一覧のリンクは日本語スラッグでも二重エンコードされない(): void
@@ -88,5 +147,32 @@ class TopControllerTest extends TestCase
         $html = (string) $testResponse->getContent();
         $this->assertStringNotContainsString('%25', $html);
         $this->assertStringContainsString(e($article->fresh()?->showUrl()), $html);
+    }
+
+    /**
+     * @param  list<string>  $paks
+     */
+    private function createArticleInPaks(string $title, array $paks): Article
+    {
+        $article = $this->createAddonIntroduction();
+        $article->update(['title' => $title]);
+        $categories = Category::where('type', CategoryType::Pak)->whereIn('slug', $paks)->pluck('id');
+        $this->assertCount(count($paks), $categories);
+        $article->categories()->attach($categories);
+
+        return $article;
+    }
+
+    /**
+     * タイトルを含むカード（<a>…</a>）の中の pak のタグ（色のクラスと表示名）
+     *
+     * @return list<string>
+     */
+    private function pakTagsOf(string $html, string $title): array
+    {
+        $this->assertSame(1, preg_match('/<a\s[^>]*>(?:(?!<\/a>).)*'.preg_quote(e($title), '/').'(?:(?!<\/a>).)*<\/a>/s', $html, $card));
+        preg_match_all('/<span class="v2-tag-pak (v2-tag-pak-[a-z0-9-]+)[^"]*">([^<]+)<\/span>/', $card[0], $tags, PREG_SET_ORDER);
+
+        return array_map(fn (array $tag): string => $tag[1].'">'.$tag[2], $tags);
     }
 }

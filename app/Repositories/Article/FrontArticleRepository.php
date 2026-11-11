@@ -175,6 +175,8 @@ class FrontArticleRepository
     }
 
     /**
+     * 新着カード用。カードに出す pak のタグ用に、pak のカテゴリだけを表示順で読み込む
+     *
      * @return Collection<int, Article>
      */
     public function getLatestForCards(string $pak, int $limit): Collection
@@ -184,7 +186,15 @@ class FrontArticleRepository
                 'articles.id', 'articles.user_id', 'articles.title', 'articles.slug',
                 'articles.post_type', 'articles.contents', 'articles.published_at', 'articles.modified_at',
             ])
-            ->with('user:id,nickname', 'attachments:id,attachmentable_id,path,thumbnail_path')
+            ->with([
+                'user:id,nickname',
+                'attachments:id,attachmentable_id,path,thumbnail_path',
+                'categories' => fn ($query) => $query
+                    ->select(['categories.id', 'categories.slug'])
+                    ->where('categories.type', CategoryType::Pak)
+                    ->orderBy('categories.order')
+                    ->orderBy('categories.id'),
+            ])
             ->limit($limit)
             ->get();
     }

@@ -30,7 +30,7 @@ class LatestAction
     }
 
     /**
-     * @return list<array{id: int, user_id: int, title: string, url: string, thumbnail_url: string, published_at: ?string, modified_at: ?string}>
+     * @return list<array{id: int, user_id: int, title: string, url: string, thumbnail_url: string, published_at: ?string, modified_at: ?string, paks: list<string>}>
      */
     public function cardsByPak(string $pak, int $limit = 12): array
     {
@@ -43,6 +43,7 @@ class LatestAction
                 'thumbnail_url' => $article->thumbnail_url,
                 'published_at' => $article->published_at?->toIso8601String(),
                 'modified_at' => $article->modified_at?->toIso8601String(),
+                'paks' => array_values($article->categories->pluck('slug')->all()),
             ])->all());
     }
 

@@ -5,6 +5,8 @@
   $isUpdated = $article['modified_at']
       && substr($article['modified_at'], 0, 10) > substr($publishedAt, 0, 10)
       && ($publishedAt === '' || strtotime($article['modified_at']) - strtotime($publishedAt) > 60);
+  // 見出しの行に「新規／更新」と並べる日付（更新は更新日、新規は公開日）
+  $headingDate = $isUpdated ? $article['modified_at'] : $publishedAt;
   // pak のタグ（一覧のカードと同じ色分け。Categories.tsx の pakVariants と対応させる）。カード全体がリンクなので、タグはリンクにしない
   $pakTags = collect($article['paks'] ?? [])
       ->filter(fn (string $slug): bool => Lang::has('category.pak.'.$slug))
@@ -42,11 +44,7 @@
               'border-c-main bg-c-main text-white' => ! $isUpdated,
             ])
           >{{ $isUpdated ? '更新' : '新規' }}</span>
-          @if ($isUpdated)
-            <time datetime="{{ $article['modified_at'] }}">{{ substr($article['modified_at'], 0, 10) }}</time>
-          @else
-            <time datetime="{{ $article['published_at'] }}">{{ substr($article['published_at'], 0, 10) }}</time>
-          @endif
+          <time datetime="{{ $headingDate }}">{{ substr($headingDate, 0, 10) }}</time>
         </div>
       @endif
       <div class="text-note font-semibold text-c-main line-clamp-2 group-hover:text-c-link">{{ $article['title'] }}</div>

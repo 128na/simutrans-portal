@@ -40,13 +40,13 @@ class TopControllerTest extends TestCase
         }
         $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
 
-        $this->get(route('index'))
+        $html = (string) $this->get(route('index'))
             ->assertOk()
             ->assertViewHas('latestCards', fn ($cards): bool => $cards->pluck('id')->values()->all() === array_slice($ids, 0, 8))
             ->assertSee('新着アドオンをもっと見る')
-            ->assertSee('>更新</span>', false)
-            ->assertSee('<time datetime="'.$recent->toIso8601String().'">'.$recent->toDateString().'</time>', false)
-            ->assertSee('公開 <time datetime="'.$recent->subDay()->toIso8601String().'">'.$recent->subDay()->toDateString().'</time>', false);
+            ->assertSee('公開 <time datetime="'.$recent->subDay()->toIso8601String().'">'.$recent->subDay()->toDateString().'</time>', false)
+            ->getContent();
+        $this->assertMatchesRegularExpression('/>更新<\/span>\s*<time datetime="'.preg_quote($recent->toIso8601String(), '/').'">'.$recent->toDateString().'<\/time>/', $html);
 
         $this->get(route('latest'))->assertOk()
             ->assertSee('href="#pak64"', false)
@@ -72,7 +72,7 @@ class TopControllerTest extends TestCase
         $html = (string) $this->get(route('index'))->assertOk()->getContent();
 
         // 「新規／更新」はサムネイルに重ねず、タイトルの上の見出しの行に主な日付と並べて文字で出す
-        $this->assertDoesNotMatchRegularExpression('/aspect-video(?:(?!<\/div>).)*(?:新規|更新)/s', $html);
+        $this->assertDoesNotMatchRegularExpression('/aspect-video(?:(?!space-y-2 p-2).)*(?:新規|更新)/s', $html);
         $this->assertMatchesRegularExpression('/>更新<\/span>\s*<time datetime="'.preg_quote($published->addDay()->toIso8601String(), '/').'">(?:(?!<\/a>).)*更新された記事/s', $html);
         $this->assertMatchesRegularExpression('/>新規<\/span>\s*<time datetime="'.preg_quote($published->toIso8601String(), '/').'">(?:(?!<\/a>).)*公開直後に直した記事/s', $html);
         $this->assertMatchesRegularExpression('/>新規<\/span>\s*<time(?:(?!<\/a>).)*日付をまたいで公開した記事/s', $html);

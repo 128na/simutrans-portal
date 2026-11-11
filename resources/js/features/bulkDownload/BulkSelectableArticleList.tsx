@@ -33,8 +33,10 @@ const SelectToggle = ({
   disabled: boolean;
   onToggle: () => void;
 }) => (
+  // まとめてダウンロードは PC で使う前提なので、スマホ幅（sm 未満）では選ぶ操作を出さない
   <Button
     variant={selected ? "primaryOutline" : "subOutline"}
+    className="hidden sm:inline-block"
     aria-pressed={selected}
     aria-label={`${article.title} を${selected ? "選択から外す" : "選ぶ"}`}
     disabled={disabled}
@@ -179,9 +181,14 @@ export const BulkSelectableArticleList = ({
         }
       />
 
-      {/* 選択の帯と結果は一覧の後ろに置いて画面の下端に貼り付ける。出しても一覧を押し下げず、帯から始めた操作の結果も帯の位置に出す */}
+      {/* 選択の帯と結果は一覧の後ろに置いて画面の下端に貼り付ける。出しても一覧を押し下げず、帯から始めた操作の結果も帯の位置に出す。
+          スマホ幅（sm 未満）では「選ぶ」と同じく出さない。PC で選んだものが sessionStorage に残っていても、
+          スマホ幅では帯も選ぶ操作もそろって消えるだけで、PC 幅に戻せばそのまま操作できる。
+          PC 幅で始めた実行中・結果は、途中でウィンドウを狭めても中止や結果を見失わないよう出し続ける */}
       {(finished || items.length > 0 || isRunning) && (
-        <div className="sticky bottom-0 z-10 flex flex-col gap-2">
+        <div
+          className={`sticky bottom-0 z-10 flex-col gap-2 ${finished || isRunning ? "flex" : "hidden sm:flex"}`}
+        >
           {finished && (
             <section
               role="status"

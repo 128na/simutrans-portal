@@ -29,21 +29,21 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
               </a>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="text-sm v2-text-sub">
+              <div className="text-meta v2-text-sub">
                 {article.modified_at} ({article.published_at} 投稿)
               </div>
-              <h3 className="v2-text-h3">
-                <a href={article.url} className="v2-hover-text-sub">
+              <h3 className="v2-text-h4">
+                <a href={article.url} className="v2-title-link">
                   {article.title}
                 </a>
               </h3>
-              <div className="text-sm v2-text-sub line-clamp-3 break-all">
+              <div className="text-note v2-text-sub line-clamp-3 break-all">
                 {article.description}
               </div>
               <div>
                 <ConversionLink article={article} />
               </div>
-              <div className="text-xs flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 <Categories categories={article.categories} />
                 <Tags tags={article.tags} />
               </div>

@@ -76,6 +76,69 @@ class PublicArticleSnapshotCountsTest extends TestCase
             ->assertDontSee('<span class="sr-only">件</span>', false);
     }
 
+    /**
+     * 非公開・削除済み・退会ユーザーの記事は保存側（生成時の集計）で除かれているため、件数に入らない
+     */
+    public function test_categories_page_shows_saved_counts_without_querying_on_view(): void
+    {
+        $this->createCountFixtures();
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+        $this->createArticleIn(['128-japan'], ['trains']);
+
+        DB::enableQueryLog();
+        DB::flushQueryLog();
+        try {
+            $response = $this->get(route('categories.index'));
+            $this->assertSame([], DB::getQueryLog());
+        } finally {
+            DB::disableQueryLog();
+            DB::flushQueryLog();
+        }
+
+        $response->assertOk()
+            ->assertSeeInOrder([
+                'Pak128.Japan',
+                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']), '鉄道車両 (3)',
+                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'rail-tools']), '鉄道施設 (1)',
+                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'road-vehicles']), '自動車 (2)',
+                'Pak128',
+                'Pak64',
+                route('categories.pakAddon', ['pak' => '64', 'addon' => 'trains']), '鉄道車両 (1)',
+                route('categories.pakAddon', ['pak' => '64', 'addon' => 'road-vehicles']), '自動車 (1)',
+            ], false)
+            ->assertDontSee(route('categories.pakAddon', ['pak' => '128', 'addon' => 'trains']), false)
+            ->assertDontSee(route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'ships']), false)
+            ->assertDontSee('Pak256');
+    }
+
+    public function test_categories_page_shows_links_without_counts_when_saved_data_is_unusable(): void
+    {
+        $this->createArticleIn(['128-japan'], ['trains']);
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+        $path = config()->string('public-article-snapshot.path');
+        $snapshot = json_decode((string) File::get($path), true);
+
+        foreach ([
+            ['version' => 1, 'pak_addon_counts' => null],
+            ['pak_addon_counts' => ['128-japan' => ['trains' => ['total' => '3', 'addon_post' => 1]], '128' => [], '64' => []]],
+            ['generated_at' => now()->subDays(2)->getTimestamp()],
+        ] as $override) {
+            File::put($path, json_encode(array_filter([...$snapshot, ...$override], fn ($value): bool => $value !== null)));
+
+            $this->get(route('categories.index'))->assertOk()
+                ->assertSee(route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']), false)
+                ->assertSee(route('categories.pakAddon', ['pak' => '64', 'addon' => 'ships']), false)
+                ->assertSee('鉄道車両')
+                ->assertDontSee('鉄道車両 (', false)
+                ->assertDontSee('未指定');
+        }
+
+        File::delete($path);
+        $this->get(route('categories.index'))->assertOk()
+            ->assertSee(route('categories.pakAddon', ['pak' => '128', 'addon' => 'trains']), false)
+            ->assertDontSee('鉄道車両 (', false);
+    }
+
     public function test_top_shows_latest_and_counts_while_the_database_is_unavailable(): void
     {
         $this->createCountFixtures();

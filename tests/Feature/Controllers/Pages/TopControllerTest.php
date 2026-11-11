@@ -44,7 +44,7 @@ class TopControllerTest extends TestCase
             ->assertOk()
             ->assertViewHas('latestCards', fn ($cards): bool => $cards->pluck('id')->values()->all() === array_slice($ids, 0, 8))
             ->assertSee('新着アドオンをもっと見る')
-            ->assertSee('<span class="sr-only">更新</span><time datetime="'.$recent->toIso8601String().'">'.$recent->toDateString().'</time>', false)
+            ->assertSee('更新 <time datetime="'.$recent->toIso8601String().'">'.$recent->toDateString().'</time>', false)
             ->assertSee('公開 <time datetime="'.$recent->subDay()->toIso8601String().'">'.$recent->subDay()->toDateString().'</time>', false);
 
         $this->get(route('latest'))->assertOk()
@@ -73,6 +73,9 @@ class TopControllerTest extends TestCase
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>更新<\/span>(?:(?!<\/a>).)*更新された記事/s', $html);
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*公開直後に直した記事/s', $html);
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*日付をまたいで公開した記事/s', $html);
+        // 新規は日付が1つだけなので、日付の行の「新規」はバッジと重ねず読み上げ用にだけ出す
+        $this->assertMatchesRegularExpression('/公開直後に直した記事(?:(?!<\/a>).)*<span class="sr-only">新規<\/span><time/s', $html);
+        $this->assertMatchesRegularExpression('/更新された記事(?:(?!<\/a>).)*更新 <time(?:(?!<\/a>).)*公開 <time/s', $html);
     }
 
     /**

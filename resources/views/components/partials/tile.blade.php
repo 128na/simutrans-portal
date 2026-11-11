@@ -5,7 +5,7 @@
   $isUpdated = $article['modified_at']
       && substr($article['modified_at'], 0, 10) > substr($publishedAt, 0, 10)
       && ($publishedAt === '' || strtotime($article['modified_at']) - strtotime($publishedAt) > 60);
-  // pak のタグ（一覧のカードと同じ色分け）。カード全体がリンクなので、タグはリンクにしない
+  // pak のタグ（一覧のカードと同じ色分け。Categories.tsx の pakVariants と対応させる）。カード全体がリンクなので、タグはリンクにしない
   $pakTags = collect($article['paks'] ?? [])
       ->filter(fn (string $slug): bool => Lang::has('category.pak.'.$slug))
       ->map(fn (string $slug): array => [
@@ -50,10 +50,10 @@
         @endforeach
       </div>
     @endif
-    {{-- 「新規／更新」は画像上のバッジで見せ、日付の行では読み上げ用にだけ残す --}}
+    {{-- 「新規」は画像上のバッジで見せ、日付の行では読み上げ用にだけ残す。更新は日付が2つ並ぶので、見分けられるよう「更新」「公開」を出す --}}
     @if ($isUpdated)
       <div class="text-meta text-c-sub">
-        <span class="sr-only">更新</span><time datetime="{{ $article['modified_at'] }}">{{ substr($article['modified_at'], 0, 10) }}</time>
+        更新 <time datetime="{{ $article['modified_at'] }}">{{ substr($article['modified_at'], 0, 10) }}</time>
         @if ($article['published_at'])
           <div>公開 <time datetime="{{ $article['published_at'] }}">{{ substr($article['published_at'], 0, 10) }}</time></div>
         @endif

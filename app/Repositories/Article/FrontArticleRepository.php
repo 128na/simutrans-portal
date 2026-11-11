@@ -192,7 +192,8 @@ class FrontArticleRepository
                 'categories' => fn ($query) => $query
                     ->select(['categories.id', 'categories.slug'])
                     ->where('categories.type', CategoryType::Pak)
-                    ->orderBy('categories.order'),
+                    ->orderBy('categories.order')
+                    ->orderBy('categories.id'),
             ])
             ->limit($limit)
             ->get();

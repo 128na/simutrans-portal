@@ -91,7 +91,7 @@
           </div>
         </section>
 
-        <div class="grid gap-10 md:grid-cols-2">
+        <div class="grid grid-cols-1 gap-10 md:grid-cols-2">
           <section>
             <h2 class="v2-text-h4 mb-4">
               <x-ui.link :url="route('announces')" :title="'お知らせ'" />

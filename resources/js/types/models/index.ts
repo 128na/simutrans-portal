@@ -9,6 +9,7 @@ export type {
   ArticleStatus,
   SectionType,
   ArticleList,
+  ArticleCard,
   ArticleBase,
   ArticleRelational,
   ArticleShow,

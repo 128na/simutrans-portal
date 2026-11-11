@@ -6,6 +6,7 @@ namespace App\Actions\FrontArticle;
 
 use App\Models\Article;
 use App\Repositories\Article\FrontArticleRepository;
+use App\Services\Front\ArticleListFilter;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class LatestAction
@@ -23,9 +24,9 @@ class LatestAction
     /**
      * @return LengthAwarePaginator<int, Article>
      */
-    public function byPak(string $pak, int $limit = 24): LengthAwarePaginator
+    public function byPak(string $pak, int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
-        return $this->articleRepository->paginateLatest($pak, $limit);
+        return $this->articleRepository->paginateLatest($pak, $limit, $filter);
     }
 
     /**
@@ -48,8 +49,8 @@ class LatestAction
     /**
      * @return LengthAwarePaginator<int, Article>
      */
-    public function others(int $limit = 24): LengthAwarePaginator
+    public function others(int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
-        return $this->articleRepository->getLatestOther($limit);
+        return $this->articleRepository->getLatestOther($limit, $filter);
     }
 }

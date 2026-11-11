@@ -4,6 +4,11 @@
 @section('page-content')
   <div class="v2-page v2-page-lg">
     @include('pages.search.options')
+    @if ($hasSearchConditions)
+      <div class="mb-6">
+        @include('components.partials.article-list-filter', ['filter' => $filter, 'total' => $articles->total()])
+      </div>
+    @endif
     @if (! $hasSearchConditions)
       <p class="v2-text-sub">キーワードを入力するか、詳細条件を指定して検索してください。</p>
     @elseif ($articles->total() === 0)
@@ -20,7 +25,7 @@
       <script id="data-articles" type="application/json">
         @json($articles)
       </script>
-      <div id="app-article-list">読み込み中...</div>
+      <div id="app-article-cards" data-sort="{{ $filter->sort->value }}">読み込み中...</div>
 
       <div class="mt-10 v2-page-pagination-area">
         {{ $articles->withQueryString() }}

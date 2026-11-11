@@ -32,6 +32,7 @@ import type {
   Count as _Count,
   SearchableOption as _SearchableOption,
   ArticleList as _ArticleList,
+  ArticleCard as _ArticleCard,
   ArticleShow as _ArticleShow,
   ArticleBase as _ArticleBase,
   ArticleRelational as _ArticleRelational,
@@ -86,6 +87,7 @@ declare global {
   // Legacy namespace declarations (for backward compatibility)
   namespace Article {
     type List = _ArticleList;
+    type Card = _ArticleCard;
     type Show = _ArticleShow;
     type Base = _ArticleBase;
     type Relational = _ArticleRelational;

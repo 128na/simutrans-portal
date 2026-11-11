@@ -343,6 +343,13 @@
   .v2-tag-pak {
     @apply inline-block rounded px-2 py-px text-note leading-5 font-semibold border border-transparent no-underline hover:underline;
   }
+  /* 一覧の絞り込み・並び順の切り替え。選択中は aria-current で示す */
+  .v2-chip {
+    @apply inline-flex shrink-0 items-center h-9 px-3.5 rounded-full border border-c-border-strong bg-white text-note text-c-main no-underline whitespace-nowrap hover:border-c-sub;
+  }
+  .v2-chip[aria-current="true"] {
+    @apply border-c-main bg-c-main text-white font-semibold hover:border-c-main;
+  }
   .v2-tag-pak-128-japan {
     @apply bg-pak-128-japan-bg text-pak-128-japan-fg;
   }

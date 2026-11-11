@@ -8,6 +8,7 @@ use App\Actions\FrontArticle\SearchAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Frontend\ArticleList;
 use App\Repositories\Article\FrontArticleRepository;
+use App\Services\Front\ArticleListFilter;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class IndexController extends Controller
         $condition = $request->query();
 
         return view('pages.search.index', [
-            ...$searchAction($condition),
+            ...$searchAction($condition, ArticleListFilter::fromRequest($request)),
             'meta' => $this->metaOgpService->frontSearch(),
         ]);
     }

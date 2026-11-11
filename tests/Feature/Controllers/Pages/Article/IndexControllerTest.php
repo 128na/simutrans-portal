@@ -65,7 +65,7 @@ class IndexControllerTest extends TestCase
         $url = route('search', ['userIds' => [$article->user_id]]);
 
         $this->get($url)->assertOk()
-            ->assertSee('id="app-article-list"', false)
+            ->assertSee('id="app-article-cards"', false)
             ->assertSee($article->title)
             ->assertSee('検索条件をすべて解除')
             ->assertDontSee('条件に一致する記事が見つかりませんでした。');

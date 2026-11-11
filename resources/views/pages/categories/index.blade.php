@@ -14,22 +14,15 @@
       </p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      @foreach ($pakAddonCategories as $pakSlug => $addonCategories)
+      @foreach ($pakSections as $section)
         <div class="mb-1 break-all">
           <div class="font-semibold">
-            @lang("category.pak.{$pakSlug}")
+            {{ $section['label'] }}
           </div>
           <div class="ml-2 space-y-1">
-            @foreach ($addonCategories as $addonCategorie)
-              @php
-                $addonCategoryUrl = route('categories.pakAddon', [
-                    'pak' => $pakSlug,
-                    'addon' => $addonCategorie->addon_slug,
-                ]);
-                $addonCategoryTitle = __("category.addon.{$addonCategorie->addon_slug}")." ({$addonCategorie->article_count})";
-              @endphp
+            @foreach ($section['addons'] as $addon)
               <div>
-                <x-ui.link :url="$addonCategoryUrl" :title="$addonCategoryTitle" />
+                <x-ui.link :url="$addon['url']" :title="$addon['title']" />
               </div>
             @endforeach
           </div>

@@ -35,44 +35,77 @@
       </svg>
     </div>
     <div class="v2-page-content-area-lg">
-      <div class="space-y-8">
-        <div>
-          <h1 class="v2-text-h1 mb-6">{{ config('app.name') }}</h1>
-          <p class="text-xl/8 text-c-sub">
-            Simutrans（シムトランス）のaddon（アドオン）を気軽に投稿・紹介できるポータルサイトです。
-            <br />
-            投稿だけでなく、様々なWikiや個人サイト、アップローダーに掲載・投稿されているアドオン紹介記事も掲載できます。
-            <br />
-          </p>
-        </div>
-        <div class="grid gap-10">
-          <section class="space-y-8">
-            <div class="space-y-4">
-              <h3 class="v2-text-h4">新着アドオン</h3>
-              @if ($latestCards->isNotEmpty())
-                <p class="text-sm text-c-sub">Pak128Japan・Pak128・Pak64 の新規・更新記事</p>
-                <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-                  @foreach ($latestCards as $article)
-                    @include('components.partials.tile', ['article' => $article])
-                  @endforeach
-                </div>
-              @endif
-              <x-ui.link :url="route('latest')" :title="'新着アドオンをもっと見る'" />
+      <div class="space-y-10">
+        <section class="space-y-4" aria-labelledby="top-latest-heading">
+          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <h1 id="top-latest-heading" class="v2-text-h3">新着アドオン</h1>
+            <p class="text-note text-c-sub">{{ config('app.name') }} は Simutrans のアドオンを投稿・紹介できるポータルサイトです。</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <nav aria-label="新着の pak を切り替える" class="flex flex-wrap items-center gap-2">
+              <a
+                href="{{ route('index') }}"
+                class="v2-chip"
+                @if ($selectedPak === null) aria-current="true" @endif
+              >すべて</a>
+              @foreach ($pakTabs as $tab)
+                <a
+                  href="{{ $tab['url'] }}"
+                  class="v2-chip"
+                  @if ($selectedPak === $tab['slug']) aria-current="true" @endif
+                >{{ $tab['label'] }}</a>
+              @endforeach
+            </nav>
+            <div class="sm:ml-auto">
+              <x-ui.link :url="$latestMoreUrl" :title="'新着アドオンをもっと見る'" />
             </div>
+          </div>
+          @if ($latestCards->isNotEmpty())
+            <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+              @foreach ($latestCards as $article)
+                @include('components.partials.tile', ['article' => $article])
+              @endforeach
+            </div>
+          @endif
+        </section>
 
-            <div>
-              <h3 class="v2-text-h4 mb-4">
-                <x-ui.link :url="route('announces')" :title="'お知らせ'" />
-              </h3>
-              <div class="gap-2 flex flex-col">
-                @foreach ($announces as $article)
-                  @include('components.partials.one-liner', ['article' => $article])
-                @endforeach
+        <section class="space-y-4" aria-labelledby="top-addon-heading">
+          <h2 id="top-addon-heading" class="v2-text-h4">種類から探す</h2>
+          <div class="grid gap-4 md:grid-cols-3">
+            @foreach ($addonSections as $section)
+              <div class="flex flex-col gap-3 rounded-lg border border-c-border p-4">
+                <div><x-ui.link :url="$section['url']" :title="$section['label']" /></div>
+                <ul class="flex flex-wrap gap-2">
+                  @foreach ($section['addons'] as $addon)
+                    <li>
+                      <a href="{{ $addon['url'] }}" class="v2-chip">
+                        {{ $addon['label'] }}
+                        @if ($addon['count'] !== null)
+                          <span class="ml-1.5 text-c-sub">{{ number_format($addon['count']) }}<span class="sr-only">件</span></span>
+                        @endif
+                      </a>
+                    </li>
+                  @endforeach
+                  <li><a href="{{ $section['url'] }}" class="v2-chip">すべての種類</a></li>
+                </ul>
               </div>
+            @endforeach
+          </div>
+        </section>
+
+        <div class="grid gap-10 md:grid-cols-2">
+          <section>
+            <h2 class="v2-text-h4 mb-4">
+              <x-ui.link :url="route('announces')" :title="'お知らせ'" />
+            </h2>
+            <div class="gap-2 flex flex-col">
+              @foreach ($announces as $article)
+                @include('components.partials.one-liner', ['article' => $article])
+              @endforeach
             </div>
           </section>
           <section class="space-y-4">
-            <h3 class="v2-text-h4">関連サイトのリンク</h3>
+            <h2 class="v2-text-h4">関連サイトのリンク</h2>
             <div class="gap-2 grid">
               <x-ui.link :url="'https://forum.simutrans.com/'" :title="'International Simutrans Forum'" />
               <x-ui.link :url="'https://japanese.simutrans.com/index.php'" :title="'Simutrans 日本語化･解説'" />

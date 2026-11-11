@@ -12,54 +12,62 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use RuntimeException;
 
+/**
+ * @phpstan-type PakAddonCounts array<array-key, array<string, array{total: int, addon_post: int}>>
+ * @phpstan-type Snapshot array{latest: array<array-key, mixed>, announces: list<mixed>, pak_addon_counts: PakAddonCounts|null}
+ */
 #[Singleton]
 class PublicArticleSnapshot
 {
     public const array PAKS = ['128-japan', '128', '64'];
 
-    private const int VERSION = 1;
+    /**
+     * 2: pak × 種類の公開記事数（pak_addon_counts）を追加
+     */
+    private const int VERSION = 2;
+
+    /**
+     * 旧形式（1）は新着・お知らせだけ読み、件数は無しとして扱う
+     */
+    private const array READABLE_VERSIONS = [1, 2];
 
     private const int MAX_AGE_SECONDS = 86400;
 
     private bool $mutating = false;
 
     /**
-     * @return array{latest: array<array-key, mixed>, announces: list<mixed>}
+     * @return Snapshot
      */
     public function read(): array
     {
         $snapshot = $this->envelope();
         $generatedAt = $snapshot['generated_at'] ?? null;
-        $latest = $snapshot['latest'] ?? null;
-        $announces = $snapshot['announces'] ?? null;
         $now = now()->getTimestamp();
 
-        if (($snapshot['version'] ?? null) !== self::VERSION
-            || ! is_int($generatedAt) || $generatedAt > $now || $generatedAt <= $now - self::MAX_AGE_SECONDS
-            || ! is_array($latest) || ! $this->validCards($announces, ['title', 'url', 'date'])) {
-            return ['latest' => [], 'announces' => []];
+        if (! in_array($snapshot['version'] ?? null, self::READABLE_VERSIONS, true)
+            || ! is_int($generatedAt) || $generatedAt > $now || $generatedAt <= $now - self::MAX_AGE_SECONDS) {
+            return ['latest' => [], 'announces' => [], 'pak_addon_counts' => null];
         }
 
-        foreach (self::PAKS as $pak) {
-            $cards = $latest[$pak] ?? null;
-            if (! $this->validCards($cards, ['title', 'url', 'thumbnail_url'])) {
-                return ['latest' => [], 'announces' => []];
-            }
-            foreach ($cards as $card) {
-                if (! is_int($card['id'] ?? null)
-                    || ! array_key_exists('published_at', $card) || ! array_key_exists('modified_at', $card)
-                    || ! $this->validDate($card['published_at'] ?? null)
-                    || ! $this->validDate($card['modified_at'] ?? null)) {
-                    return ['latest' => [], 'announces' => []];
-                }
-            }
-        }
-
-        return ['latest' => array_intersect_key($latest, array_flip(self::PAKS)), 'announces' => $announces];
+        return [...$this->articles($snapshot), 'pak_addon_counts' => $this->pakAddonCounts($snapshot['pak_addon_counts'] ?? null)];
     }
 
     /**
-     * @param  Closure(): array{latest: array<array-key, mixed>, announces: list<mixed>}  $build
+     * pak 別一覧の種類の切り替えに出す件数（種類の slug => 件数）。件数が無いときは null
+     *
+     * @return array<string, int>|null
+     */
+    public function addonCounts(string $pak, bool $addonPostOnly): ?array
+    {
+        $counts = $this->read()['pak_addon_counts'][$pak] ?? null;
+
+        return $counts === null
+            ? null
+            : array_map(fn (array $count): int => $addonPostOnly ? $count['addon_post'] : $count['total'], $counts);
+    }
+
+    /**
+     * @param  Closure(): Snapshot  $build
      */
     public function refresh(Closure $build): bool
     {
@@ -113,6 +121,68 @@ class PublicArticleSnapshot
         }
 
         $this->replace(['revision' => (string) Str::uuid()]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $snapshot
+     * @return array{latest: array<array-key, mixed>, announces: list<mixed>}
+     */
+    private function articles(array $snapshot): array
+    {
+        $latest = $snapshot['latest'] ?? null;
+        $announces = $snapshot['announces'] ?? null;
+
+        if (! is_array($latest) || ! $this->validCards($announces, ['title', 'url', 'date'])) {
+            return ['latest' => [], 'announces' => []];
+        }
+
+        foreach (self::PAKS as $pak) {
+            $cards = $latest[$pak] ?? null;
+            if (! $this->validCards($cards, ['title', 'url', 'thumbnail_url'])) {
+                return ['latest' => [], 'announces' => []];
+            }
+            foreach ($cards as $card) {
+                if (! is_int($card['id'] ?? null)
+                    || ! array_key_exists('published_at', $card) || ! array_key_exists('modified_at', $card)
+                    || ! $this->validDate($card['published_at'] ?? null)
+                    || ! $this->validDate($card['modified_at'] ?? null)) {
+                    return ['latest' => [], 'announces' => []];
+                }
+            }
+        }
+
+        return ['latest' => array_intersect_key($latest, array_flip(self::PAKS)), 'announces' => $announces];
+    }
+
+    /**
+     * 件数は新着・お知らせとは別に検証し、欠落・破損時は件数だけを null にする（旧形式も null）
+     *
+     * @return PakAddonCounts|null
+     */
+    private function pakAddonCounts(mixed $counts): ?array
+    {
+        if (! is_array($counts)) {
+            return null;
+        }
+
+        $valid = [];
+        foreach (self::PAKS as $pak) {
+            $addons = $counts[$pak] ?? null;
+            if (! is_array($addons)) {
+                return null;
+            }
+            $valid[$pak] = [];
+            foreach ($addons as $addon => $count) {
+                if (! is_string($addon) || ! is_array($count)
+                    || ! is_int($count['total'] ?? null) || ! is_int($count['addon_post'] ?? null)
+                    || $count['addon_post'] < 0 || $count['addon_post'] > $count['total']) {
+                    return null;
+                }
+                $valid[$pak][$addon] = ['total' => $count['total'], 'addon_post' => $count['addon_post']];
+            }
+        }
+
+        return $valid;
     }
 
     /**

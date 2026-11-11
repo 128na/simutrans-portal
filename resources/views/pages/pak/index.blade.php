@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="mb-6">
-      @include('components.partials.article-list-filter', ['filter' => $filter, 'total' => $articles->total()])
+      @include('components.partials.article-list-filter', ['filter' => $filter, 'total' => $articles->total(), 'addonCounts' => $addonCounts ?? null])
     </div>
     <div id="app-article-cards" data-sort="{{ $filter->sort->value }}">読み込み中...</div>
     <div class="mt-10 v2-page-pagination-area">

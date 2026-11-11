@@ -363,7 +363,10 @@ php artisan schedule:work
 ### 新着・お知らせのスナップショット
 
 `article:refresh-public-snapshot` は10分ごとに実行し、公開中の新着と
-お知らせを `storage/app/public-article-snapshot.json` に一括保存する。
+お知らせ、主要3 pak（128-japan・128・64）× 種類ごとの公開記事数を
+`storage/app/public-article-snapshot.json` に一括保存する。
+件数はトップの「種類から探す」と pak 別一覧の種類の切り替えに表示し、閲覧時に集計しない。
+件数が無い旧形式（version 1）や件数だけが壊れたデータでは、新着とお知らせを表示し、件数を省略する。
 Web と CLI は同じパスと実行ユーザーを使用する。生成ログで成功時刻と失敗を確認できる。
 通常の公開・予約公開、タイトル・URL・画像の変更は次回成功時に反映する。
 生成失敗時は前回成功結果を最大24時間使う。未生成、破損、期限切れの場合は

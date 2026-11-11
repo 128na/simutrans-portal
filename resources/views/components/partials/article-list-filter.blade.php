@@ -4,6 +4,9 @@
   // 検索画面は詳細条件の「投稿形式」で postTypes を選ぶので、入手方法の切り替えは出さない
   $showAcquisition ??= true;
   $total ??= null;
+  // 種類ごとの件数（slug => 件数）。保存済みの表示データがある pak 別一覧だけで渡し、それ以外は件数を出さない
+  /** @var array<string, int>|null $addonCounts */
+  $addonCounts ??= null;
 @endphp
 <div class="flex flex-col gap-3 rounded-lg bg-c-surface p-3">
   @if ($showAddon)
@@ -19,7 +22,7 @@
           href="{{ request()->fullUrlWithQuery(['addon' => $slug, 'page' => null]) }}"
           class="v2-chip"
           @if ($filter->addonSlug === $slug) aria-current="true" @endif
-        >{{ $label }}</a>
+        >{{ $label }}@if ($addonCounts !== null)<span class="ml-1.5 opacity-75">{{ number_format($addonCounts[$slug] ?? 0) }}<span class="sr-only">件</span></span>@endif</a>
       @endforeach
     </nav>
   @endif

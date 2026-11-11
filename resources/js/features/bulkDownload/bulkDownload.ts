@@ -39,7 +39,7 @@ type Options = {
 /** Retry-After が読めなかったときの待ち時間（秒） */
 export const DEFAULT_RETRY_AFTER_SECONDS = 60;
 
-const defaultSleep = (ms: number) =>
+export const sleepMs = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 /**
@@ -98,7 +98,23 @@ export const saveBlobAsFile = (blob: Blob, fileName: string): void => {
   document.body.appendChild(anchor);
   anchor.click();
   anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 10_000);
+};
+
+/**
+ * download_url は APP_URL で組み立てた絶対 URL。開いているホストと違う（www の有無など）と
+ * CORS で本文を読めず、サーバーだけが CV を数える。パスだけを今のオリジンで使う
+ */
+export const toSameOrigin = (
+  url: string,
+  origin: string = window.location.origin
+): string => {
+  try {
+    const parsed = new URL(url, origin);
+    return `${origin}${parsed.pathname}${parsed.search}`;
+  } catch {
+    return url;
+  }
 };
 
 /**
@@ -109,7 +125,7 @@ export const downloadSequentially = async (
   {
     fetchImpl = fetch,
     saveBlob = saveBlobAsFile,
-    sleep = defaultSleep,
+    sleep = sleepMs,
     onProgress,
     isCancelled = () => false,
   }: Options = {}
@@ -131,7 +147,7 @@ export const downloadSequentially = async (
     for (;;) {
       let response: Response;
       try {
-        response = await fetchImpl(item.download_url as string, {
+        response = await fetchImpl(toSameOrigin(item.download_url as string), {
           method: "GET",
           credentials: "same-origin",
         });

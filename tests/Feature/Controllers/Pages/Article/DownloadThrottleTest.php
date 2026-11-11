@@ -37,6 +37,25 @@ class DownloadThrottleTest extends TestCase
         $this->assertSame(1, $this->totalConversion($other));
     }
 
+    public function test_headリクエストはcvに数えない(): void
+    {
+        $article = $this->createDownloadableArticle('head.zip');
+
+        $this->call('HEAD', route('articles.download', ['article' => $article]))->assertOk();
+
+        $this->assertSame(0, $this->totalConversion($article));
+    }
+
+    public function test_実ファイルが無いときは404でcvに数えない(): void
+    {
+        $article = $this->createDownloadableArticle('missing.zip');
+        Storage::disk('public')->delete('user/missing.zip');
+
+        $this->get(route('articles.download', ['article' => $article]))->assertNotFound();
+
+        $this->assertSame(0, $this->totalConversion($article));
+    }
+
     public function test_作者本人のダウンロードはcvに数えない(): void
     {
         $article = $this->createDownloadableArticle('own.zip');

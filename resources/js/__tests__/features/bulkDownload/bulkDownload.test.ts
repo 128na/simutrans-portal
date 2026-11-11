@@ -18,7 +18,8 @@ const postB: BulkItem = {
   id: 22,
   title: "高架駅",
   url: "/users/b/station",
-  download_url: "/articles/22/download",
+  // APP_URL と開いているホストが違う場合を想定した別ホストの絶対 URL
+  download_url: "https://other-host.example/articles/22/download",
 };
 const intro: BulkItem = {
   id: 33,
@@ -39,11 +40,12 @@ const tooMany = (retryAfter: string) =>
   new Response("", { status: 429, headers: { "Retry-After": retryAfter } });
 
 const setup = (responses: Record<string, Array<Response | Error>>) => {
-  const calls: Array<{ url: string; init?: RequestInit }> = [];
+  const calls: Array<{ url: string; origin: string; init?: RequestInit }> = [];
   const fetchImpl = vi.fn(
     async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = String(input);
-      calls.push({ url, init });
+      const parsed = new URL(String(input));
+      const url = parsed.pathname;
+      calls.push({ url, origin: parsed.origin, init });
       const next = responses[url]?.shift();
       if (!next) {
         throw new Error(`unexpected fetch ${url}`);
@@ -86,6 +88,10 @@ describe("downloadSequentially", () => {
       "/articles/22/download",
     ]);
     expect(t.calls.every((c) => c.init?.method === "GET")).toBe(true);
+    // 別ホストの URL でも今のオリジンに向ける（CORS で本文を読めず CV だけ増えるのを防ぐ）
+    expect(t.calls.every((c) => c.origin === window.location.origin)).toBe(
+      true
+    );
     expect(t.saveBlob).toHaveBeenCalledTimes(2);
     expect(t.saveBlob.mock.calls[0][1]).toBe("電車.zip");
     expect(t.saveBlob.mock.calls[1][1]).toBe("station.zip");

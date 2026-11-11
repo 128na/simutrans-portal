@@ -95,11 +95,10 @@ export const BulkSelectableArticleList = ({
       isCancelled: () => cancelRef.current,
     });
 
-    // 取得できなかったアドオン投稿だけ選択に残し、もう一度試せるようにする
-    const remaining = new Set(
-      [...result.failed, ...result.skipped].map((item) => item.id)
-    );
-    replace(items.filter((item) => remaining.has(item.id)));
+    // 取得できたアドオン投稿だけ選択から外す。失敗・中止したものはもう一度試せるように、
+    // アドオン紹介は掲載先を開くまで・マイリストに保存できるように残す
+    const succeeded = new Set(result.succeeded.map((item) => item.id));
+    replace(items.filter((item) => !succeeded.has(item.id)));
     setFinished({ ...result, external });
     setProgress(null);
     setIsRunning(false);

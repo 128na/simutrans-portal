@@ -153,13 +153,17 @@ describe("BulkSelectableArticleList", () => {
     const link = within(resultArea).getByRole("link", { name: /高架駅ホーム/ });
     expect(link).toHaveAttribute("href", "/articles/202/conversion");
     expect(link).toHaveAttribute("target", "_blank");
-    // 取得し終えたので選択は空になる
-    expect(screen.queryByText(/件を選択中/)).toBeNull();
+    // 取得し終えたアドオン投稿は選択から外し、アドオン紹介は残す
+    expect(screen.getByText("1 件を選択中")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("高架駅ホーム を選択から外す")
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText("通勤電車セット を選ぶ")).toBeInTheDocument();
   });
 
   it("取得できなかったものだけ選択に残す", async () => {
     const download = resolvedDownload({
-      succeeded: [],
+      succeeded: [{ id: 101, title: "通勤電車セット", url: post.url }],
       failed: [{ id: 102, title: "特急電車セット", url: post2.url }],
     });
     const user = userEvent.setup();

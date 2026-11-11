@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { BulkItem } from "./bulkDownload";
 
 /**
@@ -68,9 +68,13 @@ export const useBulkSelection = () => {
     saveSelection(next);
   }, []);
 
-  const isSelected = useCallback(
-    (id: number) => items.some((item) => item.id === id),
+  const selectedIds = useMemo(
+    () => new Set(items.map((item) => item.id)),
     [items]
+  );
+  const isSelected = useCallback(
+    (id: number) => selectedIds.has(id),
+    [selectedIds]
   );
 
   const toggle = useCallback(

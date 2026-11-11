@@ -7,6 +7,7 @@ import TextBadge from "@/components/ui/TextBadge";
 import { useApiCall } from "@/hooks/useApiCall";
 import { useMyLists } from "@/hooks/useMyLists";
 import type { MyListCreateRequest } from "@/types/models";
+import { parseRetryAfter, sleepMs } from "@/features/bulkDownload/bulkDownload";
 
 interface AddToMyListButtonProps {
   articleId: number;
@@ -70,16 +71,8 @@ interface AddToMyListModalProps {
   sleep?: (ms: number) => Promise<void>;
 }
 
-const defaultSleep = (ms: number) =>
-  new Promise<void>((resolve) => setTimeout(resolve, ms));
-
-/**
- * 429 のときの待ち時間（秒）。Retry-After が読めなければ 60 秒
- */
-const retryAfterSeconds = (value: unknown): number => {
-  const seconds = Number(value);
-  return Number.isFinite(seconds) && seconds > 0 ? seconds : 60;
-};
+/** 1 件につき 429 で送り直す上限。超えたら失敗として止める */
+const MAX_RETRIES_ON_429 = 3;
 
 /**
  * マイリスト選択・追加モーダル
@@ -88,7 +81,7 @@ export const AddToMyListModal = ({
   articleIds,
   onClose,
   onSuccess,
-  sleep = defaultSleep,
+  sleep = sleepMs,
 }: AddToMyListModalProps) => {
   const { call } = useApiCall();
   const { lists, setLists, isLoading, error, setError } = useMyLists();
@@ -162,7 +155,7 @@ export const AddToMyListModal = ({
         // まとめて保存では件数×リスト数の POST になるので、並列にせず 1 件ずつ送る
         for (const listId of Array.from(selectedListIds)) {
           for (const articleId of articleIds) {
-            for (;;) {
+            for (let retries = 0; ; retries++) {
               try {
                 await axios.post(`/api/v1/mylist/${listId}/items`, {
                   article_id: articleId,
@@ -173,10 +166,16 @@ export const AddToMyListModal = ({
                 if (axios.isAxiosError(err) && err.response?.status === 409) {
                   break;
                 }
-                // 429 は上限なので待ってから同じ件を送り直す
-                if (axios.isAxiosError(err) && err.response?.status === 429) {
-                  const seconds = retryAfterSeconds(
-                    err.response.headers?.["retry-after"]
+                // 429 は上限なので待ってから同じ件を送り直す（回数に上限を付け、待ち続けないようにする）
+                if (
+                  axios.isAxiosError(err) &&
+                  err.response?.status === 429 &&
+                  retries < MAX_RETRIES_ON_429
+                ) {
+                  const retryAfter: unknown =
+                    err.response.headers?.["retry-after"];
+                  const seconds = parseRetryAfter(
+                    typeof retryAfter === "string" ? retryAfter : null
                   );
                   setWaitingSeconds(seconds);
                   await sleep(seconds * 1000);
@@ -207,7 +206,8 @@ export const AddToMyListModal = ({
   };
 
   return (
-    <Modal title="マイリストに追加" onClose={onClose}>
+    // 保存中に閉じると裏で送信が続くので、終わるまで閉じさせない
+    <Modal title="マイリストに追加" onClose={isSaving ? undefined : onClose}>
       {articleIds.length > 1 && (
         <p className="text-body mb-4">
           選択中の {articleIds.length} 件を追加します。

@@ -111,6 +111,55 @@ describe("AddToMyListButton コンポーネント", () => {
     expect(maxInFlight).toBe(1);
   });
 
+  it("429 が続くときは送り直しを 3 回で止め、保存中はモーダルを閉じさせない", async () => {
+    vi.spyOn(axios, "get").mockResolvedValue({
+      data: { data: [{ id: 7, title: "新作", note: "", is_public: false }] },
+    });
+    const tooMany = new AxiosError("429", "ERR", undefined, undefined, {
+      status: 429,
+      headers: { "retry-after": "1" },
+    } as never);
+    const post = vi.spyOn(axios, "post").mockRejectedValue(tooMany);
+    let release: () => void = () => {};
+    const sleep = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          release = resolve;
+        })
+    );
+    const onClose = vi.fn();
+    const onSuccess = vi.fn();
+    const user = userEvent.setup();
+    render(
+      <ToastProvider>
+        <AddToMyListModal
+          articleIds={[11]}
+          onClose={onClose}
+          onSuccess={onSuccess}
+          sleep={sleep}
+        />
+      </ToastProvider>
+    );
+    await user.click(await screen.findByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "追加" }));
+
+    await waitFor(() => expect(sleep).toHaveBeenCalledTimes(1));
+    await user.click(screen.getByRole("dialog"));
+    expect(onClose).not.toHaveBeenCalled();
+
+    for (let i = 0; i < 3; i++) {
+      await waitFor(() => expect(sleep).toHaveBeenCalledTimes(i + 1));
+      release();
+    }
+
+    await waitFor(() => expect(post).toHaveBeenCalledTimes(4));
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: "追加" })).toBeEnabled()
+    );
+    expect(sleep).toHaveBeenCalledTimes(3);
+    expect(onSuccess).not.toHaveBeenCalled();
+  });
+
   it("キャンセルボタンでモーダルが閉じる", async () => {
     const user = userEvent.setup();
     render(

@@ -10,8 +10,9 @@ use Tests\Feature\TestCase;
 
 /**
  * ヘッダーのキーワード検索欄（#660, #677）。
- * PC 幅では公開ページのどこでもヘッダーから検索でき、サイドメニューには検索欄を置かない。
+ * PC 幅では検索結果ページ以外の公開ページでヘッダーから検索でき、サイドメニューには検索欄を置かない。
  * スマホ幅はヘッダーの検索欄を隠し、モバイルメニュー内の検索を使う。
+ * 検索結果ページ（/search）はページ内の条件付きフォームだけを出す（#682）。
  */
 class HeaderSearchTest extends TestCase
 {
@@ -23,7 +24,7 @@ class HeaderSearchTest extends TestCase
         return [
             'トップ' => ['index', 1],
             'pak64一覧' => ['pak.64', 1],
-            '検索' => ['search', 1],
+            'タグ一覧' => ['tags.index', 1],
             // 記事詳細はデスクトップのサイドメニューを外している（#639）
             '記事詳細' => ['articles.show', 0],
         ];
@@ -50,15 +51,25 @@ class HeaderSearchTest extends TestCase
         }
     }
 
-    public function test_検索ページは条件付きの検索フォームを残す(): void
+    public function test_検索ページはヘッダーとモバイルメニューに検索欄を出さず条件付きの検索フォームだけを出す(): void
     {
         $html = $this->get(route('search', ['word' => 'ヘッダー検索語']))->assertOk()->getContent();
         $this->assertIsString($html);
 
-        // ヘッダーの欄は新しいキーワード検索用なので現在の語を入れない。条件を引き継ぐのはページ内のフォーム
-        $this->assertStringNotContainsString('ヘッダー検索語', $this->headerSearchForm($html));
+        // ヘッダー・モバイルメニューの欄から送ると詳細条件が外れるので、どちらも出さない
+        $this->assertSame(1, preg_match('/<header\b.*?<\/header>/s', $html, $header));
+        $this->assertStringNotContainsString('id="header-search"', $header[0]);
+        $this->assertStringNotContainsString('id="sidebar-search-mobile"', $html);
+        $this->assertStringNotContainsString('name="word"', $header[0]);
+        $asides = $this->asides($html);
+        $this->assertCount(1, $asides);
+        $this->assertStringNotContainsString('name="word"', $asides[0], 'デスクトップのサイドメニューにも出さない');
+
+        // 条件を引き継ぐのはページ内のフォーム。ヘッダーの代わりにこれを検索のランドマークにする
         $this->assertSame(1, preg_match('/<main\b.*?<\/main>/s', $html, $main));
-        $this->assertStringContainsString('value="ヘッダー検索語"', $main[0]);
+        $this->assertSame(1, preg_match('/<form\b[^>]*role="search"[^>]*>.*?<\/form>/s', $main[0], $pageForm));
+        $this->assertStringContainsString('value="ヘッダー検索語"', $pageForm[0]);
+        $this->assertSame(1, preg_match_all('/role="search"/', $html), '検索のランドマークはページ内のフォームの 1 つだけ');
     }
 
     private function pageHtml(string $routeName): string

@@ -16,7 +16,7 @@
     </div>
     <div id="app-article-cards" data-sort="{{ $filter->sort->value }}">読み込み中...</div>
     <div class="mt-10 v2-page-pagination-area">
-      {{ $articles->withQueryString()->links() }}
+      {{ $articles->withQueryString()->onEachSide(1)->links() }}
     </div>
     <p class="mt-6 text-body text-c-sub">
       @include('pages.pak.description', ['pak' => $pak])

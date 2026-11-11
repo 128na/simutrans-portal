@@ -60,7 +60,7 @@
       <section class="flex flex-col gap-3">
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
           <h3 class="v2-text-h3">直近30日の推移</h3>
-          <span class="text-note text-c-sub">公開中で最近更新した記事 {{ count($trend['analytics']) }} 件の合計</span>
+          <span class="text-note text-c-sub">すべての記事の合計</span>
           <a href="{{ route('mypage.analytics') }}" class="v2-link ml-auto text-note font-semibold">
             アナリティクスで詳しく見る
           </a>

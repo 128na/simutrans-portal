@@ -35,13 +35,13 @@ describe("RecentTrend", () => {
     vi.useRealTimers();
   });
 
-  it("対象の記事が無いときは案内を出し、グラフは描かない", () => {
+  it("公開中の記事が無いときは案内を出し、グラフは描かない", () => {
     render(
       <RecentTrend
         trend={{
           start_date: "2026-10-13",
           end_date: "2026-11-11",
-          analytics: [],
+          total: null,
         }}
       />
     );
@@ -52,28 +52,19 @@ describe("RecentTrend", () => {
     expect(screen.queryByTestId("line-chart")).not.toBeInTheDocument();
   });
 
-  it("記事ごとの PV・CV を日ごとに合計し、期間の全日を 0 埋めして PV・CV の2本で描く", () => {
+  it("合計済みの PV・CV を、期間の全日を 0 埋めして PV・CV の2本で描く", () => {
     render(
       <RecentTrend
         trend={{
           start_date: "2026-10-13",
           end_date: "2026-11-11",
-          analytics: [
-            {
-              id: 31,
-              viewCounts: { "20261013": 4, "20261111": 9 },
-              conversionCounts: { "20261111": 2 },
-              pastViewCount: 50,
-              pastConversionCount: 5,
-            },
-            {
-              id: 32,
-              viewCounts: { "20261111": 6 },
-              conversionCounts: { "20261020": 1 },
-              pastViewCount: 70,
-              pastConversionCount: 8,
-            },
-          ],
+          total: {
+            id: 0,
+            viewCounts: { "20261013": 4, "20261111": 15 },
+            conversionCounts: { "20261020": 1, "20261111": 2 },
+            pastViewCount: 0,
+            pastConversionCount: 0,
+          },
         }}
       />
     );
@@ -99,5 +90,31 @@ describe("RecentTrend", () => {
     });
     // 累計ではなく日ごとの値（過去分は足さない）
     expect(rows[29]).toEqual({ name: "20261111", "0-pv": 15, "0-cv": 2 });
+  });
+
+  it("公開中の記事があるが期間内のデータが無いときも、0 の線を描く", () => {
+    render(
+      <RecentTrend
+        trend={{
+          start_date: "2026-10-13",
+          end_date: "2026-11-11",
+          total: {
+            id: 0,
+            viewCounts: [] as unknown as Record<string, number>,
+            conversionCounts: [] as unknown as Record<string, number>,
+            pastViewCount: 0,
+            pastConversionCount: 0,
+          },
+        }}
+      />
+    );
+
+    const rows = JSON.parse(
+      screen.getByTestId("line-chart").getAttribute("data-chart-data") ?? "[]"
+    ) as Record<string, number | string>[];
+    expect(rows).toHaveLength(30);
+    expect(rows.every((row) => row["0-pv"] === 0 && row["0-cv"] === 0)).toBe(
+      true
+    );
   });
 });

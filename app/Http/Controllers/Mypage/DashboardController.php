@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Mypage;
 
-use App\Enums\ArticleAnalyticsType;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Mypage\ArticleAnalytic;
 use App\Models\User;
+use App\Repositories\Article\ConversionCountRepository;
 use App\Repositories\Article\MypageArticleRepository;
+use App\Repositories\Article\ViewCountRepository;
 use App\Repositories\LoginHistoryRepository;
 use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
@@ -19,7 +19,7 @@ use Laravel\Fortify\Features;
 
 class DashboardController extends Controller
 {
-    /** マイページトップに出す最近更新した記事の件数（推移は公開中の記事からこの件数を対象にする） */
+    /** マイページトップに出す最近更新した記事の件数 */
     private const int RECENT_ARTICLE_LIMIT = 5;
 
     /** 推移を出す日数（今日を含む） */
@@ -29,6 +29,8 @@ class DashboardController extends Controller
         private readonly UserRepository $userRepository,
         private readonly MypageArticleRepository $mypageArticleRepository,
         private readonly LoginHistoryRepository $loginHistoryRepository,
+        private readonly ViewCountRepository $viewCountRepository,
+        private readonly ConversionCountRepository $conversionCountRepository,
         private readonly MetaOgpService $metaOgpService,
     ) {}
 
@@ -36,12 +38,13 @@ class DashboardController extends Controller
     {
         $user = $this->loggedinUser();
         $recentArticles = $this->mypageArticleRepository->getRecentForMypage($user, self::RECENT_ARTICLE_LIMIT);
+        $summary = $this->userRepository->getSummary($user);
 
         return view('mypage.index', [
             'user' => $user,
-            'summary' => $this->userRepository->getSummary($user),
+            'summary' => $summary,
             'recentArticles' => $recentArticles,
-            'trend' => $this->buildTrend($user),
+            'trend' => $this->buildTrend($user, (int) $summary->published_article_count),
             // 未認証のうちは二要素認証の設定画面に入れないので、メール認証の帯だけを出す
             'showTwoFactorNotice' => Features::enabled(Features::twoFactorAuthentication())
                 && $user->hasVerifiedEmail()
@@ -84,31 +87,33 @@ class DashboardController extends Controller
     }
 
     /**
-     * 公開中で最近更新した記事の直近の日次PV・CVを、アナリティクスと同じ取得経路・同じ形式で返す
+     * ユーザー全体の直近の日次PV・CVの合計を、アナリティクスと同じ形式の1件にして返す.
+     * 今月のPV・CVカードと同じく、記事の状態を問わずユーザーの全カウントを対象にする。
+     * 公開中の記事が無いときは、フロントが案内を出せるよう合計を null にする。
      *
-     * @return array{start_date:string,end_date:string,analytics:array<mixed>}
+     * @return array{start_date:string,end_date:string,total:array{id:int,viewCounts:array<string,int>,conversionCounts:array<string,int>,pastViewCount:int,pastConversionCount:int}|null}
      */
-    private function buildTrend(User $user): array
+    private function buildTrend(User $user, int $publishedArticleCount): array
     {
         $endDate = CarbonImmutable::today();
         $startDate = $endDate->subDays(self::TREND_DAYS - 1);
-        $ids = $this->mypageArticleRepository->getRecentPublishedIds($user, self::RECENT_ARTICLE_LIMIT);
+        $from = $startDate->format('Ymd');
+        $to = $endDate->format('Ymd');
 
-        $analytics = $ids === []
-            ? []
-            : ArticleAnalytic::collection(
-                $this->mypageArticleRepository->findAllForAnalytics(
-                    $user,
-                    $ids,
-                    ArticleAnalyticsType::Daily,
-                    [$startDate->format('Ymd'), $endDate->format('Ymd')],
-                )
-            )->resolve();
+        $total = $publishedArticleCount === 0
+            ? null
+            : [
+                'id' => 0,
+                'viewCounts' => $this->viewCountRepository->getDailyTotals($user, $from, $to),
+                'conversionCounts' => $this->conversionCountRepository->getDailyTotals($user, $from, $to),
+                'pastViewCount' => 0,
+                'pastConversionCount' => 0,
+            ];
 
         return [
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
-            'analytics' => $analytics,
+            'total' => $total,
         ];
     }
 }

@@ -69,27 +69,4 @@ class GetRecentForMypageTest extends TestCase
         $this->assertTrue($article->relationLoaded('totalConversionCount'));
         $this->assertSame($this->user, $article->user);
     }
-
-    public function test推移の対象は公開中の記事だけを更新日の新しい順に件数を絞る(): void
-    {
-        $older = Article::factory()->page()->publish()->create([
-            'user_id' => $this->user->id,
-            'modified_at' => now()->subDays(2),
-        ]);
-        $newer = Article::factory()->page()->publish()->create([
-            'user_id' => $this->user->id,
-            'modified_at' => now()->subDay(),
-        ]);
-        $oldest = Article::factory()->page()->publish()->create([
-            'user_id' => $this->user->id,
-            'modified_at' => now()->subDays(3),
-        ]);
-        Article::factory()->page()->draft()->create(['user_id' => $this->user->id, 'modified_at' => now()]);
-        Article::factory()->page()->publish()->create(['user_id' => User::factory()->create()->id, 'modified_at' => now()]);
-
-        $ids = $this->articleRepository->getRecentPublishedIds($this->user, 2);
-
-        $this->assertSame([$newer->id, $older->id], $ids);
-        $this->assertNotContains($oldest->id, $ids);
-    }
 }

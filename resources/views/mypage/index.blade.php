@@ -81,7 +81,7 @@
         @if ($recentArticles->isEmpty())
           <p class="text-c-sub">まだ記事がありません。</p>
         @else
-          <div class="v2-table-wrapper">
+          <div class="v2-table-wrapper relative">
             <table class="v2-table w-full min-w-[640px]">
               <thead>
                 <tr>

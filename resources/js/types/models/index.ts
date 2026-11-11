@@ -10,6 +10,7 @@ export type {
   SectionType,
   ArticleList,
   ArticleCard,
+  LatestArticleCard,
   ArticleBase,
   ArticleRelational,
   ArticleShow,

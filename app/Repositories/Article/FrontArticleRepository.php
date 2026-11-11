@@ -8,10 +8,12 @@ use App\Enums\ArticlePostType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
+use App\Models\Category;
 use App\Repositories\Concerns\ArticleQueryConcern;
 use App\Services\Front\ArticleListFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -175,7 +177,7 @@ class FrontArticleRepository
     }
 
     /**
-     * 新着カード用。カードに出す pak のタグ用に、pak のカテゴリだけを表示順で読み込む
+     * 新着カード用。一覧のカードと同じタグを出すため、pak と種類のカテゴリを表示順で読み込む
      *
      * @return Collection<int, Article>
      */
@@ -187,13 +189,10 @@ class FrontArticleRepository
                 'articles.post_type', 'articles.contents', 'articles.published_at', 'articles.modified_at',
             ])
             ->with([
-                'user:id,nickname',
+                'user:id,name,nickname',
                 'attachments:id,attachmentable_id,path,thumbnail_path',
-                'categories' => fn ($query) => $query
-                    ->select(['categories.id', 'categories.slug'])
-                    ->where('categories.type', CategoryType::Pak)
-                    ->orderBy('categories.order')
-                    ->orderBy('categories.id'),
+                'categories' => fn ($query) => $this->orderCardCategories($query)
+                    ->whereIn('categories.type', [CategoryType::Pak, CategoryType::Addon]),
             ])
             ->limit($limit)
             ->get();
@@ -517,7 +516,25 @@ class FrontArticleRepository
         return $builder
             ->latest($filter->sort->column())
             ->orderByDesc('articles.id')
-            ->with('categories:id,type,slug', 'attachments:id,attachmentable_id,path,thumbnail_path', 'user:id,name,nickname');
+            ->with([
+                'categories' => fn ($query) => $this->orderCardCategories($query),
+                'attachments:id,attachmentable_id,path,thumbnail_path',
+                'user:id,name,nickname',
+            ]);
+    }
+
+    /**
+     * 一覧のカードと新着カード（getLatestForCards）で、タグを同じ表示順（カテゴリの order、同じなら id）に並べる
+     *
+     * @param  BelongsToMany<Category, Article>  $query
+     * @return BelongsToMany<Category, Article>
+     */
+    private function orderCardCategories(BelongsToMany $query): BelongsToMany
+    {
+        return $query
+            ->select(['categories.id', 'categories.type', 'categories.slug'])
+            ->orderBy('categories.order')
+            ->orderBy('categories.id');
     }
 
     /**

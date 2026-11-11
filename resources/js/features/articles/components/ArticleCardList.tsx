@@ -1,25 +1,35 @@
 import type { ReactNode } from "react";
-import { ArticleCard, type ArticleCardSort } from "./ArticleCard";
+import {
+  ArticleCard,
+  type ArticleCardData,
+  type ArticleCardSort,
+} from "./ArticleCard";
 
-type Props = {
-  articles: Article.Card[];
+type Props<T extends ArticleCardData> = {
+  articles: T[];
   sort?: ArticleCardSort;
   isAuthenticated?: boolean;
   /**
+   * カードごとにタイトルの上の行へ出す要素（新着の「新規／更新」など）
+   */
+  renderHeading?: (article: T) => ReactNode;
+  /**
    * カードごとに操作欄へ足す要素（まとめてダウンロードの「選ぶ」など）
    */
-  renderActions?: (article: Article.Card) => ReactNode;
+  renderActions?: (article: T) => ReactNode;
 };
 
 /**
- * 公開側のアドオン一覧（カード表示）。PC 幅で 4 列、スマホでは 1 列
+ * 公開側のアドオン一覧（カード表示）。PC 幅で 4 列、スマホでは 1 列。
+ * トップ・/latest の新着も同じ部品で描画し、見た目と列数をそろえる
  */
-export const ArticleCardList = ({
+export const ArticleCardList = <T extends ArticleCardData>({
   articles,
   sort = "modified",
   isAuthenticated = false,
+  renderHeading,
   renderActions,
-}: Props) => {
+}: Props<T>) => {
   if (articles.length === 0) {
     return (
       <div className="v2-text-sub">条件に合う記事が見つかりませんでした。</div>
@@ -34,6 +44,7 @@ export const ArticleCardList = ({
           article={article}
           sort={sort}
           isAuthenticated={isAuthenticated}
+          heading={renderHeading?.(article)}
           actions={renderActions?.(article)}
         />
       ))}

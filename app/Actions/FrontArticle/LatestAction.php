@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions\FrontArticle;
 
+use App\Enums\CategoryType;
 use App\Models\Article;
+use App\Models\Category;
 use App\Repositories\Article\FrontArticleRepository;
 use App\Services\Front\ArticleListFilter;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -30,7 +32,10 @@ class LatestAction
     }
 
     /**
-     * @return list<array{id: int, user_id: int, title: string, url: string, thumbnail_url: string, published_at: ?string, modified_at: ?string, paks: list<string>}>
+     * 新着カードの保存データ。post_type・categories・user は一覧のカード（ArticleCard）と同じ表示に使う。
+     * paks は旧コードへ戻したときも pak のタグを出せるよう残す
+     *
+     * @return list<array{id: int, user_id: int, title: string, url: string, thumbnail_url: string, published_at: ?string, modified_at: ?string, paks: list<string>, post_type: string, categories: list<array{id: int, type: string, slug: string}>, user: array{name: string, nickname: ?string}}>
      */
     public function cardsByPak(string $pak, int $limit = 12): array
     {
@@ -43,7 +48,16 @@ class LatestAction
                 'thumbnail_url' => $article->thumbnail_url,
                 'published_at' => $article->published_at?->toIso8601String(),
                 'modified_at' => $article->modified_at?->toIso8601String(),
-                'paks' => array_values($article->categories->pluck('slug')->all()),
+                'paks' => array_values($article->categories
+                    ->filter(fn (Category $category): bool => $category->type === CategoryType::Pak)
+                    ->pluck('slug')->all()),
+                'post_type' => $article->post_type->value,
+                'categories' => array_values($article->categories->map(fn (Category $category): array => [
+                    'id' => $category->id,
+                    'type' => $category->type->value,
+                    'slug' => $category->slug,
+                ])->all()),
+                'user' => ['name' => $article->user->name, 'nickname' => $article->user->nickname],
             ])->all());
     }
 

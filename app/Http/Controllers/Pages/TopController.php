@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
 use App\Services\Front\ArticleBreadcrumbService;
+use App\Services\Front\LatestArticleCards;
 use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class TopController extends Controller
 
     public function __construct(
         private readonly PublicArticleSnapshot $snapshot,
+        private readonly LatestArticleCards $latestArticleCards,
     ) {}
 
     public function top(Request $request): View
@@ -46,7 +48,7 @@ class TopController extends Controller
 
         return view('pages.top.index', [
             'announces' => $articles['announces'],
-            'latestCards' => $latestCards,
+            'latestCards' => $this->latestArticleCards->present($latestCards),
             'selectedPak' => $selectedPak,
             'pakTabs' => array_map(fn (string $slug): array => [
                 'slug' => $slug,

@@ -97,6 +97,19 @@ abstract class TestCase extends BaseTestCase
         return $this->createFromFile($file, $user->id);
     }
 
+    /**
+     * トップ・/latest に埋め込んだ新着カード（components/partials/latest-cards.blade.php）を、ブラウザが読むのと同じ JSON として取り出す
+     *
+     * @return list<array<string, mixed>>
+     */
+    protected function embeddedLatestCards(string $html, string $key): array
+    {
+        $this->assertSame(1, preg_match('/<script id="data-latest-cards-'.preg_quote($key, '/').'" type="application\/json">(.*?)<\/script>/s', $html, $matches));
+        $this->assertStringContainsString('data-latest-cards="data-latest-cards-'.$key.'"', $html);
+
+        return json_decode($matches[1], true, flags: JSON_THROW_ON_ERROR);
+    }
+
     protected function createAddonPost(?User $user = null): Article
     {
         $user ??= User::factory()->create();

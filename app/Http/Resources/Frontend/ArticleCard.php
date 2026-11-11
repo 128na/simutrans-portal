@@ -33,8 +33,7 @@ class ArticleCard extends JsonResource
             'title' => $this->resource->title,
             'url' => $this->resource->showUrl(),
             'post_type' => $this->resource->post_type,
-            'download_url' => $this->when($this->resource->post_type === ArticlePostType::AddonPost, fn (): string => route('articles.download', ['article' => $this->resource->id])),
-            'addon_page_url' => $this->when($this->resource->post_type === ArticlePostType::AddonIntroduction, fn (): string => route('articles.conversion', ['article' => $this->resource->id])),
+            ...self::acquisitionUrls($this->resource->id, $this->resource->post_type),
             'thumbnail' => $this->resource->thumbnail_url,
             'categories' => $this->resource->categories->map(fn (Category $category): array => [
                 'id' => $category->id,
@@ -44,10 +43,32 @@ class ArticleCard extends JsonResource
             'user' => [
                 'id' => $this->resource->user->id,
                 'name' => $this->resource->user->name,
-                'url' => route('users.show', ['userIdOrNickname' => $this->resource->user->nickname ?? $this->resource->user->id]),
+                'url' => self::userUrl($this->resource->user->id, $this->resource->user->nickname),
             ],
             'published_at' => $this->resource->published_at?->format('Y/m/d H:i'),
             'modified_at' => $this->resource->modified_at?->format('Y/m/d H:i'),
         ];
+    }
+
+    /**
+     * 入手の操作の URL（CV 経路）。新着カード（LatestArticleCards）と共通にして、一覧と同じ経路を使う
+     *
+     * @return array{download_url?: string, addon_page_url?: string}
+     */
+    public static function acquisitionUrls(int $articleId, ?ArticlePostType $postType): array
+    {
+        return match ($postType) {
+            ArticlePostType::AddonPost => ['download_url' => route('articles.download', ['article' => $articleId])],
+            ArticlePostType::AddonIntroduction => ['addon_page_url' => route('articles.conversion', ['article' => $articleId])],
+            default => [],
+        };
+    }
+
+    /**
+     * 作者のページの URL。表示名があれば表示名、無ければ ID で開く
+     */
+    public static function userUrl(int $userId, ?string $nickname): string
+    {
+        return route('users.show', ['userIdOrNickname' => $nickname ?? $userId]);
     }
 }

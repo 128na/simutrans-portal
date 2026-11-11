@@ -148,14 +148,27 @@ class PublicArticleSnapshotCountsTest extends TestCase
         config(['database.connections.unavailable' => [...config('database.connections.'.$default), 'host' => '127.0.0.1', 'port' => '1', 'url' => null]]);
         config(['database.default' => 'unavailable']);
         try {
-            $this->get(route('index'))->assertOk()
+            $top = $this->get(route('index'))->assertOk()
                 ->assertSee('新着アドオン')
-                ->assertSee('v2-tag-pak v2-tag-pak-128-japan', false)
                 ->assertSee(route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']), false)
                 ->assertSee('3<span class="sr-only">件</span>', false);
+            $latest = $this->get(route('latest'))->assertOk();
         } finally {
             config(['database.default' => $default]);
             DB::purge('unavailable');
+        }
+
+        // 一覧と同じカード（タグ・作者・入手の操作）を、DB を使わずに保存データだけで出す
+        $pak128Japan = ['id' => Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->value('id'), 'type' => 'pak', 'slug' => '128-japan'];
+        foreach ([
+            [$this->embeddedLatestCards((string) $top->getContent(), 'top'), 6, 4],
+            [$this->embeddedLatestCards((string) $latest->getContent(), 'pak128-japan'), 5, 3],
+        ] as [$cards, $count, $introductions]) {
+            $this->assertCount($count, $cards);
+            $this->assertCount(5, array_filter($cards, fn (array $card): bool => in_array($pak128Japan, $card['categories'], true)));
+            $this->assertCount(2, array_filter($cards, fn (array $card): bool => isset($card['download_url'])));
+            $this->assertCount($introductions, array_filter($cards, fn (array $card): bool => isset($card['addon_page_url'])));
+            $this->assertNotContains(null, array_column($cards, 'user'));
         }
     }
 

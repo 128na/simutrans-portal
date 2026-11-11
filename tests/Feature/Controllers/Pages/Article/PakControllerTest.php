@@ -23,7 +23,10 @@ class PakControllerTest extends TestCase
 
         $testResponse->assertOk();
         $testResponse->assertDontSee('%25', false);
-        $testResponse->assertSee($article->showUrl(), false);
+        $this->assertSame(
+            [$article->showUrl()],
+            array_column($this->embeddedLatestCards((string) $testResponse->getContent(), 'pak128-japan'), 'url'),
+        );
     }
 
     public function test_latest_limits_cards_without_counting_and_pak_pages_still_paginate(): void

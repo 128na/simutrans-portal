@@ -16,31 +16,31 @@
         <h3 class="v2-text-h4 mb-4">
           <x-ui.link :url="route('pak.128japan')" :title="'Pak128Japan'" />
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
-          @foreach ($pak128Japan as $article)
-            @include('components.partials.tile', ['article' => $article])
-          @endforeach
-        </div>
+        @if ($pak128Japan !== [])
+          <div class="mb-4">
+            @include('components.partials.latest-cards', ['key' => 'pak128-japan', 'cards' => $pak128Japan])
+          </div>
+        @endif
       </div>
       <div id="pak128" class="scroll-mt-24">
         <h3 class="v2-text-h4 mb-4">
           <x-ui.link :url="route('pak.128')" :title="'Pak128'" />
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
-          @foreach ($pak128 as $article)
-            @include('components.partials.tile', ['article' => $article])
-          @endforeach
-        </div>
+        @if ($pak128 !== [])
+          <div class="mb-4">
+            @include('components.partials.latest-cards', ['key' => 'pak128', 'cards' => $pak128])
+          </div>
+        @endif
       </div>
       <div id="pak64" class="scroll-mt-24">
         <h3 class="v2-text-h4 mb-4">
           <x-ui.link :url="route('pak.64')" :title="'Pak64'" />
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
-          @foreach ($pak64 as $article)
-            @include('components.partials.tile', ['article' => $article])
-          @endforeach
-        </div>
+        @if ($pak64 !== [])
+          <div class="mb-4">
+            @include('components.partials.latest-cards', ['key' => 'pak64', 'cards' => $pak64])
+          </div>
+        @endif
       </div>
     </div>
   </div>

@@ -60,12 +60,8 @@
               <x-ui.link :url="$latestMoreUrl" :title="'新着アドオンをもっと見る'" />
             </div>
           </div>
-          @if ($latestCards->isNotEmpty())
-            <div class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-              @foreach ($latestCards as $article)
-                @include('components.partials.tile', ['article' => $article])
-              @endforeach
-            </div>
+          @if ($latestCards !== [])
+            @include('components.partials.latest-cards', ['key' => 'top', 'cards' => $latestCards])
           @else
             <p class="text-note text-c-sub">新着を表示できませんでした。上のリンクから一覧をご覧ください。</p>
           @endif

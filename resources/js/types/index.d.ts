@@ -33,6 +33,7 @@ import type {
   SearchableOption as _SearchableOption,
   ArticleList as _ArticleList,
   ArticleCard as _ArticleCard,
+  LatestArticleCard as _LatestArticleCard,
   ArticleShow as _ArticleShow,
   ArticleBase as _ArticleBase,
   ArticleRelational as _ArticleRelational,
@@ -88,6 +89,7 @@ declare global {
   namespace Article {
     type List = _ArticleList;
     type Card = _ArticleCard;
+    type LatestCard = _LatestArticleCard;
     type Show = _ArticleShow;
     type Base = _ArticleBase;
     type Relational = _ArticleRelational;

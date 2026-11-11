@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Frontend\ArticleCard;
 use App\Repositories\CategoryRepository;
 use App\Services\Front\ArticleListFilter;
+use App\Services\Front\LatestArticleCards;
 use App\Services\Front\MetaOgpService;
 use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Contracts\View\View;
@@ -22,6 +23,7 @@ class PakController extends Controller
         private readonly CategoryRepository $categoryRepository,
         private readonly MetaOgpService $metaOgpService,
         private readonly PublicArticleSnapshot $snapshot,
+        private readonly LatestArticleCards $latestArticleCards,
     ) {}
 
     public function latest(): View
@@ -29,9 +31,9 @@ class PakController extends Controller
         $latest = $this->snapshot->read()['latest'];
 
         return view('pages.pak.latest', [
-            'pak128Japan' => $latest['128-japan'] ?? [],
-            'pak128' => $latest['128'] ?? [],
-            'pak64' => $latest['64'] ?? [],
+            'pak128Japan' => $this->latestArticleCards->present($latest['128-japan'] ?? []),
+            'pak128' => $this->latestArticleCards->present($latest['128'] ?? []),
+            'pak64' => $this->latestArticleCards->present($latest['64'] ?? []),
             'meta' => $this->metaOgpService->frontLatest(),
         ]);
     }

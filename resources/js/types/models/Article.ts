@@ -61,6 +61,20 @@ export interface ArticleCard {
 }
 
 /**
+ * 新着カード（トップ・/latest）。保存データ（PublicArticleSnapshot）から一覧のカードと同じ形に組み立てる。
+ * 追加前の保存データでは投稿形式・作者が無いので null（入手の操作・作者を出さない）。
+ * is_updated は「新規／更新」の見出しに使う
+ */
+export interface LatestArticleCard extends Omit<
+  ArticleCard,
+  "post_type" | "user"
+> {
+  post_type: ArticlePostType | null;
+  user: ArticleCard["user"] | null;
+  is_updated: boolean;
+}
+
+/**
  * 記事詳細の基本型
  * Base article detail type
  */

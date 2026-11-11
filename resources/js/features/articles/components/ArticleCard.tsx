@@ -4,10 +4,19 @@ import { AddToMyListButton } from "../../mylist/AddToMyList";
 
 export type ArticleCardSort = "modified" | "published";
 
+/**
+ * カードに渡せる記事。一覧（Article.Card）と新着（Article.LatestCard。保存データが古いと作者が無い）
+ */
+export type ArticleCardData = Article.Card | Article.LatestCard;
+
 type Props = {
-  article: Article.Card;
+  article: ArticleCardData;
   sort?: ArticleCardSort;
   isAuthenticated?: boolean;
+  /**
+   * タイトルの上の行に出す要素（新着の「新規／更新」など）。サムネイルには重ねない
+   */
+  heading?: ReactNode;
   /**
    * カード下部の操作欄に足す要素（まとめてダウンロードの「選ぶ」など）。
    * スマホ幅で出さないものは渡す側で隠す。未ログインのスマホ幅では操作欄の行ごと出さないので、
@@ -19,16 +28,17 @@ type Props = {
 /**
  * アドオン投稿（ダウンロードできる）なら true、アドオン紹介（掲載先へ移動）なら false
  */
-export const isDownloadable = (article: Article.Card): boolean =>
+export const isDownloadable = (article: ArticleCardData): boolean =>
   Boolean(article.download_url);
 
-const dateOnly = (value: string | null): string => value?.slice(0, 10) ?? "";
+export const dateOnly = (value: string | null): string =>
+  value?.slice(0, 10) ?? "";
 
 const DateLabel = ({
   article,
   sort,
 }: {
-  article: Article.Card;
+  article: ArticleCardData;
   sort: ArticleCardSort;
 }) => {
   if (sort === "published" || !article.modified_at) {
@@ -42,7 +52,7 @@ const DateLabel = ({
  * ダウンロードは PC で行う前提なので、スマホ幅（sm = 640px 未満。縦向きのスマホが収まり、PC の左右分割やタブレットでは出す）では出さない。
  * display: none で隠すので、キーボードや読み上げでも届かない
  */
-const AcquisitionLink = ({ article }: { article: Article.Card }) => {
+const AcquisitionLink = ({ article }: { article: ArticleCardData }) => {
   if (article.download_url) {
     return (
       <a
@@ -76,6 +86,7 @@ export const ArticleCard = ({
   article,
   sort = "modified",
   isAuthenticated = false,
+  heading,
   actions,
 }: Props) => {
   const paks = article.categories.filter((c) => c.type === "pak");
@@ -97,6 +108,7 @@ export const ArticleCard = ({
         />
       </a>
       <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+        {heading}
         {/* v2-title-link の break-all だと英単語の途中で折れるので、単語の切れ目で折る。
             1 語がカード幅より長いときだけ途中で折り、カードを横にはみ出させない。
             v2-title-link は自前のユーティリティで後に出力され break-all が勝つため、! で上書きする。
@@ -115,15 +127,20 @@ export const ArticleCard = ({
           <Categories categories={addons} />
         </div>
         {/* 1 行に収めてカードの高さをそろえる。長い作者名は省略し、日付は途中で折らない */}
+        {/* 新着の古い保存データには作者が無いので、そのときは日付だけを出す */}
         <div className="flex min-w-0 text-meta text-c-sub">
-          <a
-            href={article.user.url}
-            className="min-w-0 truncate text-c-sub hover:text-c-link"
+          {article.user && (
+            <a
+              href={article.user.url}
+              className="min-w-0 truncate text-c-sub hover:text-c-link"
+            >
+              {article.user.name}
+            </a>
+          )}
+          <span
+            className={`shrink-0 whitespace-nowrap ${article.user ? "pl-1" : ""}`}
           >
-            {article.user.name}
-          </a>
-          <span className="shrink-0 whitespace-nowrap pl-1">
-            {"・ "}
+            {article.user && "・ "}
             <DateLabel article={article} sort={sort} />
           </span>
         </div>

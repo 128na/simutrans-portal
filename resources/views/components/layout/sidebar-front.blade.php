@@ -1,7 +1,14 @@
 @props(['variant' => 'desktop'])
 
 <nav aria-label="サイトメニュー" class="v2-nav">
-  <x-layout.search-form :input-id="'sidebar-search-' . $variant" />
+  {{-- PC 幅の検索欄はヘッダーにあるので、検索欄はモバイルメニューにだけ置く --}}
+  @if ($variant === 'mobile')
+    <x-layout.search-form
+      input-id="sidebar-search-mobile"
+      role="search"
+      aria-label="キーワード検索"
+    />
+  @endif
   <div class="v2-nav-group">
     <ul class="v2-nav-group">
       <li><x-ui.nav-link :url="route('latest')" :title="'新着アドオン'" /></li>

@@ -3,21 +3,19 @@
 <header class="bg-white">
   <nav aria-label="Global" class="v2-header">
     <div class="flex items-center justify-between gap-x-4">
-      <div class="flex lg:flex-1">
+      <div class="flex">
         <a href="/" class="-m-1.5 p-1.5">
           <span class="sr-only">{{ config('app.name') }}</span>
           <img src="{{ asset('v2/logo.svg') }}" alt="" class="h-8 w-auto" />
         </a>
       </div>
-      {{-- サイドメニューを外したページ（記事詳細など）は、デスクトップでもトップへ戻らず検索できるようヘッダーに検索欄を出す。lg 未満はモバイルメニュー内の検索を使う --}}
-      @hasSection('hide-sidebar')
-        <x-layout.search-form
-          input-id="header-search"
-          role="search"
-          aria-label="キーワード検索"
-          class="hidden lg:block w-full max-w-md"
-        />
-      @endif
+      {{-- キーワード検索はどのページでもヘッダーのロゴの右隣に置く（サイドメニューには置かない）。lg 未満はヘッダーを2段にしないよう隠し、モバイルメニュー内の検索を使う --}}
+      <x-layout.search-form
+        input-id="header-search"
+        role="search"
+        aria-label="キーワード検索"
+        class="hidden lg:block w-full max-w-md"
+      />
       <div class="flex items-center gap-x-4 lg:flex-1 lg:justify-end">
         <div class="flex justify-end">
           @guest

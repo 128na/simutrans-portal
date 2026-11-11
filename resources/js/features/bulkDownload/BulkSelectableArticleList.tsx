@@ -51,9 +51,10 @@ const formatClock = (epochMs: number, now: number = Date.now()): string => {
     hour: "2-digit",
     minute: "2-digit",
   });
-  return date.toDateString() === new Date(now).toDateString()
-    ? time
-    : `明日 ${time}`;
+  // 過ぎた時刻（中止の結果を開いたまま日付が変わった等）には付けない
+  return epochMs > now && date.toDateString() !== new Date(now).toDateString()
+    ? `明日 ${time}`
+    : time;
 };
 
 const isLongWaiting = (progress: BulkProgress | null): boolean =>

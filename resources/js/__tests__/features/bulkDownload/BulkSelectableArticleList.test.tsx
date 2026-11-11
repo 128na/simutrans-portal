@@ -475,6 +475,30 @@ describe("BulkSelectableArticleList", () => {
       expect(resultArea).toHaveTextContent("中止したため 1 件");
       expect(resultArea).not.toHaveTextContent("以降に");
     });
+
+    it("過ぎた日付の再開時刻には「明日」を付けない", async () => {
+      // 中止の結果を開いたまま日付が変わった状況
+      const yesterday = now - 24 * 60 * 60 * 1000;
+      const download = resolvedDownload({
+        succeeded: [],
+        skipped: [{ id: 114, title: "貨物ヤード", url: yard.url }],
+        resumeAt: yesterday,
+      });
+      const user = userEvent.setup();
+      render(
+        <BulkSelectableArticleList articles={[yard]} download={download} />
+      );
+      await user.click(screen.getByLabelText("貨物ヤード を選ぶ"));
+      await user.click(
+        screen.getByRole("button", { name: "まとめてダウンロード" })
+      );
+
+      const resultArea = await screen.findByRole("status", {
+        name: "まとめてダウンロードの結果",
+      });
+      expect(resultArea).toHaveTextContent(`${clock(yesterday)} 以降に`);
+      expect(resultArea).not.toHaveTextContent("明日");
+    });
   });
 
   it("未ログインではマイリスト保存の代わりにログインへの導線を出す", async () => {

@@ -88,8 +88,9 @@
   .v2-nav-group {
     @apply flex flex-col gap-0.5;
   }
+  /* 見出しはリンクと見分けられるよう、太字・補足色に全幅の区切り線を付ける（文字の下線・ホバー反応は付けない） */
   .v2-nav-heading {
-    @apply px-3 pb-1 text-meta font-bold text-c-sub;
+    @apply mb-1 px-3 pb-1.5 border-b border-c-border text-note font-bold text-c-sub cursor-default;
   }
   .v2-nav-item {
     @apply flex items-center gap-2 rounded-md px-3 py-2 text-c-main no-underline break-all hover:bg-c-surface;

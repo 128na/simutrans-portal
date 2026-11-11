@@ -5,7 +5,7 @@ export default function ConversionLink({ article }: Props) {
   if (article.download_url) {
     return (
       <a
-        className="v2-link"
+        className="v2-button v2-button-sm v2-button-primary inline-block font-semibold"
         href={article.download_url}
         target="_blank"
         rel="noopener noreferrer"

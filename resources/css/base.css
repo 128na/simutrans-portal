@@ -5,14 +5,48 @@
   --color-tag: #757575;
   --color-category: #607d8b;
 
-  --color-c-main: theme(colors.gray.900);
-  --color-c-sub: theme(colors.gray.600);
-  /* --color-c-primary: rgb(42, 134, 234); */
-  --color-c-primary: hsl(211 82% 50% / 1);
-  --color-c-danger: theme(colors.red.600);
-  --color-c-warn: theme(colors.yellow.500);
-  --color-c-info: theme(colors.cyan.600);
-  --color-c-success: theme(colors.emerald.600);
+  /*
+   * 配色の共通ルール（#637）
+   * - 文字と背景のコントラストは 4.5:1 以上（値は白背景、または組み合わせる背景色との比）
+   * - 青（c-primary）は主要操作（入手・保存・投稿）に限って使う
+   * - 本文中のリンクは c-link ＋下線。メニューと記事タイトルは下線なし
+   */
+  --color-c-main: #14181f; /* 本文 17.8:1 */
+  --color-c-sub: #5a6472; /* 補足 6.0:1（c-surface 上 5.6:1） */
+  --color-c-sub-strong: #3d4653; /* タグ文字・表見出し 9.6:1 */
+  --color-c-border: #e3e6eb; /* 区切り線 */
+  --color-c-border-strong: #c9ced6; /* 枠線（タグ・中立ボタン） */
+  --color-c-surface: #f6f7f9; /* 面（表見出し・絞り込み欄） */
+  --color-c-primary: #1565d8; /* 主要操作 白文字 5.4:1 */
+  --color-c-link: #0f4fae; /* 本文リンク 7.6:1 */
+  --color-c-current: #eaf1fc; /* メニューの現在地（c-link 文字 6.7:1） */
+  --color-c-danger: theme(colors.red.600); /* 白文字 4.8:1 */
+  --color-c-warn: theme(colors.amber.700); /* 白文字 5.0:1 */
+  --color-c-info: theme(colors.cyan.700); /* 白文字 5.4:1 */
+  --color-c-success: theme(colors.emerald.700); /* 白文字 5.5:1 */
+
+  /* pak タグ（色だけに頼らず pak 名を必ず併記する） */
+  --color-pak-128-japan-bg: #ffedd5;
+  --color-pak-128-japan-fg: #8a2c0d; /* 7.5:1 */
+  --color-pak-128-bg: #ccfbf1;
+  --color-pak-128-fg: #115e59; /* 6.7:1 */
+  --color-pak-64-bg: #dcfce7;
+  --color-pak-64-fg: #166534; /* 6.5:1 */
+  --color-pak-other-bg: #ede9fe;
+  --color-pak-other-fg: #5b21b6; /* 7.6:1 */
+
+  /*
+   * 文字サイズは「タイトル・本文・補足」の3段階。meta（12px）は日付など最小限に使う
+   * text-title / text-body / text-note / text-meta として利用できる
+   */
+  --text-title: 1.0625rem;
+  --text-title--line-height: 1.45;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.7;
+  --text-note: 0.8125rem;
+  --text-note--line-height: 1.6;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.5;
 
   --font-sans:
     "Inter", "Noto Sans JP", ui-sans-serif, system-ui, -apple-system,
@@ -35,17 +69,42 @@
   .v2-link:not([href^="https://simutrans-portal.128-bit.net"]):not(
       [href^="http://localhost:1080"]
     ):not([href^="#"]):not([href^="/"]) {
-    @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
-    after:content-['↗'] after:text-c-sub/50 after:text-xs;
+    @apply decoration-c-link text-c-link hover:text-c-main hover:decoration-c-main underline break-all
+    after:content-['↗'] after:text-c-sub after:text-meta;
   }
 
-  /* リンク：基底 */
+  /* リンク：基底（本文中のリンク。青＋下線） */
   .v2-link {
-    @apply text-c-main hover:text-c-main/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+    @apply text-c-link hover:text-c-main decoration-c-link/60 hover:decoration-c-main underline underline-offset-2 break-all;
+  }
+
+  /* 記事タイトルなどのリンク（下線なし。ホバーで色を変える） */
+  .v2-title-link {
+    @apply text-c-main font-semibold no-underline break-all hover:text-c-link hover:underline;
+  }
+
+  /* サイドメニュー（公開側・マイページ共通）。現在地は背景色で示す */
+  .v2-nav {
+    @apply flex flex-col gap-5 text-sm;
+  }
+  .v2-nav-group {
+    @apply flex flex-col gap-0.5;
+  }
+  .v2-nav-heading {
+    @apply px-3 pb-1 text-meta font-bold text-c-sub;
+  }
+  .v2-nav-item {
+    @apply flex items-center gap-2 rounded-md px-3 py-2 text-c-main no-underline break-all hover:bg-c-surface;
+  }
+  .v2-nav-item[aria-current="page"] {
+    @apply bg-c-current text-c-link font-semibold hover:bg-c-current;
+  }
+  .v2-nav-item-external {
+    @apply after:content-['↗'] after:text-c-sub after:text-meta;
   }
 
   .v2-header {
-    @apply mx-auto max-w-7xl px-6 py-3 border-b border-c-sub/10;
+    @apply mx-auto max-w-7xl px-6 py-3 border-b border-c-border;
   }
   .v2-mobile-menu {
     @apply fixed inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-4 sm:max-w-sm sm:ring-1 sm:ring-c-main/10 bg-white;
@@ -53,13 +112,13 @@
   /* ヘッダメニュー */
   .v2-header-link {
     @apply text-sm/6 font-semibold
-    after:content-['↗'] after:text-c-sub/50 after:text-xs;
+    after:content-['↗'] after:text-c-sub after:text-meta;
+  }
+  .v2-header-label {
+    @apply rounded px-2.5 py-0.5 bg-c-surface text-note font-semibold text-c-sub-strong;
   }
   .v2-header-menu-item {
     @apply text-sm/6 font-semibold text-c-main hover:text-c-main/70 py-2 px-4;
-  }
-  .v2-header-menu-item-sp {
-    @apply -mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold;
   }
 
   /* ページ */
@@ -185,10 +244,10 @@
 
   /* カラーバリアント：ボタン（塗りつぶし） */
   .v2-button-sub {
-    @apply bg-c-sub/80 hover:bg-c-sub/60 disabled:hover:bg-c-sub/80;
+    @apply bg-c-sub hover:bg-c-sub-strong disabled:hover:bg-c-sub;
   }
   .v2-button-primary {
-    @apply bg-c-primary hover:bg-c-primary/80 disabled:hover:bg-c-primary;
+    @apply bg-c-primary hover:bg-c-link disabled:hover:bg-c-primary;
   }
   .v2-button-danger {
     @apply bg-c-danger hover:bg-c-danger/80 disabled:hover:bg-c-danger;
@@ -205,7 +264,7 @@
 
   /* カラーバリアント：ボタン（アウトライン） */
   .v2-button-sub-outline {
-    @apply border-c-sub/80 text-c-sub/80 hover:bg-c-sub/10;
+    @apply border-c-border-strong bg-white text-c-main hover:bg-c-surface;
   }
   .v2-button-primary-outline {
     @apply border-c-primary text-c-primary hover:bg-c-primary/10;
@@ -268,18 +327,35 @@
   }
   .v2-table th,
   .markdown-body th {
-    @apply font-normal bg-c-sub/80 text-white px-4 py-2 border border-c-sub/20 break-all;
+    @apply font-semibold text-note bg-c-surface text-c-sub-strong px-4 py-2 border border-c-border break-all;
   }
   .v2-table td,
   .markdown-body td {
-    @apply px-4 py-2 border border-c-sub/20 break-all;
+    @apply px-4 py-2 border border-c-border break-all;
   }
   /* misc */
-  .v2-category {
-    @apply px-2.5 py-0.5 text-white inline-block rounded bg-category hover:bg-category/80 shadow-md hover:shadow-lg transition-shadow;
-  }
+  /*
+   * タグ：種類・ライセンス・ユーザータグは枠だけ（v2-tag / v2-category）、
+   * pak は pak ごとに色を分ける（v2-tag-pak ＋ v2-tag-pak-{128-japan|128|64|other}）
+   */
+  .v2-category,
   .v2-tag {
-    @apply px-2.5 py-0.5 text-white inline-block rounded bg-tag hover:bg-tag/80 shadow-md hover:shadow-lg transition-shadow;
+    @apply inline-block rounded px-2 py-px text-note leading-5 border border-c-border-strong bg-white text-c-sub-strong no-underline hover:border-c-sub hover:text-c-main;
+  }
+  .v2-tag-pak {
+    @apply inline-block rounded px-2 py-px text-note leading-5 font-semibold border border-transparent no-underline hover:underline;
+  }
+  .v2-tag-pak-128-japan {
+    @apply bg-pak-128-japan-bg text-pak-128-japan-fg;
+  }
+  .v2-tag-pak-128 {
+    @apply bg-pak-128-bg text-pak-128-fg;
+  }
+  .v2-tag-pak-64 {
+    @apply bg-pak-64-bg text-pak-64-fg;
+  }
+  .v2-tag-pak-other {
+    @apply bg-pak-other-bg text-pak-other-fg;
   }
 
   /* ホバー・インタラクション */
@@ -360,7 +436,7 @@
     @apply rounded-e-lg;
   }
   .v2-pagination-item-active {
-    @apply bg-blue-50 text-blue-600 hover:text-blue-700;
+    @apply bg-c-main text-white border-c-main;
   }
   .v2-pagination-item-hover {
     @apply hover:bg-c-sub/10 cursor-pointer;
@@ -392,14 +468,14 @@
 
   /* リンクスタイルは .v2-external-link と共通化 */
   .markdown-body a {
-    @apply text-c-sub/90 hover:text-c-sub/70 decoration-c-sub/90 hover:decoration-c-sub/70 underline break-all;
+    @apply text-c-link hover:text-c-main decoration-c-link/60 hover:decoration-c-main underline underline-offset-2 break-all;
   }
   .markdown-body
     a:not([href^="https://simutrans-portal.128-bit.net"]):not(
       [href^="http://localhost:1080"]
     ):not([href^="#"]):not([href^="/"]) {
-    @apply decoration-c-primary text-c-primary hover:text-c-primary/80 underline break-all
-    after:content-['↗'] after:text-c-sub/50 after:text-xs;
+    @apply decoration-c-link text-c-link hover:text-c-main hover:decoration-c-main underline break-all
+    after:content-['↗'] after:text-c-sub after:text-meta;
   }
 
   .markdown-body img {

@@ -32,7 +32,7 @@ export const ArticleBase = ({
     : article.categories;
   const metadata = (
     <div className="flex flex-wrap items-center gap-3">
-      <div className="flex flex-wrap gap-2 text-sm">
+      <div className="flex flex-wrap gap-1.5">
         <Categories categories={categories} preview={preview} />
         <Tags tags={article.tags} preview={preview} />
       </div>

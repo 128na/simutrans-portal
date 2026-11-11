@@ -68,7 +68,7 @@ export const AddonAcquisition = ({ article, preview }: Props) => {
         ) : href ? (
           <a
             href={href}
-            className="inline-flex w-full justify-center rounded-lg bg-[color-mix(in_srgb,var(--color-c-primary)_86%,black)] px-3 py-2.5 text-center text-sm font-semibold text-white hover:bg-[color-mix(in_srgb,var(--color-c-primary)_75%,black)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-primary"
+            className="inline-flex w-full justify-center rounded-lg bg-c-primary px-3 py-2.5 text-center text-sm font-semibold text-white hover:bg-c-link focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-c-primary"
           >
             {label}
           </a>

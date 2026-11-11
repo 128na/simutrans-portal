@@ -41,7 +41,7 @@ export const AddToMyListButton = ({
   return (
     <>
       <Button
-        variant="sub"
+        variant="subOutline"
         onClick={handleClick}
         className={className}
         aria-label="マイリストに追加"

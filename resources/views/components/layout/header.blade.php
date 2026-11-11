@@ -9,7 +9,16 @@
           <img src="{{ asset('v2/logo.svg') }}" alt="" class="h-8 w-auto" />
         </a>
       </div>
-      <div class="flex items-center gap-x-4">
+      {{-- サイドメニューを外したページ（記事詳細など）は、デスクトップでもトップへ戻らず検索できるようヘッダーに検索欄を出す。lg 未満はモバイルメニュー内の検索を使う --}}
+      @hasSection('hide-sidebar')
+        <x-layout.search-form
+          input-id="header-search"
+          role="search"
+          aria-label="キーワード検索"
+          class="hidden lg:block w-full max-w-md"
+        />
+      @endif
+      <div class="flex items-center gap-x-4 lg:flex-1 lg:justify-end">
         <div class="flex justify-end">
           @guest
             <a href="{{ route('login') }}" class="v2-header-menu-item">

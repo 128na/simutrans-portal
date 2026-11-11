@@ -1,19 +1,7 @@
 @props(['variant' => 'desktop'])
 
 <nav aria-label="サイトメニュー" class="v2-nav">
-  <form method="GET" action="{{ route('search') }}">
-    <div class="flex items-center gap-x-2 w-full">
-      <label for="sidebar-search-{{ $variant }}" class="sr-only">キーワード</label>
-      <input
-        id="sidebar-search-{{ $variant }}"
-        type="search"
-        name="word"
-        placeholder="キーワードを入力"
-        class="flex-1 min-w-0 v2-input"
-      />
-      <button type="submit" class="v2-button v2-button-md v2-button-primary flex-shrink-0">検索</button>
-    </div>
-  </form>
+  <x-layout.search-form :input-id="'sidebar-search-' . $variant" />
   <div class="v2-nav-group">
     <ul class="v2-nav-group">
       <li><x-ui.nav-link :url="route('latest')" :title="'新着アドオン'" /></li>

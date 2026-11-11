@@ -252,6 +252,22 @@ describe("ArticleForm", () => {
     }
   );
 
+  it("公開中の記事をステータス欄で下書きにしたときは、SNS通知のチェックボックスを出さない", () => {
+    mockUseArticleEditor.mockImplementation((selector) => {
+      const state = {
+        article: createMockArticle("page", "draft"),
+        initialArticle: createMockArticle("page", "publish"),
+        shouldNotify: false,
+        updateShouldNotify: vi.fn(),
+        withoutUpdateModifiedAt: false,
+      };
+      return selector(state);
+    });
+
+    render(<ArticleForm />);
+    expect(screen.queryByText("公開時のSNS通知")).not.toBeInTheDocument();
+  });
+
   it("アドオン投稿はファイル欄を共通項目より前に置く", () => {
     mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
@@ -284,10 +300,10 @@ describe("ArticleForm", () => {
         return selector(state);
       });
 
-      const { container } = render(<ArticleForm />);
-      expect(container.firstElementChild?.firstElementChild).toBe(
-        screen.getByTestId("common-form")
-      );
+      render(<ArticleForm />);
+      expect(
+        screen.getByTestId("common-form").previousElementSibling
+      ).toBeNull();
       expect(screen.queryByTestId("addon-post-file")).not.toBeInTheDocument();
     }
   );

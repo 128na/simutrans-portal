@@ -326,6 +326,25 @@ describe("ArticleEdit", () => {
         screen.queryByRole("button", { name: "下書きを保存" })
       ).not.toBeInTheDocument();
     });
+
+    it("公開中の記事をステータス欄で下書きにしたときは、公開操作を出さず下書きで保存する", async () => {
+      mockEditor({ ...mockArticle, id: 12, status: "draft" }, "publish");
+      render(<ArticleEdit />);
+
+      expect(
+        screen.queryByRole("button", { name: "公開する" })
+      ).not.toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "下書きを保存" }));
+
+      await waitFor(() =>
+        expect(mockedAxios.post).toHaveBeenCalledWith(
+          "/api/v2/articles/12",
+          expect.objectContaining({
+            article: expect.objectContaining({ id: 12, status: "draft" }),
+          })
+        )
+      );
+    });
   });
 
   it("プレビューを切り替えても編集欄を破棄しない", () => {

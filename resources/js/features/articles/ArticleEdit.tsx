@@ -9,7 +9,7 @@ import { ArticlePreview } from "./ArticlePreview";
 import { ArticleForm } from "./ArticleForm";
 import { handleError } from "@/lib/errorHandler";
 import Button from "@/components/ui/Button";
-import { StatusText } from "./utils/articleUtil";
+import { canChoosePublish, StatusText } from "./utils/articleUtil";
 
 const actions = {
   draft: { label: "下書きを保存", result: "下書きを保存しました。" },
@@ -76,9 +76,9 @@ export const ArticleEdit = () => {
     article?.id,
     initialStatus
   );
-  // 下書き・未公開の記事は「公開する」と「下書きを保存」を並べる。
-  // 公開中・予約・非公開などは状態を変えないよう、従来どおりステータスに従う1つの操作だけにする。
-  const canChoosePublish = operation === "draft" || operation === "publish";
+  const showPublishChoice = canChoosePublish(article?.status, initialStatus);
+  const buttonLabel = (isSaving: boolean, label: string) =>
+    isSaving ? "保存中…" : uploading ? "アップロード中…" : label;
 
   useEffect(() => {
     if (!isDirty) return;
@@ -209,18 +209,14 @@ export const ArticleEdit = () => {
           </p>
         )}
         <div className="flex flex-wrap items-center gap-3">
-          {canChoosePublish ? (
+          {showPublishChoice ? (
             <>
               <Button
                 onClick={() => save("publish")}
                 size="lg"
                 disabled={saving || uploading}
               >
-                {savingStatus === "publish"
-                  ? "保存中…"
-                  : uploading
-                    ? "アップロード中…"
-                    : actions.publish.label}
+                {buttonLabel(savingStatus === "publish", actions.publish.label)}
               </Button>
               <Button
                 variant="subOutline"
@@ -228,7 +224,7 @@ export const ArticleEdit = () => {
                 size="lg"
                 disabled={saving || uploading}
               >
-                {savingStatus === "draft" ? "保存中…" : actions.draft.label}
+                {buttonLabel(savingStatus === "draft", actions.draft.label)}
               </Button>
             </>
           ) : (
@@ -237,15 +233,11 @@ export const ArticleEdit = () => {
               size="lg"
               disabled={saving || uploading}
             >
-              {saving
-                ? "保存中…"
-                : uploading
-                  ? "アップロード中…"
-                  : actions[operation].label}
+              {buttonLabel(saving, actions[operation].label)}
             </Button>
           )}
           <p className="text-sm text-c-sub">
-            {canChoosePublish
+            {showPublishChoice
               ? "予約投稿・非公開はステータス欄で選べます。"
               : `保存後の状態は「${StatusText[article.status]}」です。`}
             {isDirty && !saving && " 未保存の変更があります。"}

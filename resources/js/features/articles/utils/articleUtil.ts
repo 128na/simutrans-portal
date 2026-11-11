@@ -49,6 +49,18 @@ export const PostTypeText: Record<ArticlePostType, string> = {
   markdown: "記事（マークダウン）",
 };
 
+/**
+ * 「公開する」と「下書きを保存」を並べて出すか。
+ * 下書きとして始まった記事（新規を含む）で、ステータスが下書きか公開のときだけ出す。
+ * 公開中・予約・非公開の記事は、うっかり状態が変わらないよう従来どおりステータスに従う1つの操作にする。
+ */
+export const canChoosePublish = (
+  status: ArticleStatus | undefined,
+  initialStatus: ArticleStatus | undefined
+) =>
+  (status === "draft" || status === "publish") &&
+  (initialStatus ?? "draft") === "draft";
+
 export const StatusText: Record<ArticleStatus, string> = {
   publish: "公開中",
   reservation: "予約中",

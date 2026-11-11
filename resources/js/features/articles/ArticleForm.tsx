@@ -9,8 +9,11 @@ import { FormCaption } from "@/components/ui/FormCaption";
 import Checkbox from "@/components/ui/Checkbox";
 import { StatusForm } from "./forms/StatusForm";
 import { CommonForm } from "./forms/CommonForm";
+import TextSub from "@/components/ui/TextSub";
+import { canChoosePublish } from "./utils/articleUtil";
 export const ArticleForm = () => {
   const article = useArticleEditor((s) => s.article);
+  const initialStatus = useArticleEditor((s) => s.initialArticle?.status);
   const shouldNotify = useArticleEditor((s) => s.shouldNotify);
   const updateShouldNotify = useArticleEditor((s) => s.updateShouldNotify);
   const withoutUpdateModifiedAt = useArticleEditor(
@@ -48,8 +51,9 @@ export const ArticleForm = () => {
           更新しない
         </Checkbox>
       </div>
-      {/* 下書きからも「公開する」で公開できるため、下書き中も通知の希望を選べるようにする */}
-      {(article.status === "publish" || article.status === "draft") && (
+      {/* 下書きからも「公開する」で公開できるため、そのときも通知の希望を選べるようにする */}
+      {(article.status === "publish" ||
+        canChoosePublish(article.status, initialStatus)) && (
         <div>
           <FormCaption>公開時のSNS通知</FormCaption>
           <Checkbox
@@ -58,6 +62,11 @@ export const ArticleForm = () => {
           >
             通知する
           </Checkbox>
+          {article.status === "draft" && (
+            <TextSub>
+              「公開する」で保存したときに通知します。下書き保存では通知の希望は残りません。
+            </TextSub>
+          )}
         </div>
       )}
     </div>

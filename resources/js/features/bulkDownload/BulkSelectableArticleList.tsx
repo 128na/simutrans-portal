@@ -5,6 +5,7 @@ import type { ArticleCardSort } from "../articles/components/ArticleCard";
 import { AddToMyListModal } from "../mylist/AddToMyList";
 import {
   downloadSequentially,
+  isLongWait,
   type BulkItem,
   type BulkProgress,
   type BulkResult,
@@ -43,8 +44,34 @@ const SelectToggle = ({
   </Button>
 );
 
+/** 再開する時刻を「14:05」の形にする */
+const formatClock = (epochMs: number): string =>
+  new Date(epochMs).toLocaleTimeString("ja-JP", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+const isLongWaiting = (progress: BulkProgress | null): boolean =>
+  progress?.type === "waiting" && isLongWait(progress.totalSeconds);
+
 const ProgressMessage = ({ progress }: { progress: BulkProgress }) => {
   if (progress.type === "waiting") {
+    if (isLongWait(progress.totalSeconds)) {
+      // 1 時間の上限。秒で数えても待つべきか分からないので、分と時刻、取れる行動を示す
+      return (
+        <>
+          <span className="block font-semibold">
+            ダウンロードの上限に達しました。再開まで約{" "}
+            {Math.ceil(progress.seconds / 60)} 分（
+            {formatClock(progress.resumeAt)} ごろ）
+          </span>
+          <span className="block text-meta text-c-sub">
+            開いたままなら自動で続きを取得します。後で取得するなら中止してください（未取得の{" "}
+            {progress.total - progress.index} 件は選択に残ります）。
+          </span>
+        </>
+      );
+    }
     return (
       <>
         ダウンロードの上限に達したため待機中です。あと {progress.seconds} 秒で「
@@ -154,6 +181,16 @@ export const BulkSelectableArticleList = ({
                 <p className="text-body text-c-sub">
                   中止したため {finished.skipped.length}{" "}
                   件はダウンロードしていません（選択に残しています）。
+                  {finished.resumeAt !== undefined && (
+                    <>
+                      {formatClock(finished.resumeAt)}{" "}
+                      以降に「まとめてダウンロード」を押すと続きから取得できます。タブを閉じると選択は消えます
+                      {isAuthenticated
+                        ? "（マイリストに保存しておけます）"
+                        : ""}
+                      。
+                    </>
+                  )}
                 </p>
               )}
               {finished.external.length > 0 && (
@@ -194,13 +231,18 @@ export const BulkSelectableArticleList = ({
                 </span>
                 <div className="ml-auto flex flex-wrap gap-2">
                   {isRunning ? (
+                    // 長く待つときは中止が取りうる行動の本命なので目立たせる
                     <Button
-                      variant="subOutline"
+                      variant={
+                        isLongWaiting(progress) ? "primary" : "subOutline"
+                      }
                       onClick={() => {
                         cancelRef.current = true;
                       }}
                     >
-                      中止
+                      {isLongWaiting(progress)
+                        ? "中止して後で取得する"
+                        : "中止"}
                     </Button>
                   ) : (
                     <>
@@ -238,7 +280,8 @@ export const BulkSelectableArticleList = ({
                   <ProgressMessage progress={progress} />
                 </p>
               )}
-              {downloadable.length > 1 && (
+              {/* 長く待つ間は案内を優先し、下端の帯が画面を覆いすぎないよう保存の注意は出さない */}
+              {downloadable.length > 1 && !isLongWaiting(progress) && (
                 <p className="text-meta text-c-sub">
                   1
                   件ずつ順番に保存します。ブラウザが「複数ファイルのダウンロード」の許可を求めたら「許可」を選んでください。ブロックすると

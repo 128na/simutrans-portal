@@ -17,13 +17,26 @@ export type BulkItem = {
 
 export type BulkProgress =
   | { type: "downloading"; index: number; total: number; item: BulkItem }
-  | { type: "waiting"; seconds: number; item: BulkItem };
+  | {
+      type: "waiting";
+      /** 再開までの残り秒数 */
+      seconds: number;
+      /** この待機の最初の待ち時間（Retry-After の秒数）。長い待ちかどうかはこれで決める */
+      totalSeconds: number;
+      /** 再開する時刻（エポックミリ秒） */
+      resumeAt: number;
+      index: number;
+      total: number;
+      item: BulkItem;
+    };
 
 export type BulkResult = {
   succeeded: BulkItem[];
   failed: BulkItem[];
   /** 中止したときに取得しなかったもの */
   skipped: BulkItem[];
+  /** 上限の待機中に中止したとき、上限が解ける時刻（エポックミリ秒） */
+  resumeAt?: number;
 };
 
 type Options = {
@@ -31,6 +44,8 @@ type Options = {
   saveBlob?: (blob: Blob, fileName: string) => void;
   /** ミリ秒待つ。テストで差し替える */
   sleep?: (ms: number) => Promise<void>;
+  /** 今の時刻（エポックミリ秒）。テストで差し替える */
+  now?: () => number;
   onProgress?: (progress: BulkProgress) => void;
   /** true を返したら次の件から取得をやめる */
   isCancelled?: () => boolean;
@@ -38,6 +53,15 @@ type Options = {
 
 /** Retry-After が読めなかったときの待ち時間（秒） */
 export const DEFAULT_RETRY_AFTER_SECONDS = 60;
+
+/**
+ * この秒数以上待つときは「長い待ち」として分で示し、時間をおいて残りを取得する案内を出す。
+ * 1 分の上限なら Retry-After は 60 秒以下なので、これを超えるのは 1 時間の上限に達したとき
+ */
+export const LONG_WAIT_SECONDS = 120;
+
+export const isLongWait = (totalSeconds: number): boolean =>
+  totalSeconds >= LONG_WAIT_SECONDS;
 
 export const sleepMs = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -126,6 +150,7 @@ export const downloadSequentially = async (
     fetchImpl = fetch,
     saveBlob = saveBlobAsFile,
     sleep = sleepMs,
+    now = Date.now,
     onProgress,
     isCancelled = () => false,
   }: Options = {}
@@ -143,6 +168,7 @@ export const downloadSequentially = async (
 
     let saved = false;
     let cancelledWhileWaiting = false;
+    let resumeAt = 0;
     // 429 の間だけ待って同じ件を取り直す
     for (;;) {
       let response: Response;
@@ -156,15 +182,31 @@ export const downloadSequentially = async (
       }
 
       if (response.status === 429) {
-        let seconds = parseRetryAfter(response.headers.get("Retry-After"));
-        while (seconds > 0) {
+        const totalSeconds = parseRetryAfter(
+          response.headers.get("Retry-After")
+        );
+        // 残りは締切の時刻から数える。隠れたタブではタイマーが間引かれ、1 秒ずつ数えると長い待ちが終わらない
+        resumeAt = now() + totalSeconds * 1000;
+        for (;;) {
+          const remainingMs = resumeAt - now();
+          if (remainingMs <= 0) {
+            break;
+          }
           if (isCancelled()) {
             cancelledWhileWaiting = true;
             break;
           }
-          onProgress?.({ type: "waiting", seconds, item });
-          await sleep(1000);
-          seconds--;
+          onProgress?.({
+            type: "waiting",
+            seconds: Math.ceil(remainingMs / 1000),
+            totalSeconds,
+            resumeAt,
+            index,
+            total: targets.length,
+            item,
+          });
+          // 中止に 1 秒以内で応じられるよう、1 秒より長くは眠らない
+          await sleep(Math.min(1000, remainingMs));
         }
         if (cancelledWhileWaiting) {
           break;
@@ -200,6 +242,7 @@ export const downloadSequentially = async (
 
     if (cancelledWhileWaiting) {
       result.skipped.push(...targets.slice(index));
+      result.resumeAt = resumeAt;
       break;
     }
     if (saved) {

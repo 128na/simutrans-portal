@@ -229,6 +229,187 @@ describe("BulkSelectableArticleList", () => {
     ).toBeInTheDocument();
   });
 
+  describe("ダウンロードの上限で待つとき", () => {
+    const yard = card({
+      id: 114,
+      title: "貨物ヤード",
+      download_url: "/articles/114/download",
+    });
+    const tram = card({
+      id: 125,
+      title: "路面電車",
+      download_url: "/articles/125/download",
+    });
+    const subway = card({
+      id: 136,
+      title: "地下鉄",
+      download_url: "/articles/136/download",
+    });
+    const resumeAt = Date.parse("2026-11-11T05:47:00Z");
+    const clock = (epochMs: number) =>
+      new Date(epochMs).toLocaleTimeString("ja-JP", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
+    /** 1 件目を取得した後、2 件目で待機したまま止まるダウンロード */
+    const waitingDownload = (totalSeconds: number, seconds: number) => {
+      let finish: (r: BulkResult) => void = () => {};
+      let isCancelled: () => boolean = () => false;
+      const download = vi.fn<Download>((items, options) => {
+        isCancelled = options?.isCancelled ?? isCancelled;
+        options?.onProgress?.({
+          type: "waiting",
+          seconds,
+          totalSeconds,
+          resumeAt,
+          index: 1,
+          total: items.length,
+          item: items[1],
+        });
+        return new Promise<BulkResult>((resolve) => {
+          finish = resolve;
+        });
+      });
+      return {
+        download,
+        finish: (r: BulkResult) => finish(r),
+        isCancelled: () => isCancelled(),
+      };
+    };
+
+    const selectAll = async (user: ReturnType<typeof userEvent.setup>) => {
+      await user.click(screen.getByLabelText("貨物ヤード を選ぶ"));
+      await user.click(screen.getByLabelText("路面電車 を選ぶ"));
+      await user.click(screen.getByLabelText("地下鉄 を選ぶ"));
+      await user.click(
+        screen.getByRole("button", { name: "まとめてダウンロード" })
+      );
+    };
+
+    it("1 時間の上限では待ち時間を分と時刻で示し、中止して後で取得する操作を前面に出す", async () => {
+      const w = waitingDownload(2820, 2790);
+      const user = userEvent.setup();
+      render(
+        <BulkSelectableArticleList
+          articles={[yard, tram, subway]}
+          download={w.download}
+        />
+      );
+      await selectAll(user);
+
+      const band = screen.getByRole("region", { name: "選択中のアドオン" });
+      const status = within(band).getByRole("status");
+      // 2790 秒 → 約 47 分（切り上げ）
+      expect(status).toHaveTextContent(
+        `再開まで約 47 分（${clock(resumeAt)} ごろ）`
+      );
+      expect(status).toHaveTextContent("未取得の 2 件は選択に残ります");
+      expect(status).not.toHaveTextContent("秒");
+      const cancel = within(band).getByRole("button", {
+        name: "中止して後で取得する",
+      });
+      expect(cancel).toHaveClass("v2-button");
+      expect(within(band).queryByRole("button", { name: "中止" })).toBeNull();
+      // 保存の注意は出さず、帯を低く保つ
+      expect(within(band).queryByText(/複数ファイルのダウンロード/)).toBeNull();
+
+      expect(w.isCancelled()).toBe(false);
+      await user.click(cancel);
+      expect(w.isCancelled()).toBe(true);
+    });
+
+    it("1 分の上限の短い待ちは秒で数え、中止はいつもどおり控えめに出す", async () => {
+      const w = waitingDownload(42, 42);
+      const user = userEvent.setup();
+      render(
+        <BulkSelectableArticleList
+          articles={[yard, tram, subway]}
+          download={w.download}
+        />
+      );
+      await selectAll(user);
+
+      const band = screen.getByRole("region", { name: "選択中のアドオン" });
+      expect(within(band).getByRole("status")).toHaveTextContent(
+        "あと 42 秒で「路面電車」から再開します"
+      );
+      expect(
+        within(band).getByRole("button", { name: "中止" })
+      ).not.toHaveClass("v2-button");
+      expect(
+        within(band).queryByRole("button", { name: "中止して後で取得する" })
+      ).toBeNull();
+    });
+
+    it("長い待ちで中止すると、再開できる時刻を案内し、未取得分だけで続きから取得できる", async () => {
+      const w = waitingDownload(3600, 3500);
+      const user = userEvent.setup();
+      render(
+        <BulkSelectableArticleList
+          articles={[yard, tram, subway]}
+          download={w.download}
+          isAuthenticated
+        />
+      );
+      await selectAll(user);
+      await user.click(
+        screen.getByRole("button", { name: "中止して後で取得する" })
+      );
+      const [, tramItem, subwayItem] = w.download.mock.calls[0][0];
+      w.finish({
+        succeeded: [w.download.mock.calls[0][0][0]],
+        failed: [],
+        skipped: [tramItem, subwayItem],
+        resumeAt,
+      });
+
+      const resultArea = await screen.findByRole("status", {
+        name: "まとめてダウンロードの結果",
+      });
+      expect(resultArea).toHaveTextContent(
+        "中止したため 2 件はダウンロードしていません（選択に残しています）。"
+      );
+      expect(resultArea).toHaveTextContent(
+        `${clock(resumeAt)} 以降に「まとめてダウンロード」を押すと続きから取得できます`
+      );
+      expect(resultArea).toHaveTextContent("マイリストに保存しておけます");
+      expect(screen.getByText("2 件を選択中")).toBeInTheDocument();
+      const stored = JSON.parse(
+        window.sessionStorage.getItem(SELECTION_STORAGE_KEY) ?? "[]"
+      );
+      expect(stored.map((i: BulkItem) => i.id)).toEqual([125, 136]);
+
+      // 再開は取得済みの件を含めない（同じ件の CV を二重に数えない）
+      await user.click(
+        screen.getByRole("button", { name: "まとめてダウンロード" })
+      );
+      expect(w.download).toHaveBeenCalledTimes(2);
+      expect(w.download.mock.calls[1][0].map((i) => i.id)).toEqual([125, 136]);
+    });
+
+    it("待機せずに中止したときは再開の時刻を出さない", async () => {
+      const download = resolvedDownload({
+        succeeded: [],
+        skipped: [{ id: 114, title: "貨物ヤード", url: yard.url }],
+      });
+      const user = userEvent.setup();
+      render(
+        <BulkSelectableArticleList articles={[yard]} download={download} />
+      );
+      await user.click(screen.getByLabelText("貨物ヤード を選ぶ"));
+      await user.click(
+        screen.getByRole("button", { name: "まとめてダウンロード" })
+      );
+
+      const resultArea = await screen.findByRole("status", {
+        name: "まとめてダウンロードの結果",
+      });
+      expect(resultArea).toHaveTextContent("中止したため 1 件");
+      expect(resultArea).not.toHaveTextContent("以降に");
+    });
+  });
+
   it("未ログインではマイリスト保存の代わりにログインへの導線を出す", async () => {
     const user = userEvent.setup();
     render(<BulkSelectableArticleList articles={[post]} />);

@@ -3,6 +3,8 @@ import {
   DEFAULT_RETRY_AFTER_SECONDS,
   downloadSequentially,
   fileNameFromDisposition,
+  isLongWait,
+  LONG_WAIT_SECONDS,
   parseRetryAfter,
   type BulkItem,
   type BulkProgress,
@@ -57,18 +59,25 @@ const setup = (responses: Record<string, Array<Response | Error>>) => {
     }
   ) as unknown as typeof fetch;
   const saveBlob = vi.fn();
-  const sleep = vi.fn(async () => {});
+  // 眠った分だけ時計を進める
+  const clock = { ms: Date.parse("2026-11-11T05:00:00Z") };
+  const sleep = vi.fn(async (ms: number) => {
+    clock.ms += ms;
+  });
+  const now = () => clock.ms;
   const progress: BulkProgress[] = [];
   return {
     calls,
     fetchImpl,
     saveBlob,
     sleep,
+    clock,
     progress,
     options: {
       fetchImpl,
       saveBlob,
       sleep,
+      now,
       onProgress: (p: BulkProgress) => progress.push(p),
     },
   };
@@ -163,7 +172,8 @@ describe("downloadSequentially", () => {
   it("待機中に中止すると残りは取得せず skipped に入る", async () => {
     let cancelled = false;
     const t = setup({ "/articles/11/download": [tooMany("10")] });
-    t.sleep.mockImplementation(async () => {
+    t.sleep.mockImplementation(async (ms: number) => {
+      t.clock.ms += ms;
       cancelled = true;
     });
 
@@ -175,6 +185,146 @@ describe("downloadSequentially", () => {
     expect(t.calls).toHaveLength(1);
     expect(result.skipped.map((i) => i.id)).toEqual([11, 22]);
     expect(result.succeeded).toEqual([]);
+  });
+
+  describe("1 時間の上限で長く待つとき", () => {
+    const postC: BulkItem = {
+      id: 41,
+      title: "貨物ヤード",
+      url: "/users/d/yard",
+      download_url: "/articles/41/download",
+    };
+    const postD: BulkItem = {
+      id: 52,
+      title: "路面電車",
+      url: "/users/e/tram",
+      download_url: "/articles/52/download",
+    };
+    const postE: BulkItem = {
+      id: 63,
+      title: "地下鉄",
+      url: "/users/f/subway",
+      download_url: "/articles/63/download",
+    };
+
+    it("残りは締切の時刻から数え、タイマーが間引かれても予定どおり再開する", async () => {
+      const t = setup({
+        "/articles/41/download": [tooMany("3600"), ok("c.zip")],
+      });
+      const start = t.clock.ms;
+      // 隠れたタブで 1 回の sleep が 60 秒かかる状況
+      t.sleep.mockImplementation(async () => {
+        t.clock.ms += 60_000;
+      });
+
+      const result = await downloadSequentially([postC], t.options);
+
+      expect(t.sleep).toHaveBeenCalledTimes(60);
+      const waiting = t.progress.filter((p) => p.type === "waiting");
+      expect(waiting[0]).toMatchObject({
+        seconds: 3600,
+        totalSeconds: 3600,
+        resumeAt: start + 3_600_000,
+        index: 0,
+        total: 1,
+      });
+      expect(waiting.at(-1)).toMatchObject({ seconds: 60 });
+      expect(result.succeeded.map((i) => i.id)).toEqual([41]);
+    });
+
+    it("待機中に中止すると取り直さず、残りを skipped に入れて上限が解ける時刻を返す", async () => {
+      let cancelled = false;
+      const t = setup({
+        "/articles/41/download": [ok("c.zip")],
+        "/articles/52/download": [tooMany("3000")],
+      });
+      const start = t.clock.ms;
+      t.sleep.mockImplementation(async (ms: number) => {
+        t.clock.ms += ms;
+        // 5 分待ったところで中止する
+        if (t.clock.ms - start >= 300_000) {
+          cancelled = true;
+        }
+      });
+
+      const result = await downloadSequentially([postC, postD, postE], {
+        ...t.options,
+        isCancelled: () => cancelled,
+      });
+
+      expect(t.calls.map((c) => c.url)).toEqual([
+        "/articles/41/download",
+        "/articles/52/download",
+      ]);
+      expect(result.succeeded.map((i) => i.id)).toEqual([41]);
+      expect(result.skipped.map((i) => i.id)).toEqual([52, 63]);
+      expect(result.failed).toEqual([]);
+      expect(result.resumeAt).toBe(start + 3_000_000);
+    });
+
+    it("中止せずに終わったときは resumeAt を返さない", async () => {
+      const t = setup({
+        "/articles/41/download": [tooMany("5"), ok("c.zip")],
+      });
+
+      const result = await downloadSequentially([postC], t.options);
+
+      expect(result.resumeAt).toBeUndefined();
+    });
+
+    it("中止の後に残りで再開すると、取得済みの件は取り直さず、各件を 1 回だけ保存する", async () => {
+      let cancelled = false;
+      const t = setup({
+        "/articles/41/download": [ok("c.zip")],
+        // 1 回目: 上限で中止。2 回目: まだ上限なのでもう一度待ってから取得
+        "/articles/52/download": [tooMany("3600"), tooMany("120"), ok("d.zip")],
+        "/articles/63/download": [ok("e.zip")],
+      });
+      t.sleep.mockImplementation(async (ms: number) => {
+        t.clock.ms += ms;
+        cancelled = true;
+      });
+
+      const first = await downloadSequentially([postC, postD, postE], {
+        ...t.options,
+        isCancelled: () => cancelled,
+      });
+
+      // 画面と同じく、取得できなかったもの（skipped）だけで再開する
+      cancelled = false;
+      t.sleep.mockImplementation(async (ms: number) => {
+        t.clock.ms += ms;
+      });
+      const second = await downloadSequentially(first.skipped, {
+        ...t.options,
+        isCancelled: () => cancelled,
+      });
+
+      expect(t.calls.map((c) => c.url)).toEqual([
+        "/articles/41/download",
+        "/articles/52/download",
+        "/articles/52/download",
+        "/articles/52/download",
+        "/articles/63/download",
+      ]);
+      // 200 を返した（= CV を数えた）取得は各件 1 回だけ
+      expect(t.saveBlob.mock.calls.map((c) => c[1])).toEqual([
+        "c.zip",
+        "d.zip",
+        "e.zip",
+      ]);
+      expect(second.succeeded.map((i) => i.id)).toEqual([52, 63]);
+      expect(second.skipped).toEqual([]);
+    });
+  });
+});
+
+describe("isLongWait", () => {
+  it("1 分の上限の待ち（60 秒以下）は短く、2 分以上は長い", () => {
+    expect(isLongWait(60)).toBe(false);
+    expect(isLongWait(LONG_WAIT_SECONDS - 1)).toBe(false);
+    expect(isLongWait(LONG_WAIT_SECONDS)).toBe(true);
+    expect(isLongWait(3600)).toBe(true);
   });
 });
 

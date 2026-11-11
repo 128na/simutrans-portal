@@ -20,18 +20,17 @@ import Button from "@/components/ui/Button";
 import Textarea from "@/components/ui/Textarea";
 import Input from "@/components/ui/Input";
 
-export const AddonPost = () => {
+/**
+ * アドオン投稿のファイル欄。内容から説明・カテゴリを先に入力できるよう、フォームの先頭に置く。
+ */
+export const AddonPostFile = () => {
   const article = useArticleEditor((s) => s.article);
   const update = useArticleEditor((s) => s.update);
 
   const contents = article.contents as ArticleContent.AddonPost;
   const updateContents = useArticleEditor((s) => s.updateContents);
 
-  const tags = useArticleEditor((s) => s.tags);
-  const updateTags = useArticleEditor((s) => s.updateTags);
-
   const categories = useArticleEditor((s) => s.categories);
-  const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
   const attachments = useArticleEditor((s) => s.attachments);
 
@@ -85,59 +84,77 @@ export const AddonPost = () => {
   };
 
   return (
-    <>
-      <div>
-        <FormCaption>
-          <TextBadge variant="danger">必須</TextBadge>
-          ファイル
-        </FormCaption>
-        <TextError>{getError("article.contents.file")}</TextError>
-        <ArticleUpload
-          className="w-full mb-4"
-          onUploaded={(a) => {
-            useArticleEditor.setState((state) => {
-              state.attachments.unshift(a);
-              if ("file" in state.article.contents) {
-                state.article.contents.file = a.id;
-              }
-            });
-          }}
-        />
-        <ModalFull
-          buttonTitle="アップロード済みのファイルから選択"
-          title="ファイルを選択"
-        >
-          {({ close }) => (
-            <AttachmentEdit
-              attachments={attachments}
-              attachmentableId={article.id}
-              selected={contents.file}
-              types={["file"]}
-              onSelectAttachment={(attachmentId) => {
-                updateContents<ArticleContent.AddonPost>(
-                  (draft) => (draft.file = attachmentId)
-                );
-                close();
-              }}
-              onChangeAttachments={(attachments) => {
-                useArticleEditor.setState((state) => {
-                  state.attachments = attachments;
-                });
-              }}
-            />
-          )}
-        </ModalFull>
-        <Button
-          variant="subOutline"
-          className="mt-4 mb-2 block"
-          disabled={!hasReadme && !hasPakMetadata}
-          onClick={handleFillFromFile}
-        >
-          ファイルの内容から項目を入力する
-        </Button>
-        <TextSub>pakファイルの内容から説明・カテゴリを自動選択します。</TextSub>
-      </div>
+    <div>
+      <FormCaption>
+        <TextBadge variant="danger">必須</TextBadge>
+        ファイル
+      </FormCaption>
+      <TextError>{getError("article.contents.file")}</TextError>
+      <ArticleUpload
+        className="w-full mb-4"
+        onUploaded={(a) => {
+          useArticleEditor.setState((state) => {
+            state.attachments.unshift(a);
+            if ("file" in state.article.contents) {
+              state.article.contents.file = a.id;
+            }
+          });
+        }}
+      />
+      <ModalFull
+        buttonTitle="アップロード済みのファイルから選択"
+        title="ファイルを選択"
+      >
+        {({ close }) => (
+          <AttachmentEdit
+            attachments={attachments}
+            attachmentableId={article.id}
+            selected={contents.file}
+            types={["file"]}
+            onSelectAttachment={(attachmentId) => {
+              updateContents<ArticleContent.AddonPost>(
+                (draft) => (draft.file = attachmentId)
+              );
+              close();
+            }}
+            onChangeAttachments={(attachments) => {
+              useArticleEditor.setState((state) => {
+                state.attachments = attachments;
+              });
+            }}
+          />
+        )}
+      </ModalFull>
+      <Button
+        variant="subOutline"
+        className="mt-4 mb-2 block"
+        disabled={!hasReadme && !hasPakMetadata}
+        onClick={handleFillFromFile}
+      >
+        ファイルの内容から項目を入力する
+      </Button>
+      <TextSub>pakファイルの内容から説明・カテゴリを自動選択します。</TextSub>
+    </div>
+  );
+};
 
+export const AddonPost = () => {
+  const article = useArticleEditor((s) => s.article);
+  const update = useArticleEditor((s) => s.update);
+
+  const contents = article.contents as ArticleContent.AddonPost;
+  const updateContents = useArticleEditor((s) => s.updateContents);
+
+  const tags = useArticleEditor((s) => s.tags);
+  const updateTags = useArticleEditor((s) => s.updateTags);
+
+  const categories = useArticleEditor((s) => s.categories);
+  const relationalArticles = useArticleEditor((s) => s.relationalArticles);
+
+  const { getError } = useAxiosError();
+
+  return (
+    <>
       <div>
         <FormCaption>
           <TextBadge variant="danger">必須</TextBadge>

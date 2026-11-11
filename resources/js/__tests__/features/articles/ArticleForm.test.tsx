@@ -33,6 +33,7 @@ vi.mock("@/features/articles/postType/Markdown", () => ({
 
 vi.mock("@/features/articles/postType/AddonPost", () => ({
   AddonPost: () => <div data-testid="post-type-addon-post">AddonPost</div>,
+  AddonPostFile: () => <div data-testid="addon-post-file">AddonPostFile</div>,
 }));
 
 vi.mock("@/features/articles/postType/AddonIntroduction", () => ({
@@ -218,7 +219,7 @@ describe("ArticleForm", () => {
     ).toBeInTheDocument();
   });
 
-  it("記事が下書き状態の場合、SNS通知のチェックボックスが表示されない", () => {
+  it("下書きは「公開する」で公開できるため、SNS通知のチェックボックスを表示する", () => {
     mockUseArticleEditor.mockImplementation((selector) => {
       const state = {
         article: createMockArticle("page", "draft"),
@@ -230,8 +231,82 @@ describe("ArticleForm", () => {
     });
 
     render(<ArticleForm />);
+    expect(screen.getByText("公開時のSNS通知")).toBeInTheDocument();
+  });
+
+  it.each(["reservation", "private", "trash"] as const)(
+    "記事が %s の場合、SNS通知のチェックボックスが表示されない",
+    (status) => {
+      mockUseArticleEditor.mockImplementation((selector) => {
+        const state = {
+          article: createMockArticle("page", status),
+          shouldNotify: false,
+          updateShouldNotify: vi.fn(),
+          withoutUpdateModifiedAt: false,
+        };
+        return selector(state);
+      });
+
+      render(<ArticleForm />);
+      expect(screen.queryByText("公開時のSNS通知")).not.toBeInTheDocument();
+    }
+  );
+
+  it("公開中の記事をステータス欄で下書きにしたときは、SNS通知のチェックボックスを出さない", () => {
+    mockUseArticleEditor.mockImplementation((selector) => {
+      const state = {
+        article: createMockArticle("page", "draft"),
+        initialArticle: createMockArticle("page", "publish"),
+        shouldNotify: false,
+        updateShouldNotify: vi.fn(),
+        withoutUpdateModifiedAt: false,
+      };
+      return selector(state);
+    });
+
+    render(<ArticleForm />);
     expect(screen.queryByText("公開時のSNS通知")).not.toBeInTheDocument();
   });
+
+  it("アドオン投稿はファイル欄を共通項目より前に置く", () => {
+    mockUseArticleEditor.mockImplementation((selector) => {
+      const state = {
+        article: createMockArticle("addon-post"),
+        shouldNotify: false,
+        updateShouldNotify: vi.fn(),
+        withoutUpdateModifiedAt: false,
+      };
+      return selector(state);
+    });
+
+    render(<ArticleForm />);
+    const file = screen.getByTestId("addon-post-file");
+    expect(
+      file.compareDocumentPosition(screen.getByTestId("common-form")) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it.each(["page", "markdown", "addon-introduction"] as const)(
+    "%s のフォームは共通項目から始まり、ファイル欄を出さない",
+    (postType) => {
+      mockUseArticleEditor.mockImplementation((selector) => {
+        const state = {
+          article: createMockArticle(postType),
+          shouldNotify: false,
+          updateShouldNotify: vi.fn(),
+          withoutUpdateModifiedAt: false,
+        };
+        return selector(state);
+      });
+
+      render(<ArticleForm />);
+      expect(
+        screen.getByTestId("common-form").previousElementSibling
+      ).toBeNull();
+      expect(screen.queryByTestId("addon-post-file")).not.toBeInTheDocument();
+    }
+  );
 
   it("SNS通知のチェックボックスをクリックすると状態が更新される", async () => {
     const user = userEvent.setup();

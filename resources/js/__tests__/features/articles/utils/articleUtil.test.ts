@@ -1,5 +1,6 @@
 import {
   articleFilter,
+  canChoosePublish,
   compareArticleValues,
   createContents,
   deepCopy,
@@ -10,6 +11,27 @@ import {
 import { describe, expect, it } from "vitest";
 
 describe("articleUtil", () => {
+  describe("canChoosePublish", () => {
+    it.each([
+      ["draft", undefined, true],
+      ["publish", undefined, true],
+      ["draft", "draft", true],
+      ["publish", "draft", true],
+      ["publish", "publish", false],
+      ["draft", "publish", false],
+      ["draft", "reservation", false],
+      ["publish", "private", false],
+      ["reservation", "draft", false],
+      ["private", "draft", false],
+      ["trash", "draft", false],
+    ] as const)(
+      "ステータス %s・保存済み %s のとき %s",
+      (status, initialStatus, expected) => {
+        expect(canChoosePublish(status, initialStatus)).toBe(expected);
+      }
+    );
+  });
+
   describe("compareArticleValues", () => {
     it("両方nullの場合は0を返す", () => {
       expect(compareArticleValues(null, null)).toBe(0);

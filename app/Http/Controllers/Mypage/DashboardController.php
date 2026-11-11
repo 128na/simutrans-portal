@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Mypage;
 use App\Enums\ArticleAnalyticsType;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Mypage\ArticleAnalytic;
-use App\Models\Article;
 use App\Models\User;
 use App\Repositories\Article\MypageArticleRepository;
 use App\Repositories\LoginHistoryRepository;
@@ -15,13 +14,12 @@ use App\Repositories\UserRepository;
 use App\Services\Front\MetaOgpService;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Features;
 
 class DashboardController extends Controller
 {
-    /** マイページトップに出す最近更新した記事の件数（推移もこの記事を対象にする） */
+    /** マイページトップに出す最近更新した記事の件数（推移は公開中の記事からこの件数を対象にする） */
     private const int RECENT_ARTICLE_LIMIT = 5;
 
     /** 推移を出す日数（今日を含む） */
@@ -38,15 +36,15 @@ class DashboardController extends Controller
     {
         $user = $this->loggedinUser();
         $recentArticles = $this->mypageArticleRepository->getRecentForMypage($user, self::RECENT_ARTICLE_LIMIT);
-        // 記事URLの生成で記事ごとに投稿者を読み直さないよう、ログイン中のユーザーを渡しておく
-        $recentArticles->each(fn (Article $article): Article => $article->setRelation('user', $user));
 
         return view('mypage.index', [
             'user' => $user,
             'summary' => $this->userRepository->getSummary($user),
             'recentArticles' => $recentArticles,
-            'trend' => $this->buildTrend($user, $recentArticles),
+            'trend' => $this->buildTrend($user),
+            // 未認証のうちは二要素認証の設定画面に入れないので、メール認証の帯だけを出す
             'showTwoFactorNotice' => Features::enabled(Features::twoFactorAuthentication())
+                && $user->hasVerifiedEmail()
                 && ! $user->hasEnabledTwoFactorAuthentication(),
             'meta' => $this->metaOgpService->mypage(),
         ]);
@@ -86,16 +84,15 @@ class DashboardController extends Controller
     }
 
     /**
-     * 最近更新した記事の直近の日次PV・CVを、アナリティクスと同じ取得経路・同じ形式で返す
+     * 公開中で最近更新した記事の直近の日次PV・CVを、アナリティクスと同じ取得経路・同じ形式で返す
      *
-     * @param  Collection<int,Article>  $recentArticles
      * @return array{start_date:string,end_date:string,analytics:array<mixed>}
      */
-    private function buildTrend(User $user, Collection $recentArticles): array
+    private function buildTrend(User $user): array
     {
         $endDate = CarbonImmutable::today();
         $startDate = $endDate->subDays(self::TREND_DAYS - 1);
-        $ids = $recentArticles->pluck('id')->all();
+        $ids = $this->mypageArticleRepository->getRecentPublishedIds($user, self::RECENT_ARTICLE_LIMIT);
 
         $analytics = $ids === []
             ? []

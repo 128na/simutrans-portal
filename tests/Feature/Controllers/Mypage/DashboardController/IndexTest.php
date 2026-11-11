@@ -82,10 +82,13 @@ class IndexTest extends TestCase
         $testResponse->assertDontSee($draft->showUrl(), false);
     }
 
-    public function test_直近30日の推移は最近の記事の日次集計を期間内だけ渡す(): void
+    public function test_直近30日の推移は公開中の最近の記事の日次集計を期間内だけ渡す(): void
     {
-        $recent = Article::factory()->for($this->user)->publish()->create(['modified_at' => now()]);
+        $recent = Article::factory()->for($this->user)->publish()->create(['modified_at' => now()->subHour()]);
         $other = Article::factory()->for($this->user)->publish()->create(['modified_at' => now()->subDay()]);
+        // 下書きは更新が新しくても推移の対象にしない
+        $draft = Article::factory()->for($this->user)->draft()->create(['modified_at' => now()]);
+        $this->insertCount('view_counts', $draft, 1, now()->format('Ymd'), 50);
         $today = now()->format('Ymd');
         $firstDay = now()->subDays(29)->format('Ymd');
         $tooOld = now()->subDays(30)->format('Ymd');
@@ -105,6 +108,17 @@ class IndexTest extends TestCase
         $this->assertEqualsCanonicalizing([$recent->id, $other->id], $byId->keys()->all());
         $this->assertEquals([$today => 9, $firstDay => 3], $byId->get($recent->id)['viewCounts'] ?? null);
         $this->assertEquals([$today => 2], $byId->get($other->id)['conversionCounts'] ?? null);
+        $testResponse->assertSee('公開中で最近更新した記事 2 件の合計');
+    }
+
+    public function test_公開中の記事が無ければ推移は空で渡す(): void
+    {
+        Article::factory()->for($this->user)->draft()->create();
+
+        $testResponse = $this->actingAs($this->user)->get('/mypage');
+
+        $testResponse->assertOk();
+        $this->assertSame([], $this->extractTrendJson($testResponse->getContent())['analytics']);
     }
 
     public function test_記事が無いときは推移を空で渡す(): void
@@ -144,6 +158,8 @@ class IndexTest extends TestCase
         $testResponse->assertOk();
         $testResponse->assertSee('メールアドレスの認証が完了していません');
         $testResponse->assertSee(route('mypage.verify-email'), false);
+        // 未認証のうちは二要素認証の設定に入れないので、その帯は出さない
+        $testResponse->assertDontSee('二要素認証が無効です');
     }
 
     public function test_メールアドレスが認証済みなら認証の帯を出さない(): void
@@ -172,8 +188,8 @@ class IndexTest extends TestCase
         $many = $this->countQueriesForUserWithArticles(30);
 
         $this->assertSame($few, $many);
-        // サマリ1・最近の記事3（本体と累計PV/CV）・推移3（本体と日次PV/CV）
-        $this->assertSame(7, $many);
+        // サマリ1・最近の記事3（本体と累計PV/CV）・推移4（対象ID、本体と日次PV/CV）
+        $this->assertSame(8, $many);
     }
 
     private function countQueriesForUserWithArticles(int $articleCount): int

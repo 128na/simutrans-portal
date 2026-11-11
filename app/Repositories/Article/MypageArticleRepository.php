@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories\Article;
 
 use App\Enums\ArticleAnalyticsType;
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
 use App\Repositories\Concerns\ArticleQueryConcern;
@@ -54,22 +55,44 @@ class MypageArticleRepository
     }
 
     /**
-     * マイページトップ用に最近更新した記事を件数を絞って取得
+     * マイページトップ用に最近更新した記事（ゴミ箱を除く）を件数を絞って取得
      *
      * @return Collection<int,Article>
      */
     public function getRecentForMypage(User $user, int $limit): Collection
     {
         $builder = $this->model->query()
-            ->select(['id', 'title', 'slug', 'status', 'modified_at'])
-            ->where('articles.user_id', $user->id);
+            ->select(['id', 'user_id', 'title', 'slug', 'status', 'modified_at'])
+            ->where('articles.user_id', $user->id)
+            ->where('articles.status', '!=', ArticleStatus::Trash);
 
         $this->orderByLatest($builder);
 
-        return $builder
+        $articles = $builder
             ->limit($limit)
             ->with('totalConversionCount', 'totalViewCount')
             ->get();
+
+        // 記事URLの生成で記事ごとに投稿者を読み直さないよう、投稿者を渡しておく
+        return $articles->each(fn (Article $article): Article => $article->setRelation('user', $user));
+    }
+
+    /**
+     * 公開中で最近更新した記事のIDを件数を絞って取得（マイページトップの推移の対象）
+     *
+     * @return list<int>
+     */
+    public function getRecentPublishedIds(User $user, int $limit): array
+    {
+        $builder = $this->model->query()
+            ->select(['articles.id'])
+            ->where('articles.user_id', $user->id);
+
+        $this->wherePublished($builder);
+        $this->orderByLatest($builder);
+
+        /** @var list<int> */
+        return $builder->limit($limit)->pluck('articles.id')->all();
     }
 
     /**

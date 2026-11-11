@@ -104,6 +104,20 @@ describe("アドオン一覧のカード", () => {
     );
   });
 
+  it("タイトルは英単語の途中で折らず、1 語が長すぎるときだけ途中で折ってカードからはみ出させない", () => {
+    render(
+      <ArticleCard
+        article={{ ...post, title: "Frankfurt (am Main) U-Bahn U2 & U3" }}
+      />
+    );
+
+    const [, titleLink] = screen.getAllByRole("link", {
+      name: "Frankfurt (am Main) U-Bahn U2 & U3",
+    });
+    // v2-title-link の break-all より後から効かせるため ! 付きで上書きする
+    expect(titleLink).toHaveClass("[word-break:normal]!", "wrap-anywhere");
+  });
+
   it("公開順のときは公開日を表示する", () => {
     render(<ArticleCard article={post} sort="published" />);
 

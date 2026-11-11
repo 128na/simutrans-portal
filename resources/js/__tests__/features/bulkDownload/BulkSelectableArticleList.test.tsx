@@ -123,7 +123,7 @@ describe("BulkSelectableArticleList", () => {
     );
     render(<BulkSelectableArticleList articles={[post, intro]} />);
 
-    // jsdom は CSS を当てないので、display: none になるクラスで確かめる（実測は PR #670）
+    // jsdom は CSS を当てないので、display: none になるクラスで確かめる（実測は PR #674）
     const toggles = [
       screen.getByLabelText("通勤電車セット を選択から外す"),
       screen.getByLabelText("高架駅ホーム を選ぶ"),
@@ -161,6 +161,9 @@ describe("BulkSelectableArticleList", () => {
         Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
     expect(resultArea.parentElement).toHaveClass("sticky", "bottom-0");
+    // PC 幅で始めた結果は、途中でウィンドウを狭めても見失わないよう幅で隠さない
+    expect(resultArea.parentElement).toHaveClass("flex");
+    expect(resultArea.parentElement).not.toHaveClass("hidden");
   });
 
   it("sessionStorage が使えなくても選択できる", async () => {

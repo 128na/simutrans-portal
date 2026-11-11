@@ -75,10 +75,11 @@ describe("アドオン一覧のカード", () => {
   it("タグは横スクロールで隠さず、収まらなければ折り返して全部見せる", () => {
     render(<ArticleCard article={post} />);
 
-    // jsdom では折り返しを測れないので、タグの行のクラスで確かめる（実測は PR #670）
+    // jsdom では折り返しを測れないので、タグの行のクラスで確かめる（実測は PR #674）
     const tagRow = screen.getByRole("link", { name: "鉄道車両" }).parentElement;
     expect(tagRow).toHaveClass("flex", "flex-wrap");
-    expect(tagRow).not.toHaveClass("overflow-x-auto", "whitespace-nowrap");
+    expect(tagRow).not.toHaveClass("overflow-x-auto");
+    expect(tagRow).not.toHaveClass("whitespace-nowrap");
     expect(tagRow).toContainElement(
       screen.getByRole("link", { name: "Pak128.Japan" })
     );
@@ -194,6 +195,7 @@ describe("アドオン一覧のカード", () => {
     const myList = screen.getByRole("button", { name: "マイリスト 101" });
     expect(myList.parentElement).toHaveClass("flex");
     expect(myList.parentElement).not.toHaveClass("hidden");
+    expect(myList).not.toHaveClass("hidden");
     expect(screen.getByRole("button", { name: "選ぶ" })).toBeInTheDocument();
   });
 });

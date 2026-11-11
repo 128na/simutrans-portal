@@ -83,6 +83,20 @@ class IndexTest extends TestCase
         $testResponse->assertDontSee($draft->showUrl(), false);
     }
 
+    /**
+     * 最近の記事の表は横スクロール枠で、見出しに sr-only（絶対配置）の「操作」がある。
+     * 枠を位置指定しないと sr-only が枠の外にはみ出し、スマホ幅でページ全体が横にスクロールする（#669）
+     */
+    public function test_最近の記事の表の横スクロール枠が見出しの読み上げ用テキストをはみ出させない(): void
+    {
+        Article::factory()->for($this->user)->publish()->create();
+
+        $html = $this->actingAs($this->user)->get('/mypage')->assertOk()->getContent();
+
+        $this->assertIsString($html);
+        $this->assertMatchesRegularExpression('/<div class="(?=[^"]*\bv2-table-wrapper\b)(?=[^"]*\brelative\b)[^"]*">\s*<table[^>]*>(?:(?!<\/table>).)*<span class="sr-only">操作<\/span>/su', $html);
+    }
+
     public function test_直近30日の推移はユーザー全体の日次集計を日ごとに合計して期間内だけ渡す(): void
     {
         $published = Article::factory()->for($this->user)->publish()->create();

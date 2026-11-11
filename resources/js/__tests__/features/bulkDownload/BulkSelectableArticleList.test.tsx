@@ -97,6 +97,48 @@ describe("BulkSelectableArticleList", () => {
     expect(screen.getByText("2 件を選択中")).toBeInTheDocument();
   });
 
+  it("選択の帯は一覧の後ろに置いて画面の下端に貼り付け、一覧を押し下げない", async () => {
+    const user = userEvent.setup();
+    render(<BulkSelectableArticleList articles={[post, intro]} />);
+
+    await user.click(screen.getByLabelText("通勤電車セット を選ぶ"));
+
+    const band = screen.getByRole("region", { name: "選択中のアドオン" });
+    const lastCard = screen.getAllByRole("article").at(-1);
+    expect(lastCard).toBeDefined();
+    expect(
+      lastCard!.compareDocumentPosition(band) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(band.parentElement).toHaveClass("sticky", "bottom-0");
+  });
+
+  it("すべて取得して選択が空になっても、結果は一覧の後ろの下端に出す", async () => {
+    const user = userEvent.setup();
+    render(
+      <BulkSelectableArticleList
+        articles={[post, post2]}
+        download={resolvedDownload({})}
+      />
+    );
+    await user.click(screen.getByLabelText("通勤電車セット を選ぶ"));
+    await user.click(
+      screen.getByRole("button", { name: "まとめてダウンロード" })
+    );
+
+    const resultArea = await screen.findByRole("status", {
+      name: "まとめてダウンロードの結果",
+    });
+    expect(
+      screen.queryByRole("region", { name: "選択中のアドオン" })
+    ).toBeNull();
+    const lastCard = screen.getAllByRole("article").at(-1);
+    expect(
+      lastCard!.compareDocumentPosition(resultArea) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(resultArea.parentElement).toHaveClass("sticky", "bottom-0");
+  });
+
   it("sessionStorage が使えなくても選択できる", async () => {
     vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("denied");

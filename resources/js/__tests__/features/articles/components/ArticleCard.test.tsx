@@ -54,6 +54,8 @@ describe("アドオン一覧のカード", () => {
     links.forEach((link) =>
       expect(link).toHaveAttribute("href", "/users/alice/commuter")
     );
+    // 縦長のサムネイルでもカードの高さがそろうよう、16:9 の枠からはみ出させない
+    expect(links[0]).toHaveClass("aspect-video", "overflow-hidden");
     expect(screen.getByRole("link", { name: "Pak128.Japan" })).toHaveClass(
       "v2-tag-pak-128-japan"
     );
@@ -68,6 +70,38 @@ describe("アドオン一覧のカード", () => {
       "/users/alice"
     );
     expect(screen.getByText(/更新 2026\/01\/04/)).toBeInTheDocument();
+  });
+
+  it("1 行に収めたタグの行で隠れたタグにフォーカスしたら見える位置まで動かす", () => {
+    const scrollIntoView = vi.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+    render(<ArticleCard article={post} />);
+
+    const tag = screen.getByRole("link", { name: "鉄道車両" });
+    tag.focus();
+
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    expect(scrollIntoView.mock.contexts[0]).toBe(tag);
+    // @ts-expect-error jsdom には無いメソッドを元に戻す
+    delete Element.prototype.scrollIntoView;
+  });
+
+  it("作者名が長くても作者・日付の行は 1 行に収め、日付は折り返さない", () => {
+    render(
+      <ArticleCard
+        article={{
+          ...post,
+          user: { ...post.user, name: "とても長い作者名".repeat(5) },
+        }}
+      />
+    );
+
+    const author = screen.getByRole("link", { name: /とても長い作者名/ });
+    expect(author).toHaveClass("truncate", "min-w-0");
+    expect(screen.getByText(/更新 2026\/01\/04/)).toHaveClass(
+      "whitespace-nowrap",
+      "shrink-0"
+    );
   });
 
   it("公開順のときは公開日を表示する", () => {
@@ -92,7 +126,10 @@ describe("アドオン一覧のカード", () => {
   it("アドオン紹介は掲載先で入手することが分かり、既存の掲載先経路へ移動する", () => {
     render(<ArticleCard article={intro} />);
 
-    expect(screen.getByText("掲載先で入手")).toBeInTheDocument();
+    // タグの行は 1 行に収めてあふれた分を隠すので、入手方法の目印は先頭に置く
+    expect(screen.getByText("掲載先で入手")).toBe(
+      screen.getByText("掲載先で入手").parentElement?.firstElementChild
+    );
     expect(
       screen.getByRole("link", { name: "高架駅ホーム の掲載先へ" })
     ).toHaveAttribute("href", "/articles/202/conversion");

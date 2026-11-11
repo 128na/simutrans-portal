@@ -79,10 +79,11 @@ export const ArticleCard = ({
 
   return (
     <article className="flex flex-col overflow-hidden rounded-lg border border-c-border bg-white">
+      {/* overflow-hidden がないと、16:9 より縦長のサムネイルが読み込まれたときに枠ごと伸び、カードの高さがそろわない */}
       <a
         href={article.url}
         aria-label={article.title}
-        className="block aspect-video bg-c-surface"
+        className="block aspect-video overflow-hidden bg-c-surface"
       >
         <img
           className="h-full w-full object-cover"
@@ -91,27 +92,43 @@ export const ArticleCard = ({
           loading="lazy"
         />
       </a>
-      <div className="flex flex-1 flex-col gap-2 p-3">
+      <div className="flex flex-1 flex-col gap-1.5 p-2.5">
         <h3 className="text-body leading-snug line-clamp-2">
           <a href={article.url} className="v2-title-link">
             {article.title}
           </a>
         </h3>
-        <div className="flex flex-wrap gap-1">
+        {/* カードの高さをそろえるためタグは 1 行に収め、あふれた分はスクロールバーを出さない横スクロールにする。
+            キーボードで隠れたタグにフォーカスしたら見える位置まで動かす。入手方法の目印は隠れないよう先頭に置く */}
+        <div
+          className="flex gap-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none]"
+          onFocus={(event) =>
+            event.target.scrollIntoView?.({
+              block: "nearest",
+              inline: "nearest",
+            })
+          }
+        >
+          {article.addon_page_url && (
+            <span className="v2-tag shrink-0">掲載先で入手</span>
+          )}
           <Categories categories={paks} />
           <Categories categories={addons} />
-          {article.addon_page_url && (
-            <span className="v2-tag">掲載先で入手</span>
-          )}
         </div>
-        <div className="text-meta text-c-sub break-all">
-          <a href={article.user.url} className="text-c-sub hover:text-c-link">
+        {/* 1 行に収めてカードの高さをそろえる。長い作者名は省略し、日付は途中で折らない */}
+        <div className="flex min-w-0 text-meta text-c-sub">
+          <a
+            href={article.user.url}
+            className="min-w-0 truncate text-c-sub hover:text-c-link"
+          >
             {article.user.name}
           </a>
-          {" ・ "}
-          <DateLabel article={article} sort={sort} />
+          <span className="shrink-0 whitespace-nowrap pl-1">
+            {"・ "}
+            <DateLabel article={article} sort={sort} />
+          </span>
         </div>
-        <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-0.5">
           <AcquisitionLink article={article} />
           {isAuthenticated && <AddToMyListButton articleId={article.id} />}
           {actions}

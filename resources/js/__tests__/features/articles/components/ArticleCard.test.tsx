@@ -54,6 +54,8 @@ describe("アドオン一覧のカード", () => {
     links.forEach((link) =>
       expect(link).toHaveAttribute("href", "/users/alice/commuter")
     );
+    // 縦長のサムネイルでもカードの高さがそろうよう、16:9 の枠からはみ出させない
+    expect(links[0]).toHaveClass("aspect-video", "overflow-hidden");
     expect(screen.getByRole("link", { name: "Pak128.Japan" })).toHaveClass(
       "v2-tag-pak-128-japan"
     );
@@ -68,6 +70,20 @@ describe("アドオン一覧のカード", () => {
       "/users/alice"
     );
     expect(screen.getByText(/更新 2026\/01\/04/)).toBeInTheDocument();
+  });
+
+  it("1 行に収めたタグの行で隠れたタグにフォーカスしたら見える位置まで動かす", () => {
+    const scrollIntoView = vi.fn();
+    Element.prototype.scrollIntoView = scrollIntoView;
+    render(<ArticleCard article={post} />);
+
+    const tag = screen.getByRole("link", { name: "鉄道車両" });
+    tag.focus();
+
+    expect(scrollIntoView).toHaveBeenCalledTimes(1);
+    expect(scrollIntoView.mock.contexts[0]).toBe(tag);
+    // @ts-expect-error jsdom には無いメソッドを元に戻す
+    delete Element.prototype.scrollIntoView;
   });
 
   it("作者名が長くても作者・日付の行は 1 行に収め、日付は折り返さない", () => {

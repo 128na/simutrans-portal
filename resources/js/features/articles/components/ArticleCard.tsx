@@ -79,10 +79,11 @@ export const ArticleCard = ({
 
   return (
     <article className="flex flex-col overflow-hidden rounded-lg border border-c-border bg-white">
+      {/* overflow-hidden がないと、16:9 より縦長のサムネイルが読み込まれたときに枠ごと伸び、カードの高さがそろわない */}
       <a
         href={article.url}
         aria-label={article.title}
-        className="block aspect-video bg-c-surface"
+        className="block aspect-video overflow-hidden bg-c-surface"
       >
         <img
           className="h-full w-full object-cover"
@@ -97,8 +98,17 @@ export const ArticleCard = ({
             {article.title}
           </a>
         </h3>
-        {/* カードの高さをそろえるためタグは 1 行に収め、あふれた分は隠す。入手方法の目印は隠れないよう先頭に置く */}
-        <div className="flex gap-1 overflow-hidden whitespace-nowrap">
+        {/* カードの高さをそろえるためタグは 1 行に収め、あふれた分はスクロールバーを出さない横スクロールにする。
+            キーボードで隠れたタグにフォーカスしたら見える位置まで動かす。入手方法の目印は隠れないよう先頭に置く */}
+        <div
+          className="flex gap-1 overflow-x-auto whitespace-nowrap [scrollbar-width:none]"
+          onFocus={(event) =>
+            event.target.scrollIntoView?.({
+              block: "nearest",
+              inline: "nearest",
+            })
+          }
+        >
           {article.addon_page_url && (
             <span className="v2-tag shrink-0">掲載先で入手</span>
           )}

@@ -28,17 +28,24 @@ export const ArticleBase = ({
     article.post_type === "addon-post" ||
     article.post_type === "addon-introduction";
   const sidebar = isAddon && !preview;
+  // 文字列の形式差（秒の有無など）で誤判定しないよう、表示する形にそろえて比べる
   const updated =
-    article.modified_at && article.modified_at !== article.published_at
+    article.modified_at &&
+    formatArticleDate(article.modified_at) !==
+      formatArticleDate(article.published_at)
       ? article.modified_at
       : null;
+  // ライセンスは入手ボックスに出すので、アドオン記事のタイトル直下からは外す
+  const categories = isAddon
+    ? article.categories.filter((category) => category.type !== "license")
+    : article.categories;
 
   return (
     <div className="grid gap-6">
       {/* タイトル直下：カテゴリ・タグ・公開日／更新日 */}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
         <div className="flex flex-wrap gap-1.5">
-          <Categories categories={article.categories} preview={preview} />
+          <Categories categories={categories} preview={preview} />
           <Tags tags={article.tags} preview={preview} />
         </div>
         {(updated || article.published_at) && (

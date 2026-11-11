@@ -46,7 +46,7 @@ export const AddonAcquisition = ({
       : undefined;
   const licenseText = article.contents.license;
   const licenseLink = licenseText ? (
-    <a href={`#${ADDON_LICENSE_ANCHOR}`} className="v2-link">
+    <a href={preview ? "#" : `#${ADDON_LICENSE_ANCHOR}`} className="v2-link">
       利用条件を見る
     </a>
   ) : null;

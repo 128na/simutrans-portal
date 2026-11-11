@@ -136,6 +136,25 @@ describe("記事詳細の入手ボックス", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("プレビューでは利用条件へのリンクを動かさず、表示上同じ日時なら更新日を出さない", () => {
+    render(
+      <ArticleBase
+        article={{
+          ...addonPost,
+          published_at: "2022-11-08T10:00:00",
+          modified_at: "2022-11-08T10:00:30",
+        }}
+        preview
+      />
+    );
+
+    expect(
+      within(acquireBox()).getByRole("link", { name: "利用条件を見る" })
+    ).toHaveAttribute("href", "#");
+    expect(screen.getByText("2022/11/08 10:00 公開")).toBeInTheDocument();
+    expect(screen.queryByText(/更新$/)).not.toBeInTheDocument();
+  });
+
   it("未ログインではマイリスト追加を出さない", () => {
     render(<ArticleBase article={addonPost} />);
 
@@ -153,6 +172,11 @@ describe("記事詳細の入手ボックス", () => {
       "/tags/21"
     );
     expect(box.queryByRole("link", { name: "テストタグ" })).toBeNull();
+    // ライセンスはボックスだけに出す（pak はモックどおり両方に出す）
+    expect(screen.getAllByRole("link", { name: "CC BY" })).toHaveLength(1);
+    expect(screen.getAllByRole("link", { name: "Pak128.Japan" })).toHaveLength(
+      2
+    );
     expect(screen.getByText("2026/06/18 12:30 更新")).toBeInTheDocument();
     expect(screen.getByText("2022/11/08 10:00 公開")).toBeInTheDocument();
     expect(box.queryByText(/公開|更新/)).toBeNull();

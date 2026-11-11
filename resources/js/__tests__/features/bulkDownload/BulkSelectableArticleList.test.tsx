@@ -113,6 +113,29 @@ describe("BulkSelectableArticleList", () => {
     expect(band.parentElement).toHaveClass("sticky", "bottom-0");
   });
 
+  it("スマホ幅（lg 未満）では「選ぶ」も選択の帯も出さず、選択が残っていても操作の片方だけが残らない", () => {
+    // PC で選んだものが sessionStorage に残ったままスマホ幅で開いた状態
+    window.sessionStorage.setItem(
+      SELECTION_STORAGE_KEY,
+      JSON.stringify([
+        { id: 101, title: "通勤電車セット", url: "/users/alice/commuter" },
+      ])
+    );
+    render(<BulkSelectableArticleList articles={[post, intro]} />);
+
+    // jsdom は CSS を当てないので、display: none になるクラスで確かめる（実測は PR #670）
+    const toggles = [
+      screen.getByLabelText("通勤電車セット を選択から外す"),
+      screen.getByLabelText("高架駅ホーム を選ぶ"),
+    ];
+    toggles.forEach((toggle) =>
+      expect(toggle).toHaveClass("hidden", "lg:inline-block")
+    );
+    const band = screen.getByRole("region", { name: "選択中のアドオン" });
+    expect(band.parentElement).toHaveClass("hidden", "lg:flex");
+    expect(band.parentElement).not.toHaveClass("flex");
+  });
+
   it("すべて取得して選択が空になっても、結果は一覧の後ろの下端に出す", async () => {
     const user = userEvent.setup();
     render(

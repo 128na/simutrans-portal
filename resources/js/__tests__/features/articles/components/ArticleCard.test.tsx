@@ -72,18 +72,16 @@ describe("アドオン一覧のカード", () => {
     expect(screen.getByText(/更新 2026\/01\/04/)).toBeInTheDocument();
   });
 
-  it("1 行に収めたタグの行で隠れたタグにフォーカスしたら見える位置まで動かす", () => {
-    const scrollIntoView = vi.fn();
-    Element.prototype.scrollIntoView = scrollIntoView;
+  it("タグは横スクロールで隠さず、収まらなければ折り返して全部見せる", () => {
     render(<ArticleCard article={post} />);
 
-    const tag = screen.getByRole("link", { name: "鉄道車両" });
-    tag.focus();
-
-    expect(scrollIntoView).toHaveBeenCalledTimes(1);
-    expect(scrollIntoView.mock.contexts[0]).toBe(tag);
-    // @ts-expect-error jsdom には無いメソッドを元に戻す
-    delete Element.prototype.scrollIntoView;
+    // jsdom では折り返しを測れないので、タグの行のクラスで確かめる（実測は PR #670）
+    const tagRow = screen.getByRole("link", { name: "鉄道車両" }).parentElement;
+    expect(tagRow).toHaveClass("flex", "flex-wrap");
+    expect(tagRow).not.toHaveClass("overflow-x-auto", "whitespace-nowrap");
+    expect(tagRow).toContainElement(
+      screen.getByRole("link", { name: "Pak128.Japan" })
+    );
   });
 
   it("作者名が長くても作者・日付の行は 1 行に収め、日付は折り返さない", () => {
@@ -133,20 +131,22 @@ describe("アドオン一覧のカード", () => {
     });
     expect(download).toHaveAttribute("href", "/articles/101/download");
     expect(download).toHaveAttribute("target", "_blank");
-    expect(screen.queryByText("掲載先で入手")).not.toBeInTheDocument();
+    // ダウンロードは PC の前提。スマホ幅（lg 未満）では display: none でキーボードや読み上げからも外す
+    expect(download).toHaveClass("hidden", "lg:inline-block");
+    expect(download).not.toHaveClass("inline-block");
     expect(isDownloadable(post)).toBe(true);
   });
 
-  it("アドオン紹介は掲載先で入手することが分かり、既存の掲載先経路へ移動する", () => {
+  it("アドオン紹介は押しても何も起きない目印を出さず、PC 幅では既存の掲載先経路へのボタンを出す", () => {
     render(<ArticleCard article={intro} />);
 
-    // タグの行は 1 行に収めてあふれた分を隠すので、入手方法の目印は先頭に置く
-    expect(screen.getByText("掲載先で入手")).toBe(
-      screen.getByText("掲載先で入手").parentElement?.firstElementChild
-    );
-    expect(
-      screen.getByRole("link", { name: "高架駅ホーム の掲載先へ" })
-    ).toHaveAttribute("href", "/articles/202/conversion");
+    expect(screen.queryByText("掲載先で入手")).not.toBeInTheDocument();
+    const external = screen.getByRole("link", {
+      name: "高架駅ホーム の掲載先へ",
+    });
+    expect(external).toHaveAttribute("href", "/articles/202/conversion");
+    expect(external).toHaveClass("hidden", "lg:inline-block");
+    expect(external).not.toHaveClass("inline-block");
     expect(
       screen.queryByRole("link", { name: /ダウンロード/ })
     ).not.toBeInTheDocument();
@@ -176,6 +176,12 @@ describe("アドオン一覧のカード", () => {
     expect(
       screen.queryByRole("button", { name: /マイリスト/ })
     ).not.toBeInTheDocument();
+    // 未ログインのスマホ幅では操作欄に見えるものが無いので、行ごと隠して余白を残さない
+    const row = screen.getByRole("link", {
+      name: "通勤電車セット をダウンロード",
+    }).parentElement;
+    expect(row).toHaveClass("hidden", "lg:flex");
+    expect(row).not.toHaveClass("flex");
 
     rerender(
       <ArticleCard
@@ -184,9 +190,10 @@ describe("アドオン一覧のカード", () => {
         actions={<button type="button">選ぶ</button>}
       />
     );
-    expect(
-      screen.getByRole("button", { name: "マイリスト 101" })
-    ).toBeInTheDocument();
+    // マイリストは入手の操作ではないので、スマホ幅でも出す
+    const myList = screen.getByRole("button", { name: "マイリスト 101" });
+    expect(myList.parentElement).toHaveClass("flex");
+    expect(myList.parentElement).not.toHaveClass("hidden");
     expect(screen.getByRole("button", { name: "選ぶ" })).toBeInTheDocument();
   });
 });

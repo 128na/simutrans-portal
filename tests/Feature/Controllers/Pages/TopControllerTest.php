@@ -195,6 +195,20 @@ class TopControllerTest extends TestCase
     }
 
     /**
+     * お知らせは 1 行表示（truncate）で、列の幅を指定しないグリッドだと長いタイトルに合わせて列が広がり、
+     * スマホ幅でページ全体が横にスクロールする。1 列でも幅を minmax(0, 1fr) に固定する grid-cols-1 を付ける
+     */
+    public function test_お知らせの段組みはスマホ幅でも列の幅を固定して長いタイトルでページを広げない(): void
+    {
+        $this->createAnnounce();
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $html = (string) $this->get(route('index'))->assertOk()->getContent();
+
+        $this->assertMatchesRegularExpression('/<div class="(?=[^"]*\bgrid\b)(?=[^"]*\bgrid-cols-1\b)(?=[^"]*\bmd:grid-cols-2\b)[^"]*">\s*<section>\s*<h2[^>]*>(?:(?!<\/h2>).)*お知らせ/su', $html);
+    }
+
+    /**
      * @param  list<string>  $paks
      * @param  list<string>  $addons
      */

@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
  */
 final readonly class ArticleListFilter
 {
+    /** 件数があるとき、種類の切り替えに常に出す種類の数（PC 幅で 1 行に収まる数） */
+    public const int ADDON_VISIBLE_LIMIT = 6;
+
     public function __construct(
         public ?string $addonSlug = null,
         public bool $downloadOnly = false,
@@ -55,5 +58,42 @@ final readonly class ArticleListFilter
         $options = trans('category.addon');
 
         return $options;
+    }
+
+    /**
+     * 種類の切り替えに並べる選択肢を、常に出すものと「ほか n 種類」に畳むものに分ける。
+     *
+     * 件数（slug => 件数）があるときは、0 件の種類を出さず、件数の多い上位 $visibleLimit 種類だけを常に出す。
+     * 選択中の種類は件数が少なくても 0 件でも常に出す。件数が無い一覧では、少ない種類が分からないので畳まない。
+     * どちらも並びは選択肢の定義順にそろえる。
+     *
+     * @param  array<string, int>|null  $counts
+     * @return array{visible: array<string, string>, folded: array<string, string>}
+     */
+    public function addonChipGroups(?array $counts, int $visibleLimit = self::ADDON_VISIBLE_LIMIT): array
+    {
+        $options = self::addonOptions();
+
+        if ($counts === null) {
+            return ['visible' => $options, 'folded' => []];
+        }
+
+        $listed = array_filter(
+            $options,
+            fn (string $slug): bool => ($counts[$slug] ?? 0) > 0 || $slug === $this->addonSlug,
+            ARRAY_FILTER_USE_KEY,
+        );
+
+        $ranked = array_keys($listed);
+        // usort は安定ソートなので、件数が同じなら定義順を保つ
+        usort($ranked, fn (string $a, string $b): int => ($counts[$b] ?? 0) <=> ($counts[$a] ?? 0));
+        $visibleSlugs = array_slice($ranked, 0, $visibleLimit);
+        if ($this->addonSlug !== null && array_key_exists($this->addonSlug, $listed)) {
+            $visibleSlugs[] = $this->addonSlug;
+        }
+
+        $visible = array_intersect_key($listed, array_flip($visibleSlugs));
+
+        return ['visible' => $visible, 'folded' => array_diff_key($listed, $visible)];
     }
 }

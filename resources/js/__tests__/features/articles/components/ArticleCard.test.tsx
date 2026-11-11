@@ -70,6 +70,24 @@ describe("アドオン一覧のカード", () => {
     expect(screen.getByText(/更新 2026\/01\/04/)).toBeInTheDocument();
   });
 
+  it("作者名が長くても作者・日付の行は 1 行に収め、日付は折り返さない", () => {
+    render(
+      <ArticleCard
+        article={{
+          ...post,
+          user: { ...post.user, name: "とても長い作者名".repeat(5) },
+        }}
+      />
+    );
+
+    const author = screen.getByRole("link", { name: /とても長い作者名/ });
+    expect(author).toHaveClass("truncate", "min-w-0");
+    expect(screen.getByText(/更新 2026\/01\/04/)).toHaveClass(
+      "whitespace-nowrap",
+      "shrink-0"
+    );
+  });
+
   it("公開順のときは公開日を表示する", () => {
     render(<ArticleCard article={post} sort="published" />);
 
@@ -92,7 +110,10 @@ describe("アドオン一覧のカード", () => {
   it("アドオン紹介は掲載先で入手することが分かり、既存の掲載先経路へ移動する", () => {
     render(<ArticleCard article={intro} />);
 
-    expect(screen.getByText("掲載先で入手")).toBeInTheDocument();
+    // タグの行は 1 行に収めてあふれた分を隠すので、入手方法の目印は先頭に置く
+    expect(screen.getByText("掲載先で入手")).toBe(
+      screen.getByText("掲載先で入手").parentElement?.firstElementChild
+    );
     expect(
       screen.getByRole("link", { name: "高架駅ホーム の掲載先へ" })
     ).toHaveAttribute("href", "/articles/202/conversion");

@@ -134,6 +134,45 @@ class ArticleCardListTest extends TestCase
         $this->assertMatchesRegularExpression('/<nav aria-label="種類で絞り込む" class="(?=[^"]*\brelative\b)(?=[^"]*\boverflow-x-auto\b)[^"]*"/u', $html);
     }
 
+    /**
+     * 件数がある pak 別一覧は 0 件の種類を出さない。件数が無い一覧（タグ等）は少ない種類が分からないのですべて出す（#657）
+     */
+    public function test_件数がある一覧だけ0件の種類を種類の切り替えに出さない(): void
+    {
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $pak = $this->get($this->url('pak', ['sort' => 'published']))->assertOk()->getContent();
+        $this->assertIsString($pak);
+        $this->assertMatchesRegularExpression('/href="(?=[^"]*addon=trains)(?=[^"]*sort=published)[^"]*"/', $pak);
+        $this->assertMatchesRegularExpression('/href="(?=[^"]*addon=buildings)(?=[^"]*sort=published)[^"]*"/', $pak);
+        $this->assertStringNotContainsString('addon=ships', $pak);
+        $this->assertDoesNotMatchRegularExpression('/ほか \d+ 種類/u', $pak, '種類が少なければ畳まない');
+
+        $this->get($this->url('pak', ['addon' => 'ships']))
+            ->assertOk()
+            ->assertSee('addon=ships', false);
+
+        $this->get($this->url('tag', []))
+            ->assertOk()
+            ->assertSee('addon=ships', false)
+            ->assertSee('addon=none', false);
+    }
+
+    public function test_件数の少ない種類はほかn種類に畳み畳んだ切り替えも条件を保つ(): void
+    {
+        foreach (['rail-tools', 'road-tools', 'ships', 'aircrafts', 'road-vehicles'] as $slug) {
+            $this->makeArticle(true, Category::where('type', CategoryType::Addon)->where('slug', $slug)->firstOrFail(), '2025-12-01 00:00:00', '2025-12-01 00:00:00');
+        }
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $html = $this->get($this->url('pak', ['sort' => 'published']))->assertOk()->getContent();
+
+        $this->assertIsString($html);
+        // 鉄道車両は 2 件、ほかは 1 件ずつ。同数は定義順なので、定義順で後ろの一般建築物だけが畳まれる
+        $this->assertMatchesRegularExpression('/<details[^>]*>\s*<summary[^>]*>\s*<span[^>]*>ほか 1 種類<\/span>(?:(?!<\/details>).)*href="(?=[^"]*addon=buildings)(?=[^"]*sort=published)[^"]*"(?:(?!<\/details>).)*<\/details>/su', $html);
+        $this->assertDoesNotMatchRegularExpression('/<details(?:(?!<\/details>).)*addon=(?:trains|ships)/su', $html, '件数の多い種類は畳まない');
+    }
+
     public function test_検索画面では入手方法の切り替えを出さず投稿形式の条件を上書きしない(): void
     {
         $this->get($this->url('search', ['postTypes' => ['addon-introduction']]))

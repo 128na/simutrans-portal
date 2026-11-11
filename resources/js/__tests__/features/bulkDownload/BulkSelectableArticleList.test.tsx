@@ -97,6 +97,21 @@ describe("BulkSelectableArticleList", () => {
     expect(screen.getByText("2 件を選択中")).toBeInTheDocument();
   });
 
+  it("選択の帯は一覧の後ろに置いて画面の下端に貼り付け、一覧を押し下げない", async () => {
+    const user = userEvent.setup();
+    render(<BulkSelectableArticleList articles={[post, intro]} />);
+
+    await user.click(screen.getByLabelText("通勤電車セット を選ぶ"));
+
+    const band = screen.getByRole("region", { name: "選択中のアドオン" });
+    const lastCard = screen.getAllByRole("article").at(-1);
+    expect(lastCard).toBeDefined();
+    expect(
+      lastCard!.compareDocumentPosition(band) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(band).toHaveClass("sticky", "bottom-0");
+  });
+
   it("sessionStorage が使えなくても選択できる", async () => {
     vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("denied");

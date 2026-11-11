@@ -107,74 +107,6 @@ export const BulkSelectableArticleList = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {(items.length > 0 || isRunning) && (
-        <section
-          aria-label="選択中のアドオン"
-          className="sticky top-0 z-10 flex flex-col gap-2 rounded-lg border border-c-primary bg-c-surface p-3"
-        >
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="font-semibold">{items.length} 件を選択中</span>
-            <span className="text-meta text-c-sub">
-              ダウンロード {downloadable.length} 件 ・ 掲載先で入手{" "}
-              {external.length} 件
-            </span>
-            <div className="ml-auto flex flex-wrap gap-2">
-              {isRunning ? (
-                <Button
-                  variant="subOutline"
-                  onClick={() => {
-                    cancelRef.current = true;
-                  }}
-                >
-                  中止
-                </Button>
-              ) : (
-                <>
-                  <Button variant="subOutline" onClick={clear}>
-                    選択を解除
-                  </Button>
-                  {isAuthenticated ? (
-                    <Button
-                      variant="primaryOutline"
-                      onClick={() => setIsMyListOpen(true)}
-                    >
-                      マイリストに保存
-                    </Button>
-                  ) : (
-                    <a
-                      href="/login"
-                      className="v2-button-outline v2-button-md v2-button-primary-outline inline-block"
-                    >
-                      ログインしてマイリストに保存
-                    </a>
-                  )}
-                  <Button
-                    variant="primary"
-                    onClick={handleBulkDownload}
-                    disabled={downloadable.length === 0}
-                  >
-                    まとめてダウンロード
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-          {progress && (
-            <p className="text-body" role="status">
-              <ProgressMessage progress={progress} />
-            </p>
-          )}
-          {downloadable.length > 1 && (
-            <p className="text-meta text-c-sub">
-              1
-              件ずつ順番に保存します。ブラウザが「複数ファイルのダウンロード」の許可を求めたら「許可」を選んでください。ブロックすると
-              2
-              件目以降が保存されません（アドレスバーのアイコンから許可し直せます）。
-            </p>
-          )}
-        </section>
-      )}
-
       {finished && (
         <section
           role="status"
@@ -245,6 +177,75 @@ export const BulkSelectableArticleList = ({
           ) : null
         }
       />
+
+      {/* 選択の帯は一覧の後ろに置いて画面の下端に貼り付け、出しても一覧を押し下げない */}
+      {(items.length > 0 || isRunning) && (
+        <section
+          aria-label="選択中のアドオン"
+          className="sticky bottom-0 z-10 flex flex-col gap-2 rounded-lg border border-c-primary bg-c-surface p-3 shadow-lg"
+        >
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="font-semibold">{items.length} 件を選択中</span>
+            <span className="text-meta text-c-sub">
+              ダウンロード {downloadable.length} 件 ・ 掲載先で入手{" "}
+              {external.length} 件
+            </span>
+            <div className="ml-auto flex flex-wrap gap-2">
+              {isRunning ? (
+                <Button
+                  variant="subOutline"
+                  onClick={() => {
+                    cancelRef.current = true;
+                  }}
+                >
+                  中止
+                </Button>
+              ) : (
+                <>
+                  <Button variant="subOutline" onClick={clear}>
+                    選択を解除
+                  </Button>
+                  {isAuthenticated ? (
+                    <Button
+                      variant="primaryOutline"
+                      onClick={() => setIsMyListOpen(true)}
+                    >
+                      マイリストに保存
+                    </Button>
+                  ) : (
+                    <a
+                      href="/login"
+                      className="v2-button-outline v2-button-md v2-button-primary-outline inline-block"
+                    >
+                      ログインしてマイリストに保存
+                    </a>
+                  )}
+                  <Button
+                    variant="primary"
+                    onClick={handleBulkDownload}
+                    disabled={downloadable.length === 0}
+                  >
+                    まとめてダウンロード
+                  </Button>
+                </>
+              )}
+            </div>
+          </div>
+          {progress && (
+            <p className="text-body" role="status">
+              <ProgressMessage progress={progress} />
+            </p>
+          )}
+          {downloadable.length > 1 && (
+            <p className="text-meta text-c-sub">
+              1
+              件ずつ順番に保存します。ブラウザが「複数ファイルのダウンロード」の許可を求めたら「許可」を選んでください。ブロックすると
+              2
+              件目以降が保存されません（アドレスバーのアイコンから許可し直せます）。
+            </p>
+          )}
+        </section>
+      )}
 
       {isMyListOpen && (
         <AddToMyListModal

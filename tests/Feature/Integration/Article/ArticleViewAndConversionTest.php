@@ -193,6 +193,34 @@ class ArticleViewAndConversionTest extends TestCase
     }
 
     /**
+     * ファイルがない記事は 404 になり、コンバージョンも記録しない
+     */
+    public function test_download_action_without_file_does_not_record_conversion(): void
+    {
+        $author = User::factory()->create();
+        $visitor = User::factory()->create();
+        $article = Article::factory()->create([
+            'user_id' => $author->id,
+            'status' => ArticleStatus::Publish,
+            'post_type' => ArticlePostType::AddonPost,
+            'contents' => [
+                'file' => null,
+            ],
+        ]);
+
+        try {
+            app(DownloadAction::class)($article, $visitor);
+            $this->fail('ファイルがないのに 404 にならなかった');
+        } catch (HttpException $httpException) {
+            $this->assertSame(404, $httpException->getStatusCode());
+        }
+
+        $this->assertDatabaseMissing('conversion_counts', [
+            'article_id' => $article->id,
+        ]);
+    }
+
+    /**
      * @test
      * 複数ユーザーからのアクセスが正しくカウントされる
      */

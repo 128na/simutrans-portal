@@ -15,6 +15,13 @@ class RouteServiceProvider extends ServiceProvider
 {
     public const string HOME = '/';
 
+    /**
+     * アドオンファイルのダウンロード（articles.download）の上限。まとめてダウンロードを想定した値
+     */
+    public const int DOWNLOAD_PER_MINUTE = 30;
+
+    public const int DOWNLOAD_PER_HOUR = 300;
+
     #[\Override]
     public function boot(): void
     {
@@ -48,5 +55,15 @@ class RouteServiceProvider extends ServiceProvider
         ]);
 
         RateLimiter::for('external', fn (Request $request) => Limit::perMinute(10));
+
+        RateLimiter::for('download', function (Request $request): array {
+            // ログイン中はユーザー単位、未ログインは IP 単位で数える（同じ回線の別ユーザーを巻き込まない）
+            $key = $request->user() ? 'user:'.$request->user()->getAuthIdentifier() : 'ip:'.$request->ip();
+
+            return [
+                Limit::perMinute(self::DOWNLOAD_PER_MINUTE)->by('download-minute:'.$key),
+                Limit::perHour(self::DOWNLOAD_PER_HOUR)->by('download-hour:'.$key),
+            ];
+        });
     }
 }

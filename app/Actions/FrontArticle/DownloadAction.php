@@ -16,15 +16,15 @@ class DownloadAction
 {
     public function __invoke(Article $article, ?User $user): StreamedResponse
     {
-        // ログインしていて自身の記事ならカウントしない
-        if (is_null($user) || $user->id !== $article->user_id) {
-            event(new ArticleConversion($article));
-        }
-
         /** @var Attachment|null $file */
         $file = $article->file;
         if ($file === null) {
             abort(404);
+        }
+
+        // ログインしていて自身の記事ならカウントしない。ファイルを返せるときだけ 1 リクエスト 1 回数える
+        if (is_null($user) || $user->id !== $article->user_id) {
+            event(new ArticleConversion($article));
         }
 
         return $this->getPublicDisk()->download(

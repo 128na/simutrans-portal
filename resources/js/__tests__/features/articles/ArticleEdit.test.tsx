@@ -392,6 +392,21 @@ describe("ArticleEdit", () => {
     ).toBeDisabled();
   });
 
+  it("公開と下書きの2択でも、添付のアップロードが終わるまで両方の保存を無効にする", () => {
+    const draft = { ...mockArticle, id: 15, status: "draft" as const };
+    vi.mocked(useArticleEditor).mockImplementation((selector) =>
+      selector({
+        article: draft,
+        initialArticle: draft,
+        uploadsInProgress: 1,
+      } as ReturnType<typeof useArticleEditor.getState>)
+    );
+    render(<ArticleEdit />);
+    const buttons = screen.getAllByRole("button", { name: "アップロード中…" });
+    expect(buttons).toHaveLength(2);
+    buttons.forEach((button) => expect(button).toBeDisabled());
+  });
+
   it("保存成功後にリダイレクトする", async () => {
     vi.spyOn(mockedAxios, "post").mockResolvedValue({
       data: { article_id: 123 },

@@ -44,7 +44,8 @@ class TopControllerTest extends TestCase
             ->assertOk()
             ->assertViewHas('latestCards', fn ($cards): bool => $cards->pluck('id')->values()->all() === array_slice($ids, 0, 8))
             ->assertSee('新着アドオンをもっと見る')
-            ->assertSee('更新 <time datetime="'.$recent->toIso8601String().'">'.$recent->toDateString().'</time>', false)
+            ->assertSee('>更新</span>', false)
+            ->assertSee('<time datetime="'.$recent->toIso8601String().'">'.$recent->toDateString().'</time>', false)
             ->assertSee('公開 <time datetime="'.$recent->subDay()->toIso8601String().'">'.$recent->subDay()->toDateString().'</time>', false);
 
         $this->get(route('latest'))->assertOk()
@@ -53,7 +54,7 @@ class TopControllerTest extends TestCase
             ->assertSee(route('pak.others'));
     }
 
-    public function test_cards_show_a_new_or_updated_badge_and_same_day_edits_stay_new(): void
+    public function test_cards_show_new_or_updated_in_the_heading_row_and_same_day_edits_stay_new(): void
     {
         $pak64 = Category::where('type', CategoryType::Pak)->where('slug', '64')->sole();
         $published = now()->subDays(3)->setTime(10, 0);
@@ -70,12 +71,17 @@ class TopControllerTest extends TestCase
 
         $html = (string) $this->get(route('index'))->assertOk()->getContent();
 
-        $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>更新<\/span>(?:(?!<\/a>).)*更新された記事/s', $html);
-        $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*公開直後に直した記事/s', $html);
-        $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*日付をまたいで公開した記事/s', $html);
-        // 新規は日付が1つだけなので、日付の行の「新規」はバッジと重ねず読み上げ用にだけ出す
-        $this->assertMatchesRegularExpression('/公開直後に直した記事(?:(?!<\/a>).)*<span class="sr-only">新規<\/span><time/s', $html);
-        $this->assertMatchesRegularExpression('/更新された記事(?:(?!<\/a>).)*更新 <time(?:(?!<\/a>).)*公開 <time/s', $html);
+        // 「新規／更新」はサムネイルに重ねず、タイトルの上の見出しの行に主な日付と並べて文字で出す
+        $this->assertDoesNotMatchRegularExpression('/aspect-video(?:(?!<\/div>).)*(?:新規|更新)/s', $html);
+        $this->assertMatchesRegularExpression('/>更新<\/span>\s*<time datetime="'.preg_quote($published->addDay()->toIso8601String(), '/').'">(?:(?!<\/a>).)*更新された記事/s', $html);
+        $this->assertMatchesRegularExpression('/>新規<\/span>\s*<time datetime="'.preg_quote($published->toIso8601String(), '/').'">(?:(?!<\/a>).)*公開直後に直した記事/s', $html);
+        $this->assertMatchesRegularExpression('/>新規<\/span>\s*<time(?:(?!<\/a>).)*日付をまたいで公開した記事/s', $html);
+        // 更新は公開日も見分けられるよう、タイトルの下に「公開」の日付を残す。新規は日付が1つなので出さない
+        $this->assertMatchesRegularExpression('/更新された記事(?:(?!<\/a>).)*公開 <time/s', $html);
+        $this->assertDoesNotMatchRegularExpression('/公開直後に直した記事(?:(?!<\/a>).)*公開 <time/s', $html);
+        // 読み上げでも「新規／更新」が1回だけ伝わるよう、ラベルは読み上げから外さず、読み上げ用の重複も出さない
+        $this->assertStringNotContainsString('sr-only">新規', $html);
+        $this->assertDoesNotMatchRegularExpression('/aria-hidden="true"[^>]*>(?:新規|更新)</', $html);
     }
 
     /**

@@ -59,8 +59,9 @@ class PaginationLinksTest extends TestCase
         }
         $this->assertMatchesRegularExpression('/<span class="v2-pagination-item">\.\.\.<\/span>/', $pagination);
 
-        // 件数の文と番号の列の行は、幅が足りなければ折り返す
-        $this->assertMatchesRegularExpression('/<div\s+class="(?=[^"]*\bsm:flex\b)(?=[^"]*\bsm:flex-wrap\b)[^"]*"\s*>/', $pagination);
+        // 件数の文と番号の列の行は、幅が足りなければ折り返す。番号の列がそれでも収まらなければ列の中だけを横にスクロールさせる
+        $this->assertMatchesRegularExpression('/<div\s+class="(?=(?:[^"]*\s)?sm:flex[\s"])(?=(?:[^"]*\s)?sm:flex-wrap[\s"])[^"]*"\s*>/', $pagination);
+        $this->assertMatchesRegularExpression('/<div class="(?=(?:[^"]*\s)?max-w-full[\s"])(?=(?:[^"]*\s)?overflow-x-auto[\s"])[^"]*">\s*<span class="v2-pagination">/', $pagination);
     }
 
     /**
@@ -78,8 +79,8 @@ class PaginationLinksTest extends TestCase
         if ($list === 'pages' || $list === 'announces') {
             $slug = $list === 'pages' ? 'common' : 'announce';
             $category = Category::firstOrCreate(['type' => CategoryType::Page, 'slug' => $slug]);
-            Article::factory()->page()->publish()->count($count)->create(['user_id' => $user->id])
-                ->each(fn (Article $article) => $article->categories()->attach($category->id));
+            $articleIds = Article::factory()->page()->publish()->count($count)->create(['user_id' => $user->id])->modelKeys();
+            $category->articles()->attach($articleIds);
 
             return route($list);
         }
@@ -87,11 +88,10 @@ class PaginationLinksTest extends TestCase
         $tag = Tag::factory()->create();
         $pak = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();
         $trains = Category::where('type', CategoryType::Addon)->where('slug', 'trains')->firstOrFail();
-        Article::factory()->addonIntroduction()->publish()->count($count)->create(['user_id' => $user->id])
-            ->each(function (Article $article) use ($pak, $trains, $tag): void {
-                $article->categories()->attach([$pak->id, $trains->id]);
-                $article->tags()->attach($tag->id);
-            });
+        $articleIds = Article::factory()->addonIntroduction()->publish()->count($count)->create(['user_id' => $user->id])->modelKeys();
+        $pak->articles()->attach($articleIds);
+        $trains->articles()->attach($articleIds);
+        $tag->articles()->attach($articleIds);
 
         return match ($list) {
             'pak' => route('pak.128japan'),

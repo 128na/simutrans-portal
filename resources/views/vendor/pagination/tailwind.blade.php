@@ -36,7 +36,7 @@
       @endif
     </div>
 
-    {{-- 幅が足りないときは件数の文と番号の列を2行に分け、ページ全体を横に広げない（#682） --}}
+    {{-- 幅が足りないときは件数の文と番号の列を2行に分け、ページ全体を横に広げない（#682）。番号の列がそれでも収まらない（3 桁のページ番号など）ときは列の中だけを横にスクロールさせる --}}
     <div
       class="hidden sm:flex-1 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-4 sm:gap-y-3"
     >
@@ -55,7 +55,7 @@
         </p>
       </div>
 
-      <div>
+      <div class="max-w-full overflow-x-auto">
         <span class="v2-pagination">
           {{-- Previous Page Link --}}
 

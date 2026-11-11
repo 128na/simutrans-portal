@@ -1,4 +1,9 @@
-<form method="GET" action="{{ route('search') }}">
+<form
+  method="GET"
+  action="{{ route('search') }}"
+  role="search"
+  aria-label="詳細検索"
+>
   <div
     class="flex flex-col gap-y-4 sm:flex-row sm:items-center sm:gap-x-4 mb-4"
   >

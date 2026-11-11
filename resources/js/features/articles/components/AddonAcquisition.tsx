@@ -1,7 +1,7 @@
 import { Categories } from "./Categories";
-import { formatArticleDate } from "../utils/articleUtil";
 import { displaySize } from "@/features/attachments/attachmentUtil";
 import Button from "@/components/ui/Button";
+import { AddToMyListButton } from "../../mylist/AddToMyList";
 
 type Props = {
   article: Extract<
@@ -9,10 +9,21 @@ type Props = {
     { post_type: "addon-post" | "addon-introduction" }
   >;
   preview: boolean;
+  isAuthenticated?: boolean;
 };
 
-export const AddonAcquisition = ({ article, preview }: Props) => {
+/** 本文側の「ライセンス・利用条件」見出しの id。入手ボックスからリンクする */
+export const ADDON_LICENSE_ANCHOR = "addon-license";
+
+export const AddonAcquisition = ({
+  article,
+  preview,
+  isAuthenticated = false,
+}: Props) => {
   const paks = article.categories.filter((category) => category.type === "pak");
+  const licenses = article.categories.filter(
+    (category) => category.type === "license"
+  );
   const local = article.post_type === "addon-post";
   const fileId = local ? article.contents.file : null;
   const file = article.attachments.find(
@@ -33,38 +44,24 @@ export const AddonAcquisition = ({ article, preview }: Props) => {
     : article.contents.link
       ? article.addon_page_url
       : undefined;
+  const licenseText = article.contents.license;
+  const licenseLink = licenseText ? (
+    <a href={`#${ADDON_LICENSE_ANCHOR}`} className="v2-link">
+      利用条件を見る
+    </a>
+  ) : null;
 
   return (
     <section
       aria-label="アドオンの入手"
-      className="space-y-3 rounded-lg border border-c-primary/25 bg-c-primary/8 p-4"
+      className="grid gap-3 rounded-xl border border-c-border-strong bg-white p-4"
     >
-      <h3 className="font-semibold">アドオンの入手</h3>
-      <dl className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-        <div className="flex items-center flex-wrap gap-2">
-          <dt className="text-c-sub">対応pak</dt>
-          <dd className="flex flex-wrap gap-1">
-            {paks.length > 0 ? (
-              <Categories categories={paks} preview={preview} />
-            ) : (
-              "未指定"
-            )}
-          </dd>
-        </div>
-        <div className="flex gap-2">
-          <dt className="text-c-sub">作者</dt>
-          <dd>{article.contents.author || article.user.name}</dd>
-        </div>
-        <div className="flex gap-2">
-          <dt className="text-c-sub">最終更新</dt>
-          <dd>
-            {formatArticleDate(article.modified_at ?? article.published_at)}
-          </dd>
-        </div>
-      </dl>
-      <div className="flex flex-wrap items-center gap-3">
+      <h3 className="text-title font-semibold">アドオンの入手</h3>
+      <div className="grid gap-2">
         {preview ? (
-          <Button disabled>{label}</Button>
+          <Button disabled className="w-full justify-center">
+            {label}
+          </Button>
         ) : href ? (
           <a
             href={href}
@@ -73,19 +70,54 @@ export const AddonAcquisition = ({ article, preview }: Props) => {
             {label}
           </a>
         ) : (
-          <p className="text-sm text-c-sub">入手先は設定されていません。</p>
+          <p className="text-note text-c-sub">入手先は設定されていません。</p>
         )}
         {file && (
-          <span className="break-all text-sm text-c-sub">
-            {file.original_name} ({displaySize(file.size)})
-          </span>
+          <p className="break-all text-center text-note text-c-sub">
+            {file.original_name} ・ {displaySize(file.size)}
+          </p>
         )}
         {!local && href && !linkType && (
-          <span className="text-sm text-c-sub">
+          <p className="text-note text-c-sub">
             外部サイトで配布ページまたはファイルが開きます。
-          </span>
+          </p>
+        )}
+        {isAuthenticated && !preview && article.id && (
+          <AddToMyListButton
+            articleId={article.id}
+            className="w-full justify-center"
+          />
         )}
       </div>
+      <dl className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-4 gap-y-2 border-t border-c-border pt-3 text-note">
+        <dt className="text-c-sub">対応pak</dt>
+        <dd className="flex flex-wrap gap-1">
+          {paks.length > 0 ? (
+            <Categories categories={paks} preview={preview} />
+          ) : (
+            "未指定"
+          )}
+        </dd>
+        <dt className="text-c-sub">ライセンス</dt>
+        <dd className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+          {licenses.length > 0 ? (
+            <Categories categories={licenses} preview={preview} />
+          ) : (
+            !licenseText && "未指定"
+          )}
+          {licenseLink}
+        </dd>
+        <dt className="text-c-sub">作者</dt>
+        <dd className="break-all">
+          {article.contents.author || article.user.name}
+        </dd>
+        {article.post_type === "addon-introduction" && (
+          <>
+            <dt className="text-c-sub">掲載許可</dt>
+            <dd>{article.contents.agreement ? "取得済み" : "未取得"}</dd>
+          </>
+        )}
+      </dl>
     </section>
   );
 };

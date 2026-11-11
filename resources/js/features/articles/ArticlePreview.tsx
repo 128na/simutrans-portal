@@ -83,7 +83,7 @@ export const ArticlePreview = () => {
         </TextSub>
       </div>
 
-      <h2 className="v2-text-h2 mb-8 wrap-break-word">
+      <h2 className="v2-text-h2 mb-3 wrap-break-word">
         {article.title || "(タイトル)"}
       </h2>
 

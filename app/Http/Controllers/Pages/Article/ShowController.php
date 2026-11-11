@@ -12,6 +12,7 @@ use App\Http\Controllers\Concerns\RespondsWithJson;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Frontend\ArticleShow;
 use App\Models\Article;
+use App\Services\Front\ArticleBreadcrumbService;
 use App\Services\Front\MetaOgpService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -26,6 +27,7 @@ class ShowController extends Controller
     public function __construct(
         private readonly ShowAction $showAction,
         private readonly MetaOgpService $metaOgpService,
+        private readonly ArticleBreadcrumbService $articleBreadcrumbService,
     ) {}
 
     public function show(string $userIdOrNickname, string $slug, Request $request, DoRedirectIfExists $doRedirectIfExists): JsonResponse|RedirectResponse|View
@@ -46,7 +48,10 @@ class ShowController extends Controller
             $request,
             $articleShow,
             'pages.show.index',
-            ['meta' => $article->user ? $this->metaOgpService->frontArticleShow($article->user, $article) : []]
+            [
+                'meta' => $article->user ? $this->metaOgpService->frontArticleShow($article->user, $article) : [],
+                'breadcrumbs' => $this->articleBreadcrumbService->forArticle($article),
+            ]
         );
     }
 

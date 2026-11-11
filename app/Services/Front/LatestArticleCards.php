@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Front;
 
 use App\Enums\ArticlePostType;
+use App\Http\Resources\Frontend\ArticleCard;
 use Illuminate\Support\Facades\Date;
 
 /**
@@ -44,18 +45,14 @@ class LatestArticleCards
         $id = $card['id'];
         $publishedAt = is_string($card['published_at'] ?? null) ? $card['published_at'] : null;
         $modifiedAt = is_string($card['modified_at'] ?? null) ? $card['modified_at'] : null;
-        $postType = $card['post_type'] ?? null;
+        $postType = is_string($card['post_type'] ?? null) ? ArticlePostType::tryFrom($card['post_type']) : null;
 
         return [
             'id' => $id,
             'title' => $card['title'],
             'url' => $card['url'],
-            'post_type' => $postType,
-            ...match ($postType) {
-                ArticlePostType::AddonPost->value => ['download_url' => route('articles.download', ['article' => $id])],
-                ArticlePostType::AddonIntroduction->value => ['addon_page_url' => route('articles.conversion', ['article' => $id])],
-                default => [],
-            },
+            'post_type' => $postType?->value,
+            ...ArticleCard::acquisitionUrls($id, $postType),
             'thumbnail' => $card['thumbnail_url'],
             'categories' => $card['categories'] ?? [],
             'user' => $this->user($card),
@@ -81,7 +78,7 @@ class LatestArticleCards
         return [
             'id' => $userId,
             'name' => $user['name'],
-            'url' => route('users.show', ['userIdOrNickname' => is_string($nickname) ? $nickname : $userId]),
+            'url' => ArticleCard::userUrl($userId, is_string($nickname) ? $nickname : null),
         ];
     }
 

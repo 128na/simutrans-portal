@@ -3,6 +3,28 @@ import { LatestArticleCardList } from "../../features/articles/components/Latest
 import { AppWrapper } from "../../components/AppWrapper";
 
 /**
+ * 埋め込みデータは描画の中で読み、壊れていてもその区画だけをエラー表示にする（他の区画は描画を続ける）
+ */
+const LatestCards = ({
+  dataId,
+  isAuthenticated,
+}: {
+  dataId: string;
+  isAuthenticated: boolean;
+}) => {
+  const articles: Article.LatestCard[] = JSON.parse(
+    document.getElementById(dataId)?.textContent || "[]"
+  );
+
+  return (
+    <LatestArticleCardList
+      articles={articles}
+      isAuthenticated={isAuthenticated}
+    />
+  );
+};
+
+/**
  * トップ・/latest の新着カード。1 ページに複数（/latest は pak ごと）あるので、
  * data-latest-cards の要素ごとに、指定された id の埋め込みデータ（保存データから作ったカード）を描画する
  */
@@ -19,15 +41,10 @@ if (containers.length > 0) {
     : false;
 
   containers.forEach((container) => {
-    const articles: Article.LatestCard[] = JSON.parse(
-      document.getElementById(container.dataset.latestCards ?? "")
-        ?.textContent || "[]"
-    );
-
     createRoot(container).render(
       <AppWrapper boundaryName="LatestCardsPage">
-        <LatestArticleCardList
-          articles={articles}
+        <LatestCards
+          dataId={container.dataset.latestCards ?? ""}
           isAuthenticated={isAuthenticated}
         />
       </AppWrapper>

@@ -78,7 +78,9 @@ describe("新着カード", () => {
       />
     );
     const latestCard = cards[0].cloneNode(true) as HTMLElement;
-    latestCard.querySelector(".p-2\\.5")?.firstElementChild?.remove();
+    const heading = within(latestCard).getByText("更新").parentElement;
+    expect(heading?.nextElementSibling?.tagName).toBe("H3");
+    heading?.remove();
     expect(latestCard.outerHTML).toBe(
       listCard.querySelector("article")?.outerHTML
     );

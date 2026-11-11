@@ -145,40 +145,6 @@ export const buildChartData = (
 };
 
 /**
- * 複数記事の集計を区間ごとに足し合わせ、1記事分の集計として返す（マイページトップの合計推移用）
- */
-export const sumAnalytics = (
-  analytics: Analytics.ArticleAnalytic[],
-  id: number
-): Analytics.ArticleAnalytic => {
-  const add = (
-    target: Record<string, number>,
-    source: Record<string, number>
-  ) => {
-    Object.entries(source).forEach(([period, count]) => {
-      target[period] = (target[period] ?? 0) + Number(count);
-    });
-  };
-  const viewCounts: Record<string, number> = {};
-  const conversionCounts: Record<string, number> = {};
-  let pastViewCount = 0;
-  let pastConversionCount = 0;
-  analytics.forEach((analytic) => {
-    add(viewCounts, analytic.viewCounts);
-    add(conversionCounts, analytic.conversionCounts);
-    pastViewCount += analytic.pastViewCount;
-    pastConversionCount += analytic.pastConversionCount;
-  });
-  return {
-    id,
-    viewCounts,
-    conversionCounts,
-    pastViewCount,
-    pastConversionCount,
-  };
-};
-
-/**
  * 系列の見た目。PV と CV は色相・明るさ・線種で区別し、記事はマーカーの形で区別する
  */
 export const axisStyles = {

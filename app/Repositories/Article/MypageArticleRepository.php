@@ -78,24 +78,6 @@ class MypageArticleRepository
     }
 
     /**
-     * 公開中で最近更新した記事のIDを件数を絞って取得（マイページトップの推移の対象）
-     *
-     * @return list<int>
-     */
-    public function getRecentPublishedIds(User $user, int $limit): array
-    {
-        $builder = $this->model->query()
-            ->select(['articles.id'])
-            ->where('articles.user_id', $user->id);
-
-        $this->wherePublished($builder);
-        $this->orderByLatest($builder);
-
-        /** @var list<int> */
-        return $builder->limit($limit)->pluck('articles.id')->all();
-    }
-
-    /**
      * アナリティクス用記事一覧取得
      *
      * @return Collection<int,Article>

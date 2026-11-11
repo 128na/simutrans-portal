@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Mypage\DashboardController;
 
+use App\Enums\ArticleStatus;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -82,20 +83,30 @@ class IndexTest extends TestCase
         $testResponse->assertDontSee($draft->showUrl(), false);
     }
 
-    public function test_直近30日の推移は公開中の最近の記事の日次集計を期間内だけ渡す(): void
+    public function test_直近30日の推移はユーザー全体の日次集計を日ごとに合計して期間内だけ渡す(): void
     {
-        $recent = Article::factory()->for($this->user)->publish()->create(['modified_at' => now()->subHour()]);
-        $other = Article::factory()->for($this->user)->publish()->create(['modified_at' => now()->subDay()]);
-        // 下書きは更新が新しくても推移の対象にしない
-        $draft = Article::factory()->for($this->user)->draft()->create(['modified_at' => now()]);
-        $this->insertCount('view_counts', $draft, 1, now()->format('Ymd'), 50);
+        $published = Article::factory()->for($this->user)->publish()->create();
+        $other = Article::factory()->for($this->user)->publish()->create();
+        // 下書きやゴミ箱の記事も、今月のカードと同じくユーザー全体の合計に含める
+        $draft = Article::factory()->for($this->user)->draft()->create();
+        $trashed = Article::factory()->for($this->user)->create(['status' => ArticleStatus::Trash]);
+        $stranger = Article::factory()->for(User::factory()->create())->publish()->create();
         $today = now()->format('Ymd');
         $firstDay = now()->subDays(29)->format('Ymd');
         $tooOld = now()->subDays(30)->format('Ymd');
-        $this->insertCount('view_counts', $recent, 1, $today, 9);
-        $this->insertCount('view_counts', $recent, 1, $firstDay, 3);
-        $this->insertCount('view_counts', $recent, 1, $tooOld, 100);
+        $this->insertCount('view_counts', $published, 1, $today, 9);
+        $this->insertCount('view_counts', $other, 1, $today, 20);
+        $this->insertCount('view_counts', $draft, 1, $today, 300);
+        $this->insertCount('view_counts', $published, 1, $firstDay, 3);
+        $this->insertCount('view_counts', $trashed, 1, $firstDay, 40);
+        $this->insertCount('view_counts', $published, 1, $tooOld, 1000);
+        // 日次以外（月次・累計）や他ユーザーの値は入らない
+        $this->insertCount('view_counts', $published, 2, now()->format('Ym'), 5000);
+        $this->insertCount('view_counts', $published, 4, 'total', 6000);
+        $this->insertCount('view_counts', $stranger, 1, $today, 70000);
         $this->insertCount('conversion_counts', $other, 1, $today, 2);
+        $this->insertCount('conversion_counts', $draft, 1, $today, 5);
+        $this->insertCount('conversion_counts', $stranger, 1, $today, 800);
 
         $testResponse = $this->actingAs($this->user)->get('/mypage');
 
@@ -103,30 +114,43 @@ class IndexTest extends TestCase
         $trend = $this->extractTrendJson($testResponse->getContent());
         $this->assertSame(now()->subDays(29)->format('Y-m-d'), $trend['start_date']);
         $this->assertSame(now()->format('Y-m-d'), $trend['end_date']);
-
-        $byId = collect($trend['analytics'])->keyBy('id');
-        $this->assertEqualsCanonicalizing([$recent->id, $other->id], $byId->keys()->all());
-        $this->assertEquals([$today => 9, $firstDay => 3], $byId->get($recent->id)['viewCounts'] ?? null);
-        $this->assertEquals([$today => 2], $byId->get($other->id)['conversionCounts'] ?? null);
-        $testResponse->assertSee('公開中で最近更新した記事 2 件の合計');
+        $this->assertNotNull($trend['total']);
+        $this->assertEquals([$today => 329, $firstDay => 43], $trend['total']['viewCounts']);
+        $this->assertEquals([$today => 7], $trend['total']['conversionCounts']);
+        $this->assertSame(0, $trend['total']['pastViewCount']);
+        $this->assertSame(0, $trend['total']['pastConversionCount']);
+        $testResponse->assertSee('すべての記事の合計');
     }
 
-    public function test_公開中の記事が無ければ推移は空で渡す(): void
+    public function test_公開中の記事があって集計が無ければ空の合計を渡す(): void
     {
-        Article::factory()->for($this->user)->draft()->create();
+        Article::factory()->for($this->user)->publish()->create();
 
         $testResponse = $this->actingAs($this->user)->get('/mypage');
 
         $testResponse->assertOk();
-        $this->assertSame([], $this->extractTrendJson($testResponse->getContent())['analytics']);
+        $trend = $this->extractTrendJson($testResponse->getContent());
+        $this->assertSame([], $trend['total']['viewCounts'] ?? null);
+        $this->assertSame([], $trend['total']['conversionCounts'] ?? null);
     }
 
-    public function test_記事が無いときは推移を空で渡す(): void
+    public function test_公開中の記事が無ければ推移の合計は渡さない(): void
+    {
+        $draft = Article::factory()->for($this->user)->draft()->create();
+        $this->insertCount('view_counts', $draft, 1, now()->format('Ymd'), 50);
+
+        $testResponse = $this->actingAs($this->user)->get('/mypage');
+
+        $testResponse->assertOk();
+        $this->assertNull($this->extractTrendJson($testResponse->getContent())['total']);
+    }
+
+    public function test_記事が無いときは推移の合計を渡さない(): void
     {
         $testResponse = $this->actingAs($this->user)->get('/mypage');
 
         $testResponse->assertOk();
-        $this->assertSame([], $this->extractTrendJson($testResponse->getContent())['analytics']);
+        $this->assertNull($this->extractTrendJson($testResponse->getContent())['total']);
         $testResponse->assertSee('まだ記事がありません。');
     }
 
@@ -188,8 +212,8 @@ class IndexTest extends TestCase
         $many = $this->countQueriesForUserWithArticles(30);
 
         $this->assertSame($few, $many);
-        // サマリ1・最近の記事3（本体と累計PV/CV）・推移4（対象ID、本体と日次PV/CV）
-        $this->assertSame(8, $many);
+        // サマリ1・最近の記事3（本体と累計PV/CV）・推移2（ユーザー全体の日次PV/CV合計）
+        $this->assertSame(6, $many);
     }
 
     private function countQueriesForUserWithArticles(int $articleCount): int
@@ -214,7 +238,7 @@ class IndexTest extends TestCase
     /**
      * 画面に埋め込んだ推移のJSON（フロントが読むもの）を取り出す
      *
-     * @return array{start_date:string,end_date:string,analytics:list<array<string,mixed>>}
+     * @return array{start_date:string,end_date:string,total:array{id:int,viewCounts:array<string,int>,conversionCounts:array<string,int>,pastViewCount:int,pastConversionCount:int}|null}
      */
     private function extractTrendJson(false|string $html): array
     {
@@ -223,7 +247,7 @@ class IndexTest extends TestCase
             $this->fail('推移のJSONが埋め込まれていない');
         }
 
-        /** @var array{start_date:string,end_date:string,analytics:list<array<string,mixed>>} */
+        /** @var array{start_date:string,end_date:string,total:array{id:int,viewCounts:array<string,int>,conversionCounts:array<string,int>,pastViewCount:int,pastConversionCount:int}|null} */
         return json_decode($matches[1], true, flags: JSON_THROW_ON_ERROR);
     }
 

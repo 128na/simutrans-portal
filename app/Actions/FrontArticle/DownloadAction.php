@@ -14,17 +14,20 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadAction
 {
-    public function __invoke(Article $article, ?User $user): StreamedResponse
+    /**
+     * @param  bool  $countConversion  HEAD リクエストなど本文を返さないときは false
+     */
+    public function __invoke(Article $article, ?User $user, bool $countConversion = true): StreamedResponse
     {
-        // ログインしていて自身の記事ならカウントしない
-        if (is_null($user) || $user->id !== $article->user_id) {
-            event(new ArticleConversion($article));
-        }
-
         /** @var Attachment|null $file */
         $file = $article->file;
-        if ($file === null) {
+        if ($file === null || ! $this->getPublicDisk()->exists($file->path)) {
             abort(404);
+        }
+
+        // ログインしていて自身の記事ならカウントしない。ファイルを返せるときだけ 1 リクエスト 1 回数える
+        if ($countConversion && (is_null($user) || $user->id !== $article->user_id)) {
+            event(new ArticleConversion($article));
         }
 
         return $this->getPublicDisk()->download(

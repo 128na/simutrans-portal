@@ -7,6 +7,7 @@ import TextBadge from "@/components/ui/TextBadge";
 import { useApiCall } from "@/hooks/useApiCall";
 import { useMyLists } from "@/hooks/useMyLists";
 import type { MyListCreateRequest } from "@/types/models";
+import { parseRetryAfter, sleepMs } from "@/features/bulkDownload/bulkDownload";
 
 interface AddToMyListButtonProps {
   articleId: number;
@@ -52,7 +53,7 @@ export const AddToMyListButton = ({
 
       {isOpen && (
         <AddToMyListModal
-          articleId={articleId}
+          articleIds={[articleId]}
           onClose={handleClose}
           onSuccess={handleSuccess}
         />
@@ -62,18 +63,25 @@ export const AddToMyListButton = ({
 };
 
 interface AddToMyListModalProps {
-  articleId: number;
+  /** 追加する記事。まとめて保存では複数 */
+  articleIds: number[];
   onClose: () => void;
   onSuccess: () => void;
+  /** 待ち時間（ミリ秒）。テストで差し替える */
+  sleep?: (ms: number) => Promise<void>;
 }
+
+/** 1 件につき 429 で送り直す上限。超えたら失敗として止める */
+const MAX_RETRIES_ON_429 = 3;
 
 /**
  * マイリスト選択・追加モーダル
  */
-const AddToMyListModal = ({
-  articleId,
+export const AddToMyListModal = ({
+  articleIds,
   onClose,
   onSuccess,
+  sleep = sleepMs,
 }: AddToMyListModalProps) => {
   const { call } = useApiCall();
   const { lists, setLists, isLoading, error, setError } = useMyLists();
@@ -82,6 +90,8 @@ const AddToMyListModal = ({
   );
   const [isCreating, setIsCreating] = useState(false);
   const [newListTitle, setNewListTitle] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+  const [waitingSeconds, setWaitingSeconds] = useState<number | null>(null);
 
   const handleToggleList = (listId: number) => {
     const newSelected = new Set(selectedListIds);
@@ -139,28 +149,52 @@ const AddToMyListModal = ({
 
     setError(null);
 
+    setIsSaving(true);
     const result = await call(
       async () => {
-        const promises = Array.from(selectedListIds).map(async (listId) => {
-          try {
-            await axios.post(`/api/v1/mylist/${listId}/items`, {
-              article_id: articleId,
-            });
-          } catch (err) {
-            // 409 は重複なので握りつぶす
-            if (!axios.isAxiosError(err) || err.response?.status !== 409) {
-              throw err;
+        // まとめて保存では件数×リスト数の POST になるので、並列にせず 1 件ずつ送る
+        for (const listId of Array.from(selectedListIds)) {
+          for (const articleId of articleIds) {
+            for (let retries = 0; ; retries++) {
+              try {
+                await axios.post(`/api/v1/mylist/${listId}/items`, {
+                  article_id: articleId,
+                });
+                break;
+              } catch (err) {
+                // 409 は重複なので握りつぶす
+                if (axios.isAxiosError(err) && err.response?.status === 409) {
+                  break;
+                }
+                // 429 は上限なので待ってから同じ件を送り直す（回数に上限を付け、待ち続けないようにする）
+                if (
+                  axios.isAxiosError(err) &&
+                  err.response?.status === 429 &&
+                  retries < MAX_RETRIES_ON_429
+                ) {
+                  const retryAfter: unknown =
+                    err.response.headers?.["retry-after"];
+                  const seconds = parseRetryAfter(
+                    typeof retryAfter === "string" ? retryAfter : null
+                  );
+                  setWaitingSeconds(seconds);
+                  await sleep(seconds * 1000);
+                  setWaitingSeconds(null);
+                  continue;
+                }
+                throw err;
+              }
             }
           }
-        });
-
-        await Promise.all(promises);
+        }
       },
       {
         successMessage: "マイリストに追加しました",
         onSuccess: () => onSuccess(),
       }
     );
+    setIsSaving(false);
+    setWaitingSeconds(null);
 
     // バリデーションエラーがある場合は表示
     if (result.validationErrors) {
@@ -172,7 +206,19 @@ const AddToMyListModal = ({
   };
 
   return (
-    <Modal title="マイリストに追加" onClose={onClose}>
+    // 保存中に閉じると裏で送信が続くので、終わるまで閉じさせない
+    <Modal title="マイリストに追加" onClose={isSaving ? undefined : onClose}>
+      {articleIds.length > 1 && (
+        <p className="text-body mb-4">
+          選択中の {articleIds.length} 件を追加します。
+        </p>
+      )}
+      {waitingSeconds !== null && (
+        <p className="text-body text-c-sub mb-4" role="status">
+          保存の上限に達したため、約 {waitingSeconds}{" "}
+          秒待ってから続きを保存します。
+        </p>
+      )}
       {error && (
         <div className="v2-card v2-card-danger mb-4" role="alert">
           <p className="v2-text-body">{error}</p>
@@ -239,15 +285,19 @@ const AddToMyListModal = ({
       </div>
 
       <div className="flex gap-2 justify-end mt-6">
-        <Button onClick={onClose} disabled={isLoading} variant="subOutline">
+        <Button
+          onClick={onClose}
+          disabled={isLoading || isSaving}
+          variant="subOutline"
+        >
           キャンセル
         </Button>
         <Button
           onClick={handleAddToLists}
-          disabled={isLoading || selectedListIds.size === 0}
+          disabled={isLoading || isSaving || selectedListIds.size === 0}
           variant="primary"
         >
-          {isLoading ? "追加中..." : "追加"}
+          {isLoading || isSaving ? "追加中..." : "追加"}
         </Button>
       </div>
     </Modal>

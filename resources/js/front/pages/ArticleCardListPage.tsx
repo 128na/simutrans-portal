@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { ArticleCardList } from "../../features/articles/components/ArticleCardList";
+import { BulkSelectableArticleList } from "../../features/bulkDownload/BulkSelectableArticleList";
 import type { ArticleCardSort } from "../../features/articles/components/ArticleCard";
 import { AppWrapper } from "../../components/AppWrapper";
 
@@ -20,7 +20,7 @@ if (app) {
       app.dataset.sort === "published" ? "published" : "modified";
 
     return (
-      <ArticleCardList
+      <BulkSelectableArticleList
         articles={articles}
         sort={sort}
         isAuthenticated={isAuthenticated}

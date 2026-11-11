@@ -85,7 +85,7 @@ Route::get('/mylist/{slug}', [PublicMyListController::class, 'show'])->name('pub
 
 // 記事詳細・ダウンロード
 Route::get('/articles/{id}', [ShowController::class, 'fallbackShow'])->name('articles.fallbackShow');
-Route::get('/articles/{article}/download', [DownloadController::class, 'download'])->name('articles.download');
+Route::get('/articles/{article}/download', [DownloadController::class, 'download'])->middleware('throttle:download')->name('articles.download');
 Route::get('/articles/{article}/conversion', [DownloadController::class, 'conversion'])->name('articles.conversion');
 Route::get('/redirect/{name}', [RedirectController::class, 'redirect'])->name('redirect');
 

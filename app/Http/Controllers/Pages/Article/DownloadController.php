@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Contents\AddonIntroductionContent;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -17,13 +18,14 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DownloadController extends Controller
 {
-    public function download(Article $article, DownloadAction $downloadAction): StreamedResponse
+    public function download(Request $request, Article $article, DownloadAction $downloadAction): StreamedResponse
     {
         if (Gate::denies('download', $article)) {
             abort(404);
         }
 
-        return $downloadAction($article, Auth::user());
+        // GET ルートは HEAD にも応答する。本文を返さない HEAD では CV を数えない
+        return $downloadAction($article, Auth::user(), ! $request->isMethod('HEAD'));
     }
 
     public function conversion(Article $article, ConversionAction $conversionAction): RedirectResponse

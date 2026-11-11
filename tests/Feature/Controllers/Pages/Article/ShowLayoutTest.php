@@ -81,11 +81,15 @@ class ShowLayoutTest extends TestCase
     {
         $article = Article::factory()->publish()->page()->create();
 
-        $form = $this->headerSearchForm($this->showHtml($article));
+        $html = $this->showHtml($article);
+        $form = $this->headerSearchForm($html);
 
         $this->assertStringContainsString('method="GET"', $form);
         $this->assertStringContainsString('action="'.route('search').'"', $form);
         $this->assertStringContainsString('name="word"', $form);
+        // スマホ幅ではヘッダーを2段にしないよう隠し、モバイルメニュー内の検索を使う
+        $this->assertMatchesRegularExpression('/^<form\b[^>]*class="[^"]*\bhidden lg:block\b/', $form);
+        $this->assertStringContainsString('id="sidebar-search-mobile"', $html);
     }
 
     public function test_他のページはサイドメニューを残す(): void

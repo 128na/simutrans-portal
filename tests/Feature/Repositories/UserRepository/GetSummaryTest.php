@@ -6,7 +6,6 @@ namespace Tests\Feature\Repositories\UserRepository;
 
 use App\Models\Article;
 use App\Models\Attachment;
-use App\Models\Tag;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +26,11 @@ class GetSummaryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $article = Article::factory()->for($user)->create();
+        $article = Article::factory()->for($user)->publish()->create();
+        Article::factory()->for($user)->publish()->create();
+        Article::factory()->for($user)->draft()->create();
+        Article::factory()->for($user)->publish()->deleted()->create();
+        Article::factory()->for(User::factory())->publish()->create();
         Attachment::factory()->for($user)->create(['size' => 123]);
 
         // insert conversion and view counts for the user/period
@@ -47,15 +50,14 @@ class GetSummaryTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        Tag::factory()->create(['created_by' => $user->id]);
-
         $summary = $this->userRepository->getSummary($user);
 
-        $this->assertSame(1, (int) $summary->article_count);
-        $this->assertSame(1, (int) $summary->attachment_count);
+        // 下書きを含み、論理削除と他人の記事は含まない
+        $this->assertSame(3, (int) $summary->article_count);
+        // 公開中のみ
+        $this->assertSame(2, (int) $summary->published_article_count);
         $this->assertSame(123, (int) $summary->total_attachment_size);
         $this->assertSame(5, (int) $summary->total_conversion_count);
         $this->assertSame(7, (int) $summary->total_view_count);
-        $this->assertSame(1, (int) $summary->tag_count);
     }
 }

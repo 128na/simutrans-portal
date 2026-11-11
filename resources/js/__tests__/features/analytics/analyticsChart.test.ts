@@ -6,6 +6,7 @@ import {
   formatPeriodLabel,
   markerShapeFor,
   spansMultipleYears,
+  sumAnalytics,
   type ChartConditions,
 } from "@/features/analytics/analyticsChart";
 
@@ -293,5 +294,62 @@ describe("系列の見た目", () => {
       "diamond",
       "circle",
     ]);
+  });
+});
+
+describe("sumAnalytics", () => {
+  it("記事ごとの集計を区間ごとに足し合わせる", () => {
+    const total = sumAnalytics(
+      [
+        {
+          id: 11,
+          viewCounts: { "20261109": 3, "20261110": 5 },
+          conversionCounts: { "20261110": 1 },
+          pastViewCount: 100,
+          pastConversionCount: 7,
+        },
+        {
+          id: 12,
+          viewCounts: { "20261110": 2, "20261111": 4 },
+          conversionCounts: { "20261110": 2, "20261111": 6 },
+          pastViewCount: 20,
+          pastConversionCount: 3,
+        },
+      ],
+      99
+    );
+
+    expect(total).toEqual({
+      id: 99,
+      viewCounts: { "20261109": 3, "20261110": 7, "20261111": 4 },
+      conversionCounts: { "20261110": 3, "20261111": 6 },
+      pastViewCount: 120,
+      pastConversionCount: 10,
+    });
+  });
+
+  it("集計が空の記事（API では配列になる）があっても足し合わせられる", () => {
+    const total = sumAnalytics(
+      [
+        {
+          id: 21,
+          viewCounts: [] as unknown as Record<string, number>,
+          conversionCounts: [] as unknown as Record<string, number>,
+          pastViewCount: 0,
+          pastConversionCount: 0,
+        },
+        {
+          id: 22,
+          viewCounts: { "20261111": 8 },
+          conversionCounts: {},
+          pastViewCount: 0,
+          pastConversionCount: 0,
+        },
+      ],
+      0
+    );
+
+    expect(total.viewCounts).toEqual({ "20261111": 8 });
+    expect(total.conversionCounts).toEqual({});
   });
 });

@@ -9,6 +9,7 @@ import "./mypage/pages/ArticleEditPage";
 import "./mypage/pages/AttachmentPage";
 import "./mypage/pages/ProfileEditPage";
 import "./mypage/pages/AnalyticsPage";
+import "./mypage/pages/DashboardPage";
 import "./mypage/pages/PlaygroundPage";
 import "./mypage/pages/MyListIndexPage";
 import "./mypage/pages/MyListDetailPage";

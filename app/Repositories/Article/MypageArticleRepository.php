@@ -54,6 +54,25 @@ class MypageArticleRepository
     }
 
     /**
+     * マイページトップ用に最近更新した記事を件数を絞って取得
+     *
+     * @return Collection<int,Article>
+     */
+    public function getRecentForMypage(User $user, int $limit): Collection
+    {
+        $builder = $this->model->query()
+            ->select(['id', 'title', 'slug', 'status', 'modified_at'])
+            ->where('articles.user_id', $user->id);
+
+        $this->orderByLatest($builder);
+
+        return $builder
+            ->limit($limit)
+            ->with('totalConversionCount', 'totalViewCount')
+            ->get();
+    }
+
+    /**
      * アナリティクス用記事一覧取得
      *
      * @return Collection<int,Article>

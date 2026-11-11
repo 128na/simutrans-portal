@@ -104,6 +104,20 @@ describe("アドオン一覧のカード", () => {
     );
   });
 
+  it("タイトルは英単語の途中で折らず、1 語が長すぎるときだけ途中で折ってカードからはみ出させない", () => {
+    render(
+      <ArticleCard
+        article={{ ...post, title: "Frankfurt (am Main) U-Bahn U2 & U3" }}
+      />
+    );
+
+    const [, titleLink] = screen.getAllByRole("link", {
+      name: "Frankfurt (am Main) U-Bahn U2 & U3",
+    });
+    // jsdom では折り返しを測れないので、上書きのクラスで確かめる（実測は PR #665）
+    expect(titleLink).toHaveClass("[word-break:normal]!", "wrap-anywhere");
+  });
+
   it("公開順のときは公開日を表示する", () => {
     render(<ArticleCard article={post} sort="published" />);
 

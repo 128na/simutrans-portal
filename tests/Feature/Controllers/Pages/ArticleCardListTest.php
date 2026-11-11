@@ -119,6 +119,21 @@ class ArticleCardListTest extends TestCase
         $this->assertSame([$this->introTrains->id, $this->postTrains->id], $this->idsOf($this->get($url.'?addon=buildings')), '種類の切り替えを出さない一覧では ?addon を無視する');
     }
 
+    /**
+     * 種類の行は横スクロール枠で、中の件数に sr-only（絶対配置）の「件」がある。
+     * 枠を位置指定しないと sr-only が枠の外にはみ出し、スマホ幅でページ全体が横にスクロールする（#656）
+     */
+    public function test_種類の絞り込みの横スクロール枠が中の読み上げ用テキストをはみ出させない(): void
+    {
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $html = $this->get($this->url('pak', []))->assertOk()->getContent();
+
+        $this->assertIsString($html);
+        $this->assertMatchesRegularExpression('/<span class="sr-only">件<\/span>/u', $html, '件数の読み上げ用テキストがある');
+        $this->assertMatchesRegularExpression('/<nav aria-label="種類で絞り込む" class="(?=[^"]*\brelative\b)(?=[^"]*\boverflow-x-auto\b)[^"]*"/u', $html);
+    }
+
     public function test_検索画面では入手方法の切り替えを出さず投稿形式の条件を上書きしない(): void
     {
         $this->get($this->url('search', ['postTypes' => ['addon-introduction']]))

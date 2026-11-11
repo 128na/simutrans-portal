@@ -10,7 +10,7 @@
 @endphp
 <div class="flex flex-col gap-3 rounded-lg bg-c-surface p-3">
   @if ($showAddon)
-    <nav aria-label="種類で絞り込む" class="flex items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0">
+    <nav aria-label="種類で絞り込む" class="relative flex items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0">
       <span class="shrink-0 px-1 text-meta font-bold text-c-sub">種類</span>
       <a
         href="{{ request()->fullUrlWithQuery(['addon' => null, 'page' => null]) }}"

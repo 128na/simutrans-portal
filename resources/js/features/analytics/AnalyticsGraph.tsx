@@ -3,32 +3,17 @@ import TextSub from "@/components/ui/TextSub";
 import Button from "@/components/ui/Button";
 import { useAnalyticsStore } from "@/hooks/useAnalyticsStore";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { format } from "date-fns";
-import {
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { buildChartData, type ChartConditions } from "./analyticsChart";
+import { AnalyticsLineChart } from "./AnalyticsLineChart";
 
 type Props = {
   articles: Analytics.Article[];
   loadOnMount?: boolean;
 };
 
-type DataSet = ({ name: string } & Record<string, number | string>)[];
-type Conditions = {
-  ids: number[];
-  type: Analytics.Type;
-  start_date: string;
-  end_date: string;
-  mode: Analytics.Mode;
-  axes: Analytics.Axis[];
-};
+type Conditions = ChartConditions & { ids: number[] };
 
 type RequestState =
   | { phase: "loading" | "error"; key: string }
@@ -76,8 +61,6 @@ export function AnalyticsGraph({ articles, loadOnMount = false }: Props) {
   );
   const latestRequest = useRef<AbortController | null>(null);
   const result = request?.phase === "ready" ? request : null;
-  const analytics = result?.analytics ?? [];
-  const appliedAxes = result?.conditions.axes ?? [];
 
   const fetchAnalytics = useCallback((requested: Conditions) => {
     latestRequest.current?.abort();
@@ -116,89 +99,14 @@ export function AnalyticsGraph({ articles, loadOnMount = false }: Props) {
     return () => latestRequest.current?.abort();
   }, [fetchAnalytics, initialConditions]);
 
-  // convert from analytics
-  const keys: {
-    key: string;
-    name: string;
-    stroke: string;
-    id: number;
-    axis: Analytics.Axis;
-  }[] = [];
-  const data: DataSet = [];
-  analytics.forEach((an, idx) => {
-    const { id, viewCounts, conversionCounts } = an;
-    const article = articles.find((a) => a.id === id);
-    if (!article) return;
-    if (appliedAxes.includes("pv")) {
-      const pvKey = `${article.id}-pv`;
-      keys.push({
-        key: pvKey,
-        name: `${article.title} (PV)`,
-        axis: "pv",
-        stroke: `hsl(${211 + idx * 53}, 82%, 54%)`,
-        id: article.id,
-      });
-      Object.entries(viewCounts).forEach(([date, value]) => {
-        const d = data.find((d) => d.name === date);
-        if (d) {
-          d[pvKey] = value;
-        } else {
-          data.push({ name: date, [pvKey]: value });
-        }
-      });
-    }
-    if (appliedAxes.includes("cv")) {
-      const cvKey = `${article.id}-cv`;
-      keys.push({
-        key: cvKey,
-        name: `${article.title} (CV)`,
-        axis: "cv",
-        stroke: `hsl(${211 + idx * 53}, 63%, 76%)`,
-        id: article.id,
-      });
-      Object.entries(conversionCounts).forEach(([date, value]) => {
-        const d = data.find((d) => d.name === date);
-        if (d) {
-          d[cvKey] = value;
-        } else {
-          data.push({ name: date, [cvKey]: value });
-        }
-      });
-    }
-  });
-
-  // 日付順にソート。過去データが十分にないと順序が狂うことがあるため
-  data.sort((a, b) => (a.name < b.name ? -1 : 1));
-
-  // 積算なら過去値も加えて加算する
-  if (result?.conditions.mode === "cumulative") {
-    const cumulativeData: DataSet = [];
-    const cumulativeSums: Record<string, number> = {};
-    data.forEach((entry, idx) => {
-      const newEntry: { name: string } & Record<string, number | string> = {
-        name: entry.name,
-      };
-      keys.forEach((key) => {
-        // 日付順に並んでいるの最初だけ過去データの加算
-        if (idx === 0) {
-          const analytic = analytics.find((a) => a.id === key.id);
-          if (!analytic) return;
-          cumulativeSums[key.key] =
-            key.axis === "pv"
-              ? analytic.pastViewCount
-              : analytic.pastConversionCount;
-        }
-        // 都度加算
-        const value =
-          typeof entry[key.key] === "number" ? (entry[key.key] as number) : 0;
-        cumulativeSums[key.key] = (cumulativeSums[key.key] || 0) + value;
-
-        newEntry[key.key] = cumulativeSums[key.key];
-      });
-      cumulativeData.push(newEntry);
-    });
-    data.splice(0, data.length, ...cumulativeData);
-  }
+  // 条件の変更で再描画されても、適用済みの結果が同じなら作り直さない
+  const { series, rows } = useMemo(
+    () =>
+      result
+        ? buildChartData(result.analytics, articles, result.conditions)
+        : { series: [], rows: [] },
+    [result, articles]
+  );
 
   const onClick = () => {
     setRequest({ phase: "loading", key });
@@ -255,31 +163,14 @@ export function AnalyticsGraph({ articles, loadOnMount = false }: Props) {
         )}
       </div>
       {result &&
-        (data.length === 0 ? (
+        (series.length === 0 ? (
           <TextSub>適用した条件に該当する集計はありません。</TextSub>
         ) : (
-          <LineChart
-            style={{ width: "100%", minHeight: 300, maxHeight: 600 }}
-            responsive
-            data={data}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            {keys.map((key) => (
-              <Line
-                key={key.key}
-                dataKey={key.key}
-                name={key.name}
-                stroke={key.stroke}
-                connectNulls
-              />
-            ))}
-            <XAxis dataKey="name" />
-            <YAxis
-              label={{ value: "件数", angle: -90, position: "insideLeft" }}
-            />
-            <Legend />
-            <Tooltip />
-          </LineChart>
+          <AnalyticsLineChart
+            type={result.conditions.type}
+            rows={rows}
+            series={series}
+          />
         ))}
       <div className="mt-4">
         <Button

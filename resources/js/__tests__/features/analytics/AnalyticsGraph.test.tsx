@@ -26,19 +26,28 @@ vi.mock("recharts", () => ({
     dataKey,
     name,
     stroke,
+    strokeDasharray,
+    legendType,
   }: {
     dataKey: string;
     name: string;
     stroke: string;
+    strokeDasharray?: string;
+    legendType?: string;
   }) => (
     <div
       data-testid={`line-${name}`}
       data-key={dataKey}
       data-name={name}
       data-stroke={stroke}
+      data-dash={strokeDasharray ?? ""}
+      data-legend-type={legendType}
     />
   ),
-  XAxis: () => <div data-testid="x-axis" />,
+  Symbols: () => <div data-testid="symbols" />,
+  XAxis: ({ tickFormatter }: { tickFormatter: (value: string) => string }) => (
+    <div data-testid="x-axis" data-first-tick={tickFormatter("20240101")} />
+  ),
   YAxis: () => <div data-testid="y-axis" />,
   CartesianGrid: () => <div data-testid="cartesian-grid" />,
   Legend: () => <div data-testid="legend" />,
@@ -87,7 +96,7 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10 },
+            viewCounts: { "20240101": 10 },
             conversionCounts: {},
             pastViewCount: 0,
             pastConversionCount: 0,
@@ -153,8 +162,8 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10, "2024-01-02": 20 },
-            conversionCounts: { "2024-01-01": 5, "2024-01-02": 8 },
+            viewCounts: { "20240101": 10, "20240102": 20 },
+            conversionCounts: { "20240101": 5, "20240102": 8 },
             pastViewCount: 100,
             pastConversionCount: 50,
           },
@@ -188,8 +197,8 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10 },
-            conversionCounts: { "2024-01-01": 5 },
+            viewCounts: { "20240101": 10 },
+            conversionCounts: { "20240101": 5 },
             pastViewCount: 0,
             pastConversionCount: 0,
           },
@@ -214,8 +223,8 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10 },
-            conversionCounts: { "2024-01-01": 5 },
+            viewCounts: { "20240101": 10 },
+            conversionCounts: { "20240101": 5 },
             pastViewCount: 0,
             pastConversionCount: 0,
           },
@@ -234,6 +243,59 @@ describe("AnalyticsGraph", () => {
     });
   });
 
+  it("期間の全日を0埋めし、PVとCVを色と線種で区別して読みやすい日付で表示する", async () => {
+    const user = userEvent.setup();
+    mockAxios.post = vi.fn().mockResolvedValue({
+      data: {
+        data: [
+          {
+            id: 1,
+            viewCounts: { "20240105": 10 },
+            conversionCounts: { "20240110": 5 },
+            pastViewCount: 0,
+            pastConversionCount: 0,
+          },
+          {
+            id: 2,
+            viewCounts: {},
+            conversionCounts: {},
+            pastViewCount: 0,
+            pastConversionCount: 0,
+          },
+        ],
+      },
+    });
+
+    render(<AnalyticsGraph articles={mockArticles} />);
+    await user.click(screen.getByRole("button", { name: "グラフを再表示" }));
+
+    const chart = await screen.findByTestId("line-chart");
+    const chartData = JSON.parse(chart.getAttribute("data-chart-data") || "[]");
+    expect(chartData).toHaveLength(31);
+    expect(chartData[0]).toEqual({
+      name: "20240101",
+      "1-pv": 0,
+      "1-cv": 0,
+      "2-pv": 0,
+      "2-cv": 0,
+    });
+    expect(chartData[4]["1-pv"]).toBe(10);
+    expect(chartData[9]["1-cv"]).toBe(5);
+    expect(chartData[30].name).toBe("20240131");
+
+    const pv = screen.getByTestId("line-Article 1 (PV)");
+    const cv = screen.getByTestId("line-Article 1 (CV)");
+    expect(pv.dataset.stroke).not.toBe(cv.dataset.stroke);
+    expect(pv.dataset.dash).toBe("");
+    expect(cv.dataset.dash).not.toBe("");
+    // 記事はマーカーの形で区別する
+    expect(pv.dataset.legendType).toBe("circle");
+    expect(screen.getByTestId("line-Article 2 (PV)").dataset.legendType).toBe(
+      "square"
+    );
+    expect(screen.getByTestId("x-axis").dataset.firstTick).toBe("1/1");
+  });
+
   it("PVのみの軸を表示する", async () => {
     const user = userEvent.setup();
     mockUseAnalyticsStore.mockReturnValue({
@@ -250,8 +312,8 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10 },
-            conversionCounts: { "2024-01-01": 5 },
+            viewCounts: { "20240101": 10 },
+            conversionCounts: { "20240101": 5 },
             pastViewCount: 0,
             pastConversionCount: 0,
           },
@@ -288,7 +350,7 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10, "2024-01-02": 20 },
+            viewCounts: { "20240101": 10, "20240102": 20 },
             conversionCounts: {},
             pastViewCount: 100,
             pastConversionCount: 0,
@@ -307,10 +369,11 @@ describe("AnalyticsGraph", () => {
       const chartData = JSON.parse(
         chart.getAttribute("data-chart-data") || "[]"
       );
-      // 累積なので、過去値100 + 10 = 110、110 + 20 = 130
-      expect(chartData).toHaveLength(2);
+      // 累積なので、過去値100 + 10 = 110、110 + 20 = 130。以降は0埋めで130のまま
+      expect(chartData).toHaveLength(31);
       expect(chartData[0]["1-pv"]).toBe(110);
       expect(chartData[1]["1-pv"]).toBe(130);
+      expect(chartData[30]["1-pv"]).toBe(130);
     });
   });
 
@@ -321,15 +384,15 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 1,
-            viewCounts: { "2024-01-01": 10 },
-            conversionCounts: { "2024-01-01": 5 },
+            viewCounts: { "20240101": 10 },
+            conversionCounts: { "20240101": 5 },
             pastViewCount: 0,
             pastConversionCount: 0,
           },
           {
             id: 2,
-            viewCounts: { "2024-01-01": 15 },
-            conversionCounts: { "2024-01-01": 8 },
+            viewCounts: { "20240101": 15 },
+            conversionCounts: { "20240101": 8 },
             pastViewCount: 0,
             pastConversionCount: 0,
           },
@@ -356,9 +419,9 @@ describe("AnalyticsGraph", () => {
           {
             id: 1,
             viewCounts: {
-              "2024-01-03": 30,
-              "2024-01-01": 10,
-              "2024-01-02": 20,
+              "20240103": 30,
+              "20240101": 10,
+              "20240102": 20,
             },
             conversionCounts: {},
             pastViewCount: 0,
@@ -378,9 +441,9 @@ describe("AnalyticsGraph", () => {
       const chartData = JSON.parse(
         chart.getAttribute("data-chart-data") || "[]"
       );
-      expect(chartData[0].name).toBe("2024-01-01");
-      expect(chartData[1].name).toBe("2024-01-02");
-      expect(chartData[2].name).toBe("2024-01-03");
+      expect(chartData[0].name).toBe("20240101");
+      expect(chartData[1].name).toBe("20240102");
+      expect(chartData[2].name).toBe("20240103");
     });
   });
 
@@ -421,7 +484,7 @@ describe("AnalyticsGraph", () => {
           data: [
             {
               id: 1,
-              viewCounts: { "2024-01-01": 10 },
+              viewCounts: { "20240101": 10 },
               conversionCounts: {},
               pastViewCount: 0,
               pastConversionCount: 0,
@@ -461,8 +524,8 @@ describe("AnalyticsGraph", () => {
         data: [
           {
             id: 999, // 存在しない記事ID
-            viewCounts: { "2024-01-01": 10 },
-            conversionCounts: { "2024-01-01": 5 },
+            viewCounts: { "20240101": 10 },
+            conversionCounts: { "20240101": 5 },
             pastViewCount: 0,
             pastConversionCount: 0,
           },

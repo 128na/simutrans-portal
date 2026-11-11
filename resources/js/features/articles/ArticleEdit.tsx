@@ -20,6 +20,20 @@ const actions = {
   trash: { label: "ゴミ箱に移す", result: "記事をゴミ箱に移しました。" },
 } as const;
 
+type Operation = keyof typeof actions;
+
+/**
+ * 保存後の状態に対応する操作。公開中の記事を公開のまま保存するときだけ「更新」とする。
+ */
+const operationOf = (
+  status: ArticleStatus,
+  articleId: number | null | undefined,
+  initialStatus: ArticleStatus | undefined
+): Operation =>
+  articleId && status === "publish" && initialStatus === "publish"
+    ? "update"
+    : status;
+
 const savedMessage = () => {
   const params = new URLSearchParams(window.location.search);
   const operation = params.get("saved");
@@ -51,15 +65,20 @@ export const ArticleEdit = () => {
     followRedirect ||
     uploading;
   const [panel, setPanel] = useState<"edit" | "preview">("edit");
-  const [saving, setSaving] = useState(false);
+  const [savingStatus, setSavingStatus] = useState<ArticleStatus | null>(null);
+  const saving = savingStatus !== null;
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState(savedMessage);
 
   const { setValidationErrorFrom } = useAxiosError();
-  const operation =
-    article?.id && article.status === "publish" && initialStatus === "publish"
-      ? "update"
-      : (article?.status ?? "draft");
+  const operation = operationOf(
+    article?.status ?? "draft",
+    article?.id,
+    initialStatus
+  );
+  // 下書き・未公開の記事は「公開する」と「下書きを保存」を並べる。
+  // 公開中・予約・非公開などは状態を変えないよう、従来どおりステータスに従う1つの操作だけにする。
+  const canChoosePublish = operation === "draft" || operation === "publish";
 
   useEffect(() => {
     if (!isDirty) return;
@@ -72,10 +91,14 @@ export const ArticleEdit = () => {
     return () => window.removeEventListener("beforeunload", warn);
   }, [isDirty]);
 
-  const save = async () => {
+  /**
+   * 記事を保存する。statusを渡すとその状態で保存する（ストアの値は変えない）。
+   * 「公開する」はステータス欄で公開を選んで保存したときと同じ内容を送る。
+   */
+  const save = async (status: ArticleStatus = article.status) => {
     if (saveInProgress.current || saved.current || uploading) return;
     saveInProgress.current = true;
-    setSaving(true);
+    setSavingStatus(status);
     setError(undefined);
     setSuccess(undefined);
 
@@ -84,7 +107,7 @@ export const ArticleEdit = () => {
         ? "/api/v2/articles/" + article.id
         : "/api/v2/articles";
       const res = await axios.post(url, {
-        article,
+        article: status === article.status ? article : { ...article, status },
         should_notify: shouldNotify,
         without_update_modified_at: withoutUpdateModifiedAt,
         follow_redirect: followRedirect,
@@ -94,7 +117,7 @@ export const ArticleEdit = () => {
         "/mypage/articles/edit/" +
           res.data.article_id +
           "?updated=1&saved=" +
-          operation
+          operationOf(status, article.id, initialStatus)
       );
     } catch (error) {
       if (setValidationErrorFrom(error)) {
@@ -115,7 +138,7 @@ export const ArticleEdit = () => {
       }
     } finally {
       saveInProgress.current = false;
-      setSaving(false);
+      setSavingStatus(null);
     }
   };
   if (!article || !article.post_type) return null;
@@ -186,15 +209,45 @@ export const ArticleEdit = () => {
           </p>
         )}
         <div className="flex flex-wrap items-center gap-3">
-          <Button onClick={save} size="lg" disabled={saving || uploading}>
-            {saving
-              ? "保存中…"
-              : uploading
-                ? "アップロード中…"
-                : actions[operation].label}
-          </Button>
+          {canChoosePublish ? (
+            <>
+              <Button
+                onClick={() => save("publish")}
+                size="lg"
+                disabled={saving || uploading}
+              >
+                {savingStatus === "publish"
+                  ? "保存中…"
+                  : uploading
+                    ? "アップロード中…"
+                    : actions.publish.label}
+              </Button>
+              <Button
+                variant="subOutline"
+                onClick={() => save("draft")}
+                size="lg"
+                disabled={saving || uploading}
+              >
+                {savingStatus === "draft" ? "保存中…" : actions.draft.label}
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => save()}
+              size="lg"
+              disabled={saving || uploading}
+            >
+              {saving
+                ? "保存中…"
+                : uploading
+                  ? "アップロード中…"
+                  : actions[operation].label}
+            </Button>
+          )}
           <p className="text-sm text-c-sub">
-            保存後の状態は「{StatusText[article.status]}」です。
+            {canChoosePublish
+              ? "予約投稿・非公開はステータス欄で選べます。"
+              : `保存後の状態は「${StatusText[article.status]}」です。`}
             {isDirty && !saving && " 未保存の変更があります。"}
           </p>
         </div>

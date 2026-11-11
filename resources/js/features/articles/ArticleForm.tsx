@@ -3,7 +3,7 @@ import { JSX } from "react";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { Page } from "./postType/Page";
 import { Markdown } from "./postType/Markdown";
-import { AddonPost } from "./postType/AddonPost";
+import { AddonPost, AddonPostFile } from "./postType/AddonPost";
 import { AddonIntroduction } from "./postType/AddonIntroduction";
 import { FormCaption } from "@/components/ui/FormCaption";
 import Checkbox from "@/components/ui/Checkbox";
@@ -21,6 +21,7 @@ export const ArticleForm = () => {
 
   return (
     <div className="grid gap-6">
+      {article.post_type === "addon-post" && <AddonPostFile />}
       <CommonForm />
       {match<ArticlePostType>(article.post_type)
         .returnType<JSX.Element>()
@@ -47,7 +48,8 @@ export const ArticleForm = () => {
           更新しない
         </Checkbox>
       </div>
-      {article.status === "publish" && (
+      {/* 下書きからも「公開する」で公開できるため、下書き中も通知の希望を選べるようにする */}
+      {(article.status === "publish" || article.status === "draft") && (
         <div>
           <FormCaption>公開時のSNS通知</FormCaption>
           <Checkbox

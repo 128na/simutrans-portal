@@ -192,6 +192,142 @@ describe("ArticleEdit", () => {
     }
   );
 
+  describe("公開と下書き保存の操作", () => {
+    const mockEditor = (
+      article: Article.MypageEdit,
+      initialStatus: ArticleStatus | undefined,
+      shouldNotify = false
+    ) => {
+      vi.mocked(useArticleEditor).mockImplementation((selector) =>
+        selector({
+          article,
+          initialArticle: initialStatus
+            ? { ...article, status: initialStatus }
+            : undefined,
+          shouldNotify,
+          withoutUpdateModifiedAt: false,
+          followRedirect: false,
+        } as unknown as ReturnType<typeof useArticleEditor.getState>)
+      );
+    };
+
+    const lastPost = () => vi.mocked(mockedAxios.post).mock.calls.at(-1);
+
+    beforeEach(() => {
+      vi.spyOn(mockedAxios, "post").mockResolvedValue({
+        data: { article_id: 41 },
+      } as AxiosResponse);
+    });
+
+    it.each([
+      ["新規", null, undefined, "/api/v2/articles"],
+      ["編集中の下書き", 7, "draft", "/api/v2/articles/7"],
+    ] as const)(
+      "%sで「公開する」を押すと、ステータス欄で公開を選んで保存したときと同じ値を送る",
+      async (_, id, initialStatus, url) => {
+        const draft = {
+          ...mockArticle,
+          id,
+          status: "draft",
+          published_at: null,
+        } as Article.MypageEdit;
+
+        mockEditor({ ...draft, status: "publish" }, initialStatus, true);
+        const { unmount } = render(<ArticleEdit />);
+        fireEvent.click(screen.getByRole("button", { name: "公開する" }));
+        await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(1));
+        const viaStatusField = lastPost();
+        unmount();
+
+        mockEditor(draft, initialStatus, true);
+        render(<ArticleEdit />);
+        fireEvent.click(screen.getByRole("button", { name: "公開する" }));
+        await waitFor(() => expect(mockedAxios.post).toHaveBeenCalledTimes(2));
+        const viaPublishButton = lastPost();
+
+        expect(viaPublishButton).toEqual(viaStatusField);
+        expect(viaPublishButton?.[0]).toBe(url);
+        expect(viaPublishButton?.[1]).toMatchObject({
+          article: { status: "publish", published_at: null },
+          should_notify: true,
+        });
+        expect(window.location.replace).toHaveBeenLastCalledWith(
+          "/mypage/articles/edit/41?updated=1&saved=publish"
+        );
+      }
+    );
+
+    it("「下書きを保存」は下書きのまま保存する", async () => {
+      mockEditor({ ...mockArticle, id: 7, status: "publish" }, "draft");
+      render(<ArticleEdit />);
+      fireEvent.click(screen.getByRole("button", { name: "下書きを保存" }));
+
+      await waitFor(() =>
+        expect(mockedAxios.post).toHaveBeenCalledWith(
+          "/api/v2/articles/7",
+          expect.objectContaining({
+            article: expect.objectContaining({ id: 7, status: "draft" }),
+          })
+        )
+      );
+      expect(window.location.replace).toHaveBeenCalledWith(
+        "/mypage/articles/edit/41?updated=1&saved=draft"
+      );
+    });
+
+    it.each([
+      ["reservation", "公開を予約する", "2030-01-02T03:04"],
+      ["private", "非公開で保存", "2025-01-01 10:00:00"],
+    ] as const)(
+      "%s の記事は公開操作を出さず、状態と公開日時を保ったまま保存する",
+      async (status, label, publishedAt) => {
+        mockEditor(
+          { ...mockArticle, id: 8, status, published_at: publishedAt },
+          status
+        );
+        render(<ArticleEdit />);
+
+        expect(
+          screen.queryByRole("button", { name: "公開する" })
+        ).not.toBeInTheDocument();
+        expect(
+          screen.queryByRole("button", { name: "下書きを保存" })
+        ).not.toBeInTheDocument();
+        fireEvent.click(screen.getByRole("button", { name: label }));
+
+        await waitFor(() =>
+          expect(mockedAxios.post).toHaveBeenCalledWith(
+            "/api/v2/articles/8",
+            expect.objectContaining({
+              article: expect.objectContaining({
+                status,
+                published_at: publishedAt,
+              }),
+            })
+          )
+        );
+        expect(window.location.replace).toHaveBeenCalledWith(
+          `/mypage/articles/edit/41?updated=1&saved=${status}`
+        );
+      }
+    );
+
+    it("公開中の記事は「公開内容を更新」だけを出し、下書きに戻す操作を出さない", () => {
+      mockEditor({ ...mockArticle, id: 9, status: "publish" }, "publish");
+      render(<ArticleEdit />);
+
+      expect(
+        screen.getByRole("button", { name: "公開内容を更新" })
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "公開する" })
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "下書きを保存" })
+      ).not.toBeInTheDocument();
+    });
+  });
+
   it("プレビューを切り替えても編集欄を破棄しない", () => {
     render(<ArticleEdit />);
     const form = screen.getByTestId("article-form");

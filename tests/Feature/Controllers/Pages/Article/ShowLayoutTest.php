@@ -74,6 +74,20 @@ class ShowLayoutTest extends TestCase
         $this->assertSame([route('index')], $this->breadcrumbUrls($this->showHtml($article)));
     }
 
+    /**
+     * サイドメニューを外したページは、トップへ戻らずにキーワード検索できるようヘッダーに検索欄を出す（#660）。
+     */
+    public function test_記事詳細はヘッダーにキーワード検索欄を出す(): void
+    {
+        $article = Article::factory()->publish()->page()->create();
+
+        $form = $this->headerSearchForm($this->showHtml($article));
+
+        $this->assertStringContainsString('method="GET"', $form);
+        $this->assertStringContainsString('action="'.route('search').'"', $form);
+        $this->assertStringContainsString('name="word"', $form);
+    }
+
     public function test_他のページはサイドメニューを残す(): void
     {
         $html = $this->get(route('pak.64'))->assertOk()->getContent();
@@ -81,6 +95,21 @@ class ShowLayoutTest extends TestCase
 
         $this->assertSame(2, substr_count($html, 'aria-label="サイトメニュー"'));
         $this->assertStringNotContainsString('aria-label="現在位置"', $html);
+        // サイドメニューに検索欄があるのでヘッダーには出さない
+        $this->assertStringNotContainsString('id="header-search"', $html);
+        $this->assertStringContainsString('id="sidebar-search-desktop"', $html);
+        $this->assertStringContainsString('id="sidebar-search-mobile"', $html);
+    }
+
+    private function headerSearchForm(string $html): string
+    {
+        $this->assertSame(1, preg_match('/<header\b.*?<\/header>/s', $html, $header));
+        $this->assertSame(
+            1,
+            preg_match('/<form\b[^>]*role="search"[^>]*>(?:(?!<\/form>).)*id="header-search"(?:(?!<\/form>).)*<\/form>/s', $header[0], $matches),
+        );
+
+        return $matches[0];
     }
 
     private function category(CategoryType $categoryType, string $slug): Category

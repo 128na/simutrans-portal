@@ -109,7 +109,34 @@ describe("BulkSelectableArticleList", () => {
     expect(
       lastCard!.compareDocumentPosition(band) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
-    expect(band).toHaveClass("sticky", "bottom-0");
+    expect(band.parentElement).toHaveClass("sticky", "bottom-0");
+  });
+
+  it("すべて取得して選択が空になっても、結果は一覧の後ろの下端に出す", async () => {
+    const user = userEvent.setup();
+    render(
+      <BulkSelectableArticleList
+        articles={[post, post2]}
+        download={resolvedDownload({})}
+      />
+    );
+    await user.click(screen.getByLabelText("通勤電車セット を選ぶ"));
+    await user.click(
+      screen.getByRole("button", { name: "まとめてダウンロード" })
+    );
+
+    const resultArea = await screen.findByRole("status", {
+      name: "まとめてダウンロードの結果",
+    });
+    expect(
+      screen.queryByRole("region", { name: "選択中のアドオン" })
+    ).toBeNull();
+    const lastCard = screen.getAllByRole("article").at(-1);
+    expect(
+      lastCard!.compareDocumentPosition(resultArea) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(resultArea.parentElement).toHaveClass("sticky", "bottom-0");
   });
 
   it("sessionStorage が使えなくても選択できる", async () => {

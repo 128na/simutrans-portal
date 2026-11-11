@@ -8,7 +8,7 @@
   /** @var array<string, int>|null $addonCounts */
   $addonCounts ??= null;
   // 0 件の種類は出さず、件数の少ない種類は「ほか n 種類」に畳む（件数が無い一覧は畳まない）
-  $addonChips = $filter->addonChipGroups($addonCounts);
+  $addonChips = $showAddon ? $filter->addonChipGroups($addonCounts) : null;
 @endphp
 <div class="flex flex-col gap-2 rounded-lg bg-c-surface p-3">
   @if ($showAddon)
@@ -23,7 +23,7 @@
         @include('components.partials.article-list-addon-chip')
       @endforeach
       @if ($addonChips['folded'] !== [])
-        {{-- 開くと PC 幅では次の行に折り返して並べる。スマホ幅は横スクロールの行の中にそのまま並べる --}}
+        {{-- 開くと PC 幅では次の行に折り返して並べる。スマホ幅は「閉じる」の下に横 1 列で並べ、行ごと横にスクロールする --}}
         <details class="group shrink-0 sm:open:basis-full">
           <summary class="v2-chip cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <span class="group-open:hidden">ほか {{ count($addonChips['folded']) }} 種類</span>

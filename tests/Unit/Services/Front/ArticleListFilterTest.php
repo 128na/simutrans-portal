@@ -66,16 +66,24 @@ class ArticleListFilterTest extends TestCase
     {
         $groups = (new ArticleListFilter(addonSlug: 'airport-tools'))->addonChipGroups(self::COUNTS, 3);
 
-        $this->assertSame(['trains', 'rail-tools', 'road-tools', 'airport-tools'], array_keys($groups['visible']));
+        $this->assertSame(['trains', 'rail-tools', 'airport-tools'], array_keys($groups['visible']), '上位の最後と入れ替えて数を変えない');
         $this->assertArrayNotHasKey('airport-tools', $groups['folded']);
+        $this->assertArrayHasKey('road-tools', $groups['folded']);
     }
 
     public function test_選択中の種類は0件でも常に出す(): void
     {
         $groups = (new ArticleListFilter(addonSlug: 'maglev-vehicles'))->addonChipGroups(self::COUNTS, 3);
 
-        $this->assertSame(['trains', 'rail-tools', 'road-tools', 'maglev-vehicles'], array_keys($groups['visible']));
-        $this->assertArrayNotHasKey('none', $groups['folded']);
+        $this->assertSame(['trains', 'rail-tools', 'maglev-vehicles'], array_keys($groups['visible']));
+        $this->assertArrayNotHasKey('maglev-vehicles', $groups['folded']);
+    }
+
+    public function test_選択中の種類が上位に入っていれば並びも数も変えない(): void
+    {
+        $groups = (new ArticleListFilter(addonSlug: 'rail-tools'))->addonChipGroups(self::COUNTS, 3);
+
+        $this->assertSame(['trains', 'rail-tools', 'road-tools'], array_keys($groups['visible']));
     }
 
     public function test_件数が無い一覧ではすべての種類を出し畳まない(): void

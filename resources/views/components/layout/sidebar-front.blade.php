@@ -3,7 +3,11 @@
 <nav aria-label="サイトメニュー" class="v2-nav">
   {{-- PC 幅の検索欄はヘッダーにあるので、検索欄はモバイルメニューにだけ置く --}}
   @if ($variant === 'mobile')
-    <x-layout.search-form input-id="sidebar-search-mobile" />
+    <x-layout.search-form
+      input-id="sidebar-search-mobile"
+      role="search"
+      aria-label="キーワード検索"
+    />
   @endif
   <div class="v2-nav-group">
     <ul class="v2-nav-group">

@@ -74,9 +74,6 @@ class ShowLayoutTest extends TestCase
         $this->assertSame([route('index')], $this->breadcrumbUrls($this->showHtml($article)));
     }
 
-    /**
-     * ヘッダーの検索欄はどのページでも出す。HeaderSearchTest を参照（#677）。
-     */
     public function test_他のページはサイドメニューを残す(): void
     {
         $html = $this->get(route('pak.64'))->assertOk()->getContent();

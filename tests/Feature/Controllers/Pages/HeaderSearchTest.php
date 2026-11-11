@@ -16,20 +16,21 @@ use Tests\Feature\TestCase;
 class HeaderSearchTest extends TestCase
 {
     /**
-     * @return array<string, array{string}>
+     * @return array<string, array{string, int}>
      */
     public static function pages(): array
     {
         return [
-            'トップ' => ['index'],
-            'pak64一覧' => ['pak.64'],
-            '検索' => ['search'],
-            '記事詳細' => ['articles.show'],
+            'トップ' => ['index', 1],
+            'pak64一覧' => ['pak.64', 1],
+            '検索' => ['search', 1],
+            // 記事詳細はデスクトップのサイドメニューを外している（#639）
+            '記事詳細' => ['articles.show', 0],
         ];
     }
 
     #[DataProvider('pages')]
-    public function test_公開ページはヘッダーに検索欄を出しサイドメニューには出さない(string $routeName): void
+    public function test_公開ページはヘッダーに検索欄を出しサイドメニューには出さない(string $routeName, int $expectedAsides): void
     {
         $html = $this->pageHtml($routeName);
         $form = $this->headerSearchForm($html);
@@ -39,11 +40,12 @@ class HeaderSearchTest extends TestCase
         $this->assertStringContainsString('name="word"', $form);
         // スマホ幅ではヘッダーを2段にしないよう隠し、モバイルメニュー内の検索を使う
         $this->assertMatchesRegularExpression('/^<form\b[^>]*class="[^"]*\bhidden lg:block\b/', $form);
-        $this->assertStringContainsString('id="sidebar-search-mobile"', $html);
+        $this->assertMatchesRegularExpression('/<form\b[^>]*role="search"[^>]*>(?:(?!<\/form>).)*id="sidebar-search-mobile"/s', $html);
 
         // デスクトップのサイドメニューには検索欄を置かない
-        $this->assertStringNotContainsString('id="sidebar-search-desktop"', $html);
-        foreach ($this->asides($html) as $aside) {
+        $asides = $this->asides($html);
+        $this->assertCount($expectedAsides, $asides);
+        foreach ($asides as $aside) {
             $this->assertStringNotContainsString('name="word"', $aside);
         }
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Front;
 
+use App\Enums\ArticlePostType;
+use App\Enums\CategoryType;
 use Closure;
 use DateTimeImmutable;
 use Illuminate\Container\Attributes\Singleton;
@@ -26,6 +28,10 @@ class PublicArticleSnapshot
      *
      * 新着カードの paks（記事の pak の slug）は任意項目として 2 のまま追加した。
      * 無い・壊れているカードは paks を空にして、pak のタグだけを出さない
+     *
+     * 一覧のカードと同じ表示に使う post_type・categories・user も任意項目として 2 のまま追加した（#679）。
+     * 旧コードへ戻しても追加項目を無視して読めるので、版を上げて新着を消さない。
+     * 無い・壊れているカードは入手の操作・タグ・作者だけを出さない
      */
     private const int VERSION = 2;
 
@@ -153,7 +159,13 @@ class PublicArticleSnapshot
                     || ! $this->validDate($card['modified_at'] ?? null)) {
                     return ['latest' => [], 'announces' => []];
                 }
-                $valid[$pak][] = [...$card, 'paks' => $this->paks($card['paks'] ?? null)];
+                $valid[$pak][] = [
+                    ...$card,
+                    'paks' => $this->paks($card['paks'] ?? null),
+                    'post_type' => $this->postType($card['post_type'] ?? null),
+                    'categories' => $this->categories($card['categories'] ?? null),
+                    'user' => $this->user($card['user'] ?? null),
+                ];
             }
         }
 
@@ -177,6 +189,54 @@ class PublicArticleSnapshot
         }
 
         return $paks;
+    }
+
+    /**
+     * カードの投稿形式。アドオン投稿・アドオン紹介以外（旧形式で無いときを含む）は null にして入手の操作を出さない
+     */
+    private function postType(mixed $postType): ?string
+    {
+        return in_array($postType, [ArticlePostType::AddonPost->value, ArticlePostType::AddonIntroduction->value], true)
+            ? $postType
+            : null;
+    }
+
+    /**
+     * カードの pak・種類のカテゴリ。旧形式で無いとき・壊れているときは空にする
+     *
+     * @return list<array{id: int, type: string, slug: string}>
+     */
+    private function categories(mixed $categories): array
+    {
+        if (! is_array($categories) || ! array_is_list($categories)) {
+            return [];
+        }
+
+        $valid = [];
+        foreach ($categories as $category) {
+            if (! is_array($category) || ! is_int($category['id'] ?? null) || ! is_string($category['slug'] ?? null)
+                || ! in_array($category['type'] ?? null, [CategoryType::Pak->value, CategoryType::Addon->value], true)) {
+                return [];
+            }
+            $valid[] = ['id' => $category['id'], 'type' => $category['type'], 'slug' => $category['slug']];
+        }
+
+        return $valid;
+    }
+
+    /**
+     * カードの作者。旧形式で無いとき・壊れているときは null にして作者だけを出さない
+     *
+     * @return array{name: string, nickname: string|null}|null
+     */
+    private function user(mixed $user): ?array
+    {
+        if (! is_array($user) || ! is_string($user['name'] ?? null)
+            || ! array_key_exists('nickname', $user) || ! ($user['nickname'] === null || is_string($user['nickname']))) {
+            return null;
+        }
+
+        return ['name' => $user['name'], 'nickname' => $user['nickname']];
     }
 
     /**

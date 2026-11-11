@@ -4,6 +4,7 @@ import "./front/pages/TagSearchPage";
 import "./front/pages/ArticleShowPage";
 import "./front/pages/ArticleListPage";
 import "./front/pages/ArticleCardListPage";
+import "./front/pages/LatestCardsPage";
 import "./front/pages/PublicMyListIndexPage";
 import "./front/pages/PublicMyListPage";
 import "./lib/discord";

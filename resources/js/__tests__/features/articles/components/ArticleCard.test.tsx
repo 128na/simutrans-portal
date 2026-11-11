@@ -132,8 +132,8 @@ describe("アドオン一覧のカード", () => {
     });
     expect(download).toHaveAttribute("href", "/articles/101/download");
     expect(download).toHaveAttribute("target", "_blank");
-    // ダウンロードは PC の前提。スマホ幅（lg 未満）では display: none でキーボードや読み上げからも外す
-    expect(download).toHaveClass("hidden", "lg:inline-block");
+    // ダウンロードは PC の前提。スマホ幅（sm 未満）では display: none でキーボードや読み上げからも外す
+    expect(download).toHaveClass("hidden", "sm:inline-block");
     expect(download).not.toHaveClass("inline-block");
     expect(isDownloadable(post)).toBe(true);
   });
@@ -146,7 +146,7 @@ describe("アドオン一覧のカード", () => {
       name: "高架駅ホーム の掲載先へ",
     });
     expect(external).toHaveAttribute("href", "/articles/202/conversion");
-    expect(external).toHaveClass("hidden", "lg:inline-block");
+    expect(external).toHaveClass("hidden", "sm:inline-block");
     expect(external).not.toHaveClass("inline-block");
     expect(
       screen.queryByRole("link", { name: /ダウンロード/ })
@@ -181,7 +181,7 @@ describe("アドオン一覧のカード", () => {
     const row = screen.getByRole("link", {
       name: "通勤電車セット をダウンロード",
     }).parentElement;
-    expect(row).toHaveClass("hidden", "lg:flex");
+    expect(row).toHaveClass("hidden", "sm:flex");
     expect(row).not.toHaveClass("flex");
 
     rerender(

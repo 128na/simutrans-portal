@@ -39,14 +39,14 @@ const DateLabel = ({
 
 /**
  * 入手導線。既存の CV 経路（download_url / addon_page_url）をそのまま使う。
- * ダウンロードは PC で行う前提なので、スマホ幅（ヘッダーのメニューボタンと同じ lg 未満）では出さない。
+ * ダウンロードは PC で行う前提なので、スマホ幅（sm = 640px 未満。縦向きのスマホが収まり、PC の左右分割やタブレットでは出す）では出さない。
  * display: none で隠すので、キーボードや読み上げでも届かない
  */
 const AcquisitionLink = ({ article }: { article: Article.Card }) => {
   if (article.download_url) {
     return (
       <a
-        className="v2-button v2-button-md v2-button-primary hidden font-semibold lg:inline-block"
+        className="v2-button v2-button-md v2-button-primary hidden font-semibold sm:inline-block"
         href={article.download_url}
         target="_blank"
         rel="noopener noreferrer"
@@ -60,7 +60,7 @@ const AcquisitionLink = ({ article }: { article: Article.Card }) => {
   if (article.addon_page_url) {
     return (
       <a
-        className="v2-button-outline v2-button-md v2-button-primary-outline hidden font-semibold lg:inline-block"
+        className="v2-button-outline v2-button-md v2-button-primary-outline hidden font-semibold sm:inline-block"
         href={article.addon_page_url}
         aria-label={`${article.title} の掲載先へ`}
       >
@@ -129,7 +129,7 @@ export const ArticleCard = ({
         </div>
         {/* スマホ幅では入手・選択の操作を出さないので、マイリストのボタンが無ければ行ごと出さず余白も残さない */}
         <div
-          className={`mt-auto flex-wrap items-center gap-1.5 pt-0.5 ${isAuthenticated ? "flex" : "hidden lg:flex"}`}
+          className={`mt-auto flex-wrap items-center gap-1.5 pt-0.5 ${isAuthenticated ? "flex" : "hidden sm:flex"}`}
         >
           <AcquisitionLink article={article} />
           {isAuthenticated && <AddToMyListButton articleId={article.id} />}

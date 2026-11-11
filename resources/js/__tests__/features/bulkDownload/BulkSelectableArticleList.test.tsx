@@ -113,7 +113,7 @@ describe("BulkSelectableArticleList", () => {
     expect(band.parentElement).toHaveClass("sticky", "bottom-0");
   });
 
-  it("スマホ幅（lg 未満）では「選ぶ」も選択の帯も出さず、選択が残っていても操作の片方だけが残らない", () => {
+  it("スマホ幅（sm 未満）では「選ぶ」も選択の帯も出さず、選択が残っていても操作の片方だけが残らない", () => {
     // PC で選んだものが sessionStorage に残ったままスマホ幅で開いた状態
     window.sessionStorage.setItem(
       SELECTION_STORAGE_KEY,
@@ -129,10 +129,10 @@ describe("BulkSelectableArticleList", () => {
       screen.getByLabelText("高架駅ホーム を選ぶ"),
     ];
     toggles.forEach((toggle) =>
-      expect(toggle).toHaveClass("hidden", "lg:inline-block")
+      expect(toggle).toHaveClass("hidden", "sm:inline-block")
     );
     const band = screen.getByRole("region", { name: "選択中のアドオン" });
-    expect(band.parentElement).toHaveClass("hidden", "lg:flex");
+    expect(band.parentElement).toHaveClass("hidden", "sm:flex");
     expect(band.parentElement).not.toHaveClass("flex");
   });
 

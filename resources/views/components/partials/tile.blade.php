@@ -1,7 +1,10 @@
 @php
   // 公開日より後の日に更新されたものを「更新」、それ以外を「新規」とする（色だけでなく文字で示す）。
-  // 公開と同じ日の更新（公開処理で数秒ずれる場合を含む）は「新規」に含める
-  $isUpdated = $article['modified_at'] && substr($article['modified_at'], 0, 10) > substr($article['published_at'] ?? '', 0, 10);
+  // 公開と同じ日の更新と、公開処理で数秒ずれただけのもの（日付をまたぐ場合を含む）は「新規」に含める
+  $publishedAt = $article['published_at'] ?? '';
+  $isUpdated = $article['modified_at']
+      && substr($article['modified_at'], 0, 10) > substr($publishedAt, 0, 10)
+      && ($publishedAt === '' || strtotime($article['modified_at']) - strtotime($publishedAt) > 60);
 @endphp
 <a
   href="{{ $article['url'] }}"

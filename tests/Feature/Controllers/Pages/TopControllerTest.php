@@ -59,14 +59,18 @@ class TopControllerTest extends TestCase
         $updated->update(['title' => '更新された記事', 'published_at' => $published, 'modified_at' => $published->addDay()]);
         $sameDay = $this->createAddonIntroduction();
         $sameDay->update(['title' => '公開直後に直した記事', 'published_at' => $published, 'modified_at' => $published->addSeconds(5)]);
+        $acrossMidnight = $this->createAddonIntroduction();
+        $acrossMidnight->update(['title' => '日付をまたいで公開した記事', 'published_at' => $published->setTime(23, 59, 58), 'modified_at' => $published->addDay()->setTime(0, 0, 3)]);
         $updated->categories()->attach($pak64);
         $sameDay->categories()->attach($pak64);
+        $acrossMidnight->categories()->attach($pak64);
         $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
 
         $html = (string) $this->get(route('index'))->assertOk()->getContent();
 
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>更新<\/span>(?:(?!<\/a>).)*更新された記事/s', $html);
         $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*公開直後に直した記事/s', $html);
+        $this->assertMatchesRegularExpression('/aria-hidden="true"[^>]*>新規<\/span>(?:(?!<\/a>).)*日付をまたいで公開した記事/s', $html);
     }
 
     public function test_お知らせ一覧のリンクは日本語スラッグでも二重エンコードされない(): void

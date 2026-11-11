@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
+use App\Services\Front\ArticleBreadcrumbService;
 use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -14,15 +15,6 @@ use Illuminate\Http\Request;
  */
 class TopController extends Controller
 {
-    /**
-     * pak ごとの一覧ページのルート名
-     */
-    private const array PAK_ROUTES = [
-        '128-japan' => 'pak.128japan',
-        '128' => 'pak.128',
-        '64' => 'pak.64',
-    ];
-
     /**
      * 件数が無いとき（旧形式・欠落・失効）に「種類から探す」へ出す種類
      */
@@ -61,7 +53,7 @@ class TopController extends Controller
                 'label' => __('category.pak.'.$slug),
                 'url' => route('index', ['pak' => $slug]),
             ], PublicArticleSnapshot::PAKS),
-            'latestMoreUrl' => $selectedPak === null ? route('latest') : route(self::PAK_ROUTES[$selectedPak]),
+            'latestMoreUrl' => $selectedPak === null ? route('latest') : route(ArticleBreadcrumbService::PAK_ROUTES[$selectedPak]),
             'addonSections' => $this->addonSections($articles['pak_addon_counts']),
         ]);
     }
@@ -93,7 +85,7 @@ class TopController extends Controller
 
             $sections[] = [
                 'label' => __('category.pak.'.$pak),
-                'url' => route(self::PAK_ROUTES[$pak]),
+                'url' => route(ArticleBreadcrumbService::PAK_ROUTES[$pak]),
                 'addons' => array_map(fn (string $addon, ?int $count): array => [
                     'label' => $addonLabels[$addon],
                     'url' => route('categories.pakAddon', ['pak' => $pak, 'addon' => $addon]),

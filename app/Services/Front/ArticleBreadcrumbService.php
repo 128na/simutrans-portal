@@ -24,7 +24,7 @@ class ArticleBreadcrumbService
      *
      * @var array<int|string,string>
      */
-    private const array PAK_ROUTES = [
+    public const array PAK_ROUTES = [
         '128-japan' => 'pak.128japan',
         '128' => 'pak.128',
         '64' => 'pak.64',

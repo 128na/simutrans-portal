@@ -66,6 +66,8 @@
                 @include('components.partials.tile', ['article' => $article])
               @endforeach
             </div>
+          @else
+            <p class="text-note text-c-sub">新着を表示できませんでした。上のリンクから一覧をご覧ください。</p>
           @endif
         </section>
 

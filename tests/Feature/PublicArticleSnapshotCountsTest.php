@@ -37,11 +37,13 @@ class PublicArticleSnapshotCountsTest extends TestCase
         ], $this->sortedCounts(app(PublicArticleSnapshot::class)->read()['pak_addon_counts']));
     }
 
+    /**
+     * 生成後に増えた記事は次の生成まで件数に入らない（閲覧時に集計していない）
+     */
     public function test_top_and_pak_list_show_saved_counts_without_counting_on_view(): void
     {
         $this->createCountFixtures();
         $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
-        // 生成後に増えた記事は、次の生成まで件数に入らない（閲覧時に集計していない）
         $this->createArticleIn(['128-japan'], ['trains']);
 
         DB::enableQueryLog();
@@ -56,10 +58,10 @@ class PublicArticleSnapshotCountsTest extends TestCase
 
         $top->assertOk()
             ->assertSeeInOrder([
-                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']), '鉄道車両', '3',
-                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'road-vehicles']), '自動車', '2',
-                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'rail-tools']), '鉄道施設', '1',
-                route('categories.pakAddon', ['pak' => '64', 'addon' => 'road-vehicles']), '自動車', '1',
+                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains']).'" class="v2-chip">', '鉄道車両', '>3<span class="sr-only">件</span>',
+                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'road-vehicles']).'" class="v2-chip">', '自動車', '>2<span class="sr-only">件</span>',
+                route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'rail-tools']).'" class="v2-chip">', '鉄道施設', '>1<span class="sr-only">件</span>',
+                route('categories.pakAddon', ['pak' => '64', 'addon' => 'road-vehicles']).'" class="v2-chip">', '自動車', '>1<span class="sr-only">件</span>',
             ], false)
             ->assertDontSee(route('categories.pakAddon', ['pak' => '128', 'addon' => 'trains']), false);
 
@@ -136,7 +138,8 @@ class PublicArticleSnapshotCountsTest extends TestCase
     }
 
     /**
-     * 件数が組み合わせごとに違うように作り、公開中のアドオン記事以外も混ぜる
+     * 件数が組み合わせごとに違うように作り、公開中のアドオン記事以外も混ぜる。
+     * 主要3 pak 以外（256）と、下書き・削除済み・退会したユーザー・一般記事は数えない
      */
     private function createCountFixtures(): void
     {
@@ -146,10 +149,7 @@ class PublicArticleSnapshotCountsTest extends TestCase
         $this->createArticleIn(['128-japan', '64'], ['road-vehicles'], addonPost: true);
         $this->createArticleIn(['128-japan'], ['road-vehicles']);
         $this->createArticleIn(['64'], ['trains']);
-        // 主要3 pak 以外は数えない
         $this->createArticleIn(['256'], ['trains']);
-
-        // 数えないもの：下書き・削除済み・退会したユーザー・一般記事
         $this->attachCategories(Article::factory()->addonIntroduction()->draft()->create(['user_id' => User::factory()->create()->id]), ['128-japan'], ['trains']);
         $this->createArticleIn(['128-japan'], ['trains'])->delete();
         $this->createArticleIn(['128-japan'], ['trains'])->user->delete();

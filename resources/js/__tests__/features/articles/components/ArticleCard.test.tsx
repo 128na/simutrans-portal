@@ -114,7 +114,7 @@ describe("アドオン一覧のカード", () => {
     const [, titleLink] = screen.getAllByRole("link", {
       name: "Frankfurt (am Main) U-Bahn U2 & U3",
     });
-    // v2-title-link の break-all より後から効かせるため ! 付きで上書きする
+    // jsdom では折り返しを測れないので、上書きのクラスで確かめる（実測は PR #665）
     expect(titleLink).toHaveClass("[word-break:normal]!", "wrap-anywhere");
   });
 

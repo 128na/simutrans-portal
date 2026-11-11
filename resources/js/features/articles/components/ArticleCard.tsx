@@ -95,7 +95,8 @@ export const ArticleCard = ({
       <div className="flex flex-1 flex-col gap-1.5 p-2.5">
         {/* v2-title-link の break-all だと英単語の途中で折れるので、単語の切れ目で折る。
             1 語がカード幅より長いときだけ途中で折り、カードを横にはみ出させない。
-            v2-title-link は自前のユーティリティで後に出力され break-all が勝つため、! で上書きする */}
+            v2-title-link は自前のユーティリティで後に出力され break-all が勝つため、! で上書きする。
+            break-normal は overflow-wrap も normal にして wrap-anywhere を打ち消すので使わない */}
         <h3 className="text-body leading-snug line-clamp-2">
           <a
             href={article.url}

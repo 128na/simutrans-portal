@@ -6,7 +6,14 @@
     @include('pages.search.options')
     @if ($hasSearchConditions)
       <div class="mb-6">
-        @include('components.partials.article-list-filter', ['filter' => $filter, 'total' => $articles->total(), 'showAcquisition' => false])
+        {{-- 検索結果は種類ごとの件数を出せないので、決めておいた主要な種類だけを出して残りを畳む --}}
+        @include('components.partials.article-list-filter', [
+          'filter' => $filter,
+          'total' => $articles->total(),
+          'acquisitionAll' => ($condition['postTypes'] ?? []) === [],
+          'acquisitionDownloadOnly' => ($condition['postTypes'] ?? []) === [\App\Enums\ArticlePostType::AddonPost->value],
+          'addonPrimary' => \App\Services\Front\ArticleListFilter::SEARCH_PRIMARY_ADDONS,
+        ])
       </div>
     @endif
     @if (! $hasSearchConditions)

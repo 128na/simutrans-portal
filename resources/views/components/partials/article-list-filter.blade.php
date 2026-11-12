@@ -1,14 +1,23 @@
 @php
   /** @var \App\Services\Front\ArticleListFilter $filter */
   $showAddon ??= true;
-  // 検索画面は詳細条件の「投稿形式」で postTypes を選ぶので、入手方法の切り替えは出さない
-  $showAcquisition ??= true;
+  // 入手方法のどちらを選択中にするか。検索画面は詳細条件の「投稿形式」と同じ postTypes を使うので、
+  // 検索の条件（正規化後）から渡し、投稿形式がほかの組み合わせのときはどちらも選択中にしない
+  $acquisitionDownloadOnly ??= $filter->downloadOnly;
+  $acquisitionAll ??= ! $acquisitionDownloadOnly;
   $total ??= null;
   // 種類ごとの件数（slug => 件数）。保存済みの表示データがある pak 別一覧だけで渡し、それ以外は件数を出さない
   /** @var array<string, int>|null $addonCounts */
   $addonCounts ??= null;
-  // 0 件の種類は出さず、件数の少ない種類は「ほか n 種類」に畳む（件数が無い一覧は畳まない）
-  $addonChips = $showAddon ? $filter->addonChipGroups($addonCounts) : null;
+  // 件数が無い一覧で常に出す主要な種類（検索画面だけで渡す）。無ければ件数が無い一覧は畳まない
+  /** @var list<string>|null $addonPrimary */
+  $addonPrimary ??= null;
+  // 0 件の種類は出さず、件数の少ない種類は「ほか n 種類」に畳む
+  $addonChips = match (true) {
+    ! $showAddon => null,
+    $addonCounts === null && $addonPrimary !== null => $filter->addonChipGroupsByPrimary($addonPrimary),
+    default => $filter->addonChipGroups($addonCounts),
+  };
 @endphp
 <div class="flex flex-col gap-2 rounded-lg bg-c-surface p-3">
   @if ($showAddon)
@@ -39,21 +48,19 @@
     </nav>
   @endif
   <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-    @if ($showAcquisition)
-      <nav aria-label="入手方法で絞り込む" class="flex flex-wrap items-center gap-2">
-        <span class="shrink-0 px-1 text-meta font-bold text-c-sub">入手方法</span>
-        <a
-          href="{{ request()->fullUrlWithQuery(['postTypes' => null, 'page' => null]) }}"
-          class="v2-chip"
-          @if (! $filter->downloadOnly) aria-current="true" @endif
-        >すべて</a>
-        <a
-          href="{{ request()->fullUrlWithQuery(['postTypes' => [\App\Enums\ArticlePostType::AddonPost->value], 'page' => null]) }}"
-          class="v2-chip"
-          @if ($filter->downloadOnly) aria-current="true" @endif
-        >ダウンロードできるものだけ</a>
-      </nav>
-    @endif
+    <nav aria-label="入手方法で絞り込む" class="flex flex-wrap items-center gap-2">
+      <span class="shrink-0 px-1 text-meta font-bold text-c-sub">入手方法</span>
+      <a
+        href="{{ request()->fullUrlWithQuery(['postTypes' => null, 'page' => null]) }}"
+        class="v2-chip"
+        @if ($acquisitionAll) aria-current="true" @endif
+      >すべて</a>
+      <a
+        href="{{ request()->fullUrlWithQuery(['postTypes' => [\App\Enums\ArticlePostType::AddonPost->value], 'page' => null]) }}"
+        class="v2-chip"
+        @if ($acquisitionDownloadOnly) aria-current="true" @endif
+      >ダウンロードできるものだけ</a>
+    </nav>
     @if ($total !== null)
       {{-- 件数は並び順と同じ行に置き、一覧の開始位置を上げる --}}
       <p class="px-1 text-note text-c-sub sm:ml-auto">{{ number_format($total) }} 件</p>

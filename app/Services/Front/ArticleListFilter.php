@@ -20,6 +20,14 @@ final readonly class ArticleListFilter
     /** 件数があるとき、種類の切り替えに常に出す種類の数（PC 幅で 1 行に収まる数） */
     public const int ADDON_VISIBLE_LIMIT = 6;
 
+    /**
+     * 件数を出せない検索結果で、種類の切り替えに常に出す種類（優先順）。
+     *
+     * 公開記事の全体件数（3 pak の合計、2026-11 時点）の上位から選んだ。
+     * 「その他」は種類を表さないので除き、次に多い港湾施設を入れた。数は ADDON_VISIBLE_LIMIT にそろえる
+     */
+    public const array SEARCH_PRIMARY_ADDONS = ['trains', 'rail-tools', 'road-tools', 'road-vehicles', 'buildings', 'seaport-tools'];
+
     public function __construct(
         public ?string $addonSlug = null,
         public bool $downloadOnly = false,
@@ -96,5 +104,28 @@ final readonly class ArticleListFilter
         $visible = array_intersect_key($listed, array_flip($visibleSlugs));
 
         return ['visible' => $visible, 'folded' => array_diff_key($listed, $visible)];
+    }
+
+    /**
+     * 件数が無い一覧で、決めておいた主要な種類だけを常に出し、残りを「ほか n 種類」に畳む。
+     *
+     * 件数が分からないので、どの種類も消さずに畳んだ側へ入れる。
+     * 選択中の種類が主要な種類に無いときは、主要な種類の最後と入れ替えて常に出す数を変えない。
+     * 並びは選択肢の定義順にそろえる。
+     *
+     * @param  list<string>  $primarySlugs  優先順。選択肢に無い slug は無視する
+     * @return array{visible: array<string, string>, folded: array<string, string>}
+     */
+    public function addonChipGroupsByPrimary(array $primarySlugs): array
+    {
+        $options = self::addonOptions();
+        $visibleSlugs = array_values(array_filter($primarySlugs, fn (string $slug): bool => array_key_exists($slug, $options)));
+        if ($this->addonSlug !== null && array_key_exists($this->addonSlug, $options) && ! in_array($this->addonSlug, $visibleSlugs, true)) {
+            $visibleSlugs = [...array_slice($visibleSlugs, 0, max(0, count($visibleSlugs) - 1)), $this->addonSlug];
+        }
+
+        $visible = array_intersect_key($options, array_flip($visibleSlugs));
+
+        return ['visible' => $visible, 'folded' => array_diff_key($options, $visible)];
     }
 }

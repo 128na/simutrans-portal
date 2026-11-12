@@ -11,6 +11,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
+use App\Services\Front\ArticleListFilter;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
@@ -267,13 +268,48 @@ class ArticleCardListTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/<details(?:(?!<\/details>).)*addon=(?:trains|ships)/su', $html, '件数の多い種類は畳まない');
     }
 
-    public function test_検索画面では入手方法の切り替えを出さず投稿形式の条件を上書きしない(): void
+    /**
+     * 検索画面の入手方法の切り替えは、詳細条件の「投稿形式」と同じ postTypes を使う（#686）
+     */
+    public function test_検索画面の入手方法の切り替えは投稿形式の条件と同じ値を使い条件を保つ(): void
     {
-        $this->get($this->url('search', ['postTypes' => ['addon-introduction']]))
-            ->assertOk()
-            ->assertSee('aria-label="並び順"', false)
-            ->assertDontSee('aria-label="入手方法で絞り込む"', false);
-        $this->get($this->url('pak', []))->assertSee('aria-label="入手方法で絞り込む"', false);
+        $plain = $this->decodedHtmlOf($this->url('search', ['word' => 'E233', 'sort' => 'published', 'page' => 2]));
+        $this->assertMatchesRegularExpression('/<nav aria-label="入手方法で絞り込む"[^>]*>(?:(?!<\/nav>).)*aria-current="true"\s*>すべて</su', $plain);
+        $this->assertMatchesRegularExpression('/href="(?=[^"]*word=E233)(?=[^"]*sort=published)(?=[^"]*postTypes\[0\]=addon-post)(?![^"]*page=)[^"]*"\s+class="v2-chip"\s*>ダウンロードできるものだけ</u', $plain, '検索語・並び順を保ち、ページ送りは戻す');
+        $this->assertMatchesRegularExpression('/<el-disclosure\s+id="search-options"\s+hidden/u', $this->decodedHtmlOf(route('search', ['word' => 'E233'])), '詳細条件を使っていなければ閉じる');
+
+        $downloadOnly = $this->decodedHtmlOf(route('search', ['word' => 'E233', 'postTypes' => ['addon-post']]));
+        $this->assertMatchesRegularExpression('/aria-current="true"\s*>ダウンロードできるものだけ</u', $downloadOnly);
+        $this->assertDoesNotMatchRegularExpression('/<nav aria-label="入手方法で絞り込む"[^>]*>(?:(?!<\/nav>).)*aria-current="true"\s*>すべて</su', $downloadOnly);
+        $this->assertMatchesRegularExpression('/<el-disclosure\s+id="search-options"\s+hidden/u', $downloadOnly, '切り替えで選べる条件だけなら詳細条件を開かない');
+        $this->assertMatchesRegularExpression('/name="postTypes\[\]"\s+value="addon-post"\s+checked/u', $downloadOnly, '詳細条件の投稿形式にも同じ選択が入る');
+
+        // 詳細条件でほかの投稿形式を選んでいるときは、どちらも選択中にせず、検索結果も上書きしない
+        $introduction = $this->decodedHtmlOf(route('search', ['word' => 'E233', 'postTypes' => ['addon-introduction']]));
+        $this->assertDoesNotMatchRegularExpression('/<nav aria-label="入手方法で絞り込む"[^>]*>(?:(?!<\/nav>).)*aria-current/su', $introduction);
+        $this->assertDoesNotMatchRegularExpression('/<el-disclosure\s+id="search-options"\s+hidden/u', $introduction, 'ほかの投稿形式を選んでいれば詳細条件を開く');
+        $this->assertIds('search', ['postTypes' => ['addon-introduction']], [$this->introTrains]);
+    }
+
+    /**
+     * 検索結果は種類ごとの件数を出せないので、主要な種類だけを出して残りを畳む（#686）
+     */
+    public function test_検索画面の種類の切り替えは主要な種類だけを出し残りを件数なしで畳む(): void
+    {
+        // pak 別一覧の件数（保存済みの表示データ）があっても、検索結果には使わない
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $html = $this->decodedHtmlOf($this->url('search', ['sort' => 'published']));
+        $folded = count(ArticleListFilter::addonOptions()) - count(ArticleListFilter::SEARCH_PRIMARY_ADDONS);
+
+        $this->assertMatchesRegularExpression('/<details[^>]*>\s*<summary[^>]*>\s*<span[^>]*>ほか '.$folded.' 種類<\/span>(?:(?!<\/details>).)*href="(?=[^"]*addon=ships)(?=[^"]*sort=published)[^"]*"(?:(?!<\/details>).)*<\/details>/su', $html, '主要でない種類は畳み、畳んだ切り替えも並び順を保つ');
+        $this->assertMatchesRegularExpression('/<details(?:(?!<\/details>).)*addon=none/su', $html, '件数が分からないので、どの種類も消さない');
+        $this->assertDoesNotMatchRegularExpression('/<details(?:(?!<\/details>).)*addon=(?:trains|buildings)/su', $html, '主要な種類は畳まない');
+        $this->assertStringNotContainsString('<span class="sr-only">件</span>', $html, '検索結果の件数ではない数を出さない');
+
+        $selected = $this->decodedHtmlOf($this->url('search', ['addon' => 'ships']));
+        $this->assertDoesNotMatchRegularExpression('/<details(?:(?!<\/details>).)*addon=ships/su', $selected, '選択中の種類は畳まない');
+        $this->assertMatchesRegularExpression('/class="v2-chip"\s+aria-current="true"\s*>船舶/u', $selected);
     }
 
     #[DataProvider('listProvider')]
@@ -329,6 +365,17 @@ class ArticleCardListTest extends TestCase
         $this->assertMatchesRegularExpression('/href="[^"]*addon=buildings[^"]*sort=published[^"]*"/', $html, '種類を切り替えても並び順を保つ');
         $this->assertMatchesRegularExpression('/href="[^"]*addon=trains[^"]*sort=published[^"]*page=2[^"]*"/', html_entity_decode($html), 'ページ送りが条件を保つ');
         $response->assertSee('26 件');
+    }
+
+    /**
+     * 属性のエスケープと URL エンコードを戻した HTML（postTypes[0]=addon-post などをそのまま照合する）
+     */
+    private function decodedHtmlOf(string $url): string
+    {
+        $html = $this->get($url)->assertOk()->getContent();
+        $this->assertIsString($html);
+
+        return rawurldecode(html_entity_decode($html));
     }
 
     private function makeArticle(bool $post, Category $addon, string $publishedAt, string $modifiedAt): Article

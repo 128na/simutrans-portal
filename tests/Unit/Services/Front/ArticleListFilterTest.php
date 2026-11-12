@@ -86,6 +86,44 @@ class ArticleListFilterTest extends TestCase
         $this->assertSame(['trains', 'rail-tools', 'road-tools'], array_keys($groups['visible']));
     }
 
+    public function test_主要な種類だけを定義順で出し残りはすべて畳む(): void
+    {
+        // 優先順と定義順をわざと違えて、並びが定義順にそろうことを確かめる
+        $groups = (new ArticleListFilter)->addonChipGroupsByPrimary(['buildings', 'trains', 'ships']);
+
+        $this->assertSame(['trains', 'ships', 'buildings'], array_keys($groups['visible']));
+        $this->assertSame('鉄道車両', $groups['visible']['trains']);
+        $this->assertArrayNotHasKey('trains', $groups['folded']);
+        $this->assertSame(
+            array_keys(array_diff_key(ArticleListFilter::addonOptions(), $groups['visible'])),
+            array_keys($groups['folded']),
+            '件数が分からないので、どの種類も消さずに定義順で畳む',
+        );
+        $this->assertArrayHasKey('none', $groups['folded']);
+    }
+
+    public function test_主要な種類に無い選択中の種類は優先順の最後と入れ替えて出す(): void
+    {
+        $groups = (new ArticleListFilter(addonSlug: 'airport-tools'))->addonChipGroupsByPrimary(['buildings', 'trains', 'ships']);
+
+        $this->assertSame(['trains', 'airport-tools', 'buildings'], array_keys($groups['visible']), '数を変えず、優先順の最後（船舶）を畳む');
+        $this->assertArrayHasKey('ships', $groups['folded']);
+        $this->assertArrayNotHasKey('airport-tools', $groups['folded']);
+    }
+
+    public function test_主要な種類に入っている選択中の種類は並びも数も変えない(): void
+    {
+        $groups = (new ArticleListFilter(addonSlug: 'ships'))->addonChipGroupsByPrimary(['buildings', 'trains', 'ships']);
+
+        $this->assertSame(['trains', 'ships', 'buildings'], array_keys($groups['visible']));
+    }
+
+    public function test_検索結果の主要な種類はすべて選択肢にあり常に出す数とそろう(): void
+    {
+        $this->assertCount(ArticleListFilter::ADDON_VISIBLE_LIMIT, ArticleListFilter::SEARCH_PRIMARY_ADDONS);
+        $this->assertSame([], array_diff(ArticleListFilter::SEARCH_PRIMARY_ADDONS, array_keys(ArticleListFilter::addonOptions())));
+    }
+
     public function test_件数が無い一覧ではすべての種類を出し畳まない(): void
     {
         $groups = (new ArticleListFilter)->addonChipGroups(null, 3);

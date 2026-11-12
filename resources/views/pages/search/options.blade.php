@@ -22,35 +22,39 @@
       @if ($hasSearchConditions)
         <x-ui.link :url="route('search')" title="検索条件をすべて解除" />
       @endif
+      {{-- 結果の一覧を上に寄せるため、PC 幅では検索ボタンと同じ行に置く。スマホ幅は従来どおり横幅いっぱいの行にする。
+           v2-accordion は utilities レイヤーにあり後から読み込まれるので、上書きには ! を付ける --}}
+      <button
+        type="button"
+        command="--toggle"
+        commandfor="search-options"
+        class="v2-accordion my-0! sm:w-auto! sm:gap-2"
+      >
+        詳細条件
+        <svg viewBox="0 0 20 20" fill="currentColor" class="size-5 flex-none">
+          <path
+            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+            clip-rule="evenodd"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </button>
     </div>
   </div>
   <script id="data-options" type="application/json">
     @json($options)
   </script>
-  <div class="mb-12">
-    <button
-      type="button"
-      command="--toggle"
-      commandfor="search-options"
-      class="v2-accordion"
-    >
-      詳細条件
-      <svg viewBox="0 0 20 20" fill="currentColor" class="size-5 flex-none">
-        <path
-          d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
-          clip-rule="evenodd"
-          fill-rule="evenodd"
-        />
-      </svg>
-    </button>
+  <div>
     @php
-      $showOptions = ($condition['tagIds'] ?? []) || ($condition['categoryIds'] ?? []) || ($condition['userIds'] ?? []) || ($condition['postTypes'] ?? []);
+      // 「ダウンロードできるもの（アドオン投稿）だけ」は結果の上の入手方法の切り替えで分かるので、それだけでは開かない
+      $postTypes = $condition['postTypes'] ?? [];
+      $showOptions = ($condition['tagIds'] ?? []) || ($condition['categoryIds'] ?? []) || ($condition['userIds'] ?? []) || ($postTypes !== [] && $postTypes !== [\App\Enums\ArticlePostType::AddonPost->value]);
     @endphp
 
     <el-disclosure
       id="search-options"
       {{ $showOptions ? '' : 'hidden' }}
-      class="v2-accordion-content mt-2 block space-y-2"
+      class="v2-accordion-content mb-6 block space-y-2"
     >
       <div class="mb-4">
         <div class="font-semibold">投稿形式</div>

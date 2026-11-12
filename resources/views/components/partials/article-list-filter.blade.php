@@ -65,8 +65,13 @@
           href="{{ request()->fullUrlWithQuery(['sort' => $sort === \App\Enums\ArticleListSort::Modified ? null : $sort->value, 'page' => null]) }}"
           class="v2-chip"
           @if ($filter->sort === $sort) aria-current="true" @endif
+          @if ($sort->note() !== null) title="{{ $sort->note() }}" @endif
         >{{ $sort->label() }}</a>
       @endforeach
     </nav>
   </div>
+  @if ($filter->sort->note() !== null)
+    {{-- 選んだ並び順に補足があるときだけ出す。スマホ幅でも 1〜2 行に収まる短さにする --}}
+    <p class="px-1 text-note text-c-sub">{{ $filter->sort->note() }}</p>
+  @endif
 </div>

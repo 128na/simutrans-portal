@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
  *
  * - addon: 種類（addon カテゴリの slug）。選択肢は lang の category.addon から作り、DB を引かない
  * - postTypes[]=addon-post: ダウンロードできるもの（アドオン投稿）だけ。検索画面と同じ形にそろえる
- * - sort: 並び順（modified|published）
+ * - sort: 並び順（modified|published|popular）
  */
 final readonly class ArticleListFilter
 {

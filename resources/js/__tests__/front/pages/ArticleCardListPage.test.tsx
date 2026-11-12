@@ -55,18 +55,21 @@ describe("ArticleCardListPage", () => {
     expect(rendered).toEqual({ sort: "published", isAuthenticated: true });
   });
 
-  it("並び順が不明なら更新順として扱う", async () => {
-    document.body.innerHTML = `
-      <div id="app-article-cards" data-sort="popular"></div>
+  it.each(["unknown", "popular"])(
+    "並び順が %s ならカードに更新日を出す（更新順として扱う）",
+    async (sort) => {
+      document.body.innerHTML = `
+      <div id="app-article-cards" data-sort="${sort}"></div>
       <script id="data-articles" type="application/json">[]</script>
     `;
 
-    await act(async () => {
-      await import("../../../front/pages/ArticleCardListPage");
-    });
+      await act(async () => {
+        await import("../../../front/pages/ArticleCardListPage");
+      });
 
-    await waitFor(() => {
-      expect(rendered).toEqual({ sort: "modified", isAuthenticated: false });
-    });
-  });
+      await waitFor(() => {
+        expect(rendered).toEqual({ sort: "modified", isAuthenticated: false });
+      });
+    }
+  );
 });

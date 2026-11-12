@@ -513,9 +513,18 @@ class FrontArticleRepository
             $builder->where('articles.post_type', ArticlePostType::AddonPost);
         }
 
+        $column = $filter->sort->column();
+        if ($column === null) {
+            // 人気順: 順位表（記事ごとに 1 行、順位は一意）を結合して順位の昇順に並べる。表示時に CV を集計しない。
+            // DISTINCT の一覧があるので順位を select にも入れる。最後の作り直しより後に作られた記事は次の作り直しまで出ない
+            $builder->join('article_popularities', 'article_popularities.article_id', '=', 'articles.id')
+                ->addSelect('article_popularities.rank as popularity_rank')
+                ->orderBy('article_popularities.rank');
+        } else {
+            $builder->latest($column)->orderByDesc('articles.id');
+        }
+
         return $builder
-            ->latest($filter->sort->column())
-            ->orderByDesc('articles.id')
             ->with([
                 'categories' => fn ($query) => $this->orderCardCategories($query),
                 'attachments:id,attachmentable_id,path,thumbnail_path',

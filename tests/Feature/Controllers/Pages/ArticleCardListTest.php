@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Pages;
 
+use App\Enums\ArticleAnalyticsType;
 use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
@@ -345,7 +346,7 @@ class ArticleCardListTest extends TestCase
         DB::table('conversion_counts')->insert([
             'user_id' => $article->user_id,
             'article_id' => $article->id,
-            'type' => 1,
+            'type' => ArticleAnalyticsType::Daily->value,
             'period' => $period,
             'count' => $count,
         ]);

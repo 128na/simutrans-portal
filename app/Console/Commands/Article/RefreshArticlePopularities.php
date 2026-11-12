@@ -27,7 +27,7 @@ class RefreshArticlePopularities extends Command
     {
         $startedAt = microtime(true);
         // CV の記録（countUp）と同じくアプリのタイムゾーンで日付を決める
-        $to = now()->subDay();
+        $to = now()->toImmutable()->subDay();
         $from = $to->subDays(self::DAYS - 1);
 
         try {

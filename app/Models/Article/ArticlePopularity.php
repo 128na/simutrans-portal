@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 一覧の「人気順」の順位（記事ごとに 1 行）。article:refresh-article-popularities が 1 日 1 回作り直す
+ * 一覧の「人気順」の順位（記事ごとに 1 行）。article:refresh-article-popularities が毎時作り直す（数えるのは前日までの日次）
  *
  * @property int $article_id
  * @property int $rank 人気順の順位（1 から。CV 合計・公開日時・id の降順）

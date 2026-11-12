@@ -134,6 +134,37 @@ class ArticleCardListTest extends TestCase
         $url = route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains', 'sort' => 'popular']);
 
         $this->assertSame([$this->postTrains->id, $this->introTrains->id], $this->idsOf($this->get($url)));
+
+        // 順位を入れ替えると並びも入れ替わる（更新順・公開順・id のどれでもなく順位で並べている）
+        DB::table('article_popularities')->delete();
+        $this->setRank($this->introTrains, 1);
+        $this->setRank($this->postTrains, 2);
+        $this->assertSame([$this->introTrains->id, $this->postTrains->id], $this->idsOf($this->get($url)));
+    }
+
+    public function test_その他のpakも人気順に並べページ送りの件数は順位のある記事だけ(): void
+    {
+        $any = Category::where('type', CategoryType::Pak)->where('slug', 'any')->firstOrFail();
+        $articles = [];
+        for ($i = 0; $i < 26; $i++) {
+            $article = $this->createAddonPost($this->user);
+            $article->update(['published_at' => '2025-12-01 00:00:00', 'modified_at' => '2025-12-01 00:00:00']);
+            $article->categories()->attach([$any->id, $this->trains->id]);
+            $articles[] = $article;
+        }
+        // 作った順に順位を付ける（id の降順とは逆）。最後の 1 件は順位が無い（作り直しより後に作られた記事）
+        foreach (array_slice($articles, 0, 25) as $index => $article) {
+            $this->setRank($article, $index + 1);
+        }
+
+        $first = $this->get(route('pak.others', ['sort' => 'popular']))->assertOk();
+        $second = $this->get(route('pak.others', ['sort' => 'popular', 'page' => 2]))->assertOk();
+
+        $this->assertSame(array_map(fn (Article $article): int => $article->id, array_slice($articles, 0, 24)), $this->idsOf($first));
+        $this->assertSame([$articles[24]->id], $this->idsOf($second));
+        /** @var AnonymousResourceCollection $paginated */
+        $paginated = $first->viewData('articles');
+        $this->assertSame(25, $paginated->resource->total(), '件数は順位のある記事だけを数え、ページ送りと合う');
     }
 
     public function test_人気順を選ぶと補足を出し並び順の切り替えが条件を保つ(): void
@@ -141,8 +172,8 @@ class ArticleCardListTest extends TestCase
         $html = $this->get($this->url('pak', ['addon' => 'trains', 'sort' => 'popular']))->assertOk()->getContent();
 
         $this->assertIsString($html);
-        $this->assertMatchesRegularExpression('/aria-current="true"\s+title="[^"]*直近 90 日の入手数[^"]*"\s*>人気順</u', $html);
-        $this->assertStringContainsString('<p class="px-1 text-note text-c-sub">人気順：直近 90 日の入手数（ダウンロードと掲載先クリック）の目安。1 日 1 回更新</p>', $html);
+        $this->assertMatchesRegularExpression('/aria-current="true"\s+title="[^"]*前日までの 90 日間の入手数[^"]*"\s*>人気順</u', $html);
+        $this->assertStringContainsString('<p class="px-1 text-note text-c-sub">人気順：前日までの 90 日間の入手数（ダウンロードと掲載先クリック）の目安</p>', $html);
         $this->assertMatchesRegularExpression('/href="[^"]*addon=buildings[^"]*sort=popular[^"]*"/', $html, '種類を切り替えても人気順を保つ');
 
         $other = $this->get($this->url('pak', []))->assertOk()->getContent();

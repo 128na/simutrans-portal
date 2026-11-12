@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * 一覧の「人気順」の並び（#683）。人気は記事本体の情報ではないので articles とは分けて持つ
  *
- * article:refresh-article-popularities が 1 日 1 回、全記事分を作り直す（前日までの直近 90 日の CV 合計。0 も含む）。
+ * article:refresh-article-popularities が毎時、全記事分を作り直す（前日までの直近 90 日の CV 合計。0 も含む）。
  * rank は CV 合計・公開日時・id の降順で振った通し番号で、一覧はこの順に並べる。記事を物理削除したら行も消える。
  */
 return new class extends Migration

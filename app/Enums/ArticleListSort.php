@@ -20,8 +20,8 @@ enum ArticleListSort: string
     case Published = 'published';
 
     /**
-     * 直近 90 日の入手数（ダウンロードと掲載先クリック）が多い順。
-     * 並びは記事本体ではなく article_popularities の順位で、1 日 1 回作り直す（article:refresh-article-popularities）
+     * 前日までの 90 日間の入手数（ダウンロードと掲載先クリック）が多い順。
+     * 並びは記事本体ではなく article_popularities の順位で、毎時作り直す（article:refresh-article-popularities。数えるのは前日までの日次）
      */
     case Popular = 'popular';
 
@@ -53,7 +53,7 @@ enum ArticleListSort: string
     {
         return match ($this) {
             self::Modified, self::Published => null,
-            self::Popular => '人気順：直近 90 日の入手数（ダウンロードと掲載先クリック）の目安。1 日 1 回更新',
+            self::Popular => '人気順：前日までの 90 日間の入手数（ダウンロードと掲載先クリック）の目安',
         };
     }
 }

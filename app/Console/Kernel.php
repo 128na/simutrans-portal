@@ -41,11 +41,6 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('backup:run')->dailyAt('3:00')
             ->appendOutputTo($output);
-        // 一覧の人気順の順位。バックアップと重ならない時刻（本番cronは2分周期のため偶数分）。
-        // 強制終了でロックが残っても翌日の実行を止めないよう、重複防止の期限は短くする
-        $schedule->command('article:refresh-article-popularities')->dailyAt('4:30')
-            ->withoutOverlapping(10)
-            ->appendOutputTo($output);
         // 本番cronは2分周期のため、偶数分に合わせる。
         $schedule->command('backup:report-sync-uploads-digest')->dailyAt('0:06')
             ->appendOutputTo($output);
@@ -62,6 +57,13 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
 
         $schedule->command('app:mfa-setup-auto-recovery')->hourly()
+            ->appendOutputTo($output);
+
+        // 一覧の人気順の順位。毎時ちょうどのジョブ・10分ごとのスナップショット・3:00のバックアップと重ならない分（本番cronは2分周期のため偶数分）。
+        // 集計は前日までの日次なので数字は1日1回しか変わらないが、毎時作り直して新しい記事を人気順にも早く出す。
+        // 強制終了でロックが残っても次の実行を止めないよう、重複防止の期限は短くする
+        $schedule->command('article:refresh-article-popularities')->hourlyAt(34)
+            ->withoutOverlapping(10)
             ->appendOutputTo($output);
 
         // 毎分 サーバー都合でcron設定としては2分周期

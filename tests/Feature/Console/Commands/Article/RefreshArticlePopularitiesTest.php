@@ -50,11 +50,12 @@ class RefreshArticlePopularitiesTest extends TestCase
 
     public function test_全記事に_c_v合計・公開日時・idの降順で1から順位を振る(): void
     {
+        // 同じ CV の tie と old は、id の小さい tie を公開が新しい記事にして、公開日時で並べないと順が逆になるようにする
+        $tie = $this->makeArticle('2026-02-01 00:00:00');
         $old = $this->makeArticle('2026-01-01 00:00:00');
         $popular = $this->makeArticle('2025-01-01 00:00:00');
         $newer = $this->makeArticle('2026-03-01 00:00:00');
         $sameTimeLater = $this->makeArticle('2026-03-01 00:00:00');
-        $tie = $this->makeArticle('2026-02-01 00:00:00');
         $this->addCount($popular, 1, '20260501', 7);
         $this->addCount($popular, 1, '20260502', 4);
         $this->addCount($tie, 1, '20260501', 2);

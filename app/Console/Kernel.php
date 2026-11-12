@@ -41,6 +41,11 @@ class Kernel extends ConsoleKernel
             ->appendOutputTo($output);
         $schedule->command('backup:run')->dailyAt('3:00')
             ->appendOutputTo($output);
+        // 一覧の人気順の順位。バックアップと重ならない時刻（本番cronは2分周期のため偶数分）。
+        // 強制終了でロックが残っても翌日の実行を止めないよう、重複防止の期限は短くする
+        $schedule->command('article:refresh-article-popularities')->dailyAt('4:30')
+            ->withoutOverlapping(10)
+            ->appendOutputTo($output);
         // 本番cronは2分周期のため、偶数分に合わせる。
         $schedule->command('backup:report-sync-uploads-digest')->dailyAt('0:06')
             ->appendOutputTo($output);

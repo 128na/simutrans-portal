@@ -16,6 +16,7 @@ if (app) {
     const isAuthenticated = isAuthenticatedElement
       ? JSON.parse(isAuthenticatedElement.textContent || "false")
       : false;
+    // カードの日付の出し方。公開順だけ公開日、それ以外（更新順・人気順・不明な値）は更新日を出す
     const sort: ArticleCardSort =
       app.dataset.sort === "published" ? "published" : "modified";
 

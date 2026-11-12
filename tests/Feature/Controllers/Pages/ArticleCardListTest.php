@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Pages;
 
+use App\Enums\ArticleStatus;
 use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Category;
@@ -88,6 +89,67 @@ class ArticleCardListTest extends TestCase
         $this->assertIds($list, ['sort' => 'published'], [$this->postTrains, $this->postBuildings, $this->introTrains]);
     }
 
+    /**
+     * 人気順は集計した順位表の順。直近の CV が多い順で、同じ CV は公開が新しい順（#683）
+     */
+    #[DataProvider('listProvider')]
+    public function test_人気順は直近の_c_vが多い順で同じ_c_vは公開が新しい順(string $list): void
+    {
+        $yesterday = now()->subDay()->format('Ymd');
+        // 同じ CV の postTrains と introTrains は、公開が新しい postTrains が先（id は introTrains の方が大きい）
+        $this->addConversion($this->postTrains, $yesterday, 3);
+        $this->addConversion($this->introTrains, $yesterday, 3);
+        $this->addConversion($this->postBuildings, $yesterday, 10);
+        $this->artisan('article:refresh-article-popularities')->assertSuccessful();
+
+        $this->assertIds($list, ['sort' => 'popular'], [$this->postBuildings, $this->postTrains, $this->introTrains]);
+        $this->assertIds($list, [], [$this->introTrains, $this->postTrains, $this->postBuildings], '既定の更新順は人気順に左右されない');
+        $this->assertIds($list, ['sort' => 'published'], [$this->postTrains, $this->postBuildings, $this->introTrains], '公開順は人気順に左右されない');
+        $this->assertIds($list, ['sort' => 'popular', 'addon' => 'trains'], [$this->postTrains, $this->introTrains]);
+    }
+
+    /**
+     * 一覧は順位表の順位の順に並べ、公開状態は表示時に絞る。順位表に行が無い記事（最後の作り直しより後に作られた記事）は次の作り直しまで出ない
+     */
+    #[DataProvider('listProvider')]
+    public function test_人気順は順位の順に並べ非公開の記事と順位の無い記事は出さない(string $list): void
+    {
+        $draft = $this->makeArticle(true, $this->trains, '2026-01-06 00:00:00', '2026-01-06 00:00:00');
+        $unranked = $this->makeArticle(true, $this->trains, '2026-01-07 00:00:00', '2026-01-07 00:00:00');
+        $draft->update(['status' => ArticleStatus::Draft]);
+        $this->setRank($this->introTrains, 1);
+        $this->setRank($draft, 2);
+        $this->setRank($this->postBuildings, 3);
+        $this->setRank($this->postTrains, 4);
+
+        $this->assertIds($list, ['sort' => 'popular'], [$this->introTrains, $this->postBuildings, $this->postTrains]);
+        $this->assertIds($list, [], [$unranked, $this->introTrains, $this->postTrains, $this->postBuildings], 'ほかの並び順には出る');
+    }
+
+    public function test_pak種類別の一覧も人気順に並べられる(): void
+    {
+        $this->setRank($this->postTrains, 1);
+        $this->setRank($this->introTrains, 2);
+        $url = route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'trains', 'sort' => 'popular']);
+
+        $this->assertSame([$this->postTrains->id, $this->introTrains->id], $this->idsOf($this->get($url)));
+    }
+
+    public function test_人気順を選ぶと補足を出し並び順の切り替えが条件を保つ(): void
+    {
+        $html = $this->get($this->url('pak', ['addon' => 'trains', 'sort' => 'popular']))->assertOk()->getContent();
+
+        $this->assertIsString($html);
+        $this->assertMatchesRegularExpression('/aria-current="true"\s+title="[^"]*直近 90 日の入手数[^"]*"\s*>人気順</u', $html);
+        $this->assertStringContainsString('<p class="px-1 text-note text-c-sub">人気順：直近 90 日の入手数（ダウンロードと掲載先クリック）の目安。1 日 1 回更新</p>', $html);
+        $this->assertMatchesRegularExpression('/href="[^"]*addon=buildings[^"]*sort=popular[^"]*"/', $html, '種類を切り替えても人気順を保つ');
+
+        $other = $this->get($this->url('pak', []))->assertOk()->getContent();
+        $this->assertIsString($other);
+        $this->assertMatchesRegularExpression('/href="[^"]*sort=popular[^"]*"[^>]*>人気順</u', $other, 'ほかの並び順からも人気順を選べる');
+        $this->assertStringNotContainsString('<p class="px-1 text-note text-c-sub">人気順：', $other, '補足は人気順を選んだときだけ出す');
+    }
+
     #[DataProvider('listProvider')]
     public function test_種類で絞り込める(string $list): void
     {
@@ -105,7 +167,7 @@ class ArticleCardListTest extends TestCase
     #[DataProvider('listProvider')]
     public function test_不正な値は既定の条件として扱う(string $list): void
     {
-        $this->assertIds($list, ['sort' => 'popular', 'addon' => 'unknown-addon'], [$this->introTrains, $this->postTrains, $this->postBuildings]);
+        $this->assertIds($list, ['sort' => 'unknown', 'addon' => 'unknown-addon'], [$this->introTrains, $this->postTrains, $this->postBuildings]);
         $this->assertIds($list, ['sort' => ['published'], 'addon' => ['trains']], [$this->introTrains, $this->postTrains, $this->postBuildings]);
     }
 
@@ -199,6 +261,11 @@ class ArticleCardListTest extends TestCase
         $this->assertCount(count($plain), $filtered);
         $this->assertCount(1, array_filter($filtered, fn (string $sql): bool => str_starts_with($sql, 'select count(')));
         $this->assertSame([], array_values(array_filter($filtered, fn (string $sql): bool => preg_match('/from `profiles`|from `tags` inner join `article_tag`/', $sql) === 1)), 'カードで使わないタグ・プロフィールは読み込まない');
+
+        $this->artisan('article:refresh-article-popularities')->assertSuccessful();
+        $popular = $this->queriesOf($this->url($list, ['addon' => 'trains', 'sort' => 'popular', 'postTypes' => ['addon-post']]));
+        $this->assertCount(count($plain), $popular, '人気順でもクエリ数は増えない');
+        $this->assertSame([], array_values(array_filter($popular, fn (string $sql): bool => str_contains($sql, 'conversion_counts'))), '表示時に CV を集計しない');
     }
 
     public function test_カードは既存のダウンロード・掲載先の経路を使い種別を見分けられる(): void
@@ -259,13 +326,29 @@ class ArticleCardListTest extends TestCase
      * @param  array<string, mixed>  $query
      * @param  list<Article>  $expected
      */
-    private function assertIds(string $list, array $query, array $expected): void
+    private function assertIds(string $list, array $query, array $expected, string $message = ''): void
     {
         $this->assertSame(
             array_map(fn (Article $article): int => $article->id, $expected),
             $this->idsOf($this->get($this->url($list, $query))),
-            json_encode($query, JSON_THROW_ON_ERROR),
+            trim($message.' '.json_encode($query, JSON_THROW_ON_ERROR)),
         );
+    }
+
+    private function setRank(Article $article, int $rank): void
+    {
+        DB::table('article_popularities')->insert(['article_id' => $article->id, 'rank' => $rank, 'conversion_count' => 0]);
+    }
+
+    private function addConversion(Article $article, string $period, int $count): void
+    {
+        DB::table('conversion_counts')->insert([
+            'user_id' => $article->user_id,
+            'article_id' => $article->id,
+            'type' => 1,
+            'period' => $period,
+            'count' => $count,
+        ]);
     }
 
     /**

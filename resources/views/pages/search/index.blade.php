@@ -11,6 +11,7 @@
           'filter' => $filter,
           'total' => $articles->total(),
           'acquisitionAll' => ($condition['postTypes'] ?? []) === [],
+          'acquisitionDownloadOnly' => ($condition['postTypes'] ?? []) === [\App\Enums\ArticlePostType::AddonPost->value],
           'addonPrimary' => \App\Services\Front\ArticleListFilter::SEARCH_PRIMARY_ADDONS,
         ])
       </div>

@@ -284,11 +284,19 @@ class ArticleCardListTest extends TestCase
         $this->assertMatchesRegularExpression('/<el-disclosure\s+id="search-options"\s+hidden/u', $downloadOnly, '切り替えで選べる条件だけなら詳細条件を開かない');
         $this->assertMatchesRegularExpression('/name="postTypes\[\]"\s+value="addon-post"\s+checked/u', $downloadOnly, '詳細条件の投稿形式にも同じ選択が入る');
 
-        // 詳細条件でほかの投稿形式を選んでいるときは、どちらも選択中にせず、検索結果も上書きしない
+        // 詳細条件でほかの投稿形式を選んでいるときは、どちらも選択中にせず、開いただけでは検索の条件を変えない
         $introduction = $this->decodedHtmlOf(route('search', ['word' => 'E233', 'postTypes' => ['addon-introduction']]));
         $this->assertDoesNotMatchRegularExpression('/<nav aria-label="入手方法で絞り込む"[^>]*>(?:(?!<\/nav>).)*aria-current/su', $introduction);
         $this->assertDoesNotMatchRegularExpression('/<el-disclosure\s+id="search-options"\s+hidden/u', $introduction, 'ほかの投稿形式を選んでいれば詳細条件を開く');
         $this->assertIds('search', ['postTypes' => ['addon-introduction']], [$this->introTrains]);
+
+        // 空の値は検索の条件と同じく無視し、ダウンロードできるものだけとして選択中にする
+        $withBlank = $this->decodedHtmlOf(route('search', ['word' => 'E233', 'postTypes' => ['addon-post', ' ']]));
+        $this->assertMatchesRegularExpression('/aria-current="true"\s*>ダウンロードできるものだけ</u', $withBlank);
+
+        foreach (['pak', 'tag', 'user'] as $list) {
+            $this->get($this->url($list, []))->assertSee('aria-label="入手方法で絞り込む"', false);
+        }
     }
 
     /**

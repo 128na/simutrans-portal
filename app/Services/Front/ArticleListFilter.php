@@ -120,7 +120,7 @@ final readonly class ArticleListFilter
     {
         $options = self::addonOptions();
         $visibleSlugs = array_values(array_filter($primarySlugs, fn (string $slug): bool => array_key_exists($slug, $options)));
-        if ($this->addonSlug !== null && ! in_array($this->addonSlug, $visibleSlugs, true)) {
+        if ($this->addonSlug !== null && array_key_exists($this->addonSlug, $options) && ! in_array($this->addonSlug, $visibleSlugs, true)) {
             $visibleSlugs = [...array_slice($visibleSlugs, 0, max(0, count($visibleSlugs) - 1)), $this->addonSlug];
         }
 

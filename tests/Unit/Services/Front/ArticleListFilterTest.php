@@ -111,6 +111,13 @@ class ArticleListFilterTest extends TestCase
         $this->assertArrayNotHasKey('airport-tools', $groups['folded']);
     }
 
+    public function test_選択肢に無い種類が選択中でも主要な種類を減らさない(): void
+    {
+        $groups = (new ArticleListFilter(addonSlug: 'unknown-addon'))->addonChipGroupsByPrimary(['buildings', 'trains', 'ships']);
+
+        $this->assertSame(['trains', 'ships', 'buildings'], array_keys($groups['visible']));
+    }
+
     public function test_主要な種類に入っている選択中の種類は並びも数も変えない(): void
     {
         $groups = (new ArticleListFilter(addonSlug: 'ships'))->addonChipGroupsByPrimary(['buildings', 'trains', 'ships']);

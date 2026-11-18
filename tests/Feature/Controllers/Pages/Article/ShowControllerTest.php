@@ -4,12 +4,47 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Pages\Article;
 
+use App\Events\ArticleShown;
 use App\Models\Article;
 use App\Models\Redirect;
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
 use Tests\Feature\TestCase;
 
 class ShowControllerTest extends TestCase
 {
+    public function test_show_持ち主の閲覧は閲覧数に数えない(): void
+    {
+        Event::fake([ArticleShown::class]);
+        $article = Article::factory()->publish()->create();
+        $owner = $article->user;
+        $this->assertInstanceOf(User::class, $owner);
+
+        $this->actingAs($owner)->get(route('articles.show', [
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug,
+        ]))->assertOk();
+
+        Event::assertNotDispatched(ArticleShown::class);
+    }
+
+    public function test_show_他人と未ログインの閲覧は閲覧数に数える(): void
+    {
+        Event::fake([ArticleShown::class]);
+        $other = User::factory()->create();
+        $article = Article::factory()->publish()->create();
+        $this->assertNotSame($other->id, $article->user_id);
+        $url = route('articles.show', [
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug,
+        ]);
+
+        $this->get($url)->assertOk();
+        $this->actingAs($other)->get($url)->assertOk();
+
+        Event::assertDispatchedTimes(ArticleShown::class, 2);
+    }
+
     public function test_show(): void
     {
         $article = Article::factory()->publish()->create();

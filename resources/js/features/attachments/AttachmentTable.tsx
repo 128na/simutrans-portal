@@ -79,6 +79,12 @@ export const AttachmentTable = ({
   );
 
   const totalPages = Math.ceil(filtered.length / limit);
+  // 削除などで件数が減り、総ページ数が今のページより小さくなっても空の表にしない（下限は1）
+  const page = Math.min(Math.max(current, 1), Math.max(totalPages, 1));
+  // state も丸めた値にそろえる。古いページ番号が残ると、件数が戻ったときに勝手にそのページへ移ってしまう
+  if (page !== current) {
+    setCurrent(page);
+  }
 
   const sorted = filtered.sort((a, b) => {
     const result = compareAttachmentValues(a[sort.column], b[sort.column]);
@@ -91,6 +97,14 @@ export const AttachmentTable = ({
         ? { column, order: prev.order === "asc" ? "desc" : "asc" }
         : { column, order: "asc" }
     );
+    // 並べ替えると今のページに出る行は見ていたものと無関係になるので、新しい並びの先頭から見せる
+    setCurrent(1);
+  };
+
+  const onChangeCriteria = (value: string) => {
+    setCriteria(value);
+    // 絞り込みの結果は1ページ目から見せる（2ページ目以降のままだと結果が空に見える）
+    setCurrent(1);
   };
 
   const handleDelete = async (attachmentId: number) => {
@@ -116,16 +130,12 @@ export const AttachmentTable = ({
             className="w-full"
             type="search"
             value={criteria}
-            onChange={(e) => setCriteria(e.target.value)}
+            onChange={(e) => onChangeCriteria(e.target.value)}
             placeholder="検索"
           />
         </div>
         <div className="grow"></div>
-        <Pagination
-          total={totalPages}
-          current={current}
-          onChange={setCurrent}
-        />
+        <Pagination total={totalPages} current={page} onChange={setCurrent} />
       </div>
       <div className="v2-table-wrapper">
         <TextSub>
@@ -136,7 +146,7 @@ export const AttachmentTable = ({
           data={sorted}
           sort={sort}
           limit={limit}
-          current={current}
+          current={page}
           onSort={onSort}
           renderRow={(a) => (
             <tr

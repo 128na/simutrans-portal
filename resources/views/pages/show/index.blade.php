@@ -19,7 +19,14 @@
         @endforeach
       </ol>
     </nav>
-    <h2 class="v2-text-h2 mb-3 wrap-break-word">{{ $article->title }}</h2>
+    @if ($editUrl)
+      <div class="mb-3 flex items-start gap-3">
+        <h2 class="v2-text-h2 min-w-0 flex-1 wrap-break-word">{{ $article->title }}</h2>
+        <a href="{{ $editUrl }}" class="v2-button-outline v2-button-md v2-button-primary-outline inline-block shrink-0 font-semibold">編集</a>
+      </div>
+    @else
+      <h2 class="v2-text-h2 mb-3 wrap-break-word">{{ $article->title }}</h2>
+    @endif
     <div id="app-article-show">読み込み中...</div>
   </div>
 @endsection

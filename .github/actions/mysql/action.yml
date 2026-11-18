@@ -3,18 +3,28 @@ description: "Setup MySQL"
 runs:
   using: "composite"
   steps:
+    # ランナーのイメージから MySQL が外れたため、コンテナで起動する（以前の既定は MySQL 8.0）
     - name: Start MySQL
-      run: sudo /etc/init.d/mysql start
+      run: |
+        docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:8.0
+        for i in $(seq 1 60); do
+          if docker exec mysql mysqladmin ping -uroot -proot --silent; then
+            exit 0
+          fi
+          sleep 2
+        done
+        docker logs mysql
+        exit 1
       shell: bash
 
     - name: Setup database
       run: |
-        mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
+        docker exec mysql mysql -uroot -proot -e 'CREATE DATABASE IF NOT EXISTS test;'
       shell: bash
 
     - name: show version
       run: |
-        mysql -uroot -h"127.0.0.1" -proot -e 'select version()'
+        docker exec mysql mysql -uroot -proot -e 'select version()'
       shell: bash
 
     - name: chmod 777

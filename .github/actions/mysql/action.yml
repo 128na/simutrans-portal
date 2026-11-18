@@ -8,7 +8,7 @@ runs:
       run: |
         docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql:8.0
         for i in $(seq 1 60); do
-          if docker exec mysql mysqladmin ping -uroot -proot --silent; then
+          if docker exec mysql mysql -uroot -proot -h127.0.0.1 -e 'select 1' >/dev/null 2>&1; then
             exit 0
           fi
           sleep 2

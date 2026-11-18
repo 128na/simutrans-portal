@@ -81,6 +81,10 @@ export const AttachmentTable = ({
   const totalPages = Math.ceil(filtered.length / limit);
   // 削除などで件数が減り、総ページ数が今のページより小さくなっても空の表にしない（下限は1）
   const page = Math.min(Math.max(current, 1), Math.max(totalPages, 1));
+  // state も丸めた値にそろえる。古いページ番号が残ると、件数が戻ったときに勝手にそのページへ移ってしまう
+  if (page !== current) {
+    setCurrent(page);
+  }
 
   const sorted = filtered.sort((a, b) => {
     const result = compareAttachmentValues(a[sort.column], b[sort.column]);

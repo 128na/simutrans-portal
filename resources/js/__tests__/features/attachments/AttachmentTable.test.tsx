@@ -65,7 +65,9 @@ describe("AttachmentTable のページ送り", () => {
     await user.type(screen.getByPlaceholderText("検索"), "target");
 
     expect(screen.getByText("target.zip")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "1" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "1" })).toHaveClass(
+      "v2-pagination-item-active"
+    );
   });
 
   it("絞り込んでも2ページ以上残るときは、1ページ目の先頭から出す", async () => {
@@ -115,5 +117,40 @@ describe("AttachmentTable のページ送り", () => {
 
     expect(screen.getByText("file-10.zip")).toBeInTheDocument();
     expect(screen.getByText("file-01.zip")).toBeInTheDocument();
+  });
+
+  it("件数が減って丸めた後に件数が戻っても、古いページへ勝手に移らない", async () => {
+    const user = userEvent.setup();
+    const props = {
+      limit: LIMIT,
+      attachmentableId: null,
+      attachmentableType: null,
+      types: ["file"] as AttachmentType[],
+      selected: null,
+    };
+    const { rerender } = render(
+      <AttachmentTable
+        attachments={makeAttachments(numbered("file", 20))}
+        {...props}
+      />
+    );
+
+    await goToPage(user, 2);
+    rerender(
+      <AttachmentTable
+        attachments={makeAttachments(numbered("file", 10))}
+        {...props}
+      />
+    );
+    rerender(
+      <AttachmentTable
+        attachments={makeAttachments(numbered("file", 20))}
+        {...props}
+      />
+    );
+
+    // 1ページ目（作成日の降順で file-20 〜 file-06）のまま
+    expect(screen.getByText("file-20.zip")).toBeInTheDocument();
+    expect(screen.queryByText("file-05.zip")).not.toBeInTheDocument();
   });
 });

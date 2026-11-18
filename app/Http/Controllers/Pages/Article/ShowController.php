@@ -37,7 +37,8 @@ class ShowController extends Controller
             return $doRedirectIfExists($request->fullUrl());
         }
 
-        if (Auth::check() === false || Auth::id() !== $article->user_id) {
+        $isOwner = Auth::check() && Auth::id() === $article->user_id;
+        if (! $isOwner) {
             event(new ArticleShown($article));
         }
 
@@ -51,6 +52,8 @@ class ShowController extends Controller
             [
                 'meta' => $article->user ? $this->metaOgpService->frontArticleShow($article->user, $article) : [],
                 'breadcrumbs' => $this->articleBreadcrumbService->forArticle($article),
+                // 持ち主にだけ編集画面へのリンクを出す。持ち主以外には URL も渡さない
+                'editUrl' => $isOwner ? route('mypage.articles.edit', $article) : null,
             ]
         );
     }

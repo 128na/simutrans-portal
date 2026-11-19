@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import axios from "axios";
@@ -83,7 +83,11 @@ it("一覧から紹介記事を変換し、記事一覧へ戻る", async () => {
   const input = document.querySelector<HTMLInputElement>('input[type="file"]');
   expect(input).not.toBeNull();
   await user.upload(input!, new File(["addon bytes"], "moving.zip"));
-  expect(await screen.findByText(/選択中: moving.zip/)).toBeInTheDocument();
+  expect(
+    await within(
+      screen.getByRole("group", { name: "現在のファイル" })
+    ).findByText("moving.zip")
+  ).toBeInTheDocument();
   await user.click(screen.getByRole("button", { name: "変換する" }));
 
   await waitFor(() => expect(assign).toHaveBeenCalledWith("/mypage/articles"));

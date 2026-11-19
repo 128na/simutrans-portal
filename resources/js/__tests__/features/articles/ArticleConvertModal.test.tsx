@@ -1,4 +1,10 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  fireEvent,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import axios from "axios";
@@ -45,11 +51,14 @@ const setup = () => {
   return { onClose, onSuccess };
 };
 
+const currentFile = async () =>
+  within(await screen.findByRole("group", { name: "現在のファイル" }));
+
 const selectFile = async () => {
   const user = userEvent.setup();
   await user.click(
     await screen.findByRole("button", {
-      name: "アップロード済みのファイルから選択",
+      name: "アップロード済みから変更",
     })
   );
   await user.click(screen.getByText("existing-addon.zip"));
@@ -96,7 +105,7 @@ describe("記事の変換", () => {
 
   it("配布ファイル未選択では送信できない", async () => {
     setup();
-    await screen.findByText("選択中: 未選択");
+    (await currentFile()).getByText("ファイルが未選択です");
     expect(
       screen.getByRole("checkbox", { name: "更新日時を更新しない" })
     ).not.toBeChecked();
@@ -130,13 +139,15 @@ describe("記事の変換", () => {
     const { onSuccess } = setup();
     await userEvent.click(
       await screen.findByRole("button", {
-        name: "アップロード済みのファイルから選択",
+        name: "アップロード済みから変更",
       })
     );
     expect(screen.queryByText("preview.png")).not.toBeInTheDocument();
     expect(screen.queryByText("other-article.zip")).not.toBeInTheDocument();
     await userEvent.click(screen.getByText("existing-addon.zip"));
-    expect(screen.getByText("選択中: existing-addon.zip")).toBeInTheDocument();
+    expect(
+      (await currentFile()).getByText("existing-addon.zip")
+    ).toBeInTheDocument();
     expect(screen.getAllByRole("dialog")).toHaveLength(1);
     await userEvent.click(screen.getByRole("button", { name: "変換する" }));
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith(1));
@@ -156,7 +167,7 @@ describe("記事の変換", () => {
       .mockResolvedValueOnce({ data: { data: uploaded } })
       .mockResolvedValueOnce({ data: { article_id: 1 } });
     const { onSuccess } = setup();
-    await screen.findByText("選択中: 未選択");
+    (await currentFile()).getByText("ファイルが未選択です");
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -165,7 +176,7 @@ describe("記事の変換", () => {
       new File(["addon"], "uploaded-addon.zip", { type: "application/zip" })
     );
     expect(
-      await screen.findByText("選択中: uploaded-addon.zip")
+      await (await currentFile()).findByText("uploaded-addon.zip")
     ).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: "変換する" }));
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith(1));
@@ -199,7 +210,9 @@ describe("記事の変換", () => {
       "/api/v2/articles/1/convert-to-post",
       { file: 9, without_update_modified_at: true }
     );
-    expect(screen.getByText("選択中: existing-addon.zip")).toBeInTheDocument();
+    expect(
+      (await currentFile()).getByText("existing-addon.zip")
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("checkbox", { name: "更新日時を更新しない" })
     ).toBeChecked();
@@ -223,7 +236,7 @@ describe("記事の変換", () => {
       })
       .mockResolvedValueOnce({ data: { data: attachment } });
     setup();
-    await screen.findByText("選択中: 未選択");
+    (await currentFile()).getByText("ファイルが未選択です");
     const input = document.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
@@ -240,7 +253,7 @@ describe("記事の変換", () => {
       new File(["retry"], "retry.zip", { type: "application/zip" })
     );
     expect(
-      await screen.findByText("選択中: existing-addon.zip")
+      await (await currentFile()).findByText("existing-addon.zip")
     ).toBeInTheDocument();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "変換する" })).toBeEnabled();

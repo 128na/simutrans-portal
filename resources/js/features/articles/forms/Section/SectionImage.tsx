@@ -1,13 +1,9 @@
 import { ArticleUpload } from "@/features/articles/forms/ArticleUpload";
-import { ModalFull } from "@/components/ui/ModalFull";
 import TextError from "@/components/ui/TextError";
-import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
-import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { useAxiosError } from "@/hooks/useAxiosError";
 
 type Props = {
   section: ArticleContent.Section.Image;
-  articleId: number | null;
   idx: number;
   onUploaded: (a: Attachment.MypageEdit) => void;
   onSelectAttachment: (id: number | null) => void;
@@ -15,12 +11,10 @@ type Props = {
 
 export const SectionImage = ({
   section,
-  articleId,
   idx,
   onUploaded,
   onSelectAttachment,
 }: Props) => {
-  const attachments = useArticleEditor((s) => s.attachments);
   const { getError } = useAxiosError();
 
   return (
@@ -28,32 +22,11 @@ export const SectionImage = ({
       <div>
         <TextError>{getError(`article.contents.sections.${idx}.id`)}</TextError>
         <ArticleUpload
-          className="w-full mb-4"
-          accept="image/*"
+          kind="image"
+          selected={section.id}
           onUploaded={onUploaded}
+          onSelectAttachment={onSelectAttachment}
         />
-        <ModalFull
-          buttonTitle="アップロード済みの画像から選択"
-          title="画像を選択"
-        >
-          {({ close }) => (
-            <AttachmentEdit
-              attachments={attachments}
-              attachmentableId={articleId}
-              selected={section.id}
-              types={["image"]}
-              onSelectAttachment={(attachmentId) => {
-                onSelectAttachment(attachmentId);
-                close();
-              }}
-              onChangeAttachments={(attachments) => {
-                useArticleEditor.setState((state) => {
-                  state.attachments = attachments;
-                });
-              }}
-            />
-          )}
-        </ModalFull>
       </div>
     </>
   );

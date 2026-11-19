@@ -4,8 +4,6 @@ import { useArticleEditor, useIsSlugUpdated } from "@/hooks/useArticleEditor";
 import TextSub from "@/components/ui/TextSub";
 import TextError from "@/components/ui/TextError";
 import { useAxiosError } from "@/hooks/useAxiosError";
-import { ModalFull } from "@/components/ui/ModalFull";
-import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import { FormCaption } from "@/components/ui/FormCaption";
 import Input from "@/components/ui/Input";
 import TextBadge from "@/components/ui/TextBadge";
@@ -47,8 +45,6 @@ export const CommonForm = () => {
   const updateFollowRedirect = useArticleEditor((s) => s.updateFollowRedirect);
   const isSlugUpdated = useIsSlugUpdated();
   const updateContents = useArticleEditor((s) => s.updateContents);
-
-  const attachments = useArticleEditor((s) => s.attachments);
 
   const { getError } = useAxiosError();
 
@@ -137,8 +133,8 @@ export const CommonForm = () => {
         <FormCaption>サムネイル</FormCaption>
         <TextError>{getError("article.contents.thumbnail")}</TextError>
         <ArticleUpload
-          className="w-full mb-4"
-          accept="image/*"
+          kind="image"
+          selected={article.contents.thumbnail}
           onUploaded={(a) => {
             useArticleEditor.setState((state) => {
               // アップロードした画像を同時にセットする
@@ -146,29 +142,10 @@ export const CommonForm = () => {
               state.article.contents.thumbnail = a.id;
             });
           }}
+          onSelectAttachment={(attachmentId) => {
+            updateContents((draft) => (draft.thumbnail = attachmentId));
+          }}
         />
-        <ModalFull
-          buttonTitle="アップロード済みの画像から選択"
-          title="画像を選択"
-        >
-          {({ close }) => (
-            <AttachmentEdit
-              attachments={attachments}
-              attachmentableId={article.id}
-              selected={article.contents.thumbnail}
-              types={["image"]}
-              onSelectAttachment={(attachmentId) => {
-                updateContents((draft) => (draft.thumbnail = attachmentId));
-                close();
-              }}
-              onChangeAttachments={(attachments) => {
-                useArticleEditor.setState((state) => {
-                  state.attachments = attachments;
-                });
-              }}
-            />
-          )}
-        </ModalFull>
       </div>
     </>
   );

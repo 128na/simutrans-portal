@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Modal } from "@/components/ui/Modal";
-import { ModalFull } from "@/components/ui/ModalFull";
 import Button from "@/components/ui/Button";
 import Checkbox from "@/components/ui/Checkbox";
-import { Upload } from "@/components/form/Upload";
-import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
+import { AttachmentField } from "@/features/attachments/AttachmentField";
 import { useApiCall } from "@/hooks/useApiCall";
 import { extractErrorMessage } from "@/lib/errorHandler";
 
@@ -107,7 +105,11 @@ export const ArticleConvertModal = ({ article, onClose, onSuccess }: Props) => {
       {loaded && (
         <fieldset disabled={busy}>
           <legend>配布ファイル（必須）</legend>
-          <Upload
+          <AttachmentField
+            kind="file"
+            attachments={attachments}
+            selected={file}
+            attachmentableId={article.id}
             onUploadingChange={setUploading}
             onUploadError={(error) => setError(extractErrorMessage(error))}
             onUploaded={(attachment) => {
@@ -119,30 +121,14 @@ export const ArticleConvertModal = ({ article, onClose, onSuccess }: Props) => {
                 setError("配布用のファイルを選択してください。");
               }
             }}
+            onSelectAttachment={setFile}
+            onChangeAttachments={setAttachments}
           />
-          {uploading && <p role="status">アップロード中...</p>}
-          <ModalFull
-            buttonTitle="アップロード済みのファイルから選択"
-            title="ファイルを選択"
-          >
-            {({ close }) => (
-              <AttachmentEdit
-                attachments={attachments}
-                attachmentableId={article.id}
-                selected={file}
-                types={["file"]}
-                onChangeAttachments={setAttachments}
-                onSelectAttachment={(id) => {
-                  setFile(id);
-                  close();
-                }}
-              />
-            )}
-          </ModalFull>
-          <p className="my-4">
-            選択中:{" "}
-            {attachments.find((a) => a.id === file)?.original_name ?? "未選択"}
-          </p>
+          {uploading && (
+            <p role="status" className="mt-2">
+              アップロード中...
+            </p>
+          )}
         </fieldset>
       )}
       <div className="mt-4">

@@ -8,7 +8,6 @@ import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
 import TextError from "@/components/ui/TextError";
 import { ModalFull } from "@/components/ui/ModalFull";
-import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
 import {
   getCategories,
   getReadmeText,
@@ -91,7 +90,8 @@ export const AddonPostFile = () => {
       </FormCaption>
       <TextError>{getError("article.contents.file")}</TextError>
       <ArticleUpload
-        className="w-full mb-4"
+        kind="file"
+        selected={contents.file}
         onUploaded={(a) => {
           useArticleEditor.setState((state) => {
             state.attachments.unshift(a);
@@ -100,31 +100,12 @@ export const AddonPostFile = () => {
             }
           });
         }}
+        onSelectAttachment={(attachmentId) => {
+          updateContents<ArticleContent.AddonPost>(
+            (draft) => (draft.file = attachmentId)
+          );
+        }}
       />
-      <ModalFull
-        buttonTitle="アップロード済みのファイルから選択"
-        title="ファイルを選択"
-      >
-        {({ close }) => (
-          <AttachmentEdit
-            attachments={attachments}
-            attachmentableId={article.id}
-            selected={contents.file}
-            types={["file"]}
-            onSelectAttachment={(attachmentId) => {
-              updateContents<ArticleContent.AddonPost>(
-                (draft) => (draft.file = attachmentId)
-              );
-              close();
-            }}
-            onChangeAttachments={(attachments) => {
-              useArticleEditor.setState((state) => {
-                state.attachments = attachments;
-              });
-            }}
-          />
-        )}
-      </ModalFull>
       <Button
         variant="subOutline"
         className="mt-4 mb-2 block"

@@ -101,7 +101,6 @@ export const SectionForm = () => {
                   <SectionImage
                     idx={idx}
                     section={s}
-                    articleId={article.id}
                     onUploaded={(a) => {
                       useArticleEditor.setState((state) => {
                         // アップロードした画像を同時にセットする

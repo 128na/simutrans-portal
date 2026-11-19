@@ -50,7 +50,7 @@ const acceptsType = (kind: Kind, type: string): boolean =>
   kind !== "image" || type.startsWith("image/");
 
 /**
- * 種類が空のファイルを画像として受け付ける拡張子。
+ * 画像の欄で受け付ける拡張子。
  * サーバーが受け付ける拡張子（SafeAttachment::ALLOWED_EXTENSIONS）のうち、画像として保存されるもの（ImageFormat）だけ。
  */
 const IMAGE_EXTENSIONS: readonly string[] = ["png", "jpg", "jpeg", "jfif"];
@@ -61,11 +61,13 @@ const extensionOf = (name: string): string => {
 };
 
 /**
- * ドロップされたファイルを受け付けるか。環境によって heic などは種類が空になるので、そのときは拡張子で判定する。
+ * ドロップされたファイルを受け付けるか。
+ * 環境によって heic などは種類が空になるので、画像の欄では種類に加えて拡張子でも判定する。
+ * 種類が画像でも、サーバーが拡張子で拒否する形式（heic・webp・gif など）はここで止めて理由を出す。
  */
 const acceptsFile = (kind: Kind, file: File): boolean => {
   if (kind !== "image") return true;
-  if (file.type) return acceptsType(kind, file.type);
+  if (file.type && !acceptsType(kind, file.type)) return false;
   return IMAGE_EXTENSIONS.includes(extensionOf(file.name));
 };
 
@@ -239,7 +241,12 @@ export const AttachmentField = ({
         attachment={attachments.find((a) => a.id === selected)}
         selected={selected}
       />
-      {rejectNotice > 0 && <TextError role="alert">{label.reject}</TextError>}
+      {rejectNotice > 0 && (
+        // 続けて拒否したときも読み上げられるよう、拒否するたびに作り直す
+        <TextError key={rejectNotice} role="alert">
+          {label.reject}
+        </TextError>
+      )}
       {/* ボタンを操作したら、前に拒否したときのメッセージは消す */}
       <div
         className="flex flex-wrap gap-2"

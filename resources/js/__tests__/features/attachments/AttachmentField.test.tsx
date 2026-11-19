@@ -428,10 +428,14 @@ describe("AttachmentField", () => {
 
         fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
 
-        expect(screen.getByRole("alert")).toHaveTextContent(
+        const firstAlert = screen.getByRole("alert");
+        expect(firstAlert).toHaveTextContent(
           "画像ファイルのみアップロードできます"
         );
         expect(axios.post).not.toHaveBeenCalled();
+        // 続けて拒否したときも読み上げられるよう、作り直す
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
+        expect(screen.getByRole("alert")).not.toBe(firstAlert);
 
         vi.mocked(axios.post).mockResolvedValueOnce({
           data: { data: makeAttachment({ id: 71, type: "image" }) },
@@ -495,6 +499,26 @@ describe("AttachmentField", () => {
 
           fireEvent.drop(imageZone, {
             dataTransfer: fileTransfer([new File(["x"], name, { type: "" })]),
+          });
+
+          expect(axios.post).not.toHaveBeenCalled();
+          expect(screen.getByRole("alert")).toHaveTextContent(
+            "画像ファイルのみアップロードできます"
+          );
+        }
+      );
+
+      it.each([
+        ["photo.heic", "image/heic"],
+        ["anim.gif", "image/gif"],
+        ["photo.webp", "image/webp"],
+      ])(
+        "種類が画像でも、サーバーが受け付けない %s（%s）は拒否して理由を出す",
+        (name, type) => {
+          const imageZone = renderImageField();
+
+          fireEvent.drop(imageZone, {
+            dataTransfer: fileTransfer([new File(["x"], name, { type })]),
           });
 
           expect(axios.post).not.toHaveBeenCalled();

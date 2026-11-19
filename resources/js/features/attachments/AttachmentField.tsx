@@ -14,7 +14,7 @@ const labels = {
     noun: "ファイル",
     upload: "新しいファイルをアップロード",
     modalTitle: "ファイルを選択",
-    reject: "",
+    reject: "このファイルはアップロードできません",
   },
   image: {
     current: "現在の画像",
@@ -113,19 +113,31 @@ export const AttachmentField = ({
 
   /** 保存中などで fieldset ごと無効になっているときは、ボタンと同じくドロップも受け付けない */
   const isDisabled = (): boolean =>
-    zoneRef.current
-      ?.querySelector('input[type="file"]')
-      ?.matches(":disabled") ?? false;
+    zoneRef.current?.closest("fieldset:disabled") != null;
+
+  /**
+   * 「アップロード済みから変更」の選択画面は欄の中に描かれるので、そこでのドラッグは受け口として扱わない。
+   * 欄そのものがモーダルの中にある場合（投稿記事への変換）は、欄より外側のダイアログなので対象外。
+   */
+  const isFromInnerDialog = (e: React.DragEvent<HTMLDivElement>): boolean => {
+    const dialog =
+      e.target instanceof Element ? e.target.closest('[role="dialog"]') : null;
+    return dialog !== null && (zoneRef.current?.contains(dialog) ?? false);
+  };
+
+  /** 受け口として扱うドラッグか */
+  const isZoneDrag = (e: React.DragEvent<HTMLDivElement>): boolean =>
+    isFileDrag(e.dataTransfer) && !isFromInnerDialog(e);
 
   const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    if (!isFileDrag(e.dataTransfer)) return;
+    if (!isZoneDrag(e)) return;
     e.preventDefault();
     dragDepth.current += 1;
     setDragState(isDisabled() ? "none" : judgeDrag(kind, e.dataTransfer));
   };
 
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    if (!isFileDrag(e.dataTransfer)) return;
+    if (!isZoneDrag(e)) return;
     e.preventDefault();
     // dragenter の setState が反映される前にも呼ばれるので、state ではなくその場で判定する
     e.dataTransfer.dropEffect =
@@ -135,7 +147,7 @@ export const AttachmentField = ({
   };
 
   const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    if (!isFileDrag(e.dataTransfer)) return;
+    if (!isZoneDrag(e)) return;
     dragDepth.current = Math.max(0, dragDepth.current - 1);
     if (dragDepth.current === 0) {
       setDragState("none");
@@ -143,7 +155,7 @@ export const AttachmentField = ({
   };
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    if (!isFileDrag(e.dataTransfer)) return;
+    if (!isZoneDrag(e)) return;
     e.preventDefault();
     dragDepth.current = 0;
     setDragState("none");

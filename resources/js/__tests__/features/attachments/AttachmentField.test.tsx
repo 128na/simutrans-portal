@@ -350,6 +350,46 @@ describe("AttachmentField", () => {
       expect(axios.post).not.toHaveBeenCalled();
     });
 
+    it("「アップロード済みから変更」の選択画面に落としたファイルはアップロードしない", async () => {
+      const user = userEvent.setup();
+      render(
+        <Wrapper
+          kind="file"
+          initialSelected={31}
+          initialAttachments={[addon, otherAddon]}
+        />
+      );
+      await user.click(
+        screen.getByRole("button", { name: "アップロード済みから変更" })
+      );
+      const target = within(screen.getByRole("dialog")).getByText(
+        "other-addon.zip"
+      );
+      const file = new File(["a"], "a.zip", { type: "application/zip" });
+
+      fireEvent.dragEnter(target, { dataTransfer: fileTransfer([file]) });
+      expect(screen.queryByText(dropOverlayText)).not.toBeInTheDocument();
+      fireEvent.drop(target, { dataTransfer: fileTransfer([file]) });
+      expect(axios.post).not.toHaveBeenCalled();
+    });
+
+    it("欄がモーダルの中にあってもドロップでアップロードできる", () => {
+      vi.mocked(axios.post).mockResolvedValueOnce({
+        data: { data: makeAttachment({ id: 64 }) },
+      });
+      render(
+        <div role="dialog">
+          <Wrapper kind="file" initialSelected={null} initialAttachments={[]} />
+        </div>
+      );
+      const file = new File(["a"], "a.zip", { type: "application/zip" });
+
+      fireEvent.dragEnter(zone(), { dataTransfer: fileTransfer([file]) });
+      expect(screen.getByText(dropOverlayText)).toBeInTheDocument();
+      fireEvent.drop(zone(), { dataTransfer: fileTransfer([file]) });
+      expect(axios.post).toHaveBeenCalledTimes(1);
+    });
+
     it("受け口の外にファイルを落としてもブラウザに開かせない", () => {
       const { unmount } = render(
         <Wrapper kind="file" initialSelected={null} initialAttachments={[]} />

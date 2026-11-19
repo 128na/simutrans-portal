@@ -66,7 +66,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["8.3", "8.4", "8.5"]
+        # 本番（レンタルサーバー）の 8.3 と、最新の 8.6 だけを確かめる
+        php: ["8.3", "8.6"]
         suite: [Unit, Feature]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -74,6 +75,9 @@ jobs:
       - uses: ./.github/actions/php
         with:
           php-version: ${{ matrix.php }}
+          # 8.6 の ext-zip は版が 8.6.0 になり、spatie/laravel-backup 10.3 の ext-zip ^1.14 と合わない。
+          # 8.6 対応版（10.5）は PHP ^8.4 を要求し本番の 8.3 と両立しないため、8.6 のときだけ要件を外す
+          composer-options: ${{ matrix.php == '8.6' && '--ignore-platform-req=ext-zip' || '' }}
       - uses: ./.github/actions/nodejs
       - uses: ./.github/actions/mysql
         if: matrix.suite == 'Feature'

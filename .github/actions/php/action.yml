@@ -5,6 +5,10 @@ inputs:
     description: "PHPバージョン"
     required: false
     default: "8.3"
+  composer-options:
+    description: "composer install に渡す追加オプション"
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
@@ -15,3 +19,5 @@ runs:
         coverage: none
 
     - uses: "ramsey/composer-install@26d8a556604053a9612623447203a691f406fbe6" # v4
+      with:
+        composer-options: ${{ inputs.composer-options }}

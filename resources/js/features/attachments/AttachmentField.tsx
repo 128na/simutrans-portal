@@ -225,7 +225,7 @@ export const AttachmentField = ({
         <div
           aria-hidden="true"
           data-testid="attachment-drop-overlay"
-          className={`pointer-events-none absolute -inset-1 z-10 flex items-center justify-center rounded-lg border-2 border-dashed bg-white/90 p-2 text-center text-sm font-bold ${
+          className={`pointer-events-none absolute inset-0 z-10 flex items-center justify-center rounded-lg border-2 border-dashed bg-white/90 p-2 text-center text-sm font-bold ${
             dragState === "accept"
               ? "border-c-primary text-c-primary"
               : "border-c-sub text-c-sub"
@@ -254,7 +254,11 @@ export const AttachmentField = ({
       >
         <Upload
           label={label.upload}
-          accept={kind === "image" ? "image/*" : undefined}
+          accept={
+            kind === "image"
+              ? IMAGE_EXTENSIONS.map((ext) => `.${ext}`).join(",")
+              : undefined
+          }
           uploader={uploader}
         />
         <ModalFull

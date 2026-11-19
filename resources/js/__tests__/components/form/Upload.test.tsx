@@ -97,6 +97,28 @@ describe("Upload", () => {
     expect(input).toBeDisabled();
   });
 
+  it("アップロード中はボタンを押せず、終わると元に戻る", async () => {
+    const user = userEvent.setup();
+    let finish!: () => void;
+    vi.mocked(mockedAxios.post).mockReturnValueOnce(
+      new Promise((resolve) => {
+        finish = () => resolve({ data: { data: { id: 81 } } });
+      })
+    );
+    const { container, getByRole } = render(<Upload label="追加する" />);
+
+    await user.upload(
+      container.querySelector('input[type="file"]') as HTMLInputElement,
+      new File(["test"], "test.jpg", { type: "image/jpeg" })
+    );
+
+    expect(getByRole("button", { name: "アップロード中…" })).toBeDisabled();
+    finish();
+    await waitFor(() =>
+      expect(getByRole("button", { name: "追加する" })).not.toBeDisabled()
+    );
+  });
+
   it("FormDataが正しく構築される", async () => {
     const user = userEvent.setup();
     const mockOnUploaded = vi.fn();

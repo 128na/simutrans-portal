@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -7,11 +8,13 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import axios from "axios";
 import { AttachmentField } from "@/features/attachments/AttachmentField";
+import { handleError } from "@/lib/errorHandler";
 
 vi.mock("axios");
+vi.mock("@/lib/errorHandler", () => ({ handleError: vi.fn() }));
 
 const makeAttachment = (
   overrides: Partial<Attachment.MypageEdit>
@@ -91,9 +94,24 @@ const fileTransfer = (files: File[]) => ({
 
 const dropOverlayText = /ここにドロップしてアップロード/;
 
+/** 解決・失敗をテストから決められる Promise。アップロード中の状態を作るのに使う */
+const deferred = <T,>() => {
+  let resolve!: (value: T) => void;
+  let reject!: (reason: unknown) => void;
+  const promise = new Promise<T>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
+};
+
 describe("AttachmentField", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("設定済みのファイルの名前・サイズ・アップロード日を枠に出す", () => {
@@ -388,6 +406,281 @@ describe("AttachmentField", () => {
       expect(screen.getByText(dropOverlayText)).toBeInTheDocument();
       fireEvent.drop(zone(), { dataTransfer: fileTransfer([file]) });
       expect(axios.post).toHaveBeenCalledTimes(1);
+    });
+
+    describe("拒否したときの理由", () => {
+      const renderImageField = () => {
+        render(
+          <Wrapper
+            kind="image"
+            initialSelected={null}
+            initialAttachments={[]}
+          />
+        );
+        return screen.getByRole("group", { name: "現在の画像" }).parentElement!;
+      };
+      const zip = () =>
+        new File(["z"], "rejected.zip", { type: "application/zip" });
+
+      it("画像の欄に画像以外を落とすと理由を読み上げにも届く形で出し、次のドロップで消す", () => {
+        const imageZone = renderImageField();
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
+
+        const firstAlert = screen.getByRole("alert");
+        expect(firstAlert).toHaveTextContent(
+          "画像ファイルのみアップロードできます"
+        );
+        expect(axios.post).not.toHaveBeenCalled();
+        // 続けて拒否したときも読み上げられるよう、作り直す
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
+        expect(screen.getByRole("alert")).not.toBe(firstAlert);
+
+        vi.mocked(axios.post).mockResolvedValueOnce({
+          data: { data: makeAttachment({ id: 71, type: "image" }) },
+        });
+        const png = new File(["p"], "accepted.png", { type: "image/png" });
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([png]) });
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+        expect(axios.post).toHaveBeenCalledTimes(1);
+      });
+
+      it("理由はボタンを操作したとき、一定時間たったときにも消える", () => {
+        vi.useFakeTimers();
+        const imageZone = renderImageField();
+
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
+        expect(screen.getByRole("alert")).toBeInTheDocument();
+        fireEvent.click(
+          screen.getByRole("button", { name: "新しい画像をアップロード" })
+        );
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
+        act(() => {
+          vi.advanceTimersByTime(4000);
+        });
+        // 続けて拒否したときは、消すまでの時間を数え直す
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([zip()]) });
+        act(() => {
+          vi.advanceTimersByTime(4000);
+        });
+        expect(screen.getByRole("alert")).toBeInTheDocument();
+        act(() => {
+          vi.advanceTimersByTime(1000);
+        });
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      });
+
+      it("種類が空のファイルは、サーバーが画像として受け付ける拡張子なら画像の欄で受け付ける", () => {
+        vi.mocked(axios.post).mockResolvedValue({
+          data: { data: makeAttachment({ id: 72, type: "image" }) },
+        });
+        const imageZone = renderImageField();
+        const typeless = new File(["j"], "Photo.JFIF", { type: "" });
+
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([typeless]) });
+
+        expect(axios.post).toHaveBeenCalledTimes(1);
+        const formData = vi.mocked(axios.post).mock.calls[0][1] as FormData;
+        expect(formData.get("file")).toBe(typeless);
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      });
+
+      it.each([
+        ["サーバーが受け付けない画像の拡張子", "photo.heic"],
+        ["拡張子が無い", "photo"],
+        ["画像でない拡張子", "readme.txt"],
+      ])(
+        "種類が空で%sファイルは、画像の欄では拒否して理由を出す",
+        (_, name) => {
+          const imageZone = renderImageField();
+
+          fireEvent.drop(imageZone, {
+            dataTransfer: fileTransfer([new File(["x"], name, { type: "" })]),
+          });
+
+          expect(axios.post).not.toHaveBeenCalled();
+          expect(screen.getByRole("alert")).toHaveTextContent(
+            "画像ファイルのみアップロードできます"
+          );
+        }
+      );
+
+      it.each([
+        ["photo.heic", "image/heic"],
+        ["anim.gif", "image/gif"],
+        ["photo.webp", "image/webp"],
+      ])(
+        "種類が画像でも、サーバーが受け付けない %s（%s）は拒否して理由を出す",
+        (name, type) => {
+          const imageZone = renderImageField();
+
+          fireEvent.drop(imageZone, {
+            dataTransfer: fileTransfer([new File(["x"], name, { type })]),
+          });
+
+          expect(axios.post).not.toHaveBeenCalled();
+          expect(screen.getByRole("alert")).toHaveTextContent(
+            "画像ファイルのみアップロードできます"
+          );
+        }
+      );
+
+      it("ファイルの欄は種類も拡張子も分からないファイルを受け付ける", () => {
+        vi.mocked(axios.post).mockResolvedValueOnce({
+          data: { data: makeAttachment({ id: 73 }) },
+        });
+        render(
+          <Wrapper kind="file" initialSelected={null} initialAttachments={[]} />
+        );
+        const unknown = new File(["u"], "unknown", { type: "" });
+
+        fireEvent.drop(zone(), { dataTransfer: fileTransfer([unknown]) });
+
+        expect(axios.post).toHaveBeenCalledTimes(1);
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+      });
+    });
+
+    describe("アップロード中", () => {
+      const uploadButton = (name: string) =>
+        screen.getByRole("button", { name });
+
+      it("ボタンもドロップも受け付けず、終わると再び受け付ける", async () => {
+        const pending = deferred<unknown>();
+        vi.mocked(axios.post).mockReturnValueOnce(pending.promise);
+        render(
+          <Wrapper kind="file" initialSelected={null} initialAttachments={[]} />
+        );
+        const first = new File(["1"], "first.zip", { type: "application/zip" });
+        const second = new File(["2"], "second.zip", {
+          type: "application/zip",
+        });
+
+        fireEvent.drop(zone(), { dataTransfer: fileTransfer([first]) });
+
+        expect(uploadButton("アップロード中…")).toBeDisabled();
+        expect(document.querySelector('input[type="file"]')).toBeDisabled();
+        // 強調表示は出さず、落とせないことをブラウザにも伝える
+        fireEvent.dragEnter(zone(), { dataTransfer: fileTransfer([second]) });
+        expect(screen.queryByText(dropOverlayText)).not.toBeInTheDocument();
+        const over = fileTransfer([second]);
+        fireEvent.dragOver(zone(), { dataTransfer: over });
+        expect(over.dropEffect).toBe("none");
+        fireEvent.drop(zone(), { dataTransfer: fileTransfer([second]) });
+        expect(axios.post).toHaveBeenCalledTimes(1);
+
+        await act(async () => {
+          pending.resolve({
+            data: {
+              data: makeAttachment({ id: 74, original_name: "first.zip" }),
+            },
+          });
+        });
+
+        expect(currentBox().getByText("first.zip")).toBeInTheDocument();
+        expect(uploadButton("新しいファイルをアップロード")).not.toBeDisabled();
+        vi.mocked(axios.post).mockResolvedValueOnce({
+          data: { data: makeAttachment({ id: 75 }) },
+        });
+        fireEvent.drop(zone(), { dataTransfer: fileTransfer([second]) });
+        expect(axios.post).toHaveBeenCalledTimes(2);
+        const formData = vi.mocked(axios.post).mock.calls[1][1] as FormData;
+        expect(formData.get("file")).toBe(second);
+      });
+
+      it("同じタイミングで 2 つ落としても、先の 1 つだけアップロードする", () => {
+        vi.mocked(axios.post).mockReturnValue(deferred<unknown>().promise);
+        render(
+          <Wrapper kind="file" initialSelected={null} initialAttachments={[]} />
+        );
+        const first = new File(["1"], "first.zip", { type: "application/zip" });
+        const second = new File(["2"], "second.zip", {
+          type: "application/zip",
+        });
+
+        // 画面が描き直される前に 2 つ目が来ても受け付けない
+        act(() => {
+          fireEvent.drop(zone(), { dataTransfer: fileTransfer([first]) });
+          fireEvent.drop(zone(), { dataTransfer: fileTransfer([second]) });
+        });
+
+        expect(axios.post).toHaveBeenCalledTimes(1);
+        const formData = vi.mocked(axios.post).mock.calls[0][1] as FormData;
+        expect(formData.get("file")).toBe(first);
+      });
+
+      it("失敗しても、エラーを知らせたうえで再び受け付ける", async () => {
+        const pending = deferred<unknown>();
+        vi.mocked(axios.post).mockReturnValueOnce(pending.promise);
+        const onUploadError = vi.fn();
+        render(
+          <AttachmentField
+            kind="image"
+            attachments={[]}
+            selected={null}
+            attachmentableId={7}
+            onUploaded={vi.fn()}
+            onSelectAttachment={vi.fn()}
+            onChangeAttachments={vi.fn()}
+            onUploadError={onUploadError}
+          />
+        );
+        const imageZone = screen.getByRole("group", {
+          name: "現在の画像",
+        }).parentElement!;
+        const png = new File(["p"], "failed.png", { type: "image/png" });
+
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([png]) });
+        expect(uploadButton("アップロード中…")).toBeDisabled();
+
+        const error = new Error("upload failed");
+        await act(async () => {
+          pending.reject(error);
+        });
+
+        expect(onUploadError).toHaveBeenCalledWith(error);
+        expect(handleError).toHaveBeenCalledWith(error, {
+          component: "Upload",
+          action: "upload",
+        });
+        expect(uploadButton("新しい画像をアップロード")).not.toBeDisabled();
+        vi.mocked(axios.post).mockResolvedValueOnce({
+          data: { data: makeAttachment({ id: 76, type: "image" }) },
+        });
+        fireEvent.drop(imageZone, { dataTransfer: fileTransfer([png]) });
+        expect(axios.post).toHaveBeenCalledTimes(2);
+      });
+
+      it("アップロード中かどうかを呼び出し元へ 1 回ずつ知らせる", async () => {
+        const pending = deferred<unknown>();
+        vi.mocked(axios.post).mockReturnValueOnce(pending.promise);
+        const onUploadingChange = vi.fn();
+        render(
+          <AttachmentField
+            kind="file"
+            attachments={[]}
+            selected={null}
+            attachmentableId={7}
+            onUploaded={vi.fn()}
+            onSelectAttachment={vi.fn()}
+            onChangeAttachments={vi.fn()}
+            onUploadingChange={onUploadingChange}
+          />
+        );
+        const file = new File(["a"], "a.zip", { type: "application/zip" });
+
+        fireEvent.drop(zone(), { dataTransfer: fileTransfer([file]) });
+        fireEvent.drop(zone(), { dataTransfer: fileTransfer([file]) });
+        await act(async () => {
+          pending.resolve({ data: { data: makeAttachment({ id: 77 }) } });
+        });
+
+        // 受け付けなかったドロップは数に入れない（記事編集画面の保存の止め方がずれないように）
+        expect(onUploadingChange.mock.calls).toEqual([[true], [false]]);
+      });
     });
 
     it("受け口の外にファイルを落としてもブラウザに開かせない", () => {

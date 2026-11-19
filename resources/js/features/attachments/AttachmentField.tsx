@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import { Upload, useUploadFile } from "@/components/form/Upload";
 import { ModalFull } from "@/components/ui/ModalFull";
+import TextError from "@/components/ui/TextError";
 import { AttachmentEdit } from "./AttachmentEdit";
 import { displaySize } from "./attachmentUtil";
 
@@ -49,6 +50,31 @@ const acceptsType = (kind: Kind, type: string): boolean =>
   kind !== "image" || type.startsWith("image/");
 
 /**
+ * 画像の欄で受け付ける拡張子。
+ * サーバーが受け付ける拡張子（SafeAttachment::ALLOWED_EXTENSIONS）のうち、画像として保存されるもの（ImageFormat）だけ。
+ */
+const IMAGE_EXTENSIONS: readonly string[] = ["png", "jpg", "jpeg", "jfif"];
+
+const extensionOf = (name: string): string => {
+  const dot = name.lastIndexOf(".");
+  return dot < 0 ? "" : name.slice(dot + 1).toLowerCase();
+};
+
+/**
+ * ドロップされたファイルを受け付けるか。
+ * 環境によって heic などは種類が空になるので、画像の欄では種類に加えて拡張子でも判定する。
+ * 種類が画像でも、サーバーが拡張子で拒否する形式（heic・webp・gif など）はここで止めて理由を出す。
+ */
+const acceptsFile = (kind: Kind, file: File): boolean => {
+  if (kind !== "image") return true;
+  if (file.type && !acceptsType(kind, file.type)) return false;
+  return IMAGE_EXTENSIONS.includes(extensionOf(file.name));
+};
+
+/** 拒否したときのメッセージを出しておく時間 */
+const REJECT_MESSAGE_MS = 5000;
+
+/**
  * ドラッグ中に分かる範囲で受け付けるかを決める。種類が分からないときは受け付けとし、ドロップ時に確かめる。
  */
 const judgeDrag = (kind: Kind, dataTransfer: DataTransfer): DragState => {
@@ -78,6 +104,7 @@ const preventPageFileDrop = (e: DragEvent) => {
 /**
  * 添付ファイル・画像の選択欄。設定済みの内容を枠で示し、新しいアップロードとアップロード済みからの変更を並べる。
  * 欄全体にファイルをドロップしてもアップロードできる（受け付けるのは先頭の 1 ファイルだけ）。
+ * 画像の欄に画像以外を落としたときは理由を出す。アップロード中はボタンもドロップも受け付けない。
  */
 export const AttachmentField = ({
   kind,
@@ -96,11 +123,23 @@ export const AttachmentField = ({
   // 子要素をまたぐたびに dragenter / dragleave が起きるので、入った深さで数える
   const dragDepth = useRef(0);
   const [dragState, setDragState] = useState<DragState>("none");
-  const uploadFile = useUploadFile({
+  // 拒否したときのメッセージ。0 は非表示。拒否するたびに増やし、続けて拒否したときは消すまでの時間を数え直す
+  const [rejectNotice, setRejectNotice] = useState(0);
+  // ボタンとドロップで同じ状態を使い、どちらかがアップロード中なら両方止める
+  const uploader = useUploadFile({
     onUploaded,
     onUploadingChange,
     onUploadError,
   });
+
+  useEffect(() => {
+    if (rejectNotice === 0) return;
+    const timer = window.setTimeout(
+      () => setRejectNotice(0),
+      REJECT_MESSAGE_MS
+    );
+    return () => window.clearTimeout(timer);
+  }, [rejectNotice]);
 
   useEffect(() => {
     window.addEventListener("dragover", preventPageFileDrop);
@@ -111,9 +150,11 @@ export const AttachmentField = ({
     };
   }, []);
 
-  /** 保存中などで fieldset ごと無効になっているときは、ボタンと同じくドロップも受け付けない */
+  /**
+   * 保存中などで fieldset ごと無効になっているとき、アップロード中のときは、ボタンと同じくドロップも受け付けない
+   */
   const isDisabled = (): boolean =>
-    zoneRef.current?.closest("fieldset:disabled") != null;
+    uploader.uploading || zoneRef.current?.closest("fieldset:disabled") != null;
 
   /**
    * 「アップロード済みから変更」の選択画面は欄の中に描かれるので、そこでのドラッグは受け口として扱わない。
@@ -162,8 +203,13 @@ export const AttachmentField = ({
     if (isDisabled()) return;
 
     const file = e.dataTransfer.files[0];
-    if (!file || !acceptsType(kind, file.type)) return;
-    void uploadFile(file);
+    if (!file) return;
+    if (!acceptsFile(kind, file)) {
+      setRejectNotice((n) => n + 1);
+      return;
+    }
+    setRejectNotice(0);
+    void uploader.uploadFile(file);
   };
 
   return (
@@ -195,13 +241,21 @@ export const AttachmentField = ({
         attachment={attachments.find((a) => a.id === selected)}
         selected={selected}
       />
-      <div className="flex flex-wrap gap-2">
+      {rejectNotice > 0 && (
+        // 続けて拒否したときも読み上げられるよう、拒否するたびに作り直す
+        <TextError key={rejectNotice} role="alert">
+          {label.reject}
+        </TextError>
+      )}
+      {/* ボタンを操作したら、前に拒否したときのメッセージは消す */}
+      <div
+        className="flex flex-wrap gap-2"
+        onClickCapture={() => setRejectNotice(0)}
+      >
         <Upload
           label={label.upload}
           accept={kind === "image" ? "image/*" : undefined}
-          onUploaded={onUploaded}
-          onUploadingChange={onUploadingChange}
-          onUploadError={onUploadError}
+          uploader={uploader}
         />
         <ModalFull
           buttonTitle="アップロード済みから変更"

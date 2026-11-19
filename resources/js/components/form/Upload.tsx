@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { handleError } from "@/lib/errorHandler";
 import Button from "../ui/Button";
@@ -9,21 +9,39 @@ type UploadCallbacks = {
   onUploadError?: (error: unknown) => void;
 };
 
+export type FileUploader = {
+  /** 1 ファイルをアップロードする。アップロード中に呼ばれたときは何もしない */
+  uploadFile: (file: File) => Promise<void>;
+  /** アップロード中か */
+  uploading: boolean;
+};
+
 type Prop = {
   /** ボタンに出す文言 */
   label?: string;
+  /** ドロップなど他の経路と状態を共有するときに渡す。無ければ自前で持つ */
+  uploader?: FileUploader;
 } & UploadCallbacks &
   Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">;
 
 /**
- * 1 ファイルをアップロードする関数を返す。ボタンからの選択とドロップの両方がこの経路を通る。
+ * 1 ファイルをアップロードする関数とアップロード中かを返す。ボタンからの選択とドロップの両方がこの経路を通る。
+ * 同時に 2 つ走ると後から終わったほうが選ばれてしまうので、アップロード中に来たものは受け付けない。
  */
 export const useUploadFile = ({
   onUploaded,
   onUploadingChange,
   onUploadError,
-}: UploadCallbacks) => {
-  return async (file: File): Promise<void> => {
+}: UploadCallbacks): FileUploader => {
+  // 同じタイミングで続けて呼ばれても state はまだ変わっていないので、判定は ref で行う
+  const uploadingRef = useRef(false);
+  const [uploading, setUploading] = useState(false);
+
+  const uploadFile = async (file: File): Promise<void> => {
+    if (uploadingRef.current) return;
+    uploadingRef.current = true;
+    setUploading(true);
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -40,9 +58,13 @@ export const useUploadFile = ({
       onUploadError?.(error);
       handleError(error, { component: "Upload", action: "upload" });
     } finally {
+      uploadingRef.current = false;
+      setUploading(false);
       onUploadingChange?.(false);
     }
   };
+
+  return { uploadFile, uploading };
 };
 
 /**
@@ -57,14 +79,16 @@ export const Upload = ({
   onUploadError,
   className,
   disabled,
+  uploader,
   ...props
 }: Prop) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const uploadFile = useUploadFile({
+  const ownUploader = useUploadFile({
     onUploaded,
     onUploadingChange,
     onUploadError,
   });
+  const { uploadFile, uploading } = uploader ?? ownUploader;
 
   const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target;
@@ -84,10 +108,11 @@ export const Upload = ({
       <Button
         variant="sub"
         className={className}
-        disabled={disabled}
+        disabled={disabled || uploading}
+        aria-busy={uploading}
         onClick={() => inputRef.current?.click()}
       >
-        {label}
+        {uploading ? "アップロード中…" : label}
       </Button>
       <input
         ref={inputRef}
@@ -97,7 +122,7 @@ export const Upload = ({
         aria-hidden="true"
         onChange={onUpload}
         multiple={false}
-        disabled={disabled}
+        disabled={disabled || uploading}
         {...props}
       />
     </>

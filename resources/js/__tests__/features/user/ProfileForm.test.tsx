@@ -30,7 +30,7 @@ vi.mock("@/components/form/Upload", () => ({
       upload
     </button>
   ),
-  useUploadFile: () => vi.fn(),
+  useUploadFile: () => ({ uploadFile: vi.fn(), uploading: false }),
 }));
 
 vi.mock("@/features/attachments/AttachmentEdit", () => ({

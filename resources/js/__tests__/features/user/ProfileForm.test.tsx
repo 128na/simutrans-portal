@@ -44,10 +44,6 @@ vi.mock("@/components/ui/ModalFull", () => ({
   }) => <div>{children({ close: () => {} })}</div>,
 }));
 
-vi.mock("@/components/ui/Avatar", () => ({
-  Avatar: () => <div data-testid="avatar" />,
-}));
-
 vi.mock("@/components/ui/TextError", () => ({
   default: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="text-error">{children}</div>

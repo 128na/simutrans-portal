@@ -20,7 +20,8 @@ const makeAttachment = (
   thumbnail: "",
   url: "",
   size: 0,
-  created_at: "2026-11-01T09:05:00+09:00",
+  // どのタイムゾーンで整形しても日付が 11/01 になる時刻
+  created_at: "2026-11-01T12:00:00Z",
   ...overrides,
 });
 

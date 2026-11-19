@@ -127,7 +127,7 @@ const CurrentAttachment = ({ kind, attachment, selected }: CurrentProps) => {
         kind === "image" ? (
           <div className="flex items-center gap-3 min-w-0">
             <img
-              src={attachment.thumbnail}
+              src={attachment.thumbnail || "/storage/default/image.png"}
               alt=""
               className="h-16 w-24 shrink-0 object-cover rounded"
             />

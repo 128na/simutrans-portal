@@ -1,10 +1,7 @@
-import { Upload } from "@/components/form/Upload";
-import { ModalFull } from "@/components/ui/ModalFull";
 import TextError from "@/components/ui/TextError";
 import TextSub from "@/components/ui/TextSub";
 import { useAxiosError } from "@/hooks/useAxiosError";
-import { AttachmentEdit } from "@/features/attachments/AttachmentEdit";
-import { Avatar } from "@/components/ui/Avatar";
+import { AttachmentField } from "@/features/attachments/AttachmentField";
 import TextBadge from "@/components/ui/TextBadge";
 import axios from "axios";
 import { useRef } from "react";
@@ -124,38 +121,21 @@ export const ProfileForm = ({
       <div>
         <FormCaption>アバター画像</FormCaption>
         <TextError>{getError("user.profile.data.avatar")}</TextError>
-        <Avatar
-          attachmentId={user.profile.data.avatar}
+        <AttachmentField
+          kind="image"
           attachments={attachments}
+          selected={user.profile.data.avatar}
+          attachmentableId={user.profile.id}
+          attachmentableType="Profile"
+          onUploaded={(a) => {
+            updateProfileData({ avatar: a.id });
+            onChangeAttachments([a, ...attachments]);
+          }}
+          onSelectAttachment={(attachmentId) =>
+            updateProfileData({ avatar: attachmentId })
+          }
+          onChangeAttachments={onChangeAttachments}
         />
-        <div className="space-x-2 space-y-4">
-          <Upload
-            accept="image/*"
-            onUploaded={(a) => {
-              updateProfileData({ avatar: a.id });
-              onChangeAttachments([a, ...attachments]);
-            }}
-          />
-          <ModalFull
-            buttonTitle="アップロード済みの画像から選択"
-            title="画像を選択"
-          >
-            {({ close }) => (
-              <AttachmentEdit
-                attachments={attachments}
-                attachmentableId={user.profile.id}
-                attachmentableType="Profile"
-                selected={user.profile.data.avatar}
-                types={["image"]}
-                onSelectAttachment={(attachmentId) => {
-                  updateProfileData({ avatar: attachmentId });
-                  close();
-                }}
-                onChangeAttachments={onChangeAttachments}
-              />
-            )}
-          </ModalFull>
-        </div>
       </div>
 
       <div>

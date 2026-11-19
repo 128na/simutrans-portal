@@ -1,21 +1,35 @@
+import { useRef } from "react";
 import axios from "axios";
 import { handleError } from "@/lib/errorHandler";
-import Input from "../ui/Input";
+import Button from "../ui/Button";
 
 type Prop = {
+  /** ボタンに出す文言 */
+  label?: string;
   onUploaded?: (attachment: Attachment.MypageEdit) => void;
   onUploadingChange?: (uploading: boolean) => void;
   onUploadError?: (error: unknown) => void;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">;
 
+/**
+ * ファイルのアップロードボタン。
+ * ブラウザ標準のファイル入力は「選択されていません」と表示され、設定済みのファイルが無いと誤解されるため隠し、
+ * 代わりにボタンからファイル選択を開く。className はボタンに付く。
+ */
 export const Upload = ({
+  label = "新しいファイルをアップロード",
   onUploaded,
   onUploadingChange,
   onUploadError,
+  className,
+  disabled,
   ...props
 }: Prop) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const onUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const input = e.target;
+    const file = input.files?.[0];
     if (!file) return;
 
     const formData = new FormData();
@@ -35,8 +49,32 @@ export const Upload = ({
       handleError(error, { component: "Upload", action: "upload" });
     } finally {
       onUploadingChange?.(false);
+      // 同じファイルを選び直しても change が起きるように空にする
+      input.value = "";
     }
   };
 
-  return <Input type="file" onChange={onUpload} multiple={false} {...props} />;
+  return (
+    <>
+      <Button
+        variant="sub"
+        className={className}
+        disabled={disabled}
+        onClick={() => inputRef.current?.click()}
+      >
+        {label}
+      </Button>
+      <input
+        ref={inputRef}
+        type="file"
+        hidden
+        tabIndex={-1}
+        aria-hidden="true"
+        onChange={onUpload}
+        multiple={false}
+        disabled={disabled}
+        {...props}
+      />
+    </>
+  );
 };

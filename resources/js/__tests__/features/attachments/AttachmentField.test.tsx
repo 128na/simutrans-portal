@@ -199,6 +199,23 @@ describe("AttachmentField", () => {
     expect(click).toHaveBeenCalledTimes(1);
   });
 
+  it("ファイル入力で選べる種類は、画像の欄ではサーバーが受け付ける画像の拡張子だけにする", () => {
+    const { unmount } = render(
+      <Wrapper kind="image" initialSelected={null} initialAttachments={[]} />
+    );
+    expect(
+      document.querySelector<HTMLInputElement>('input[type="file"]')
+    ).toHaveAttribute("accept", ".png,.jpg,.jpeg,.jfif");
+    unmount();
+
+    render(
+      <Wrapper kind="file" initialSelected={null} initialAttachments={[]} />
+    );
+    expect(
+      document.querySelector<HTMLInputElement>('input[type="file"]')
+    ).not.toHaveAttribute("accept");
+  });
+
   it("アップロードすると枠がアップロードしたファイルに切り替わる", async () => {
     const uploaded = makeAttachment({
       id: 55,

@@ -2,6 +2,8 @@ import { t } from "@/utils/translate";
 import { typedKeys } from "../utils/articleUtil";
 import { FormCaption } from "@/components/ui/FormCaption";
 import Checkbox from "@/components/ui/Checkbox";
+import TextError from "@/components/ui/TextError";
+import { useAxiosError } from "@/hooks/useAxiosError";
 
 type Props = {
   categories: Category.Grouping;
@@ -18,6 +20,7 @@ export const SelectCategories = ({
   showAdmin,
   onChange,
 }: Props) => {
+  const { getErrorTree } = useAxiosError();
   const pak128Id = categories["pak"].find((c) => c.slug === "128")?.id;
   const toolIds = categories["addon"]
     .filter((c) => c.slug.includes("-tools"))
@@ -57,6 +60,7 @@ export const SelectCategories = ({
 
   return (
     <div className="grid gap-4">
+      <TextError>{getErrorTree("article.categories")}</TextError>
       {typedKeys(categories)
         .filter(categoryGroupFilter)
         .map((type) => (

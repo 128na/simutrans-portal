@@ -1,4 +1,6 @@
 import { useArticleEditor } from "@/hooks/useArticleEditor";
+import { useAxiosError } from "@/hooks/useAxiosError";
+import TextError from "@/components/ui/TextError";
 import { match } from "ts-pattern";
 import { SectionCaption } from "./Section/SectionCaption";
 import { SectionText } from "./Section/SectionText";
@@ -26,6 +28,7 @@ type SectionType = keyof typeof template;
 export const SectionForm = () => {
   const article = useArticleEditor((s) => s.article);
   const contents = article.contents as ArticleContent.Page;
+  const { getError } = useAxiosError();
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const add = (type: SectionType) => {
@@ -45,6 +48,7 @@ export const SectionForm = () => {
   return (
     <div className="space-y-4">
       <FormCaption>項目</FormCaption>
+      <TextError>{getError("article.contents.sections")}</TextError>
       <SortableList
         items={contents.sections}
         onReorder={(newSections) => {

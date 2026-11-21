@@ -1,4 +1,5 @@
 import { SelectCategories } from "../components/SelectCategories";
+import { RelatedArticles } from "../components/RelatedArticles";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
@@ -130,9 +131,8 @@ export const AddonPost = () => {
   const updateTags = useArticleEditor((s) => s.updateTags);
 
   const categories = useArticleEditor((s) => s.categories);
-  const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
-  const { getError } = useAxiosError();
+  const { getError, getErrorTree, hasErrorTree } = useAxiosError();
 
   return (
     <>
@@ -167,6 +167,12 @@ export const AddonPost = () => {
 
       <Accordion
         title="その他の項目"
+        forceOpen={[
+          "article.contents.thanks",
+          "article.contents.license",
+          "article.tags",
+          "article.articles",
+        ].some(hasErrorTree)}
         defaultOpen={
           !!(
             contents.thanks ||
@@ -223,6 +229,7 @@ export const AddonPost = () => {
           </div>{" "}
           <div>
             <FormCaption>タグ</FormCaption>
+            <TextError>{getErrorTree("article.tags")}</TextError>
             <SelectableSearch
               className="mb-1"
               labelKey="name"
@@ -239,18 +246,7 @@ export const AddonPost = () => {
               />
             </ModalFull>
           </div>
-          <div>
-            <FormCaption>関連記事</FormCaption>
-            <SelectableSearch
-              labelKey="title"
-              options={relationalArticles}
-              selectedIds={article.articles}
-              onChange={(articleIds) =>
-                update((draft) => (draft.articles = articleIds))
-              }
-              render={(o) => `${o.title} (${o.user_name})`}
-            />
-          </div>
+          <RelatedArticles />
         </div>
       </Accordion>
     </>

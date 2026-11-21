@@ -53,6 +53,25 @@ export const AddonIntroduction = () => {
       <div>
         <FormCaption>
           <TextBadge variant="danger">必須</TextBadge>
+          作者
+        </FormCaption>
+        <TextError>{getError("article.contents.author")}</TextError>
+        <Input
+          className="w-full"
+          required
+          maxLength={255}
+          value={contents.author || ""}
+          onChange={(e) =>
+            updateContents<ArticleContent.AddonIntroduction>(
+              (draft) => (draft.author = e.target.value)
+            )
+          }
+        />
+      </div>
+
+      <div>
+        <FormCaption>
+          <TextBadge variant="danger">必須</TextBadge>
           リンク先
         </FormCaption>
         <TextError>{getError("article.contents.link")}</TextError>
@@ -126,20 +145,6 @@ export const AddonIntroduction = () => {
         }
       >
         <div className="grid gap-4">
-          <div>
-            <FormCaption>作者</FormCaption>
-            <TextError>{getError("article.contents.author")}</TextError>
-            <Input
-              className="w-full"
-              maxLength={255}
-              value={contents.author || ""}
-              onChange={(e) =>
-                updateContents<ArticleContent.AddonIntroduction>(
-                  (draft) => (draft.author = e.target.value)
-                )
-              }
-            />
-          </div>
           <div>
             <FormCaption>謝辞</FormCaption>
             <TextError>{getError("article.contents.thanks")}</TextError>

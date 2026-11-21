@@ -28,9 +28,11 @@ const mockedAxios = vi.mocked(axios);
 
 // useAxiosError をモック
 const mockSetValidationErrorFrom = vi.fn();
+const mockClearError = vi.fn();
 vi.mock("@/hooks/useAxiosError", () => ({
   useAxiosError: () => ({
     setValidationErrorFrom: mockSetValidationErrorFrom,
+    clearError: mockClearError,
     getError: vi.fn(),
     hasError: vi.fn(),
   }),
@@ -451,6 +453,11 @@ describe("ArticleEdit", () => {
     await waitFor(() => {
       expect(mockSetValidationErrorFrom).toHaveBeenCalledWith(validationError);
     });
+    // 保存のたびに前回のエラーを消してから、エラーをセットし直す
+    expect(mockClearError).toHaveBeenCalled();
+    expect(mockClearError.mock.invocationCallOrder[0]).toBeLessThan(
+      mockSetValidationErrorFrom.mock.invocationCallOrder[0]
+    );
   });
 
   it("保存失敗を表示し、未保存の変更を保持する", async () => {

@@ -70,7 +70,7 @@ export const ArticleEdit = () => {
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState(savedMessage);
 
-  const { setValidationErrorFrom } = useAxiosError();
+  const { setValidationErrorFrom, clearError } = useAxiosError();
   const operation = operationOf(
     article?.status ?? "draft",
     article?.id,
@@ -101,6 +101,8 @@ export const ArticleEdit = () => {
     setSavingStatus(status);
     setError(undefined);
     setSuccess(undefined);
+    // 前回のエラーを消す。同じエラーで再度失敗したとき、閉じた折りたたみがまた開くようにする
+    clearError();
 
     try {
       const url = article.id

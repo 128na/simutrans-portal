@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { AddonIntroduction } from "@/features/articles/postType/AddonIntroduction";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
 import { useAxiosError } from "@/hooks/useAxiosError";
@@ -93,5 +94,26 @@ describe("AddonIntroduction", () => {
       screen.getByText(/10件まで選べます。追加するには/)
     ).toBeInTheDocument();
     expect(screen.queryByText("記事11 (u)")).not.toBeInTheDocument();
+  });
+
+  it("閉じた後でも、エラーを消してから同じエラーが再度出ると開き直す", async () => {
+    const user = userEvent.setup();
+    const setThanksError = () =>
+      useAxiosError.getState().setError({
+        errors: { "article.contents.thanks": ["エラーです。"] },
+        message: "エラーです。",
+      });
+    setThanksError();
+
+    render(<AddonIntroduction />);
+    const toggle = screen.getByRole("button", { name: "その他の項目" });
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+
+    act(() => useAxiosError.getState().clearError());
+    act(() => setThanksError());
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
   });
 });

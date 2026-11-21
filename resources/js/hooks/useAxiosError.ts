@@ -17,7 +17,14 @@ type ValidationErrorState = {
   clearError: () => void;
   hasError: (key: string) => boolean;
   getError: (key: string) => string | null;
+  /** key そのものと、配下のキー（key.0 など）にエラーがあるか */
+  hasErrorTree: (key: string) => boolean;
+  /** key そのものと、配下のキー（key.0 など）のメッセージをまとめて返す */
+  getErrorTree: (key: string) => string | null;
 };
+
+const isInTree = (errorKey: string, key: string) =>
+  errorKey === key || errorKey.startsWith(key + ".");
 
 export const useAxiosError = create<ValidationErrorState>((set, get) => ({
   errors: {},
@@ -36,4 +43,12 @@ export const useAxiosError = create<ValidationErrorState>((set, get) => ({
   clearError: () => set({ errors: {}, message: null }),
   hasError: (key) => key in get().errors,
   getError: (key) => get().errors[key]?.join("、") ?? null,
+  hasErrorTree: (key) =>
+    Object.keys(get().errors).some((k) => isInTree(k, key)),
+  getErrorTree: (key) => {
+    const messages = Object.entries(get().errors)
+      .filter(([k]) => isInTree(k, key))
+      .flatMap(([, v]) => v);
+    return messages.length ? [...new Set(messages)].join("、") : null;
+  },
 }));

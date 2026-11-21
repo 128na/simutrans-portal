@@ -236,4 +236,34 @@ describe("SelectableSearch", () => {
     const element = container.querySelector(".custom-class");
     expect(element).toBeInTheDocument();
   });
+
+  it("maxSelected に達したら候補を出さず、追加できない", () => {
+    render(
+      <SelectableSearch
+        options={mockOptions}
+        selectedIds={[1, 2]}
+        maxSelected={2}
+        onChange={vi.fn()}
+      />
+    );
+
+    expect(screen.queryByText("オプション3")).not.toBeInTheDocument();
+    expect(screen.getByText(/2件まで選べます/)).toBeInTheDocument();
+  });
+
+  it("maxSelected 未満なら候補から追加できる", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(
+      <SelectableSearch
+        options={mockOptions}
+        selectedIds={[1]}
+        maxSelected={2}
+        onChange={onChange}
+      />
+    );
+
+    await user.click(screen.getByText("オプション3"));
+    expect(onChange).toHaveBeenCalledWith([1, 3]);
+  });
 });

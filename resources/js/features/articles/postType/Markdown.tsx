@@ -1,5 +1,5 @@
 import { SelectCategories } from "../components/SelectCategories";
-import { SelectableSearch } from "@/components/form/SelectableSearch";
+import { RelatedArticles } from "../components/RelatedArticles";
 import { Accordion } from "@/components/ui/Accordion";
 import TextBadge from "@/components/ui/TextBadge";
 import { useArticleEditor } from "@/hooks/useArticleEditor";
@@ -16,10 +16,9 @@ export const Markdown = () => {
   const updateContents = useArticleEditor((s) => s.updateContents);
 
   const categories = useArticleEditor((s) => s.categories);
-  const relationalArticles = useArticleEditor((s) => s.relationalArticles);
   const isAdmin = useArticleEditor((s) => s.user.role === "admin");
 
-  const { getError } = useAxiosError();
+  const { getError, hasErrorTree } = useAxiosError();
 
   return (
     <>
@@ -54,20 +53,13 @@ export const Markdown = () => {
         }
       />
 
-      <Accordion title="その他の項目" defaultOpen={!!article.articles.length}>
+      <Accordion
+        title="その他の項目"
+        defaultOpen={!!article.articles.length}
+        forceOpen={hasErrorTree("article.articles")}
+      >
         <div className="grid gap-4">
-          <div>
-            <FormCaption>関連記事</FormCaption>
-            <SelectableSearch
-              labelKey="title"
-              options={relationalArticles}
-              selectedIds={article.articles}
-              onChange={(articleIds) =>
-                update((draft) => (draft.articles = articleIds))
-              }
-              render={(o) => `${o.title} (${o.user_name})`}
-            />
-          </div>
+          <RelatedArticles />
         </div>
       </Accordion>
     </>

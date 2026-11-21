@@ -59,4 +59,20 @@ describe("Accordion コンポーネント", () => {
     await user.click(button);
     expect(button).toHaveAttribute("aria-expanded", "true");
   });
+
+  it("forceOpen が true になると開き、その後は閉じる操作もできる", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<Accordion title="タイトル">内容</Accordion>);
+    expect(screen.queryByText("内容")).not.toBeInTheDocument();
+
+    rerender(
+      <Accordion title="タイトル" forceOpen>
+        内容
+      </Accordion>
+    );
+    expect(screen.getByText("内容")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "タイトル" }));
+    expect(screen.queryByText("内容")).not.toBeInTheDocument();
+  });
 });

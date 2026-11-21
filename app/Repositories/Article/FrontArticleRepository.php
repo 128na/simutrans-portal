@@ -96,16 +96,28 @@ class FrontArticleRepository
             $baseQuery->whereIn('articles.user_id', $userIds);
         }
 
-        // カテゴリ(AND)
+        // カテゴリ(同じ種類の中は OR、種類どうしは AND)。pak を複数選んでも 0 件にならないようにする
         $categoryIds = $condition['categoryIds'] ?? [];
         if ($categoryIds !== []) {
-            $baseQuery->whereIn('articles.id', function ($q) use ($categoryIds): void {
-                $q->select('article_id')
-                    ->from('article_category')
-                    ->whereIn('category_id', $categoryIds)
-                    ->groupBy('article_id')
-                    ->havingRaw('COUNT(DISTINCT category_id) = ?', [count($categoryIds)]);
-            });
+            $idsByType = Category::query()
+                ->whereIn('id', $categoryIds)
+                ->get(['id', 'type'])
+                ->groupBy(fn (Category $category): string => $category->type->value)
+                ->map(fn (\Illuminate\Support\Collection $categories): array => $categories->pluck('id')->all());
+
+            // 存在しない ID だけを指定したときは、何も一致しない検索にする
+            if ($idsByType->isEmpty()) {
+                $baseQuery->whereRaw('1 = 0');
+            }
+
+            foreach ($idsByType as $idsOfType) {
+                $baseQuery->whereExists(function ($q) use ($idsOfType): void {
+                    $q->selectRaw(1)
+                        ->from('article_category as search_ac')
+                        ->whereColumn('search_ac.article_id', 'articles.id')
+                        ->whereIn('search_ac.category_id', $idsOfType);
+                });
+            }
         }
 
         // タグ(OR)

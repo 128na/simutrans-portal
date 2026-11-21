@@ -4,10 +4,24 @@ type Props = {
   children: React.ReactNode;
   title: string;
   defaultOpen?: boolean;
+  /** true になったとき開く（バリデーションエラーを隠さないため）。閉じる操作は妨げない */
+  forceOpen?: boolean;
 };
 
-export const Accordion = ({ title, children, defaultOpen = false }: Props) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+export const Accordion = ({
+  title,
+  children,
+  defaultOpen = false,
+  forceOpen = false,
+}: Props) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen || forceOpen);
+  const [prevForceOpen, setPrevForceOpen] = useState(forceOpen);
+
+  // forceOpen が false -> true に変わったときだけ開く（描画中の状態調整）
+  if (forceOpen !== prevForceOpen) {
+    setPrevForceOpen(forceOpen);
+    if (forceOpen) setIsOpen(true);
+  }
 
   return (
     <>

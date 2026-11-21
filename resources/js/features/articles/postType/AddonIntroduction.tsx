@@ -1,4 +1,5 @@
 import { SelectCategories } from "../components/SelectCategories";
+import { RelatedArticles } from "../components/RelatedArticles";
 import { SelectableSearch } from "@/components/form/SelectableSearch";
 import { Accordion } from "@/components/ui/Accordion";
 import { TagEdit } from "../../tags/TagEdit";
@@ -24,9 +25,8 @@ export const AddonIntroduction = () => {
   const updateTags = useArticleEditor((s) => s.updateTags);
 
   const categories = useArticleEditor((s) => s.categories);
-  const relationalArticles = useArticleEditor((s) => s.relationalArticles);
 
-  const { getError } = useAxiosError();
+  const { getError, getErrorTree, hasErrorTree } = useAxiosError();
 
   return (
     <>
@@ -135,6 +135,13 @@ export const AddonIntroduction = () => {
 
       <Accordion
         title="その他の項目"
+        forceOpen={[
+          "article.contents.thanks",
+          "article.contents.license",
+          "article.contents.exclude_link_check",
+          "article.tags",
+          "article.articles",
+        ].some(hasErrorTree)}
         defaultOpen={
           !!(
             contents.thanks ||
@@ -197,6 +204,7 @@ export const AddonIntroduction = () => {
           </div>
           <div>
             <FormCaption>タグ</FormCaption>
+            <TextError>{getErrorTree("article.tags")}</TextError>
             <SelectableSearch
               className="mb-1"
               labelKey="name"
@@ -213,18 +221,7 @@ export const AddonIntroduction = () => {
               />
             </ModalFull>
           </div>
-          <div>
-            <FormCaption>関連記事</FormCaption>
-            <SelectableSearch
-              labelKey="title"
-              options={relationalArticles}
-              selectedIds={article.articles}
-              onChange={(articleIds) =>
-                update((draft) => (draft.articles = articleIds))
-              }
-              render={(o) => `${o.title} (${o.user_name})`}
-            />
-          </div>
+          <RelatedArticles />
         </div>
       </Accordion>
     </>

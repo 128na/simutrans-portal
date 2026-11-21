@@ -10,6 +10,8 @@ type SearchableItem = {
 type Props<T extends SearchableItem = SearchableItem> = {
   options: T[];
   selectedIds: number[];
+  /** 選べる上限。上限に達したら候補を出さない */
+  maxSelected?: number;
   labelKey?: keyof T & string;
   placeholder?: string;
   onChange?: (selectedIds: number[]) => void;
@@ -20,6 +22,7 @@ type Props<T extends SearchableItem = SearchableItem> = {
 export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
   options,
   selectedIds,
+  maxSelected,
   labelKey = "name" as keyof T & string,
   placeholder = "検索...",
   className,
@@ -28,8 +31,10 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
 }: Props<T>) => {
   const [criteria, setCriteria] = useState("");
 
+  const isFull = maxSelected !== undefined && selectedIds.length >= maxSelected;
+
   const add = (id: number) => {
-    if (onChange) {
+    if (onChange && !isFull) {
       onChange([...selectedIds, id]);
     }
   };
@@ -80,7 +85,11 @@ export const SelectableSearch = <T extends SearchableItem = SearchableItem>({
       />
 
       <div className={twMerge("max-h-40 overflow-y-auto v2-input", className)}>
-        {filteredItems.length < 1 ? (
+        {isFull ? (
+          <div>
+            {maxSelected}件まで選べます。追加するには選択済みを外してください。
+          </div>
+        ) : filteredItems.length < 1 ? (
           <div>該当なし</div>
         ) : (
           filteredItems.map((o) => (

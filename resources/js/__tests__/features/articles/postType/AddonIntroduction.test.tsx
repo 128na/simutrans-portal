@@ -57,4 +57,41 @@ describe("AddonIntroduction", () => {
       screen.getByText("作者は必ず指定してください。")
     ).toBeInTheDocument();
   });
+
+  it.each([
+    ["謝辞", "article.contents.thanks"],
+    ["ライセンス", "article.contents.license"],
+    ["タグ", "article.tags.0"],
+    ["関連記事", "article.articles"],
+  ])("「その他の項目」内の%sにエラーがあると自動で開く", (_label, key) => {
+    useAxiosError.getState().setError({
+      errors: { [key]: ["エラーです。"] },
+      message: "エラーです。",
+    });
+
+    render(<AddonIntroduction />);
+
+    expect(
+      screen.getByRole("button", { name: "その他の項目" })
+    ).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("エラーです。")).toBeInTheDocument();
+  });
+
+  it("関連記事を10件選んでいたら、それ以上選べない", () => {
+    useArticleEditor.setState((state) => {
+      state.article.articles = Array.from({ length: 10 }, (_, i) => i + 1);
+      state.relationalArticles = Array.from({ length: 11 }, (_, i) => ({
+        id: i + 1,
+        title: `記事${i + 1}`,
+        user_name: "u",
+      })) as unknown as Article.MypageRelational[];
+    });
+
+    render(<AddonIntroduction />);
+
+    expect(
+      screen.getByText(/10件まで選べます。追加するには/)
+    ).toBeInTheDocument();
+    expect(screen.queryByText("記事11 (u)")).not.toBeInTheDocument();
+  });
 });

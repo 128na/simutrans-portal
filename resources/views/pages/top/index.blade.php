@@ -62,6 +62,8 @@
           </div>
           @if ($latestCards !== [])
             @include('components.partials.latest-cards', ['key' => 'top', 'cards' => $latestCards])
+          @elseif ($snapshotAvailable)
+            <p class="text-note text-c-sub">この pak にはまだアドオンが登録されていません。</p>
           @else
             <p class="text-note text-c-sub">新着を表示できませんでした。上のリンクから一覧をご覧ください。</p>
           @endif
@@ -69,11 +71,14 @@
 
         <section class="space-y-4" aria-labelledby="top-addon-heading">
           <h2 id="top-addon-heading" class="v2-text-h4">種類から探す</h2>
-          <div class="grid gap-4 md:grid-cols-3">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             @foreach ($addonSections as $section)
               <div class="flex flex-col gap-3 rounded-lg border border-c-border p-4">
                 <div><x-ui.link :url="$section['url']" :title="$section['label']" /></div>
                 <ul class="flex flex-wrap gap-2">
+                  @if ($section['addons'] === [] && $snapshotAvailable)
+                    <li class="self-center text-note text-c-sub">まだアドオンが登録されていません。</li>
+                  @endif
                   @foreach ($section['addons'] as $addon)
                     <li>
                       <a href="{{ $addon['url'] }}" class="v2-chip">

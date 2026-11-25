@@ -42,6 +42,15 @@ return [
             'format' => 'atom',
             'view' => 'feed::atom',
         ],
+        'addon.pak256-longscale' => [
+            'url' => '/feed/pak256-longscale',
+            'title' => 'Pak256.LongScale',
+            'items' => [FeedService::class, 'latestPak', 'pak' => '256-longscale'],
+            'description' => '更新日順',
+            'language' => 'ja-JP',
+            'format' => 'atom',
+            'view' => 'feed::atom',
+        ],
         'page' => [
             'url' => '/feed/page',
             'title' => '記事',

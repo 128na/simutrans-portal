@@ -29,6 +29,8 @@
   --color-pak-128-fg: #115e59; /* 6.7:1 */
   --color-pak-64-bg: #dcfce7;
   --color-pak-64-fg: #166534; /* 6.5:1 */
+  --color-pak-256-longscale-bg: #e0f2fe;
+  --color-pak-256-longscale-fg: #075985; /* 6.6:1 */
   --color-pak-other-bg: #ede9fe;
   --color-pak-other-fg: #5b21b6; /* 7.6:1 */
   /* pak 問わずは特定の pak を指さないので中立色（c-sub-strong / c-surface 8.9:1） */
@@ -335,7 +337,7 @@
   /* misc */
   /*
    * タグ：種類・ライセンス・ユーザータグは枠だけ（v2-tag / v2-category）、
-   * pak は pak ごとに色を分ける（v2-tag-pak ＋ v2-tag-pak-{128-japan|128|64|other}）
+   * pak は pak ごとに色を分ける（v2-tag-pak ＋ v2-tag-pak-{128-japan|128|64|256-longscale|other}）
    */
   .v2-category,
   .v2-tag {
@@ -359,6 +361,9 @@
   }
   .v2-tag-pak-64 {
     @apply bg-pak-64-bg text-pak-64-fg;
+  }
+  .v2-tag-pak-256-longscale {
+    @apply bg-pak-256-longscale-bg text-pak-256-longscale-fg;
   }
   .v2-tag-pak-other {
     @apply bg-pak-other-bg text-pak-other-fg;

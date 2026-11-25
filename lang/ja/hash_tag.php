@@ -13,6 +13,7 @@ return [
     '128' => '#Pak128',
     '128-japan' => '#Pak128Japan',
     '256' => '#Pak256',
+    '256-longscale' => '#Pak256LongScale',
     '96-comic' => '#Pak96Comic',
     '192-comic' => '#Pak192Comic',
     '256-extended' => '#Pak256Extended',

@@ -363,7 +363,7 @@ php artisan schedule:work
 ### 新着・お知らせのスナップショット
 
 `article:refresh-public-snapshot` は10分ごとに実行し、公開中の新着と
-お知らせ、主要3 pak（128-japan・128・64）× 種類ごとの公開記事数を
+お知らせ、主要4 pak（128-japan・128・64・256-longscale）× 種類ごとの公開記事数を
 `storage/app/public-article-snapshot.json` に一括保存する。
 件数はトップの「種類から探す」と pak 別一覧の種類の切り替えに表示し、閲覧時に集計しない。
 件数が無い旧形式（version 1）や件数だけが壊れたデータでは、新着とお知らせを表示し、件数を省略する。

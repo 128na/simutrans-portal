@@ -20,6 +20,7 @@ class CategorySeeder extends Seeder
         ['slug' => '128',          'type' => CategoryType::Pak, 'order' => 10010],
         ['slug' => '64',           'type' => CategoryType::Pak, 'order' => 10011],
         ['slug' => '256',          'type' => CategoryType::Pak, 'order' => 10020],
+        ['slug' => '256-longscale', 'type' => CategoryType::Pak, 'order' => 10021],
         ['slug' => '96-comic',     'type' => CategoryType::Pak, 'order' => 10030],
         ['slug' => '192-comic',    'type' => CategoryType::Pak, 'order' => 10031],
         ['slug' => '256-extended', 'type' => CategoryType::Pak, 'order' => 10040],

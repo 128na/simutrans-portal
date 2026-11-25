@@ -20,6 +20,7 @@
       <li><x-ui.nav-link :url="route('pak.128japan')" :title="'pak128.Japan'" /></li>
       <li><x-ui.nav-link :url="route('pak.128')" :title="'pak128'" /></li>
       <li><x-ui.nav-link :url="route('pak.64')" :title="'pak64'" /></li>
+      <li><x-ui.nav-link :url="route('pak.256longscale')" :title="'pak256.LongScale'" /></li>
       <li><x-ui.nav-link :url="route('pak.others')" :title="'その他のpak'" /></li>
     </ul>
   </div>

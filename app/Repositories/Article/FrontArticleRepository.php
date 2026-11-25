@@ -11,6 +11,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Repositories\Concerns\ArticleQueryConcern;
 use App\Services\Front\ArticleListFilter;
+use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -319,7 +320,7 @@ class FrontArticleRepository
      */
     public function getLatestOther(int $limit = 24, ArticleListFilter $filter = new ArticleListFilter): LengthAwarePaginator
     {
-        $excludeSlugs = ['64', '128', '128-japan'];
+        $excludeSlugs = PublicArticleSnapshot::PAKS;
 
         $query = $this->model->query()
             ->select('articles.*')

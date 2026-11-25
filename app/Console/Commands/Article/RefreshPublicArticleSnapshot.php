@@ -56,7 +56,7 @@ class RefreshPublicArticleSnapshot extends Command
     }
 
     /**
-     * 主要3 pak × 種類ごとの公開記事数。0件の組み合わせは持たない
+     * 主要4 pak × 種類ごとの公開記事数。0件の組み合わせは持たない
      *
      * @return array<array-key, array<string, array{total: int, addon_post: int}>>
      */

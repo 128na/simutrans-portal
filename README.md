@@ -29,7 +29,7 @@ Boost更新は `php artisan boost:update --env=local --no-interaction`。config/
 ### Backend
 
 ```bash
-git clone https://github.com/128na/simutrans-portal.git
+git clone https://github.com/128-bit-net/simutrans-portal.git
 
 cd simutrans-portal
 cp .env.example .env

@@ -126,7 +126,7 @@
               <tr>
                 <th>Github</th>
                 <td>
-                  <x-ui.link :url="'https://github.com/128na/simutrans-portal'" :title="'128na/simutrans-portal'" />
+                  <x-ui.link :url="'https://github.com/128-bit-net/simutrans-portal'" :title="'128-bit-net/simutrans-portal'" />
                 </td>
               </tr>
             </tbody>

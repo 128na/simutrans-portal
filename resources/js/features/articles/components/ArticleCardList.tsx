@@ -37,7 +37,7 @@ export const ArticleCardList = <T extends ArticleCardData>({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(13rem,1fr))]">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(13rem,1fr))] 2xl:grid-cols-[repeat(auto-fill,minmax(17rem,1fr))]">
       {articles.map((article) => (
         <ArticleCard
           key={article.id}

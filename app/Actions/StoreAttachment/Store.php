@@ -10,16 +10,21 @@ use App\Jobs\Attachments\UpdateFileInfo;
 use App\Models\Attachment;
 use App\Models\User;
 use App\Rules\SafeAttachment;
+use App\Services\Image\ImageMetadataStripper;
+use App\Services\Image\MetadataStripFailedException;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use RuntimeException;
 use Throwable;
 
 class Store
 {
     public function __construct(
         private FilesystemAdapter $filesystemAdapter,
+        private ImageMetadataStripper $imageMetadataStripper = new ImageMetadataStripper,
     ) {}
 
     public function __invoke(User $user, UploadedFile $uploadedFile): Attachment
@@ -57,8 +62,45 @@ class Store
         return ImageFormat::tryFrom($uploadedFile->getMimeType() ?? '');
     }
 
+    /**
+     * 保存前に一時ファイルから撮影情報を取り除く。
+     * 解析できない画像は、撮影情報が残ったまま公開しないよう拒否する。
+     *
+     * @throws ValidationException
+     */
+    private function stripImageMetadata(UploadedFile $uploadedFile): void
+    {
+        $path = $uploadedFile->getPathname();
+        $data = file_get_contents($path);
+        if ($data === false) {
+            throw new RuntimeException('Failed to read uploaded image');
+        }
+
+        try {
+            $stripped = $this->imageMetadataStripper->strip($data);
+        } catch (MetadataStripFailedException $metadataStripFailedException) {
+            report($metadataStripFailedException);
+
+            throw ValidationException::withMessages([
+                'file' => __('validation.image', ['attribute' => 'file']),
+            ]);
+        }
+
+        if ($stripped === $data) {
+            return;
+        }
+
+        if (file_put_contents($path, $stripped) !== strlen($stripped)) {
+            throw new RuntimeException('Failed to write stripped image');
+        }
+
+        clearstatcache(true, $path);
+    }
+
     private function storeAsImage(User $user, UploadedFile $uploadedFile): Attachment
     {
+        $this->stripImageMetadata($uploadedFile);
+
         try {
             $filepath = $this->filesystemAdapter->putFileAs(
                 'user/'.$user->id,

@@ -153,11 +153,12 @@ class ImageMetadataStripper
             $type = substr($data, $position + 4, 4);
             $size = $chunkLength + 12;
 
+            // IENDは末尾で付け直すので、CRCが欠けていても受け付ける
+            if ($type === 'IEND') {
+                break;
+            }
+
             if ($position + $size > $length) {
-                // IENDのCRCが欠けただけのファイルは表示できるので受け付ける
-                if ($type === 'IEND') {
-                    break;
-                }
 
                 throw new MetadataStripFailedException('Invalid PNG chunk length');
             }
@@ -176,10 +177,6 @@ class ImageMetadataStripper
             }
 
             $position += $size;
-
-            if ($type === 'IEND') {
-                break;
-            }
         }
 
         if ($imageDataOffset === null) {
@@ -192,7 +189,7 @@ class ImageMetadataStripper
             $output = substr($output, 0, $imageDataOffset).$chunk.substr($output, $imageDataOffset);
         }
 
-        return $output;
+        return $output.pack('N', 0).'IEND'.pack('N', crc32('IEND'));
     }
 
     private function stripGif(string $data): string

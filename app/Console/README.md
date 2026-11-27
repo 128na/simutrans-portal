@@ -12,7 +12,8 @@ Console/
 │   │   ├── ConvertCommand.php            # pak変換
 │   │   └── UpdateSearchIndexCommand.php  # 検索インデックス更新
 │   ├── Attachment/
-│   │   └── GenerateThumbnailsCommand.php # サムネイル一括生成
+│   │   ├── GenerateThumbnailsCommand.php # サムネイル一括生成
+│   │   └── StripImageMetadataCommand.php # 画像の撮影情報を一括除去
 │   ├── LangJsonExportCommand.php         # 翻訳JSONエクスポート
 │   ├── MFASetupAutoRecovery.php          # 2FA自動リカバリ
 │   └── RemoveUnusedTagsCommand.php       # 未使用タグ削除
@@ -120,6 +121,22 @@ php artisan attachment:generate-thumbnails --force --limit=100
 # 同期実行（キューワーカー不要）
 php artisan attachment:generate-thumbnails --sync
 ```
+
+### Attachment/StripImageMetadataCommand
+
+アップロード済み画像から撮影情報（EXIF・XMP・IPTC・コメント）を取り除きます。新しいアップロードは保存時に除去されるため、手動で一度実行するコマンドです。
+
+```bash
+# 対象を数えるだけ（書き換えない）
+php artisan attachment:strip-image-metadata
+
+# 書き換える（--id で対象を絞れる）
+php artisan attachment:strip-image-metadata --execute
+```
+
+- 原本は `storage/app/image-metadata-backup/` に退避します。撮影情報が残ったままなので、確認が済んだら削除してください。
+- 戻すときは退避先の中身を `storage/app/public/` へ上書きコピーします。
+- `backup:sync-uploads` の同期先にあるファイルも、次回の同期で書き換え後の内容になります。
 
 ### LangJsonExportCommand
 

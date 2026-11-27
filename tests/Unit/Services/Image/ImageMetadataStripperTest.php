@@ -89,7 +89,7 @@ class ImageMetadataStripperTest extends TestCase
         $this->assertNotFalse(imagecreatefromstring($stripped));
     }
 
-    public function test_gif_アニメーションを保ったままコメントと_xm_pを除く(): void
+    public function test_gif_アニメーションを保ったままコメントと拡張情報を除く(): void
     {
         $header = 'GIF89a'.pack('vv', 1, 1)."\x80\x00\x00"."\x00\x00\x00\xFF\xFF\xFF";
         $loop = "\x21\xFF\x0BNETSCAPE2.0\x03\x01\x00\x00\x00";

@@ -27,24 +27,30 @@
             class="v2-input w-full"
           />
         </div>
-        <div>
-          <label for="recovery_code" class="v2-form-caption">
-            リカバリコード
-          </label>
-          @error('recovery_code')
-            <div class="v2-form-error">{{ $message }}</div>
-          @enderror
+        {{-- リカバリコードの誤りは欄の中に出すため、そのときは開いた状態にする --}}
+        <details @if ($errors->has('recovery_code')) open @endif>
+          <summary class="cursor-pointer text-c-link">
+            リカバリコードを使う
+          </summary>
+          <div class="mt-4">
+            <label for="recovery_code" class="v2-form-caption">
+              リカバリコード
+            </label>
+            @error('recovery_code')
+              <div class="v2-form-error">{{ $message }}</div>
+            @enderror
 
-          <input
-            id="recovery_code"
-            type="recovery_code"
-            name="recovery_code"
-            class="v2-input w-full"
-          />
-          <p class="mt-2 text-sm text-c-sub">
-            認証コードが利用できないときは、代わりにリカバリコードを使用してください。
-          </p>
-        </div>
+            <input
+              id="recovery_code"
+              type="recovery_code"
+              name="recovery_code"
+              class="v2-input w-full"
+            />
+            <p class="mt-2 text-sm text-c-sub">
+              認証コードが利用できないときは、代わりにリカバリコードを使用してください。
+            </p>
+          </div>
+        </details>
         <div>
           <button
             type="submit"

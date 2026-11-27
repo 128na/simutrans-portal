@@ -103,6 +103,28 @@ class TwoFactorControllerTest extends TestCase
         $testResponse = $this->get(route('two-factor.login'));
 
         $testResponse->assertOk();
+        // リカバリコード欄は閉じた状態で表示する
+        $this->assertMatchesRegularExpression('/<details\s*>/', (string) $testResponse->getContent());
+    }
+
+    public function test_リカバリコードを誤るとリカバリコード欄を開いてエラーを表示する(): void
+    {
+        $user = User::factory()->create([
+            'password' => bcrypt('password'),
+            'two_factor_secret' => encrypt(app(Google2FA::class)->generateSecretKey()),
+            'two_factor_recovery_codes' => encrypt(json_encode(['recovery-valid'], JSON_THROW_ON_ERROR)),
+            'two_factor_confirmed_at' => now(),
+        ]);
+        Notification::fake();
+        $this->post('/auth/login', ['email' => $user->email, 'password' => 'password']);
+
+        $testResponse = $this->followingRedirects()
+            ->post(route('two-factor.login.store'), ['recovery_code' => 'recovery-wrong']);
+
+        $testResponse->assertOk();
+        $this->assertMatchesRegularExpression('/<details\s+open\s*>/', (string) $testResponse->getContent());
+        $testResponse->assertSee(__('The provided two factor recovery code was invalid.'));
+        $this->assertGuest();
     }
 
     public function test_two_factor有効なユーザーはパスワードのみではログイン完了しない(): void

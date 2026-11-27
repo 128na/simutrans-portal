@@ -1,7 +1,7 @@
 <!-- Include this script tag or install `@tailwindplus/elements` via npm: -->
 <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script> -->
 <header class="bg-white">
-  <nav aria-label="Global" class="v2-header">
+  <nav aria-label="Global" class="v2-header @yield('layout-max-w')">
     <div class="flex items-center justify-between gap-x-4">
       <div class="flex items-center gap-x-3 lg:flex-1">
         <a href="/" class="-m-1.5 p-1.5">

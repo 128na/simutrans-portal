@@ -56,6 +56,7 @@ Route::get('/latest', [PakController::class, 'latest'])->name('latest');
 Route::get('/pak128-japan', [PakController::class, 'pak128jp'])->name('pak.128japan');
 Route::get('/pak128', [PakController::class, 'pak128'])->name('pak.128');
 Route::get('/pak64', [PakController::class, 'pak64'])->name('pak.64');
+Route::get('/pak256-longscale', [PakController::class, 'pak256LongScale'])->name('pak.256longscale');
 Route::get('/pak-others', [PakController::class, 'pakOthers'])->name('pak.others');
 Route::get('/search', [IndexController::class, 'search'])->name('search');
 Route::get('/announces', [IndexController::class, 'announces'])->name('announces');

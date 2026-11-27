@@ -24,8 +24,14 @@
     など各種派生版のアドオンも含まれています。
 
     @break
+  @case('256-longscale')
+    Pak256.LongScale は Pak256 の派生版として制作中のpakセットです。
+    <br />
+    公式の Pak256 向けのアドオンとは区別しています。
+
+    @break
   @case('other-pak')
-    Pak64, 128, 128.Japan以外のpakセット向けアドオンの一覧です。
+    Pak64, 128, 128.Japan, 256.LongScale以外のpakセット向けアドオンの一覧です。
     <br />
     設定ファイルやメニューバーなど、pakセットに関係なく使えるコンテンツも含まれます。
 

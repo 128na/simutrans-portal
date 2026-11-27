@@ -8,9 +8,11 @@ use App\Enums\CategoryType;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
+use App\Services\Front\ArticleBreadcrumbService;
 use App\Services\Front\PublicArticleSnapshot;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Route;
 
 /**
  * pak × 種類の公開記事数は表示データの生成時に集計し、トップと pak 別一覧は保存済みの件数を読む
@@ -34,6 +36,7 @@ class PublicArticleSnapshotCountsTest extends TestCase
                 'road-vehicles' => ['total' => 1, 'addon_post' => 1],
                 'trains' => ['total' => 1, 'addon_post' => 0],
             ],
+            '256-longscale' => [],
         ], $this->sortedCounts(app(PublicArticleSnapshot::class)->read()['pak_addon_counts']));
     }
 
@@ -108,7 +111,11 @@ class PublicArticleSnapshotCountsTest extends TestCase
             ], false)
             ->assertDontSee(route('categories.pakAddon', ['pak' => '128', 'addon' => 'trains']), false)
             ->assertDontSee(route('categories.pakAddon', ['pak' => '128-japan', 'addon' => 'ships']), false)
-            ->assertDontSee('Pak256');
+            ->assertSee('Pak256.LongScale')
+            ->assertSee('まだアドオンが登録されていません。');
+
+        // 256 に記事があっても、256 は主要 pak ではないので節を作らない（Pak256.LongScale の表記は除く）
+        $this->assertDoesNotMatchRegularExpression('/Pak256(?!\.LongScale)/', (string) $response->getContent());
     }
 
     public function test_categories_page_shows_links_without_counts_when_saved_data_is_unusable(): void
@@ -120,7 +127,7 @@ class PublicArticleSnapshotCountsTest extends TestCase
 
         foreach ([
             ['version' => 1, 'pak_addon_counts' => null],
-            ['pak_addon_counts' => ['128-japan' => ['trains' => ['total' => '3', 'addon_post' => 1]], '128' => [], '64' => []]],
+            ['pak_addon_counts' => ['128-japan' => ['trains' => ['total' => '3', 'addon_post' => 1]], '128' => [], '64' => [], '256-longscale' => []]],
             ['generated_at' => now()->subDays(2)->getTimestamp()],
         ] as $override) {
             File::put($path, json_encode(array_filter([...$snapshot, ...$override], fn ($value): bool => $value !== null)));
@@ -181,7 +188,7 @@ class PublicArticleSnapshotCountsTest extends TestCase
 
         foreach ([
             ['version' => 1, 'pak_addon_counts' => null],
-            ['pak_addon_counts' => ['128-japan' => ['trains' => ['total' => '3', 'addon_post' => 1]], '128' => [], '64' => []]],
+            ['pak_addon_counts' => ['128-japan' => ['trains' => ['total' => '3', 'addon_post' => 1]], '128' => [], '64' => [], '256-longscale' => []]],
             ['pak_addon_counts' => ['128-japan' => []]],
         ] as $override) {
             File::put($path, json_encode(array_filter([...$snapshot, ...$override], fn ($value): bool => $value !== null)));
@@ -214,9 +221,56 @@ class PublicArticleSnapshotCountsTest extends TestCase
             ->assertSee($pak64->title)->assertSee($pak128->title);
     }
 
+    public function test_top_shows_pak256_longscale_tab_with_its_latest_and_counts(): void
+    {
+        $longScale = $this->createArticleIn(['256-longscale'], ['trains']);
+        $pak64 = $this->createArticleIn(['64'], ['trains']);
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $this->get(route('index'))->assertOk()
+            ->assertSee($longScale->title)->assertSee($pak64->title)
+            ->assertSee(route('categories.pakAddon', ['pak' => '256-longscale', 'addon' => 'trains']), false)
+            ->assertSee('href="'.route('index', ['pak' => '256-longscale']).'"', false);
+
+        $this->get(route('index', ['pak' => '256-longscale']))->assertOk()
+            ->assertViewHas('selectedPak', '256-longscale')
+            ->assertSee($longScale->title)->assertDontSee($pak64->title)
+            ->assertSee('href="'.route('pak.256longscale').'"', false)
+            ->assertSeeInOrder(['aria-current="true"', 'Pak256.LongScale'], false);
+
+        $this->get(route('latest'))->assertOk()->assertSee($longScale->title);
+    }
+
+    public function test_top_says_pak_has_no_addons_yet_when_saved_data_is_usable_but_the_pak_is_empty(): void
+    {
+        $this->createArticleIn(['64'], ['trains']);
+        $this->artisan('article:refresh-public-snapshot')->assertSuccessful();
+
+        $this->get(route('index', ['pak' => '256-longscale']))->assertOk()
+            ->assertSee('この pak にはまだアドオンが登録されていません。')
+            ->assertDontSee('新着を表示できませんでした');
+        $this->get(route('latest'))->assertOk()->assertSee('まだアドオンが登録されていません。');
+
+        File::delete(config()->string('public-article-snapshot.path'));
+        $this->get(route('index', ['pak' => '256-longscale']))->assertOk()
+            ->assertSee('新着を表示できませんでした')
+            ->assertDontSee('この pak にはまだアドオンが登録されていません。');
+    }
+
+    public function test_every_pak_with_a_snapshot_has_a_list_page_route_and_a_category(): void
+    {
+        foreach (PublicArticleSnapshot::PAKS as $pak) {
+            $this->assertArrayHasKey($pak, ArticleBreadcrumbService::PAK_ROUTES);
+            $this->assertTrue(Route::has(ArticleBreadcrumbService::PAK_ROUTES[$pak]), $pak);
+            $this->assertTrue(Category::where('type', CategoryType::Pak)->where('slug', $pak)->exists(), $pak);
+            $this->assertNotSame('category.pak.'.$pak, __('category.pak.'.$pak), $pak);
+            $this->get(route(ArticleBreadcrumbService::PAK_ROUTES[$pak]))->assertOk();
+        }
+    }
+
     /**
      * 件数が組み合わせごとに違うように作り、公開中のアドオン記事以外も混ぜる。
-     * 主要3 pak 以外（256）と、下書き・削除済み・退会したユーザー・一般記事は数えない
+     * 主要 pak 以外（256。256-longscale とは別の pak）と、下書き・削除済み・退会したユーザー・一般記事は数えない
      */
     private function createCountFixtures(): void
     {

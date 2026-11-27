@@ -27,7 +27,25 @@ describe("カテゴリのタグ", () => {
     );
   });
 
-  it("主要3種以外の pak は other の色にする", () => {
+  it("Pak256.LongScale は専用の色にし、Pak256 とは別の pak として表示する", () => {
+    render(
+      <Categories
+        categories={[
+          { id: 51, type: "pak", slug: "256-longscale" },
+          { id: 52, type: "pak", slug: "256" },
+        ]}
+      />
+    );
+
+    const longScale = screen.getByRole("link", { name: "Pak256.LongScale" });
+    expect(longScale).toHaveClass("v2-tag-pak", "v2-tag-pak-256-longscale");
+    expect(longScale).toHaveAttribute("href", "/search?categoryIds[]=51");
+    expect(screen.getByRole("link", { name: "Pak256" })).not.toHaveClass(
+      "v2-tag-pak-256-longscale"
+    );
+  });
+
+  it("主要4種以外の pak は other の色にする", () => {
     render(<Categories categories={[{ id: 21, type: "pak", slug: "256" }]} />);
 
     expect(screen.getByRole("link", { name: "Pak256" })).toHaveClass(

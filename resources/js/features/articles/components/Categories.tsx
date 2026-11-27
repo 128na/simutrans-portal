@@ -6,13 +6,14 @@ type Props = {
 };
 
 /**
- * pak の slug ごとのタグ色。主要3種以外の pak はまとめて other、pak 問わずは中立色にする。
+ * pak の slug ごとのタグ色。主要4種以外の pak はまとめて other、pak 問わずは中立色にする。
  * 色だけに頼らず、タグには必ず pak 名を表示する。
  */
 const pakVariants: Record<string, string> = {
   "128-japan": "v2-tag-pak-128-japan",
   "128": "v2-tag-pak-128",
   "64": "v2-tag-pak-64",
+  "256-longscale": "v2-tag-pak-256-longscale",
   any: "v2-tag-pak-any",
 };
 

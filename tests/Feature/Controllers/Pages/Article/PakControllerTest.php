@@ -29,6 +29,20 @@ class PakControllerTest extends TestCase
         );
     }
 
+    public function test_pak256_longscale_lists_only_its_own_articles_and_others_page_excludes_it(): void
+    {
+        $longScale = $this->createAddonPost();
+        $longScale->categories()->save(Category::where('type', CategoryType::Pak)->where('slug', '256-longscale')->firstOrFail());
+        $pak256 = $this->createAddonPost();
+        $pak256->categories()->save(Category::where('type', CategoryType::Pak)->where('slug', '256')->firstOrFail());
+
+        $this->get(route('pak.256longscale'))->assertOk()
+            ->assertSee($longScale->title)->assertDontSee($pak256->title)
+            ->assertSee('公式の Pak256 向けのアドオンとは区別しています。');
+        $this->get(route('pak.others'))->assertOk()
+            ->assertSee($pak256->title)->assertDontSee($longScale->title);
+    }
+
     public function test_latest_limits_cards_without_counting_and_pak_pages_still_paginate(): void
     {
         $category = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->firstOrFail();

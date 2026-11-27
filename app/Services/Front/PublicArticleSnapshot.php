@@ -21,7 +21,10 @@ use RuntimeException;
 #[Singleton]
 class PublicArticleSnapshot
 {
-    public const array PAKS = ['128-japan', '128', '64'];
+    /**
+     * 新着・件数・トップのタブを持つ pak。表示順もこの順。ここに足す pak は ArticleBreadcrumbService::PAK_ROUTES にも足す
+     */
+    public const array PAKS = ['128-japan', '128', '64', '256-longscale'];
 
     /**
      * 2: pak × 種類の公開記事数（pak_addon_counts）を追加

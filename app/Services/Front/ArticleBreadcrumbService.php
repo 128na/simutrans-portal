@@ -28,6 +28,7 @@ class ArticleBreadcrumbService
         '128-japan' => 'pak.128japan',
         '128' => 'pak.128',
         '64' => 'pak.64',
+        '256-longscale' => 'pak.256longscale',
     ];
 
     /**

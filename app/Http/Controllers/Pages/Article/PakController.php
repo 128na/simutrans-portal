@@ -34,6 +34,7 @@ class PakController extends Controller
             'pak128Japan' => $this->latestArticleCards->present($latest['128-japan'] ?? []),
             'pak128' => $this->latestArticleCards->present($latest['128'] ?? []),
             'pak64' => $this->latestArticleCards->present($latest['64'] ?? []),
+            'pak256LongScale' => $this->latestArticleCards->present($latest['256-longscale'] ?? []),
             'meta' => $this->metaOgpService->frontLatest(),
         ]);
     }
@@ -83,10 +84,25 @@ class PakController extends Controller
         ]);
     }
 
+    public function pak256LongScale(Request $request): View
+    {
+        $filter = ArticleListFilter::fromRequest($request);
+        $category = $this->categoryRepository->getByTypeSlug(CategoryType::Pak, '256-longscale');
+
+        return view('pages.pak.index', [
+            'pak' => '256-longscale',
+            'categoryIds' => [$category->id],
+            'articles' => ArticleCard::collection($this->latestAction->byPak('256-longscale', filter: $filter)),
+            'filter' => $filter,
+            'addonCounts' => $this->snapshot->addonCounts('256-longscale', $filter->downloadOnly),
+            'meta' => $this->metaOgpService->frontPak('256-longscale'),
+        ]);
+    }
+
     public function pakOthers(Request $request): View
     {
         $filter = ArticleListFilter::fromRequest($request);
-        $categories = $this->categoryRepository->getByExcludeTypeSlug(CategoryType::Pak, ['128-japan', '128', '64']);
+        $categories = $this->categoryRepository->getByExcludeTypeSlug(CategoryType::Pak, PublicArticleSnapshot::PAKS);
 
         return view('pages.pak.index', [
             'pak' => 'other-pak',

@@ -24,6 +24,7 @@ class SitemapController extends Controller
             ->add(Url::create('/pak128-japan')->setPriority(0.7))
             ->add(Url::create('/pak128')->setPriority(0.7))
             ->add(Url::create('/pak64')->setPriority(0.7))
+            ->add(Url::create('/pak256-longscale')->setPriority(0.7))
             ->add(Url::create('/pak-others')->setPriority(0.7))
             ->add(Url::create('/users')->setPriority(0.8))
             ->add(Url::create('/tags')->setPriority(0.8))

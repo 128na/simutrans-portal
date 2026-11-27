@@ -59,6 +59,11 @@ class GetLatestOtherTest extends TestCase
         $category128Japan = Category::where('type', CategoryType::Pak)->where('slug', '128-japan')->first();
         $article128Japan->categories()->save($category128Japan);
 
+        // pak256-longscale記事（除外対象）
+        $articleLongScale = $this->createAddonIntroduction($this->user);
+        $categoryLongScale = Category::where('type', CategoryType::Pak)->where('slug', '256-longscale')->first();
+        $articleLongScale->categories()->save($categoryLongScale);
+
         // その他のPAK記事
         $otherArticle = $this->createAddonIntroduction($this->user);
         $otherCategory = Category::where('type', CategoryType::Pak)->where('slug', '256')->first();

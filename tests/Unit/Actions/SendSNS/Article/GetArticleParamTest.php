@@ -164,4 +164,21 @@ class GetArticleParamTest extends TestCase
         $this->assertIsString($result['tags']);
         $this->assertNotEmpty($result['tags']);
     }
+
+    public function test_pak256_longscale_has_its_own_hash_tag_distinct_from_pak256(): void
+    {
+        $action = new GetArticleParam(Carbon::now());
+        $article = Article::factory()->make(['id' => 5, 'user_id' => 5, 'title' => 'Title', 'slug' => 'slug']);
+        $paks = collect([
+            Category::factory()->make(['slug' => '256-longscale', 'type' => 'pak']),
+        ]);
+        $article->setRelation('user', User::factory()->make(['id' => 5, 'name' => 'User', 'email' => 'test5@example.com']));
+        $article->setRelation('categories', $paks);
+        $article->setRelation('categoryPaks', $paks);
+
+        $tags = $action($article)['tags'];
+
+        $this->assertStringContainsString('#Pak256LongScale', $tags);
+        $this->assertDoesNotMatchRegularExpression('/#Pak256(?!LongScale)/', $tags);
+    }
 }

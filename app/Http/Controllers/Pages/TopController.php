@@ -50,6 +50,7 @@ class TopController extends Controller
             'announces' => $articles['announces'],
             'latestCards' => $this->latestArticleCards->present($latestCards),
             'selectedPak' => $selectedPak,
+            'snapshotAvailable' => $articles['latest'] !== [],
             'pakTabs' => array_map(fn (string $slug): array => [
                 'slug' => $slug,
                 'label' => __('category.pak.'.$slug),

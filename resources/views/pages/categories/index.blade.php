@@ -20,11 +20,13 @@
             {{ $section['label'] }}
           </div>
           <div class="ml-2 space-y-1">
-            @foreach ($section['addons'] as $addon)
+            @forelse ($section['addons'] as $addon)
               <div>
                 <x-ui.link :url="$addon['url']" :title="$addon['title']" />
               </div>
-            @endforeach
+            @empty
+              <p class="text-note text-c-sub">まだアドオンが登録されていません。</p>
+            @endforelse
           </div>
         </div>
       @endforeach

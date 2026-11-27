@@ -1,7 +1,9 @@
 @extends('layouts.mypage')
-@section('max-w', 'v2-page-lg')
+{{-- 編集欄とプレビューを並べるため、画面幅いっぱいを使う。.v2-header の上限に勝つよう ! を付ける --}}
+@section('max-w', 'max-w-none')
+@section('layout-max-w', 'max-w-none!')
 @section('page-content')
-  <div class="v2-page v2-page-lg">
+  <div class="v2-page max-w-none">
     <script id="data-user" type="application/json">
       @json($user)
     </script>

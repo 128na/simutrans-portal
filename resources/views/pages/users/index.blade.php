@@ -9,7 +9,7 @@
         {{ $meta['description'] }}
       </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-1">
+    <div class="grid grid-cols-1 gap-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
       @foreach ($users as $user)
         <div>
           <x-ui.link :url="route('users.show', ['userIdOrNickname' => $user->nickname ?? $user->id])" :title='"{$user->name} ({$user->articles_count})"' />

@@ -68,7 +68,7 @@ describe("新着カード", () => {
       "grid-cols-1",
       "sm:grid-cols-2",
       "lg:grid-cols-3",
-      "xl:grid-cols-4"
+      "xl:grid-cols-[repeat(auto-fill,minmax(13rem,1fr))]"
     );
     // 一覧のカードと同じ部品なので、同じ記事なら新着だけの見出し以外は同じ HTML になる
     const { container: listCard } = render(

@@ -182,3 +182,39 @@ describe("記事詳細の入手ボックス", () => {
     expect(box.queryByText(/公開|更新/)).toBeNull();
   });
 });
+
+describe("記事詳細の画像", () => {
+  const image = (id: number) => ({
+    id,
+    thumbnail: `/storage/thumbnails/${id}.webp`,
+    original_name: `${id}.png`,
+    url: `/storage/original/${id}.png`,
+    size: 1,
+  });
+
+  const page = {
+    ...baseArticle,
+    categories: [],
+    tags: [],
+    articles: [],
+    relatedArticles: [],
+    post_type: "page",
+    attachments: [image(41), image(42)],
+    contents: { thumbnail: 41, sections: [{ type: "image", id: 42 }] },
+  } satisfies Article.Show;
+
+  it("見出しの画像も本文の画像も元画像を表示し、元画像へのリンクにする", () => {
+    const { container } = render(<ArticleBase article={page} />);
+
+    for (const id of [41, 42]) {
+      const img = container.querySelector(
+        `img[src="/storage/original/${id}.png"]`
+      );
+      expect(img?.closest("a")).toHaveAttribute(
+        "href",
+        `/storage/original/${id}.png`
+      );
+    }
+    expect(container.querySelector('img[src*="/thumbnails/"]')).toBeNull();
+  });
+});

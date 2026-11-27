@@ -73,6 +73,7 @@ export const ArticleBase = ({
             attachmentId={article.contents.thumbnail}
             attachments={article.attachments}
             openFullSize={!preview}
+            original
           />
 
           {match<ArticlePostType>(article.post_type)

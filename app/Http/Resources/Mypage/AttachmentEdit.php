@@ -30,6 +30,8 @@ class AttachmentEdit extends JsonResource
             'type' => $this->resource->type,
             'original_name' => $this->resource->original_name,
             'thumbnail' => $this->resource->thumbnail,
+            // プレビューも公開ページと同じ元画像で表示する
+            'url' => $this->when($this->resource->is_image, fn () => $this->resource->original),
             'size' => $this->resource->size,
             'fileInfo' => $this->when(
                 $this->resource->attachmentable_type !== Profile::class && $this->resource->fileInfo !== null,

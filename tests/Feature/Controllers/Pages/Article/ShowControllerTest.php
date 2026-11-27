@@ -6,13 +6,45 @@ namespace Tests\Feature\Controllers\Pages\Article;
 
 use App\Events\ArticleShown;
 use App\Models\Article;
+use App\Models\Attachment;
 use App\Models\Redirect;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
 use Tests\Feature\TestCase;
 
 class ShowControllerTest extends TestCase
 {
+    public function test_show_元画像のurlは画像の添付だけに出す(): void
+    {
+        $disk = Storage::fake('public');
+        $imagePath = (string) UploadedFile::fake()->image('photo.png')->store('user/1', 'public');
+        $disk->put('user/1/addon.txt', 'addon');
+        $article = Article::factory()->publish()->create();
+        $image = Attachment::factory()->for($article, 'attachmentable')->create([
+            'user_id' => $article->user_id,
+            'path' => $imagePath,
+            'thumbnail_path' => 'thumbnails/photo_thumb.webp',
+        ]);
+        $file = Attachment::factory()->for($article, 'attachmentable')->create([
+            'user_id' => $article->user_id,
+            'path' => 'user/1/addon.txt',
+        ]);
+
+        $testResponse = $this->getJson(route('articles.show', [
+            'userIdOrNickname' => $article->user_id,
+            'articleSlug' => $article->slug,
+        ]));
+
+        $testResponse->assertOk();
+        $attachments = collect($testResponse->json('attachments'))->keyBy('id');
+        $this->assertSame($disk->url($imagePath), $attachments[$image->id]['url']);
+        $this->assertSame($disk->url('thumbnails/photo_thumb.webp'), $attachments[$image->id]['thumbnail']);
+        // アドオンのファイルは直接の URL を出さない（ダウンロードは計測と回数制限を通す）
+        $this->assertArrayNotHasKey('url', $attachments[$file->id]);
+    }
+
     public function test_show_持ち主の閲覧は閲覧数に数えない(): void
     {
         Event::fake([ArticleShown::class]);

@@ -20,6 +20,22 @@ describe("Image コンポーネント", () => {
     },
   ];
 
+  it("original を指定すると元画像を表示し、指定しなければサムネイルを表示する", () => {
+    const { rerender } = render(
+      <Image attachmentId={2} attachments={mockAttachments} original />
+    );
+    expect(screen.getByRole("img")).toHaveAttribute(
+      "src",
+      "/storage/images/image2.jpg"
+    );
+
+    rerender(<Image attachmentId={2} attachments={mockAttachments} />);
+    expect(screen.getByRole("img")).toHaveAttribute(
+      "src",
+      "/storage/thumbnails/image2.jpg"
+    );
+  });
+
   it("添付ファイルの画像が表示される", () => {
     render(<Image attachmentId={1} attachments={mockAttachments} />);
     const img = screen.getByRole("img");

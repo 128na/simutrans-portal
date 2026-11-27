@@ -70,6 +70,9 @@ class ArticleShow extends JsonResource
                 'id' => $attachment->id,
                 'original_name' => $attachment->original_name,
                 'thumbnail' => $attachment->thumbnail,
+                // 画像だけ元画像の URL を渡す。アドオンのファイルは、ダウンロード数の計測と回数制限を通さずに取れないようにする。
+                // Collection の中では when() の値が取り除かれず {} になるので、配列の展開で出し分ける
+                ...($attachment->is_image ? ['url' => $attachment->original] : []),
                 'size' => $attachment->size,
                 'fileInfo' => $this->when($attachment->fileInfo instanceof FileInfo, function () use ($attachment): array {
                     /** @var FileInfo $fileInfo */

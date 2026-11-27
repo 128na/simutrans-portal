@@ -22,7 +22,7 @@ export const ArticleList = ({ articles, isAuthenticated = false }: Props) => {
             <div className="shrink-0">
               <a href={article.url}>
                 <img
-                  className="w-full sm:w-80 h-45 object-cover rounded-lg shadow-lg"
+                  className="w-full sm:w-80 h-45 2xl:w-120 2xl:h-67.5 object-cover rounded-lg shadow-lg"
                   src={article.thumbnail}
                   alt=""
                 />

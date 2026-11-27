@@ -34,7 +34,5 @@ class CreateTest extends TestCase
 
         $testResponse = $this->get($url);
         $testResponse->assertStatus(200);
-        $testResponse->assertSee('mx-auto max-w-none!', false);
-        $testResponse->assertSee('v2-header max-w-none!', false);
     }
 }

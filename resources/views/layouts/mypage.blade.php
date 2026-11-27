@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-  <div class="mx-auto @yield('layout-max-w', 'v2-page-lg')">
+  <div class="mx-auto v2-page-lg">
     <div class="lg:flex lg:gap-8">
       <aside class="hidden lg:block w-64 shrink-0 border-r border-c-sub/10">
         <div class="sticky top-6 p-3 lg:py-4 lg:pr-3">

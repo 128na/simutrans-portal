@@ -20,7 +20,7 @@ type Props<T extends ArticleCardData> = {
 };
 
 /**
- * 公開側のアドオン一覧（カード表示）。PC 幅で 4 列、スマホでは 1 列。
+ * 公開側のアドオン一覧（カード表示）。PC 幅ではカード幅を保って画面の広さに応じて列を増やし、スマホでは 1 列。
  * トップ・/latest の新着も同じ部品で描画し、見た目と列数をそろえる
  */
 export const ArticleCardList = <T extends ArticleCardData>({
@@ -37,7 +37,7 @@ export const ArticleCardList = <T extends ArticleCardData>({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(13rem,1fr))]">
       {articles.map((article) => (
         <ArticleCard
           key={article.id}

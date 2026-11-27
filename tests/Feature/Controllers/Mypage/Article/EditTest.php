@@ -38,8 +38,6 @@ class EditTest extends TestCase
 
         $testResponse = $this->get($url);
         $testResponse->assertStatus(200);
-        $testResponse->assertSee('mx-auto max-w-none!', false);
-        $testResponse->assertSee('v2-header max-w-none!', false);
     }
 
     public function test_他のユーザーの記事は編集できない(): void
